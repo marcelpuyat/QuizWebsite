@@ -31,6 +31,7 @@ function resize_app() {
 function load_content(data, quiz_id) {
 	q_handler = new QuizHandler(document.getElementById('quiz-prompt-content'), quiz_id);
 	var questions = data.questions;
+	console.log(questions);
 	for (var i = 0; i < questions.length; i++) {
 		switch(questions[i].type) {
 		case ('multiple-choice'):
@@ -43,23 +44,24 @@ function load_content(data, quiz_id) {
 
 
 function getQuizJSON(fn_callback, quiz_id) {
-	//get_json_from_url("/QuizWebsite/QuizServlet?quiz_id="+quiz_id, fn_callback);
-	console.log('STUB IMPLEMENTATION');
-	fn_callback({questions:[
-	                        {type:'multiple-choice',
-	                        	data:{
-	                        		prompt:'what class is this assignment for?',
-	                        		options: ['CS110','CS108','CS23141'],
-	                        		correct: 1
-	                        	}}
-	                        ]
-	}, quiz_id);//STUBB!!!
+	console.log('CALLING STUB IMPLEMENTATION OF QUIZ SERVLET');
+	get_json_from_url("/QuizWebsite/QuizServletStub?quiz_id="+quiz_id, fn_callback);
+//	console.log('STUB IMPLEMENTATION');
+//	fn_callback({questions:[
+//	                        {type:'multiple-choice',
+//	                        	data:{
+//	                        		prompt:'what class is this assignment for?',
+//	                        		options: ['CS110','CS108','CS23141'],
+//	                        		correct: 1
+//	                        	}}
+//	                        ]
+//	}, quiz_id);//STUBB!!!
 }
 
 function sendQuizResults(data) {
 	console.log(data);
 	console.log('STUBBBB!!!');
-	post_json_to_url("/QuizWebsite/QuizServlet", data, function (data) {
+	post_json_to_url("/QuizWebsite/QuizServletStub", data, function (data) {
 		console.log(data);
 	});
 }

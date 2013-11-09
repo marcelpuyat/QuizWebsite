@@ -21,6 +21,7 @@ function MultipleChoiceHandler(data) {
 			var new_option = document.createElement('input');
 			new_option.type = 'radio';
 			new_option.name = "mult-c-option";
+			new_option.id = i.toString();
 			new_option.value = options[i];
 			if (i == 0) new_option.checked = true;
 			var new_option_label = document.createElement('span');
@@ -39,7 +40,7 @@ function MultipleChoiceHandler(data) {
 	};
 	/* returns object properly formatted to be returned with answer JSON */
 	this.format_answer = function() {
-		return {item_selected:_selection};
+		return _selection;
 	};
 	
 	function get_checked() {
@@ -50,6 +51,7 @@ function MultipleChoiceHandler(data) {
 	}
 	
 	this.answered_question = function () {
-		_selection = get_checked().value;
+		var checked = get_checked();
+		_selection = {item_selected:checked.value,index_selected:checked.id};
 	};
 }

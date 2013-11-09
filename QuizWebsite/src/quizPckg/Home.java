@@ -19,21 +19,20 @@ public class Home extends HttpServlet {
      */
     public Home() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("HelloWorld.jsp");
+		response.sendRedirect("Quiz.jsp?quiz_id=000000&name=My%20First%20Quiz");
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("HelloWorld.jsp");
+		response.sendRedirect("Quiz.jsp?quiz_id=000000&name=My%20First%20Quiz");
 	}
 
 }
