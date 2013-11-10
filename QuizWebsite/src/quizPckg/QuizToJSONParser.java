@@ -31,7 +31,6 @@ public class QuizToJSONParser {
 	 */
 	public static JSONObject parseQuizIntoJSON(Quiz quiz) {
 		
-		// Quiz to be passed
 		JSONObject jSONquiz = new JSONObject();
 				
 		ArrayList<Question> questions = quiz.getQuestions();
@@ -46,6 +45,63 @@ public class QuizToJSONParser {
 		jSONquiz.put("questions", questionsFormatted);
 
 		return jSONquiz;
+	}
+	
+	/**
+	 * Returns a JSONObject given quiz results in this format:
+	 * {
+	 *   feedback: {
+	 *      total_score:100
+	 *      total_correct: 4
+	 *      total_possible: 20
+	 *      }
+	 * }
+	 * @param quizResults QuizResults object
+	 * @return JSONObject according to our spec
+	 */
+	public static JSONObject parseQuizResultsIntoJSON(QuizResults quizResults) {
+		JSONObject jSONresults = new JSONObject();
+		
+		JSONObject feedback = new JSONObject();
+		
+		feedback.accumulate("total_score", quizResults.getPercentageScore());
+		feedback.accumulate("total_correct", quizResults.getUserScore());
+		feedback.accumulate("total_possible", quizResults.getMaxScore());
+		
+		jSONresults.put("feedback", feedback);
+		
+		return jSONresults;
+	}
+	
+	/**
+	 * Return a QuizResults object given a JSONObject of answers from the client.
+	 * 
+	 * @param jSONanswers JSON of answers
+	 * @param quiz The quiz taken
+	 * @return
+	 */
+	public static QuizResults parseJSONIntoQuizResults(JSONObject jSONanswers, Quiz quiz) {
+		
+		ArrayList<String> answers = new ArrayList<String>();
+		
+		JSONArray arrayOfAnswers = (JSONArray) jSONanswers.get("answers");
+		
+		for (int i = 0; i < arrayOfAnswers.length(); i++) {
+			// CONDENSE THIS INTO PARSER PER TYPE
+			JSONObject questionResult = (JSONObject)arrayOfAnswers.get(i);
+			String type = (String)questionResult.get("type");
+			JSONObject data = (JSONObject)questionResult.get("data");
+			
+			if (type.equals("multiple-choice")) {
+				answers.add(data.getString("index_selected"));
+			}
+			// TODO FINISH THIS
+		}
+		
+		int userScore = quiz.checkAnswers(answers);
+		
+		QuizResults results = new QuizResults(null, quiz.getID(), userScore, quiz.getMaxScore());
+		return results;
 	}
 	
 	/**

@@ -52,17 +52,17 @@ public class StubListener implements ServletContextListener {
 		ArrayList<Question> questions = new ArrayList<Question>();
 		questions.add(question);
 		String id = "000000";
-		Quiz quiz1 = new Quiz(questions, 0);
+		Quiz quiz1 = new Quiz(questions, id);
 		
 		SingleAnswerQuestion question2 = new SingleAnswerQuestion("What is the cake?", "A lie");
 		ArrayList<Question> questions2 = new ArrayList<Question>();
 		questions2.add(question2);
 		String id2 = "000001";
-		Quiz quiz2 = new Quiz(questions2, 1);
+		Quiz quiz2 = new Quiz(questions2, id2);
 		
 		ServletContext context = arg0.getServletContext();
-		context.setAttribute(id, quiz1);
-		context.setAttribute(id2, quiz2);
+		context.setAttribute(quiz1.getID(), quiz1);
+		context.setAttribute(quiz2.getID(), quiz2);
 		/* These test quizzes are now accessible by the QuizServlet, taking
 		 * the place of a MySQL database of created quizzes
 		 */

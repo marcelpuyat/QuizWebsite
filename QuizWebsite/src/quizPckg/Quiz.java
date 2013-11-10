@@ -13,7 +13,7 @@ import questionPckg.Question;
  */
 public class Quiz {
 
-	private int id;
+	private String id;
 	private ArrayList<Question> questions;
 	private int maxScore;
 	
@@ -22,7 +22,7 @@ public class Quiz {
 	 * @param questions
 	 * @param id
 	 */
-	public Quiz(ArrayList<Question> questions, int id) {
+	public Quiz(ArrayList<Question> questions, String id) {
 		this.questions = questions;
 		this.maxScore = 0;
 		this.id = id;
@@ -70,7 +70,7 @@ public class Quiz {
 	 * Returns quiz id
 	 * @return id
 	 */
-	public int getID() {
+	public String getID() {
 		return this.id;
 	}
 	

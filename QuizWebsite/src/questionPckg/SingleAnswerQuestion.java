@@ -2,8 +2,6 @@ package questionPckg;
 
 import java.util.ArrayList;
 
-import quizPckg.Quiz;
-
 /**
  * Question with only one correct answer. Right now, only implemented
  * to take the EXACT string to be correct... consider extending to accept
@@ -47,19 +45,6 @@ public class SingleAnswerQuestion extends Question {
 	@Override
 	public String toString() {
 		return "Question: " + this.prompts.get(0) + "\nAnswer: " + this.possibleAnswers.toString();
-	}
-	
-	/// Simple test to print out questions in a quiz.
-	public static void main(String[] args) {
-		SingleAnswerQuestion question = new SingleAnswerQuestion("WHO IS THE PRESIDENT OF THE US?", "OBAMA");
-		SingleAnswerQuestion question2 = new SingleAnswerQuestion("WHO IS THE PRESIDENT OF STANFORD?", "HENNESSY");
-		ArrayList<Question> questions = new ArrayList<Question>();
-		questions.add(question);
-		questions.add(question2);
-		
-		Quiz quiz = new Quiz(questions, 1);
-		
-		System.out.println(quiz);
 	}
 	
 	/**

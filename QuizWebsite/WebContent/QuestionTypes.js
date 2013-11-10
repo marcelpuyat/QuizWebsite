@@ -12,6 +12,11 @@ function MultipleChoiceHandler(data) {
 		
 		var prompt = _data.prompt;
 		var prompt_div = document.createElement('div');
+		
+		// Added these next 4 lines to display prompt
+		var prompt_paragraph = document.createElement('span');
+		prompt_paragraph.innerHTML = prompt;
+		prompt_div.appendChild(prompt_paragraph);
 		frm.appendChild(prompt_div);
 		
 		var options = _data.options;
