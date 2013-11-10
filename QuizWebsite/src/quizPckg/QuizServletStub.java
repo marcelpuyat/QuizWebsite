@@ -3,7 +3,6 @@ package quizPckg;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -38,21 +37,6 @@ public class QuizServletStub extends HttpServlet {
 		String quiz_id = request.getParameter("quiz_id");
 		response.setContentType("application/json");
 		System.out.println("quiz_id: "+quiz_id);
-		
-		//add first question
-		
-		JSONObject quiz_obj = new JSONObject();
-        
-        
-        JSONObject question = new JSONObject();
-        question.accumulate("type", "multiple-choice");
-        JSONObject q_data   = new JSONObject();
-        q_data.accumulate("prompt", "What class is this assignment for?");
-        q_data.accumulate("options", Arrays.asList("CS110","CS108","CS987123"));
-        q_data.accumulate("correct", 1);
-        question.accumulate("data", q_data);
-        
-        quiz_obj.accumulate("questions", Arrays.asList(question));
         
 		ServletContext context = getServletContext(); // Fakes pulling quiz from database. Instead uses stub listener
 		Quiz quiz = (Quiz)context.getAttribute(quiz_id);
