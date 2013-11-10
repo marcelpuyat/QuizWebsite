@@ -21,7 +21,6 @@ ul {
 		display:inline-block;
 		height:100%;
 		vertical-align:top;
-		overflow:hidden;
 	}
 
 	#app-selection-wrapper {
