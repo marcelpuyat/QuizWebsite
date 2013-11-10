@@ -41,7 +41,7 @@ public class QuizServletStub extends HttpServlet {
 		JSONObject question = new JSONObject();
 		question.accumulate("type", "multiple-choice");
 		JSONObject q_data   = new JSONObject();
-		q_data.accumulate("prompt", "what class is this assignment for?");
+		q_data.accumulate("prompt", "What class is this assignment for?");
 		q_data.accumulate("options", Arrays.asList("CS110","CS108","CS987123"));
 		q_data.accumulate("correct", 1);
 		question.accumulate("data", q_data);

@@ -1,4 +1,4 @@
-/**
+/*
  * MUST IMPLEMENT!!: getDOMSubStructure(data) - returns displayed DOM structure
  *                   format_answer() - returns object to be inserted into JSON
  *                   answered_question() - handles answered question
@@ -54,7 +54,7 @@ function MultipleChoiceHandler(data) {
 			if (check_boxes[i].checked) return check_boxes[i];
 		}
 	}
-	
+	/* handles answered question */
 	this.answered_question = function () {
 		var checked = get_checked();
 		_selection = {item_selected:checked.value,index_selected:checked.id};
