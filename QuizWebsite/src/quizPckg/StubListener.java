@@ -7,6 +7,10 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
+import questionPckg.MultipleChoiceQuestion;
+import questionPckg.Question;
+import questionPckg.SingleAnswerQuestion;
+
 /**
  * Application Lifecycle Listener implementation class ContextListener
  *
@@ -31,13 +35,17 @@ public class StubListener implements ServletContextListener {
      */
     public void contextInitialized(ServletContextEvent arg0) {
     	
-    	// All stub testing.
-    	
-    	// Test multiple choice question.
+    	// Stub testing of a multiple choice question, and a single answer question.
+    	    	
+    	/* These are the options */
     	ArrayList<String> options = new ArrayList<String>(2);
 		options.add("Stanford");
 		options.add("Cal");
+		
+		/* Answer index */
 		int answer = 0;
+		
+		/* Question prompt */
 		String prompt = "Which University would you rather attend?";
 		
 		MultipleChoiceQuestion question = new MultipleChoiceQuestion(prompt, options, answer);
@@ -55,6 +63,9 @@ public class StubListener implements ServletContextListener {
 		ServletContext context = arg0.getServletContext();
 		context.setAttribute(id, quiz1);
 		context.setAttribute(id2, quiz2);
+		/* These test quizzes are now accessible by the QuizServlet, taking
+		 * the place of a MySQL database of created quizzes
+		 */
 
     }
 

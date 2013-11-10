@@ -1,9 +1,10 @@
-package quizPckg;
+package questionPckg;
 
 import java.util.ArrayList;
 
+
 /**
- * Question with single answer, which is an index out of the number of
+ * Question with single answer, which is an index out of the list of
  * options available.
  * 
  * @author marcelp
@@ -11,7 +12,9 @@ import java.util.ArrayList;
  */
 public class MultipleChoiceQuestion extends Question {
 
+	// Index of the answer in the options list.
 	private int answer;
+	
 	/**
 	 * Takes in a single prompt, a list of options, and the index of the correct answer
 	 * among the options.
@@ -27,18 +30,12 @@ public class MultipleChoiceQuestion extends Question {
 	}
 	
 	@Override
-	/**
-	 * Value of 1.
-	 */
 	public int getQuestionType() {
 		return QuestionTypes.MULTIPLE_CHOICE;
 	}
 
 	
 	@Override
-	/**
-	 * Returns List with 1 string.
-	 */
 	public ArrayList<String> getPrompts() {
 		return prompts;
 	}
@@ -49,9 +46,6 @@ public class MultipleChoiceQuestion extends Question {
 	}
 
 	@Override
-	/**
-	 * Returns bool that says if passed in answer is right or wrong.
-	 */
 	public boolean isCorrect(String answer) {
 		return (possibleAnswers.contains(answer));
 	}
@@ -65,8 +59,8 @@ public class MultipleChoiceQuestion extends Question {
 	}
 	
 	/**
-	 * Returns answer
-	 * @return
+	 * Returns index of the answer out of the choices
+	 * @return Index of answer
 	 */
 	public int getAnswer() {
 		return answer;

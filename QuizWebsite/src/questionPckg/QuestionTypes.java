@@ -1,4 +1,4 @@
-package quizPckg;
+package questionPckg;
 
 public class QuestionTypes {
 	public static final int SINGLE_ANSWER = 0;

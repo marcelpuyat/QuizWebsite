@@ -2,6 +2,8 @@ package quizPckg;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import questionPckg.Question;
+
 /**
  * Quiz object that holds a list of questions. Supports score checking
  * when passed in a list of answers (which is assumed to be the same length
@@ -72,7 +74,8 @@ public class Quiz {
 		return this.id;
 	}
 	
-	/**
+	/** NOT SURE IF THIS METHOD IS NEEDED
+	 * 
 	 * Return map of answers to questions. Useful for displaying results to user that just took quiz.
 	 * 
 	 * i.e. Question 1: You answered x, which was correct!

@@ -1,4 +1,4 @@
-package userInfo;
+package userPckg;
 
 import quizPckg.*;
 import java.util.ArrayList;

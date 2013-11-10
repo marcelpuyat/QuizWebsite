@@ -1,6 +1,8 @@
-package quizPckg;
+package questionPckg;
 
 import java.util.ArrayList;
+
+import quizPckg.Quiz;
 
 /**
  * Question with only one correct answer. Right now, only implemented
@@ -62,7 +64,7 @@ public class SingleAnswerQuestion extends Question {
 	
 	/**
 	 * Returns list of possible answers
-	 * @return
+	 * @return List of possible answers
 	 */
 	public ArrayList<String> getPossibleAnswers() {
 		ArrayList<String> answers = new ArrayList<String>();
