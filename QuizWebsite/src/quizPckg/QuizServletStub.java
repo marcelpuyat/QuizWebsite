@@ -2,13 +2,17 @@ package quizPckg;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -34,22 +38,29 @@ public class QuizServletStub extends HttpServlet {
 		String quiz_id = request.getParameter("quiz_id");
 		response.setContentType("application/json");
 		System.out.println("quiz_id: "+quiz_id);
+		
 		//add first question
+		
 		JSONObject quiz_obj = new JSONObject();
+        
+        
+        JSONObject question = new JSONObject();
+        question.accumulate("type", "multiple-choice");
+        JSONObject q_data   = new JSONObject();
+        q_data.accumulate("prompt", "What class is this assignment for?");
+        q_data.accumulate("options", Arrays.asList("CS110","CS108","CS987123"));
+        q_data.accumulate("correct", 1);
+        question.accumulate("data", q_data);
+        
+        quiz_obj.accumulate("questions", Arrays.asList(question));
+        
+		ServletContext context = getServletContext(); // Fakes pulling quiz from database. Instead uses stub listener
+		Quiz quiz = (Quiz)context.getAttribute(quiz_id);
 		
+		JSONObject jSONquiz = parseQuizIntoJSON(quiz);
 		
-		JSONObject question = new JSONObject();
-		question.accumulate("type", "multiple-choice");
-		JSONObject q_data   = new JSONObject();
-		q_data.accumulate("prompt", "what class is this assignment for?");
-		q_data.accumulate("options", Arrays.asList("CS110","CS108","CS987123"));
-		q_data.accumulate("correct", 1);
-		question.accumulate("data", q_data);
-		
-		quiz_obj.accumulate("questions", Arrays.asList(question));
-		
-		
-		response.getWriter().println(quiz_obj.toString());
+		response.getWriter().println(jSONquiz.toString());
+
 	}
 
 	/**
@@ -67,4 +78,93 @@ public class QuizServletStub extends HttpServlet {
 		
 	}
 
+	/**
+	 * Quiz is formatted differently depending on type.
+	 *    
+	 * @param quiz A Quiz Object
+	 * @return Quiz object formatted as JSON
+	 */
+	private JSONObject parseQuizIntoJSON(Quiz quiz) {
+		
+		// Quiz to be passed
+		JSONObject jSONquiz = new JSONObject();
+				
+		ArrayList<Question> questions = quiz.getQuestions();
+		
+		JSONArray questionsFormatted = new JSONArray();
+		
+		for (int i = 0; i < questions.size(); i++) {
+			JSONObject jSONquestion = parseQuestionIntoJSON(questions.get(i));
+			questionsFormatted.put(jSONquestion);
+		}
+		
+		jSONquiz.put("questions", questionsFormatted);
+
+		return jSONquiz;
+	}
+	
+	/**
+	 * Parses a question into a JSONObject. Read below to see how each type
+	 * is formatted.
+	 * @param question
+	 * @return
+	 */
+	private JSONObject parseQuestionIntoJSON(Question question) {
+		if (question.getQuestionType() == QuestionTypes.MULTIPLE_CHOICE) {
+			return parseMultChoiceIntoJSON((MultipleChoiceQuestion)question);
+		}
+		
+		if (question.getQuestionType() == QuestionTypes.SINGLE_ANSWER) {
+			return parseSingleAnswerIntoJSON((SingleAnswerQuestion)question);
+		}
+		
+		// ADD MORE HERE
+		else return null;
+	}
+	
+	/**
+	 * Given a multiple choice question, returns a JSONObject
+	 * formatted as: {type:
+	 * 				  data: {prompt:
+	 * 	                     options:
+	 *  					 correct:
+	 *                       score: } 
+	 * @param question
+	 * @return
+	 */
+	private JSONObject parseMultChoiceIntoJSON(MultipleChoiceQuestion question) {
+		JSONObject questionInfo = new JSONObject();
+		questionInfo.accumulate("type", "multiple-choice");
+		
+		JSONObject q_data = new JSONObject();
+		
+		q_data.accumulate("prompt", question.getPrompts().get(0));
+		q_data.accumulate("options", question.getOptions());
+		q_data.accumulate("correct", question.getAnswer());
+		q_data.accumulate("score", question.getScore());
+		questionInfo.accumulate("data", q_data);
+		return questionInfo;
+	}
+	
+	/**
+	 * Given a single answer question, returns a JSONObject
+	 * formatted as: {type:
+	 * 				  data: {prompt:
+	 * 	                     correct:
+	 *                       score: }              
+	 * @param question
+	 * @return
+	 */
+	private JSONObject parseSingleAnswerIntoJSON(SingleAnswerQuestion question) {
+		JSONObject questionInfo = new JSONObject();
+		questionInfo.accumulate("type", "single-answer");
+		
+		JSONObject q_data = new JSONObject();
+		
+		q_data.accumulate("prompt", question.getPrompts().get(0));
+		q_data.accumulate("correct", question.getPossibleAnswers());
+		q_data.accumulate("score", question.getScore());
+		questionInfo.accumulate("data", q_data);
+		return questionInfo;
+	}
 }
