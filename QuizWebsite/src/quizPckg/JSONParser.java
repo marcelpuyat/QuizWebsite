@@ -5,10 +5,8 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import questionPckg.MultipleChoiceQuestion;
-import questionPckg.Question;
-import questionPckg.QuestionTypes;
-import questionPckg.SingleAnswerQuestion;
+import questionPckg.*;
+
 
 /**
  * Has static methods to parse quiz into JSON & back. The rest of the methods
@@ -98,6 +96,9 @@ public class JSONParser {
 			else if (type.equals("single-answer")) {
 				answers.add(getAnswerFromSingleAnswerJSON(data));
 			}
+			else if(type.equals("picture-response")) {
+				answers.add(getAnswerFromPictureResponseJSON(data));
+			}
 			else break;
 			// TODO FINISH THIS WITH MORE TYPES
 		}
@@ -127,18 +128,31 @@ public class JSONParser {
 	}
 	
 	/**
+	 * Returns the answer string given a picture-response JSON answer object (based on spec)
+	 * @param data
+	 * @return
+	 */
+	private static String getAnswerFromPictureResponseJSON(JSONObject data) {
+		return data.getString("answer");
+	}
+	
+	/**
 	 * Parses a question into a JSONObject. Read below to see how each type
 	 * is formatted.
 	 * @param question
 	 * @return
 	 */
 	private static JSONObject parseQuestionIntoJSON(Question question) {
+		JSONObject questionInfo = new JSONObject();
+		
 		switch (question.getQuestionType()) {
 		
-		case QuestionTypes.MULTIPLE_CHOICE: return parseMultChoiceIntoJSON((MultipleChoiceQuestion)question);
+		case QuestionTypes.MULTIPLE_CHOICE: return parseMultChoiceIntoJSON((MultipleChoiceQuestion)question, questionInfo);
 		
-		case QuestionTypes.SINGLE_ANSWER: return parseSingleAnswerIntoJSON((SingleAnswerQuestion)question);
+		case QuestionTypes.SINGLE_ANSWER: return parseSingleAnswerIntoJSON((SingleAnswerQuestion)question, questionInfo);
 
+		case QuestionTypes.PICTURE_RESPONSE: return parsePictureResponseIntoJSON((PictureQuestion)question, questionInfo);
+		
 		default: return null;
 		}
 	}
@@ -152,10 +166,10 @@ public class JSONParser {
 	 *                       score:  (int)
 	 *                       } 
 	 * @param question
+	 * @param questionInfo Empty JSONObject
 	 * @return
 	 */
-	private static JSONObject parseMultChoiceIntoJSON(MultipleChoiceQuestion question) {
-		JSONObject questionInfo = new JSONObject();
+	private static JSONObject parseMultChoiceIntoJSON(MultipleChoiceQuestion question, JSONObject questionInfo) {
 		questionInfo.accumulate("type", "multiple-choice");
 		
 		JSONObject q_data = new JSONObject();
@@ -176,14 +190,39 @@ public class JSONParser {
 	 *                       score: (int)
 	 *                       }              
 	 * @param question
+	 * @param questionInfo empty JSONObject
 	 * @return
 	 */
-	private static JSONObject parseSingleAnswerIntoJSON(SingleAnswerQuestion question) {
-		JSONObject questionInfo = new JSONObject();
+	private static JSONObject parseSingleAnswerIntoJSON(SingleAnswerQuestion question, JSONObject questionInfo) {
 		questionInfo.accumulate("type", "single-answer");
 		
 		JSONObject q_data = new JSONObject();
 		
+		q_data.accumulate("prompt", question.getPrompts().get(0));
+		q_data.accumulate("correct", question.getPossibleAnswers());
+		q_data.accumulate("score", question.getScore());
+		questionInfo.accumulate("data", q_data);
+		return questionInfo;
+	}
+	
+	/**
+	 * Given a picture response question, returns a JSONObject
+	 * formatted as: {type:
+	 *                data: {img_url: (url string)
+	 *                       prompt: (one string)
+	 *                       correct: (list of strings)
+	 *                       score: (int)
+	 *                       }
+	 * @param question
+	 * @param questionInfo Empty JSONObject
+	 * @return
+	 */
+	private static JSONObject parsePictureResponseIntoJSON(PictureQuestion question, JSONObject questionInfo) {
+		questionInfo.accumulate("type", "picture-reponse");
+		
+		JSONObject q_data = new JSONObject();
+		
+		q_data.accumulate("img_url", question.getPictureURL());
 		q_data.accumulate("prompt", question.getPrompts().get(0));
 		q_data.accumulate("correct", question.getPossibleAnswers());
 		q_data.accumulate("score", question.getScore());

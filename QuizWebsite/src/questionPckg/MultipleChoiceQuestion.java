@@ -2,7 +2,6 @@ package questionPckg;
 
 import java.util.ArrayList;
 
-
 /**
  * Question with single answer, which is an index out of the list of
  * options available.
@@ -64,5 +63,12 @@ public class MultipleChoiceQuestion extends Question {
 	 */
 	public int getAnswer() {
 		return answer;
+	}
+
+	@Override
+	public ArrayList<String> getPossibleAnswers() {
+		ArrayList<String> singleAnswer = new ArrayList<String>(1);
+		singleAnswer.add(String.valueOf(this.answer));
+		return singleAnswer;
 	}
 }

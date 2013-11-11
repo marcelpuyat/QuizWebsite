@@ -48,10 +48,7 @@ public class SingleAnswerQuestion extends Question {
 		return "Question: " + this.prompts.get(0) + "\nAnswer: " + this.possibleAnswers.toString();
 	}
 	
-	/**
-	 * Returns list of possible answers
-	 * @return List of possible answers
-	 */
+	@Override
 	public ArrayList<String> getPossibleAnswers() {
 		ArrayList<String> answers = new ArrayList<String>();
 		for (String string : this.possibleAnswers) {

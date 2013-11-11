@@ -68,4 +68,10 @@ public abstract class Question {
 	 * @return points
 	 */
 	public abstract int getScore();
+	
+	/**
+	 * Returns list of possible answers
+	 * @return list of answers
+	 */
+	public abstract ArrayList<String> getPossibleAnswers();
 }
