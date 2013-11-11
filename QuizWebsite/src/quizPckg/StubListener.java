@@ -8,6 +8,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
+import questionPckg.MultChoiceMultAnswer;
 import questionPckg.MultipleChoiceQuestion;
 import questionPckg.PictureQuestion;
 import questionPckg.Question;
@@ -85,7 +86,7 @@ public class StubListener implements ServletContextListener {
 		Quiz quiz1 = new Quiz("Multiple-Choice Quiz", questions, id, true, true, true, false);
 		
 		
-		/* Another quiz... not yet being tested */
+		/* Quiz with ID 000001 */
 		HashSet<String> possibleAnswers = new HashSet<String>(3);
 		possibleAnswers.add("Barack");
 		possibleAnswers.add("Obama");
@@ -101,6 +102,19 @@ public class StubListener implements ServletContextListener {
 		PictureQuestion question5 = new PictureQuestion("What company invented a web-browser with this logo?", possibleAnswers2, "https://lh3.ggpht.com/7O3H3V0fEBumwJlqDLD03t1fmwl8fH9YoBsPwB2UQ_aiBilM7OAOe2gkFB3wrojJqbM=w300");
 		questions2.add(question5);
 		
+		/* Multiple Choice Multiple Answer test */
+		String correctAnswers = "0110";
+		String prompt4 = "Which 2 out of these 4 algorithms run in O(log (n)) time?";
+		
+		ArrayList<String> options4 = new ArrayList<String>();
+		
+		options4.add("Quicksort");
+		options4.add("Binary search");
+		options4.add("Inserting into a Binary Heap");
+		options4.add("Bubble-sort");
+		MultChoiceMultAnswer question6 = new MultChoiceMultAnswer(prompt4, options4, correctAnswers);
+		questions2.add(question6);
+		
 		String id2 = "000001";
 		Quiz quiz2 = new Quiz("SingleAnswer & Image Quiz", questions2, id2, false, true, true, false);
 		
@@ -110,7 +124,6 @@ public class StubListener implements ServletContextListener {
 		/* These test quizzes are now accessible by the QuizServlet, taking
 		 * the place of a MySQL database of created quizzes
 		 */
-
     }
 
 	/**
