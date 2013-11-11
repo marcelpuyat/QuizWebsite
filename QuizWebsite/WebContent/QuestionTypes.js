@@ -58,10 +58,8 @@ function MultipleChoiceHandler(data) {
 		}
 	}
 	
-<<<<<<< HEAD
+
 	/* handles answered question */
-=======
->>>>>>> 8f02fd73fc8a1c65e43cbcf14cfb0243d1ba7508
 	this.answered_question = function () {
 		var checked = get_checked();
 		_selection = {item_selected:checked.value,index_selected:checked.id};
