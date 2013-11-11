@@ -27,6 +27,9 @@ public class Quiz {
 	// True if answers are displayed per question to the user
 	private boolean isImmediatelyCorrected;
 	
+	// True if quiz can be practiced
+	private boolean isPracticable;
+	
 	/**
 	 * Initializes Quiz object given list of questions and a quiz id
 	 * @param questions
@@ -36,13 +39,14 @@ public class Quiz {
 	 * @param isImmediatelyCorrected
 	 */
 	public Quiz(ArrayList<Question> questions, String id, boolean isRandom,
-			boolean isMultiplePage, boolean isImmediatelyCorrected) {
+			boolean isMultiplePage, boolean isImmediatelyCorrected, boolean isPracticable) {
 		this.questions = questions;
 		this.maxScore = 0;
 		this.id = id;
 		this.isRandom = isRandom;
 		this.isMultiplePage = isMultiplePage;
 		this.isImmediatelyCorrected = isImmediatelyCorrected;
+		this.isPracticable = isPracticable;
 		
 		for (Question question : questions) {
 			this.maxScore += question.getScore();
@@ -117,6 +121,14 @@ public class Quiz {
 	 */
 	public boolean isImmediatelyCorrected() {
 		return this.isImmediatelyCorrected;
+	}
+	
+	/**
+	 * True if quiz can be practiced
+	 * @return
+	 */
+	public boolean isPracticable() {
+		return this.isPracticable;
 	}
 	
 	/** NOT SURE IF THIS METHOD IS NEEDED

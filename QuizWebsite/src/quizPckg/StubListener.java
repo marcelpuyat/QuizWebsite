@@ -80,7 +80,7 @@ public class StubListener implements ServletContextListener {
 		questions.add(question3);
 		
 		String id = "000000";
-		Quiz quiz1 = new Quiz(questions, id, true, true, true);
+		Quiz quiz1 = new Quiz(questions, id, true, true, true, false);
 		
 		
 		/* Another quiz... not yet being tested */
@@ -88,7 +88,7 @@ public class StubListener implements ServletContextListener {
 		ArrayList<Question> questions2 = new ArrayList<Question>();
 		questions2.add(question4);
 		String id2 = "000001";
-		Quiz quiz2 = new Quiz(questions2, id2, false, true, true);
+		Quiz quiz2 = new Quiz(questions2, id2, false, true, true, false);
 		
 		ServletContext context = arg0.getServletContext();
 		context.setAttribute(quiz1.getID(), quiz1);
