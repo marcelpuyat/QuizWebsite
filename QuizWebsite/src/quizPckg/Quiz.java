@@ -1,5 +1,6 @@
 package quizPckg;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import questionPckg.Question;
@@ -17,25 +18,45 @@ public class Quiz {
 	private ArrayList<Question> questions;
 	private int maxScore;
 	
+	// True if questions are to be given in random order
+	private boolean isRandom;
+	
+	// True if questions are to be shown on multiple pages
+	private boolean isMultiplePage;
+	
+	// True if answers are displayed per question to the user
+	private boolean isImmediatelyCorrected;
+	
 	/**
 	 * Initializes Quiz object given list of questions and a quiz id
 	 * @param questions
 	 * @param id
+	 * @param isRandom
+	 * @param isMultiplePage
+	 * @param isImmediatelyCorrected
 	 */
-	public Quiz(ArrayList<Question> questions, String id) {
+	public Quiz(ArrayList<Question> questions, String id, boolean isRandom,
+			boolean isMultiplePage, boolean isImmediatelyCorrected) {
 		this.questions = questions;
 		this.maxScore = 0;
 		this.id = id;
+		this.isRandom = isRandom;
+		this.isMultiplePage = isMultiplePage;
+		this.isImmediatelyCorrected = isImmediatelyCorrected;
+		
 		for (Question question : questions) {
 			this.maxScore += question.getScore();
 		}
 	}
 	
 	/**
-	 * Get list of this quiz's questions
+	 * Get list of this quiz's questions, randomized if quiz is set to random.
 	 * @return ArrayList of Question objects
 	 */
 	public ArrayList<Question> getQuestions() {
+		if (this.isRandom) {
+			Collections.shuffle(this.questions);
+		}
 		return this.questions;
 	}
 	
@@ -72,6 +93,30 @@ public class Quiz {
 	 */
 	public String getID() {
 		return this.id;
+	}
+	
+	/**
+	 * True if quiz is shown on multiple pages
+	 * @return
+	 */
+	public boolean isMultiplePage() {
+		return this.isMultiplePage;
+	}
+	
+	/**
+	 * True if questions are shown randomly
+	 * @return
+	 */
+	public boolean isRandom() {
+		return this.isRandom;
+	}
+	
+	/**
+	 * True if answer is shown to user per question
+	 * @return
+	 */
+	public boolean isImmediatelyCorrected() {
+		return this.isImmediatelyCorrected;
 	}
 	
 	/** NOT SURE IF THIS METHOD IS NEEDED

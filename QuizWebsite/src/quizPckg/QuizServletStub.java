@@ -70,7 +70,7 @@ public class QuizServletStub extends HttpServlet {
 		JSONObject jSONanswer = new JSONObject(json_str_response.toString());
 		
 		
-		/* Get quiz from Database given ID */   // For now just uses context
+		/* Get quiz from Database given ID */   // For now just uses session
 		Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
 		
 		/* Form QuizResults object */

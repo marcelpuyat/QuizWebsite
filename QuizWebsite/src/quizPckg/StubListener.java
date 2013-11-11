@@ -49,16 +49,46 @@ public class StubListener implements ServletContextListener {
 		String prompt = "Which University would you rather attend?";
 		
 		MultipleChoiceQuestion question = new MultipleChoiceQuestion(prompt, options, answer);
+		
+		/* Another question */
+		ArrayList<String> options2 = new ArrayList<String>(4);
+		options2.add("CS110");
+		options2.add("CS108");
+		options2.add("CS12035");
+		
+		int answer2 = 1;
+		
+		String prompt2 = "What class is this assignment for?";
+		
+		MultipleChoiceQuestion question2 = new MultipleChoiceQuestion(prompt2, options2, answer2);
+		
+		/* 3rd question */
+		ArrayList<String> options3 = new ArrayList<String>(4);
+		options3.add("O(n)");
+		options3.add("O(n log(n))");
+		options3.add("O(log(n))");
+		
+		int answer3 = 1;
+		
+		String prompt3 = "Merge-sort runs in...";
+		
+		MultipleChoiceQuestion question3 = new MultipleChoiceQuestion(prompt3, options3, answer3);
+		
 		ArrayList<Question> questions = new ArrayList<Question>();
 		questions.add(question);
-		String id = "000000";
-		Quiz quiz1 = new Quiz(questions, id);
+		questions.add(question2);
+		questions.add(question3);
 		
-		SingleAnswerQuestion question2 = new SingleAnswerQuestion("What is the cake?", "A lie");
+		String id = "000000";
+		Quiz quiz1 = new Quiz(questions, id, true, true, true);
+		
+		
+		/* Another quiz... not yet being tested */
+		SingleAnswerQuestion question4 = new SingleAnswerQuestion("What is the cake?", "A lie");
 		ArrayList<Question> questions2 = new ArrayList<Question>();
-		questions2.add(question2);
+		questions2.add(question4);
 		String id2 = "000001";
-		Quiz quiz2 = new Quiz(questions2, id2);
+		Quiz quiz2 = new Quiz(questions2, id2, false, true, true);
 		
 		ServletContext context = arg0.getServletContext();
 		context.setAttribute(quiz1.getID(), quiz1);
