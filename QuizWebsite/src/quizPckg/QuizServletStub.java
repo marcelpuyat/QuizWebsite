@@ -50,7 +50,7 @@ public class QuizServletStub extends HttpServlet {
 		/* Parses quiz object into JSON, with each question formated
 		 * in a way specified in the QuizToJSONParser.java file.
 		 */
-		JSONObject jSONquiz = QuizToJSONParser.parseQuizIntoJSON(quiz);
+		JSONObject jSONquiz = JSONParser.parseQuizIntoJSON(quiz);
 		
 		
 		response.getWriter().println(jSONquiz.toString());
@@ -74,9 +74,10 @@ public class QuizServletStub extends HttpServlet {
 		Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
 		
 		/* Form QuizResults object */
-		QuizResults results = QuizToJSONParser.parseJSONIntoQuizResults(jSONanswer, quiz);
+		QuizResults results = JSONParser.parseJSONIntoQuizResults(jSONanswer, quiz);
 		
-		JSONObject jSONresults = QuizToJSONParser.parseQuizResultsIntoJSON(results);
+		/* Form JSON to inform client of results */
+		JSONObject jSONresults = JSONParser.parseQuizResultsIntoJSON(results);
 		
 		response.getWriter().println(jSONresults.toString());
 		

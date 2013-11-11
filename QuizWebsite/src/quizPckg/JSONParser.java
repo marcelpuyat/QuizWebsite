@@ -11,16 +11,16 @@ import questionPckg.QuestionTypes;
 import questionPckg.SingleAnswerQuestion;
 
 /**
- * Has a static method to parse quiz into JSON. The rest of the methods
+ * Has static methods to parse quiz into JSON & back. The rest of the methods
  * are helper methods for this quiz parsing (including parsing different types
- * of methods)
+ * of questions)
  * 
  * Information on how JSON for each Question type can be found in comments of
  * each method.
  * @author marcelp
  *
  */
-public class QuizToJSONParser {
+public class JSONParser {
 
 
 	/**
@@ -87,15 +87,19 @@ public class QuizToJSONParser {
 		JSONArray arrayOfAnswers = (JSONArray) jSONanswers.get("answers");
 		
 		for (int i = 0; i < arrayOfAnswers.length(); i++) {
-			// CONDENSE THIS INTO PARSER PER TYPE
 			JSONObject questionResult = (JSONObject)arrayOfAnswers.get(i);
 			String type = (String)questionResult.get("type");
+			
 			JSONObject data = (JSONObject)questionResult.get("data");
 			
 			if (type.equals("multiple-choice")) {
-				answers.add(data.getString("index_selected"));
+				answers.add(getAnswerFromMultChoiceJSON(data));
 			}
-			// TODO FINISH THIS
+			else if (type.equals("single-answer")) {
+				answers.add(getAnswerFromSingleAnswerJSON(data));
+			}
+			else break;
+			// TODO FINISH THIS WITH MORE TYPES
 		}
 		
 		int userScore = quiz.checkAnswers(answers);
@@ -105,22 +109,38 @@ public class QuizToJSONParser {
 	}
 	
 	/**
+	 * Returns the answer string given a multiple choice JSON answer object (based on spec)
+	 * @param data
+	 * @return
+	 */
+	private static String getAnswerFromMultChoiceJSON(JSONObject data) {
+		return data.getString("index_selected");
+	}
+	
+	/**
+	 * Returns the answer string given a single-answer JSON answer object (based on spec)
+	 * @param data
+	 * @return
+	 */
+	private static String getAnswerFromSingleAnswerJSON(JSONObject data) {
+		return data.getString("answer");
+	}
+	
+	/**
 	 * Parses a question into a JSONObject. Read below to see how each type
 	 * is formatted.
 	 * @param question
 	 * @return
 	 */
 	private static JSONObject parseQuestionIntoJSON(Question question) {
-		if (question.getQuestionType() == QuestionTypes.MULTIPLE_CHOICE) {
-			return parseMultChoiceIntoJSON((MultipleChoiceQuestion)question);
-		}
+		switch (question.getQuestionType()) {
 		
-		if (question.getQuestionType() == QuestionTypes.SINGLE_ANSWER) {
-			return parseSingleAnswerIntoJSON((SingleAnswerQuestion)question);
-		}
+		case QuestionTypes.MULTIPLE_CHOICE: return parseMultChoiceIntoJSON((MultipleChoiceQuestion)question);
 		
-		// ADD MORE HERE
-		else return null;
+		case QuestionTypes.SINGLE_ANSWER: return parseSingleAnswerIntoJSON((SingleAnswerQuestion)question);
+
+		default: return null;
+		}
 	}
 	
 	/**

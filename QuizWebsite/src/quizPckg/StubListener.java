@@ -1,6 +1,7 @@
 package quizPckg;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -84,7 +85,11 @@ public class StubListener implements ServletContextListener {
 		
 		
 		/* Another quiz... not yet being tested */
-		SingleAnswerQuestion question4 = new SingleAnswerQuestion("What is the cake?", "A lie");
+		HashSet<String> possibleAnswers = new HashSet<String>(3);
+		possibleAnswers.add("Barack");
+		possibleAnswers.add("Obama");
+		possibleAnswers.add("Barack Obama");
+		SingleAnswerQuestion question4 = new SingleAnswerQuestion("Who is the president of the United States?", possibleAnswers);
 		ArrayList<Question> questions2 = new ArrayList<Question>();
 		questions2.add(question4);
 		String id2 = "000001";

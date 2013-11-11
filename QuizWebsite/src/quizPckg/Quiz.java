@@ -37,6 +37,7 @@ public class Quiz {
 	 * @param isRandom
 	 * @param isMultiplePage
 	 * @param isImmediatelyCorrected
+	 * @param isPracticable
 	 */
 	public Quiz(ArrayList<Question> questions, String id, boolean isRandom,
 			boolean isMultiplePage, boolean isImmediatelyCorrected, boolean isPracticable) {

@@ -1,6 +1,7 @@
 package questionPckg;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Question with only one correct answer. Right now, only implemented
@@ -12,9 +13,9 @@ import java.util.ArrayList;
  */
 public class SingleAnswerQuestion extends Question {
 
-	public SingleAnswerQuestion(String questionString, String answer) {
+	public SingleAnswerQuestion(String questionString, HashSet<String> answers) {
 		this.prompts.add(questionString);
-		this.possibleAnswers.add(answer);
+		this.possibleAnswers = answers;
 	}
 	
 	@Override
