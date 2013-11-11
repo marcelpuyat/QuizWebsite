@@ -61,8 +61,15 @@ ul.mult-c-options {
 		padding:0px 10px;
 	}
 	
+/* picture response */
+.picutre-response-img {
+	max-height:20%;
+}
+	
 	
 .submit-button {
 	margin:auto;
 	display:block;
 }
+
+

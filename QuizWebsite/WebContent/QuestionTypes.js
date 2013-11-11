@@ -10,8 +10,53 @@ function getQuestionHandler(type) {
 		return MultipleChoiceHandler;
 	case ('single-answer'):
 		return SingleAnswerHandler;
+	case ('picture-reponse'):
+		return PictureResponseHandler;
 	}
 };
+
+function PictureResponseHandler(data) {
+	var _data = data;
+	var _answer;
+	var _user_input_elem;
+	this.getType = function() {
+		return "picture-reponse";
+	}
+	this.getDOMSubStructure = function () {
+		console.log('here');
+		var frm = document.createElement('form');
+		var img_disp = document.createElement('img');
+		img_disp.src = _data.img_url;
+		img_disp.className = 'picutre-response-img center-block';
+		frm.appendChild(img_disp);
+		var prompt_div = document.createElement('h2');
+		prompt_div.className = 'prompt';
+		prompt_div.innerHTML = _data.prompt;
+		frm.appendChild(prompt_div);
+		
+		_user_input_elem = document.createElement('input');
+		_user_input_elem.id = 'pict-resp-input';
+		_user_input_elem.className = 'center-block';
+		frm.appendChild(_user_input_elem);
+		
+		var sub = document.createElement('input');
+		sub.type = "button";
+		sub.value = "Next";
+		sub.className = 'submit-button';
+		sub.setAttribute('onclick','question_answered();');
+		frm.appendChild(sub);
+		return frm;
+	};
+	
+	this.format_answer = function() {
+		return {answer:_answer};
+	};
+	
+	this.answered_question = function () {
+		_answer = _user_input_elem.value;
+	};
+}
+
 
 
 function SingleAnswerHandler(data) {
