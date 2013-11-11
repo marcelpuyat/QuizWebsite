@@ -6,6 +6,9 @@
 function MultipleChoiceHandler(data) {
 	var _data = data;
 	var _selection;
+	this.getType = function () {
+		return 'multiple-choice';
+	};
 	/* returns a DOM element which will be inserted into the quiz's 'quiz-content' div */
 	this.getDOMSubStructure = function () {
 		var frm = document.createElement('form');
@@ -54,6 +57,7 @@ function MultipleChoiceHandler(data) {
 			if (check_boxes[i].checked) return check_boxes[i];
 		}
 	}
+	
 	/* handles answered question */
 	this.answered_question = function () {
 		var checked = get_checked();

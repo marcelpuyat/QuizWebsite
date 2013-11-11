@@ -84,7 +84,7 @@ function QuizHandler(dom_wrapper, quiz_id) {
 			_dom_wrapper.innerHTML = "all done!";
 			var answers = [];
 			for (var i = 0; i < _questions.length; i++) {
-				answers.push(_questions[i].format_answer());
+				answers.push({type:_questions[i].getType(),data:_questions[i].format_answer()});
 			}
 			var answer = {quiz_id:_quiz_id,'answers':answers};
 			sendQuizResults(answer);
