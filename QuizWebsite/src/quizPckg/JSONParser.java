@@ -41,7 +41,9 @@ public class JSONParser {
 		}
 		
 		jSONquiz.put("questions", questionsFormatted);
-
+		jSONquiz.put("quiz_id", quiz.getID());
+		jSONquiz.put("quiz_name", quiz.getName());
+		
 		return jSONquiz;
 	}
 	

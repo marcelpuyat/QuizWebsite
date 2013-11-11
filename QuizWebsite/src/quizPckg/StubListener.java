@@ -9,6 +9,7 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 import questionPckg.MultipleChoiceQuestion;
+import questionPckg.PictureQuestion;
 import questionPckg.Question;
 import questionPckg.SingleAnswerQuestion;
 
@@ -81,7 +82,7 @@ public class StubListener implements ServletContextListener {
 		questions.add(question3);
 		
 		String id = "000000";
-		Quiz quiz1 = new Quiz(questions, id, true, true, true, false);
+		Quiz quiz1 = new Quiz("Multiple-Choice Quiz", questions, id, true, true, true, false);
 		
 		
 		/* Another quiz... not yet being tested */
@@ -92,8 +93,16 @@ public class StubListener implements ServletContextListener {
 		SingleAnswerQuestion question4 = new SingleAnswerQuestion("Who is the president of the United States?", possibleAnswers);
 		ArrayList<Question> questions2 = new ArrayList<Question>();
 		questions2.add(question4);
+		
+		/* Image question test */
+		HashSet<String> possibleAnswers2 = new HashSet<String>(2);
+		possibleAnswers.add("Google");
+		possibleAnswers.add("GOOGLE");
+		PictureQuestion question5 = new PictureQuestion("What company invented a web-browser with this logo?", possibleAnswers2, "https://lh3.ggpht.com/7O3H3V0fEBumwJlqDLD03t1fmwl8fH9YoBsPwB2UQ_aiBilM7OAOe2gkFB3wrojJqbM=w300");
+		questions2.add(question5);
+		
 		String id2 = "000001";
-		Quiz quiz2 = new Quiz(questions2, id2, false, true, true, false);
+		Quiz quiz2 = new Quiz("SingleAnswer & Image Quiz", questions2, id2, false, true, true, false);
 		
 		ServletContext context = arg0.getServletContext();
 		context.setAttribute(quiz1.getID(), quiz1);

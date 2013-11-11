@@ -14,6 +14,7 @@ import questionPckg.Question;
  */
 public class Quiz {
 
+	private String quizName;
 	private String id;
 	private ArrayList<Question> questions;
 	private int maxScore;
@@ -39,8 +40,9 @@ public class Quiz {
 	 * @param isImmediatelyCorrected
 	 * @param isPracticable
 	 */
-	public Quiz(ArrayList<Question> questions, String id, boolean isRandom,
+	public Quiz(String quizName, ArrayList<Question> questions, String id, boolean isRandom,
 			boolean isMultiplePage, boolean isImmediatelyCorrected, boolean isPracticable) {
+		this.quizName = quizName;
 		this.questions = questions;
 		this.maxScore = 0;
 		this.id = id;
@@ -130,6 +132,14 @@ public class Quiz {
 	 */
 	public boolean isPracticable() {
 		return this.isPracticable;
+	}
+	
+	/**
+	 * Return name of quiz
+	 * @return
+	 */
+	public String getName() {
+		return this.quizName;
 	}
 	
 	/** NOT SURE IF THIS METHOD IS NEEDED
