@@ -10,10 +10,8 @@ import java.util.HashSet;
  */
 public abstract class Question {
 
-	/** Already initialized list of prompts... will contain a single string
-	 * for SingleAnswer, MultipleChoice, etc. , will contain multiple strings
-	 * for MatchingTypes */
-	protected ArrayList<String> prompts = new ArrayList<String>();
+	/** Question string */
+	protected String prompt;
 	
 	/**
 	 * List of options, which can be null for questions that dont have options
@@ -48,7 +46,7 @@ public abstract class Question {
 	 * Returns a list of the prompts (which will be a single string in most cases)
 	 * @return List of prompts
 	 */
-	public abstract ArrayList<String> getPrompts();
+	public abstract String getPrompt();
 	
 	/**
 	 * Returns a list of options

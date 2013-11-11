@@ -10,7 +10,7 @@ function getQuestionHandler(type) {
 		return MultipleChoiceHandler;
 	case ('single-answer'):
 		return SingleAnswerHandler;
-	case ('picture-reponse'):
+	case ('picture-response'):
 		return PictureResponseHandler;
 	}
 };
@@ -20,7 +20,7 @@ function PictureResponseHandler(data) {
 	var _answer;
 	var _user_input_elem;
 	this.getType = function() {
-		return "picture-reponse";
+		return "picture-response";
 	}
 	this.getDOMSubStructure = function () {
 		console.log('here');

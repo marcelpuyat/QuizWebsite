@@ -101,6 +101,9 @@ public class JSONParser {
 			else if(type.equals("picture-response")) {
 				answers.add(getAnswerFromPictureResponseJSON(data));
 			}
+			else if(type.equals("multiple-answer")) {
+				answers.add(getAnswerFromMultChoiceMultAnswerJSON(data));
+			}
 			else break;
 			// TODO FINISH THIS WITH MORE TYPES
 		}
@@ -139,6 +142,21 @@ public class JSONParser {
 	}
 	
 	/**
+	 * Returns answer string (in form 001010 where 1 is true and 0 is false)
+	 * @param data
+	 * @return
+	 */
+	private static String getAnswerFromMultChoiceMultAnswerJSON(JSONObject data) {
+		String answer = "";
+		JSONArray list = (JSONArray)data.getJSONArray("answer");
+		for (int i = 0; i < list.length(); i++) {
+			if (list.getBoolean(i)) answer += "1";
+			else answer += "0";
+		}
+		return answer;
+	}
+	
+	/**
 	 * Parses a question into a JSONObject. Read below to see how each type
 	 * is formatted.
 	 * @param question
@@ -155,6 +173,7 @@ public class JSONParser {
 
 		case QuestionTypes.PICTURE_RESPONSE: return parsePictureResponseIntoJSON((PictureQuestion)question, questionInfo);
 		
+		case QuestionTypes.MULT_CHOICE_MULT_ANSWER: return parseMultChoiceMultAnswerIntoJSON((MultChoiceMultAnswer)question, questionInfo);
 		default: return null;
 		}
 	}
@@ -176,7 +195,7 @@ public class JSONParser {
 		
 		JSONObject q_data = new JSONObject();
 		
-		q_data.accumulate("prompt", question.getPrompts().get(0));
+		q_data.accumulate("prompt", question.getPrompt());
 		q_data.accumulate("options", question.getOptions());
 		q_data.accumulate("correct", question.getAnswer());
 		q_data.accumulate("score", question.getScore());
@@ -200,7 +219,7 @@ public class JSONParser {
 		
 		JSONObject q_data = new JSONObject();
 		
-		q_data.accumulate("prompt", question.getPrompts().get(0));
+		q_data.accumulate("prompt", question.getPrompt());
 		q_data.accumulate("correct", question.getPossibleAnswers());
 		q_data.accumulate("score", question.getScore());
 		questionInfo.accumulate("data", q_data);
@@ -220,13 +239,32 @@ public class JSONParser {
 	 * @return
 	 */
 	private static JSONObject parsePictureResponseIntoJSON(PictureQuestion question, JSONObject questionInfo) {
-		questionInfo.accumulate("type", "picture-reponse");
+		questionInfo.accumulate("type", "picture-response");
 		
 		JSONObject q_data = new JSONObject();
 		
 		q_data.accumulate("img_url", question.getPictureURL());
-		q_data.accumulate("prompt", question.getPrompts().get(0));
+		q_data.accumulate("prompt", question.getPrompt());
 		q_data.accumulate("correct", question.getPossibleAnswers());
+		q_data.accumulate("score", question.getScore());
+		questionInfo.accumulate("data", q_data);
+		return questionInfo;
+	}
+	
+	private static JSONObject parseMultChoiceMultAnswerIntoJSON(MultChoiceMultAnswer question, JSONObject questionInfo) {
+		questionInfo.accumulate("type", "multiple-answer");
+		
+		JSONObject q_data = new JSONObject();
+		
+		q_data.accumulate("prompt", question.getPrompt());
+		q_data.accumulate("options", question.getOptions());
+		ArrayList<Boolean> answers = new ArrayList<Boolean>();
+		String answer = question.getAnswer();
+		for (int i = 0; i < answer.length(); i++) {
+			if (answer.charAt(i) == '0') answers.add(false);
+			else answers.add(true);
+		}
+		q_data.accumulate("correct", answers);
 		q_data.accumulate("score", question.getScore());
 		questionInfo.accumulate("data", q_data);
 		return questionInfo;

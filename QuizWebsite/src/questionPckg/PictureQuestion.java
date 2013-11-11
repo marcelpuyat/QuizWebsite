@@ -19,7 +19,7 @@ public class PictureQuestion extends Question {
 	 * @param pictureURL
 	 */
 	public PictureQuestion(String questionString, HashSet<String> answers, String pictureURL) {
-		this.prompts.add(questionString);
+		this.prompt = questionString;
 		this.possibleAnswers = answers;
 		this.pictureURL = pictureURL;
 	}
@@ -30,8 +30,8 @@ public class PictureQuestion extends Question {
 	}
 
 	@Override
-	public ArrayList<String> getPrompts() {
-		return this.prompts;
+	public String getPrompt() {
+		return this.prompt;
 	}
 
 	@Override

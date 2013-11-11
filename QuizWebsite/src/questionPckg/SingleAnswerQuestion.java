@@ -14,7 +14,7 @@ import java.util.HashSet;
 public class SingleAnswerQuestion extends Question {
 
 	public SingleAnswerQuestion(String questionString, HashSet<String> answers) {
-		this.prompts.add(questionString);
+		this.prompt = questionString;
 		this.possibleAnswers = answers;
 	}
 	
@@ -29,8 +29,8 @@ public class SingleAnswerQuestion extends Question {
 	}
 
 	@Override
-	public ArrayList<String> getPrompts() {
-		return this.prompts;
+	public String getPrompt() {
+		return this.prompt;
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class SingleAnswerQuestion extends Question {
 
 	@Override
 	public String toString() {
-		return "Question: " + this.prompts.get(0) + "\nAnswer: " + this.possibleAnswers.toString();
+		return "Question: " + this.prompt + "\nAnswer: " + this.possibleAnswers.toString();
 	}
 	
 	@Override

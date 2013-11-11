@@ -17,15 +17,15 @@ public class MultipleChoiceQuestion extends Question {
 	/**
 	 * Takes in a single prompt, a list of options, and the index of the correct answer
 	 * among the options.
-	 * @param prompt Single string
+	 * @param questionString Single string
 	 * @param options List of strings
 	 * @param answer Index (as an integer)
 	 */
-	public MultipleChoiceQuestion(String prompt, ArrayList<String> options, int answer) {
+	public MultipleChoiceQuestion(String questionString, ArrayList<String> options, int answer) {
 		possibleAnswers.add(String.valueOf(answer));
 		this.answer = answer;
 		this.options = options;
-		this.prompts.add(prompt);
+		this.prompt = questionString;
 	}
 	
 	@Override
@@ -35,8 +35,8 @@ public class MultipleChoiceQuestion extends Question {
 
 	
 	@Override
-	public ArrayList<String> getPrompts() {
-		return prompts;
+	public String getPrompt() {
+		return prompt;
 	}
 
 	@Override
