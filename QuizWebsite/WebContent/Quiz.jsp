@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ page import="ui.HTMLTemplater" %>
 <%!
 	String getTitle(HttpServletRequest req) {
 		return req.getParameter("name") == null ? "Quiz" : req.getParameter("name");
@@ -18,19 +19,7 @@
 </head>
 <body onload="init_js('<%= getQuizID(request) %>')">
 	<div id="content-wrapper">
-		<div id="app-selection-wrapper">
-			<ul id="app-selection-ul">
-				<li>
-					<a href="#" class="">Home</a>
-				</li>
-				<li>
-					<a href="#" class="active">Quiz</a>
-				</li>
-				<li>
-					<a href="#" class="">Friends</a>
-				</li>
-			</ul>
-		</div>
+		<%= HTMLTemplater.getSidebarHTML("Quiz")  %>
 		<div id="app-wrapper">
 			<div id="quiz-content-wrapper">
 				<div id="quiz-content">
