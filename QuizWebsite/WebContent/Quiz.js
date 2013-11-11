@@ -45,7 +45,7 @@ function load_content(data, quiz_id) {
 
 
 function getQuizJSON(fn_callback, quiz_id) {
-	get_json_from_url("/QuizWebsite/QuizServletStub?quiz_id="+quiz_id, fn_callback);
+	get_json_from_url("/QuizWebsite/QuizServletStub?quiz_id="+quiz_id, fn_callback, quiz_id);
 }
 
 function sendQuizResults(data) {
