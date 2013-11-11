@@ -8,6 +8,10 @@ function init_js(quiz_id) {
 	getQuizJSON(load_content, quiz_id);
 }
 
+function start() {
+	next_question();
+};
+
 function next_question() {
 	if (q_handler) {
 		q_handler.nextQuestion();
@@ -34,11 +38,8 @@ function load_content(data, quiz_id) {
 	q_handler = new QuizHandler(document.getElementById('quiz-prompt-content'), quiz_id);
 	var questions = data.questions;
 	for (var i = 0; i < questions.length; i++) {
-		switch(questions[i].type) {
-		case ('multiple-choice'):
-			q_handler.pushQuestion(new MultipleChoiceHandler(questions[i].data));
-			break;
-		}
+		var QuestionHandlerType = getQuestionHandler(questions[i].type);
+		q_handler.pushQuestion(new QuestionHandlerType(questions[i].data));
 	}
 	
 }

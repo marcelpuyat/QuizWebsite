@@ -18,28 +18,25 @@ body {
 			overflow-y:scroll;
 		}
 				
-			#next-a {
-				float:right;
-				height:100%;
-				width:30px;
-				padding-left:7px;
-				background-color:rgba(0,0,0,0.1);
-				text-decoration:none;
-				color:rgba(255,255,255,0.4);
-				font-size:30px;
-				font-weight:lighter;
+			#start-test-wrapper {
+				position:absolute;
+				top:50%;
+				left:50%;
+				width: 200px;
+				font-size:50px;
+				margin:-1em 0 0 -100px;
+				text-align:center;
+				box-shadow:0px 2px 10px rgba(0,0,0,0.3);
+				cursor:pointer;
+			}
+			#start-test-wrapper:hover {
+				background-color:#E0F0E0;
 			}
 			
-			#next-a:hover,
-			#next-a:focus {
-				background-color:rgba(0,0,0,0.15);
-				color:rgba(255,255,255,0.8);
+			.center-block {
+				margin:auto;
+				display:block;
 			}
-			
-			#quiz-prompt-content {
-				width:100%;
-			}
-			
 			
 			
 /* QUIZ SPECIFIC STYLING */

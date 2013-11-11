@@ -1,8 +1,59 @@
 /*
- * MUST IMPLEMENT!!: getDOMSubStructure(data) - returns displayed DOM structure
+ * MUST IMPLEMENT!!: getType - returns type
+ *                   getDOMSubStructure() - returns displayed DOM structure
  *                   format_answer() - returns object to be inserted into JSON
  *                   answered_question() - handles answered question
  */
+function getQuestionHandler(type) {
+	switch (type) {
+	case ('multiple-choice'):
+		return MultipleChoiceHandler;
+	case ('single-answer'):
+		return SingleAnswerHandler;
+	}
+};
+
+
+function SingleAnswerHandler(data) {
+	var _data = data;
+	var _answer;
+	var _user_input_elem;
+	this.getType = function () {
+		return 'single-answer';
+	};
+	this.getDOMSubStructure = function () {
+		var frm = document.createElement('form');
+		var prompt_div = document.createElement('h2');
+		prompt_div.className = 'prompt';
+		prompt_div.innerHTML = _data.prompt;
+		frm.appendChild(prompt_div);
+		
+		_user_input_elem = document.createElement('input');
+		_user_input_elem.id = 'single-c-input';
+		_user_input_elem.className = 'center-block';
+		frm.appendChild(_user_input_elem);
+		
+		var sub = document.createElement('input');
+		sub.type = "button";
+		sub.value = "Next";
+		sub.className = 'submit-button';
+		sub.setAttribute('onclick','question_answered();');
+		frm.appendChild(sub);
+		return frm;
+	};
+	
+	this.format_answer = function() {
+		return {answer:_answer};
+	};
+	
+	this.answered_question = function () {
+		_answer = _user_input_elem.value;
+	};
+}
+
+
+
+
 function MultipleChoiceHandler(data) {
 	var _data = data;
 	var _selection;
@@ -40,7 +91,7 @@ function MultipleChoiceHandler(data) {
 		frm.appendChild(options_ul);
 		var sub = document.createElement('input');
 		sub.type = "button";
-		sub.value = "Submit!";
+		sub.value = "Next";
 		sub.className = 'submit-button';
 		sub.setAttribute('onclick','question_answered();');
 		frm.appendChild(sub);

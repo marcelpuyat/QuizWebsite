@@ -34,10 +34,9 @@
 		<div id="app-wrapper">
 			<div id="quiz-content-wrapper">
 				<div id="quiz-content">
-					<a id="next-a" href="javasript:void(0);" onclick="next_question();">
-						&gt;
-					</a>
-					<div id="quiz-prompt-content"></div>
+					<div id="quiz-prompt-content">
+						<div id="start-test-wrapper" onclick="start()">Start!</div>
+					</div>
 				</div>
 			</div>
 		</div>
