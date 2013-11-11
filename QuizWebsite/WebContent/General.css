@@ -30,6 +30,7 @@ ul {
 		height:100%;
 		display:inline-block;
 		vertical-align:top;
+		box-shadow:-5px 1px 60px -10px rgba(0,0,11,0.2) inset;
 	}
 	
 		#app-selection-ul {
