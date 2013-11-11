@@ -1,4 +1,4 @@
-/**
+/*
  * MUST IMPLEMENT!!: getDOMSubStructure(data) - returns displayed DOM structure
  *                   format_answer() - returns object to be inserted into JSON
  *                   answered_question() - handles answered question
@@ -14,16 +14,14 @@ function MultipleChoiceHandler(data) {
 		var frm = document.createElement('form');
 		
 		var prompt = _data.prompt;
-		var prompt_div = document.createElement('div');
-		
-		// Added these next 4 lines to display prompt
-		var prompt_paragraph = document.createElement('span');
-		prompt_paragraph.innerHTML = prompt;
-		prompt_div.appendChild(prompt_paragraph);
+		var prompt_div = document.createElement('h2');
+		prompt_div.className = 'prompt';
+		prompt_div.innerHTML = _data.prompt;
 		frm.appendChild(prompt_div);
 		
 		var options = _data.options;
 		var options_ul = document.createElement('ul');
+		options_ul.className = 'mult-c-options';
 		for (var i = 0; i < options.length; i++) {
 			var new_option_wrapper = document.createElement('li');
 			var new_option = document.createElement('input');
@@ -34,6 +32,7 @@ function MultipleChoiceHandler(data) {
 			if (i == 0) new_option.checked = true;
 			var new_option_label = document.createElement('span');
 			new_option_label.innerHTML = options[i];
+			new_option_label.className = 'mult-c-option-label';
 			new_option_wrapper.appendChild(new_option);
 			new_option_wrapper.appendChild(new_option_label);
 			options_ul.appendChild(new_option_wrapper);
@@ -42,6 +41,7 @@ function MultipleChoiceHandler(data) {
 		var sub = document.createElement('input');
 		sub.type = "button";
 		sub.value = "Submit!";
+		sub.className = 'submit-button';
 		sub.setAttribute('onclick','question_answered();');
 		frm.appendChild(sub);
 		return frm;
@@ -58,7 +58,6 @@ function MultipleChoiceHandler(data) {
 		}
 	}
 	
-
 	/* handles answered question */
 	this.answered_question = function () {
 		var checked = get_checked();
