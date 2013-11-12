@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
+import databasesPckg.QuizTakingDBHandler;
+
 /**
  * Servlet implementation class QuizServletStub
  */
@@ -42,8 +44,9 @@ public class QuizServletStub extends HttpServlet {
 		 * pulling a quiz from a database by instead 
 		 * using a context listener to generate the quiz. */
 		ServletContext context = getServletContext(); 
-		Quiz quiz = (Quiz)context.getAttribute(quiz_id);
+		QuizTakingDBHandler quizDBHandler = (QuizTakingDBHandler)context.getAttribute("quiz_handler");
 		
+		Quiz quiz = quizDBHandler.getQuizForID(quiz_id);
 		// Places quiz in session for now, so it is accessible in doPost
 		request.getSession().setAttribute("quiz", quiz);
 		
