@@ -57,6 +57,7 @@ public class JSONParser {
 		jSONquiz.put("quiz_name", quiz.getName());
 		jSONquiz.put("description", quizInfo.getDescription());
 		jSONquiz.put("creator", quizInfo.getUsernameOfCreator());
+		jSONquiz.put("is_immediately_corrected", quiz.isImmediatelyCorrected());
 		jSONquiz.put("max_score", quiz.getMaxScore());
 		jSONquiz.put("user_history", parseListIntoSpec(userHistory));
 		jSONquiz.put("best_alltime", parseListIntoSpec(quizInfo.getBestScoresAllTime()));
