@@ -2,6 +2,7 @@ package quizPckg;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
+import databasesPckg.QuizInfoDBHandler;
 import databasesPckg.QuizTakingDBHandler;
 
 /**
@@ -39,22 +41,22 @@ public class QuizServletStub extends HttpServlet {
 		
 		// REMOVE THIS AFTER DEBUGGING PHASE IS OVER
 		//System.out.println("quiz_id: "+quiz_id);
-        
-		/* These next two lines take the place of
-		 * pulling a quiz from a database by instead 
-		 * using a context listener to generate the quiz. */
+
 		ServletContext context = getServletContext(); 
 		QuizTakingDBHandler quizDBHandler = (QuizTakingDBHandler)context.getAttribute("quiz_handler");
 		
 		Quiz quiz = quizDBHandler.getQuizForID(quiz_id);
+		
 		// Places quiz in session for now, so it is accessible in doPost
 		request.getSession().setAttribute("quiz", quiz);
 		
-		/* Parses quiz object into JSON, with each question formated
-		 * in a way specified in the QuizToJSONParser.java file.
-		 */
-		JSONObject jSONquiz = JSONParser.parseQuizIntoJSON(quiz);
+		// Creates empty list (for testing) to pass in for a user's quiz taking history
+		ArrayList<QuizResults> emptyList = new ArrayList<QuizResults>(0);
 		
+		// Get quiz info from quiz info db handler
+		QuizInfo quizInfo = (new QuizInfoDBHandler()).getQuizInfoGivenID(quiz_id);
+		
+		JSONObject jSONquiz = JSONParser.parseQuizIntoJSON(quiz, quizInfo, emptyList);
 		
 		response.getWriter().println(jSONquiz.toString());
 	}
@@ -72,14 +74,11 @@ public class QuizServletStub extends HttpServlet {
 	    }  
 		JSONObject jSONanswer = new JSONObject(json_str_response.toString());
 		
-		
 		/* Get quiz from Database given ID */   // For now just uses session
 		Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
 		
-		/* Form QuizResults object */
 		QuizResults results = JSONParser.parseJSONIntoQuizResults(jSONanswer, quiz);
 		
-		/* Form JSON to inform client of results */
 		JSONObject jSONresults = JSONParser.parseQuizResultsIntoJSON(results);
 		
 		response.getWriter().println(jSONresults.toString());

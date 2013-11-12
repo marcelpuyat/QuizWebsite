@@ -1,6 +1,6 @@
 package quizPckg;
 
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  * Contains information on how a user did on a particular quiz.
@@ -12,11 +12,10 @@ public class QuizResults {
 
 	private String username;
 	private String quizID;
-	private Date dateTaken;
+	private Calendar dateTaken;
 	private long timeTaken;
 	private int userScore;
 	private int maxPossibleScore;
-	private double percentageScore;
 	
 	/**
 	 * Simply stores all info passed in as a Quiz Results object.
@@ -27,12 +26,11 @@ public class QuizResults {
 	 * @param maxScore
 	 */
 	public QuizResults(String username, String quizID, int userScore,
-			int maxScore, Date dateTaken, long timeTaken) {
+			int maxScore, Calendar dateTaken, long timeTaken) {
 		this.username = username;
 		this.quizID = quizID;
 		this.userScore = userScore;
 		this.maxPossibleScore = maxScore;
-		this.percentageScore = (double)userScore / (double)maxScore;
 		this.dateTaken = dateTaken;
 		this.timeTaken = timeTaken;
 	}
@@ -68,21 +66,13 @@ public class QuizResults {
 	public int getMaxScore() {
 		return maxPossibleScore;
 	}
-	
-	/**
-	 * Percentage of questions user got right.
-	 * @return percentage of correct answers.
-	 */
-	public double getPercentageScore() {
-		return this.percentageScore;
-	}
-	
+
 	/**
 	 * Returns a Date object representing when
 	 * these results were recorded.
 	 * @return
 	 */
-	public Date getDateTaken() {
+	public Calendar getDateTaken() {
 		return this.dateTaken;
 	}
 	

@@ -92,7 +92,7 @@ public class QuizDatabaseStub {
 		questions.add(question3);
 		
 		String id = "000000";
-		Quiz quiz = new Quiz("Multiple-Choice Quiz", questions, id, true, true, true, false);
+		Quiz quiz = new Quiz("Multiple-Choice Quiz", "This is our 1st quiz.", questions, id, true, true, true, false);
 		
 		quizzes.put(id, quiz);
 	}
@@ -119,7 +119,7 @@ public class QuizDatabaseStub {
 		
 		
 		String id = "000001";
-		Quiz quiz = new Quiz("SingleAnswer & Image Quiz", questions, id, false, true, true, false);
+		Quiz quiz = new Quiz("SingleAnswer & Image Quiz", "This is our 2nd quiz.", questions, id, false, true, true, false);
 		quizzes.put(id, quiz);
 	}
 	
@@ -143,7 +143,7 @@ public class QuizDatabaseStub {
 		questions.add(question);
 		
 		String id = "000002";
-		Quiz quiz = new Quiz("MultChoiceMultAnswer Quiz", questions, id, false, true, true, false);
+		Quiz quiz = new Quiz("MultChoiceMultAnswer Quiz", "This is our 3rd quiz.", questions, id, false, true, true, false);
 		quizzes.put(id, quiz);
 	}
 }

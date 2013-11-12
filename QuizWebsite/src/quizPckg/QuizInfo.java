@@ -11,7 +11,6 @@ public class QuizInfo {
 
 	private String description;
 	private String usernameOfCreator;
-	private ArrayList<QuizResults> pastResults;
 	private ArrayList<QuizResults> bestScoresAllTime;
 	private ArrayList<QuizResults> bestScoresToday;
 	private ArrayList<QuizResults> recentScores;
@@ -29,14 +28,11 @@ public class QuizInfo {
 	 * @param averageScore
 	 * @param isEditable
 	 */
-	public QuizInfo(String description, String usernameOfCreator,
-			ArrayList<QuizResults> pastResults, ArrayList<QuizResults> bestScoresAllTime, 
+	public QuizInfo(String description, String usernameOfCreator, ArrayList<QuizResults> bestScoresAllTime, 
 			ArrayList<QuizResults> bestScoresToday, ArrayList<QuizResults> recentScores, 
 			 double averageScore, boolean isEditable) {
-		
 		this.setDescription(description);
 		this.setUsernameOfCreator(usernameOfCreator);
-		this.setPastResults(pastResults);
 		this.setBestScoresAllTime(bestScoresAllTime);
 		this.setBestScoresToday(bestScoresToday);
 		this.setRecentScores(recentScores);
@@ -70,20 +66,6 @@ public class QuizInfo {
 	 */
 	public String getUsernameOfCreator() {
 		return usernameOfCreator;
-	}
-
-	/**
-	 * @param pastResults the pastResults to set
-	 */
-	private void setPastResults(ArrayList<QuizResults> pastResults) {
-		this.pastResults = pastResults;
-	}
-
-	/**
-	 * @return the pastResults
-	 */
-	public ArrayList<QuizResults> getPastResults() {
-		return pastResults;
 	}
 
 	/**

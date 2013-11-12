@@ -15,6 +15,7 @@ import questionPckg.Question;
 public class Quiz {
 
 	private String quizName;
+	private String description;
 	private String id;
 	private ArrayList<Question> questions;
 	private int maxScore;
@@ -40,9 +41,10 @@ public class Quiz {
 	 * @param isImmediatelyCorrected
 	 * @param isPracticable
 	 */
-	public Quiz(String quizName, ArrayList<Question> questions, String id, boolean isRandom,
+	public Quiz(String quizName, String description,  ArrayList<Question> questions, String id, boolean isRandom,
 			boolean isMultiplePage, boolean isImmediatelyCorrected, boolean isPracticable) {
 		this.quizName = quizName;
+		this.description = description;
 		this.questions = questions;
 		this.maxScore = 0;
 		this.id = id;
@@ -169,6 +171,13 @@ public class Quiz {
 			quizString += "Question " + i + ": " + this.questions.get(i).toString() + "\n";
 		}
 		return quizString;
+	}
+
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
 	}
 	
 }

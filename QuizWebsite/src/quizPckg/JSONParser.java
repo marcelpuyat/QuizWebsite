@@ -1,7 +1,7 @@
 package quizPckg;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -32,9 +32,11 @@ public class JSONParser {
 	 * Quiz is formatted differently depending on type.
 	 *    
 	 * @param quiz A Quiz Object
+	 * @param quizInfo Quiz info
+	 * @param userHistory List of user's results on this quiz
 	 * @return Quiz object formatted as JSON
 	 */
-	public static JSONObject parseQuizIntoJSON(Quiz quiz) {
+	public static JSONObject parseQuizIntoJSON(Quiz quiz, QuizInfo quizInfo, ArrayList<QuizResults> userHistory) {
 		
 		JSONObject jSONquiz = new JSONObject();
 				
@@ -47,11 +49,46 @@ public class JSONParser {
 			questionsFormatted.put(jSONquestion);
 		}
 		
+		/* This long block is explained by the Wiki spec here:
+		 * https://github.com/djoeman84/QuizWebsite/wiki/Quiz-Page-Servlet-Interaction 
+		 */
 		jSONquiz.put("questions", questionsFormatted);
 		jSONquiz.put("quiz_id", quiz.getID());
 		jSONquiz.put("quiz_name", quiz.getName());
-		
+		jSONquiz.put("description", quizInfo.getDescription());
+		jSONquiz.put("creator", quizInfo.getUsernameOfCreator());
+		jSONquiz.put("max_score", quiz.getMaxScore());
+		jSONquiz.put("user_history", parseListIntoSpec(userHistory));
+		jSONquiz.put("best_alltime", parseListIntoSpec(quizInfo.getBestScoresAllTime()));
+		jSONquiz.put("best_today", parseListIntoSpec(quizInfo.getBestScoresToday()));
+		jSONquiz.put("recent_scores", parseListIntoSpec(quizInfo.getRecentScores()));
+		jSONquiz.put("average_score", quizInfo.getAverageScore());
+		jSONquiz.put("is_editable", quizInfo.isEditable());
 		return jSONquiz;
+	}
+	
+	/**
+	 * Format is in spec
+	 * @param userHistory
+	 * @return
+	 */
+	private static JSONArray parseListIntoSpec(ArrayList<QuizResults> list) {
+		JSONArray userQuizTakingInstances = new JSONArray();
+		for (int i = 0; i < list.size(); i++) {
+			JSONObject quizTakingInstance = new JSONObject();
+			
+			JSONObject date = new JSONObject();
+			date.put("year", list.get(i).getDateTaken().get(Calendar.YEAR));
+			date.put("month", list.get(i).getDateTaken().get(Calendar.MONTH));
+			date.put("date", list.get(i).getDateTaken().get(Calendar.DATE));
+			quizTakingInstance.put("date", date);
+			quizTakingInstance.put("time", list.get(i).getTimeTaken());
+			quizTakingInstance.put("score", list.get(i).getUserScore());
+			quizTakingInstance.put("name", list.get(i).getUsername());
+			
+			userQuizTakingInstances.put(quizTakingInstance);
+		}
+		return userQuizTakingInstances;
 	}
 	
 	/**
@@ -71,7 +108,7 @@ public class JSONParser {
 		
 		JSONObject feedback = new JSONObject();
 		
-		feedback.accumulate("total_score", quizResults.getPercentageScore());
+		feedback.accumulate("total_score", (double)quizResults.getUserScore() / quizResults.getMaxScore());
 		feedback.accumulate("total_correct", quizResults.getUserScore());
 		feedback.accumulate("total_possible", quizResults.getMaxScore());
 		
@@ -120,7 +157,7 @@ public class JSONParser {
 		
 		int userScore = quiz.checkAnswers(answers);
 		
-		Date currentDate = new Date();
+		Calendar currentDate = Calendar.getInstance();
 		
 		// UPDATE THIS TO INCLUDE TIME ONCE IT IS PASSED THROUGH JSON! 
 		QuizResults results = new QuizResults(null, quiz.getID(), userScore, quiz.getMaxScore(), currentDate, 0);
