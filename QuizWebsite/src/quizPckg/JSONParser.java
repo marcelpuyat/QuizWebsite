@@ -104,6 +104,9 @@ public class JSONParser {
 			else if(type.equals("multiple-answer")) {
 				answers.add(getAnswerFromMultChoiceMultAnswerJSON(data));
 			}
+			else if (type.equals("matching")) {
+				answers.add(getAnswerFromMatchingAnswerJSON(data));
+			}
 			else break;
 			// TODO FINISH THIS WITH MORE TYPES
 		}
@@ -157,6 +160,20 @@ public class JSONParser {
 	}
 	
 	/**
+	 * Returns answer string (in form of "015324" where ArrayList of ints had values [0, 1, 5, 3, 2, 4] )
+	 * @param data
+	 * @return
+	 */
+	private static String getAnswerFromMatchingAnswerJSON(JSONObject data) {
+		String answer = "";
+		JSONArray list = (JSONArray)data.getJSONArray("answer");
+		for (int i = 0; i < list.length(); i++) {
+			answer += String.valueOf(((Integer)list.get(i)).intValue());
+		}
+		return answer;
+	}
+	
+	/**
 	 * Parses a question into a JSONObject. Read below to see how each type
 	 * is formatted.
 	 * @param question
@@ -173,8 +190,11 @@ public class JSONParser {
 
 		case QuestionTypes.PICTURE_RESPONSE: return parsePictureResponseIntoJSON((PictureQuestion)question, questionInfo);
 		
-		case QuestionTypes.MULT_CHOICE_MULT_ANSWER: return parseMultChoiceMultAnswerIntoJSON((MultChoiceMultAnswer)question, questionInfo);
-		default: return null;
+		case QuestionTypes.MULT_CHOICE_MULT_ANSWER: return parseMultChoiceMultAnswerIntoJSON((MultChoiceMultAnswerQuestion)question, questionInfo);
+		
+		case QuestionTypes.MATCHING: return parseMatchingIntoJSON((MatchingQuestion)question, questionInfo);
+		
+		default: return null; // Add more types
 		}
 	}
 	
@@ -251,7 +271,19 @@ public class JSONParser {
 		return questionInfo;
 	}
 	
-	private static JSONObject parseMultChoiceMultAnswerIntoJSON(MultChoiceMultAnswer question, JSONObject questionInfo) {
+	/**
+	 * Given a mult choice mult answer question, returns a JSONObject
+	 * formatted as: {type:
+	 * 				  data: {prompt: (one string)
+	 *   					 options: (list of strings)
+	 *   					 correct: (list of booleans)
+	 *   					 score: (int)
+	 *                }
+	 * @param question
+	 * @param questionInfo
+	 * @return
+	 */
+	private static JSONObject parseMultChoiceMultAnswerIntoJSON(MultChoiceMultAnswerQuestion question, JSONObject questionInfo) {
 		questionInfo.accumulate("type", "multiple-answer");
 		
 		JSONObject q_data = new JSONObject();
@@ -265,6 +297,33 @@ public class JSONParser {
 			else answers.add(true);
 		}
 		q_data.accumulate("correct", answers);
+		q_data.accumulate("score", question.getScore());
+		questionInfo.accumulate("data", q_data);
+		return questionInfo;
+	}
+	
+	/**
+	 * Given a matching question, returns a JSONObject
+	 * formatted as: {type:
+	 * 				  data: {prompt: (one string)
+	 *   					 left_options: (list of strings)
+	 *   					 right_options: (list of strings)
+	 *   					 correct: (list of Integers)
+	 *   					 score: (int)
+	 *                }
+	 * @param question
+	 * @param questionInfo
+	 * @return
+	 */
+	private static JSONObject parseMatchingIntoJSON(MatchingQuestion question, JSONObject questionInfo) {
+		questionInfo.accumulate("type", "matching");
+		
+		JSONObject q_data = new JSONObject();
+		
+		q_data.accumulate("prompt", question.getPrompt());
+		q_data.accumulate("left_options", question.getLeftOptions());
+		q_data.accumulate("right_options", question.getRightOptions());
+		q_data.accumulate("correct", question.getAnswer());
 		q_data.accumulate("score", question.getScore());
 		questionInfo.accumulate("data", q_data);
 		return questionInfo;

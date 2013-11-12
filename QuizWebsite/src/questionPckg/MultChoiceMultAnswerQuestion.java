@@ -2,12 +2,24 @@ package questionPckg;
 
 import java.util.ArrayList;
 
-public class MultChoiceMultAnswer extends Question {
+/**
+ * Question with choices and can have multiple numbers of them selected.
+ * Answer is a combination of selected choices.
+ * @author marcelp
+ *
+ */
+public class MultChoiceMultAnswerQuestion extends Question {
 
 	// In form "01010" where 0 means dont select and 1 means select
 	private String answer;
 	
-	public MultChoiceMultAnswer(String questionString, ArrayList<String> options,
+	/**
+	 * Constructor.
+	 * @param questionString prompt
+	 * @param options choices
+	 * @param correctOptions String in the form of 0s and 1s, 1 number for each choice. 1 if it is selected, 0 if not.
+	 */
+	public MultChoiceMultAnswerQuestion(String questionString, ArrayList<String> options,
 			String correctOptions) {
 		this.prompt = questionString;
 		this.options = options;

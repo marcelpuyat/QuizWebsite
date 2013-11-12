@@ -8,7 +8,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
-import questionPckg.MultChoiceMultAnswer;
+import questionPckg.MatchingQuestion;
+import questionPckg.MultChoiceMultAnswerQuestion;
 import questionPckg.MultipleChoiceQuestion;
 import questionPckg.PictureQuestion;
 import questionPckg.Question;
@@ -112,15 +113,46 @@ public class StubListener implements ServletContextListener {
 		options4.add("Binary search");
 		options4.add("Inserting into a Binary Heap");
 		options4.add("Bubble-sort");
-		MultChoiceMultAnswer question6 = new MultChoiceMultAnswer(prompt4, options4, correctAnswers);
+		MultChoiceMultAnswerQuestion question6 = new MultChoiceMultAnswerQuestion(prompt4, options4, correctAnswers);
 		questions2.add(question6);
 		
 		String id2 = "000001";
 		Quiz quiz2 = new Quiz("SingleAnswer & Image Quiz", questions2, id2, false, true, true, false);
 		
+		
+		/* Matching question for 3rd quiz */
+		ArrayList<Integer> answers = new ArrayList<Integer>();
+		answers.add(new Integer(2));
+		answers.add(new Integer(0));
+		answers.add(new Integer(1));
+		answers.add(new Integer(3));
+
+		ArrayList<String> leftOptions = new ArrayList<String>();
+		leftOptions.add("USA");
+		leftOptions.add("Germany");
+		leftOptions.add("Mexico");
+		leftOptions.add("Italy");
+		
+		ArrayList<String> rightOptions = new ArrayList<String>();
+		rightOptions.add("Berlin");
+		rightOptions.add("Mexico City");
+		rightOptions.add("Washington D.C.");
+		rightOptions.add("Rome");
+		
+		String prompt5 = "Match countries to their capitals";
+
+		MatchingQuestion question7 = new MatchingQuestion(prompt5, leftOptions, rightOptions, answers);
+		
+		ArrayList<Question> questions3 = new ArrayList<Question>();
+		questions3.add(question7);
+		
+		String id3 = "000002";
+		Quiz quiz3 = new Quiz("Matching quiz", questions3, id3, false, true, false, false);
+		
 		ServletContext context = arg0.getServletContext();
 		context.setAttribute(quiz1.getID(), quiz1);
 		context.setAttribute(quiz2.getID(), quiz2);
+		context.setAttribute(quiz3.getID(), quiz3);
 		/* These test quizzes are now accessible by the QuizServlet, taking
 		 * the place of a MySQL database of created quizzes
 		 */
