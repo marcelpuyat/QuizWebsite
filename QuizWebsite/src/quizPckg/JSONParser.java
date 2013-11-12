@@ -1,11 +1,18 @@
 package quizPckg;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import questionPckg.*;
+import questionPckg.MatchingQuestion;
+import questionPckg.MultChoiceMultAnswerQuestion;
+import questionPckg.MultipleChoiceQuestion;
+import questionPckg.PictureQuestion;
+import questionPckg.Question;
+import questionPckg.QuestionTypes;
+import questionPckg.SingleAnswerQuestion;
 
 
 /**
@@ -113,7 +120,10 @@ public class JSONParser {
 		
 		int userScore = quiz.checkAnswers(answers);
 		
-		QuizResults results = new QuizResults(null, quiz.getID(), userScore, quiz.getMaxScore());
+		Date currentDate = new Date();
+		
+		// UPDATE THIS TO INCLUDE TIME ONCE IT IS PASSED THROUGH JSON! 
+		QuizResults results = new QuizResults(null, quiz.getID(), userScore, quiz.getMaxScore(), currentDate, 0);
 		return results;
 	}
 	
