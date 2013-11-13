@@ -2,9 +2,6 @@
     pageEncoding="ISO-8859-1"%>
 <%@ page import="ui.HTMLTemplater" %>
 <%!
-	String getTitle(HttpServletRequest req) {
-		return req.getParameter("name") == null ? "Quiz" : req.getParameter("name");
-	}
 	String getQuizID(HttpServletRequest req) {
 		return req.getParameter("quiz_id");
 	}
@@ -13,7 +10,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title><%= getTitle(request) %></title>
+<title>Quiz</title>
 <link rel="stylesheet" type="text/css" href="/QuizWebsite/Quiz.css">
 <link rel="stylesheet" type="text/css" href="/QuizWebsite/General.css">
 </head>
