@@ -29,6 +29,7 @@
 	</div>
 	<script src="/QuizWebsite/AJAXUtil.js" type="text/javascript"></script>
 	<script src="/QuizWebsite/QuestionTypes.js" type="text/javascript"></script>
+	<script src="/QuizWebsite/QuizHandler.js" type="text/javascript"></script>
 	<script src="/QuizWebsite/Quiz.js" type="text/javascript"></script>
 </body>
 </html>

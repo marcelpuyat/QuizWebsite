@@ -21,7 +21,7 @@ function PictureResponseHandler(data) {
 	var _user_input_elem;
 	this.getType = function() {
 		return "picture-response";
-	}
+	};
 	this.getDOMSubStructure = function () {
 		console.log('here');
 		var frm = document.createElement('form');
