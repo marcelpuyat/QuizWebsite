@@ -17,10 +17,6 @@ function QuizHandler(quiz_id, servlet_url) {
 	var _isLoaded = false;
 	var _quiz_id = quiz_id;
 	var _servlet_url = servlet_url;
-
-	this.iterator_pos = function() {
-		return _iterator;
-	};
 	
 	
 	/* public methods */
