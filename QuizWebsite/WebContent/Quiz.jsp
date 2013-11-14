@@ -21,7 +21,7 @@
 			<div id="quiz-content-wrapper">
 				<div id="quiz-content">
 					<div id="quiz-prompt-content">
-						<div id="start-test-wrapper" onclick="start()">Start!</div>
+						Loading!!
 					</div>
 				</div>
 			</div>

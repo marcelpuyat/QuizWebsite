@@ -1,24 +1,26 @@
 /*
- * MUST IMPLEMENT!!: getType - returns type
+ * MUST IMPLEMENT!!: __constructor__(data, q_id) - id must be unique to ensure unique id tags in generated elems
+ * 	   				 getType() - returns type
  *                   getDOMSubStructure() - returns displayed DOM structure
  *                   format_answer() - returns object to be inserted into JSON
  *                   answered_question() - handles answered question
  */
-function getQuestionHandler(type) {
+function getQuestionHandler(type, data, q_id) {
 	switch (type) {
 	case ('multiple-choice'):
-		return MultipleChoiceHandler;
+		return new MultipleChoiceHandler(data, q_id);
 	case ('single-answer'):
-		return SingleAnswerHandler;
+		return new SingleAnswerHandler(data, q_id);
 	case ('picture-response'):
-		return PictureResponseHandler;
+		return new PictureResponseHandler(data, q_id);
 	}
 };
 
-function PictureResponseHandler(data) {
+function PictureResponseHandler(data, q_id) {
 	var _data = data;
 	var _answer;
 	var _user_input_elem;
+	var _question_id = q_id;
 	this.getType = function() {
 		return "picture-response";
 	};
@@ -35,7 +37,7 @@ function PictureResponseHandler(data) {
 		frm.appendChild(prompt_div);
 		
 		_user_input_elem = document.createElement('input');
-		_user_input_elem.id = 'pict-resp-input';
+		_user_input_elem.id = 'pict-resp-input-'+_question_id;
 		_user_input_elem.className = 'center-block';
 		frm.appendChild(_user_input_elem);
 		
@@ -59,10 +61,11 @@ function PictureResponseHandler(data) {
 
 
 
-function SingleAnswerHandler(data) {
+function SingleAnswerHandler(data, q_id) {
 	var _data = data;
 	var _answer;
 	var _user_input_elem;
+	var _question_id = q_id;
 	this.getType = function () {
 		return 'single-answer';
 	};
@@ -74,7 +77,7 @@ function SingleAnswerHandler(data) {
 		frm.appendChild(prompt_div);
 		
 		_user_input_elem = document.createElement('input');
-		_user_input_elem.id = 'single-c-input';
+		_user_input_elem.id = 'single-c-input-'+_question_id;
 		_user_input_elem.className = 'center-block';
 		frm.appendChild(_user_input_elem);
 		
@@ -99,9 +102,11 @@ function SingleAnswerHandler(data) {
 
 
 
-function MultipleChoiceHandler(data) {
+function MultipleChoiceHandler(data, q_id) {
 	var _data = data;
 	var _selection;
+	var _user_input_elems = [];
+	var _question_id = q_id;
 	this.getType = function () {
 		return 'multiple-choice';
 	};
@@ -120,16 +125,16 @@ function MultipleChoiceHandler(data) {
 		options_ul.className = 'mult-c-options';
 		for (var i = 0; i < options.length; i++) {
 			var new_option_wrapper = document.createElement('li');
-			var new_option = document.createElement('input');
-			new_option.type = 'radio';
-			new_option.name = "mult-c-option";
-			new_option.id = i.toString();
-			new_option.value = options[i];
-			if (i == 0) new_option.checked = true;
+			_user_input_elems.push(document.createElement('input'));
+			_user_input_elems[i].type = 'radio';
+			_user_input_elems[i].name = "mult-c-option-"+_question_id;
+			_user_input_elems[i].id = i.toString();
+			_user_input_elems[i].value = options[i];
+			if (i == 0) _user_input_elems[i].checked = true;
 			var new_option_label = document.createElement('span');
 			new_option_label.innerHTML = options[i];
 			new_option_label.className = 'mult-c-option-label';
-			new_option_wrapper.appendChild(new_option);
+			new_option_wrapper.appendChild(_user_input_elems[i]);
 			new_option_wrapper.appendChild(new_option_label);
 			options_ul.appendChild(new_option_wrapper);
 		}	
@@ -148,7 +153,7 @@ function MultipleChoiceHandler(data) {
 	};
 	
 	function get_checked() {
-		var check_boxes = document.getElementsByName('mult-c-option');
+		var check_boxes = document.getElementsByName('mult-c-option-'+_question_id);
 		for (var i = 0; i < check_boxes.length; i++) {
 			if (check_boxes[i].checked) return check_boxes[i];
 		}

@@ -53,8 +53,12 @@ function QuizHandler(quiz_id, servlet_url) {
 	
 	this.waitForLoad = function(callback, auxiliary_data) {
 		_load_quiz_json(_servlet_url, _quiz_id, function(aux){
+			var quiz_title = _data.quiz_name;
+			if (quiz_title) document.title = quiz_title;
 			var elem = document.createElement('div');
-			elem.innerHTML = 'loaded';
+			elem.innerHTML = 'Start';
+			elem.id = "start-test-wrapper";
+			elem.setAttribute('onclick', 'start()');
 			aux.client_callback(elem, aux.client_aux);
 		}, {client_aux:auxiliary_data, client_callback:callback});
 	};
@@ -92,8 +96,7 @@ function QuizHandler(quiz_id, servlet_url) {
 			var questions_json = data.questions;
 			for (var i = 0; i < questions_json.length; i++) {
 				var question_obj = questions_json[i];
-				var question_handler = getQuestionHandler(question_obj.type);
-				_questions.push(new question_handler(question_obj.data));
+				_questions.push(getQuestionHandler(question_obj.type, question_obj.data, i));
 			}
 			_isLoaded = true;
 			aux.client_callback(aux.client_aux);

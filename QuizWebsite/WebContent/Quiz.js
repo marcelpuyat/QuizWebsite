@@ -9,6 +9,7 @@ function init_js(quiz_id) {
 	window.onresize = resize_app;
 	q_handler = new QuizHandler(quiz_id, "/QuizWebsite/QuizServletStub");
 	q_handler.waitForLoad(function(elem, aux){
+		aux.wrapper.innerHTML = "";
 		aux.wrapper.appendChild(elem);
 	}, {wrapper:wrapper_elem});
 }
