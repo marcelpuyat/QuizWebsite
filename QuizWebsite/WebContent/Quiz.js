@@ -10,13 +10,13 @@ function init_js(quiz_id) {
 }
 
 function UIHandler (quiz_handler) {
+	/* private vars */
 	var _q_handler = quiz_handler;
-	var _iterator = -1;//start on intro page
+	var _iterator = -1;//question index corresponding to front page. start on intro page
 	var _active = true;
 	var _this = this;
 
-
-
+	/* public methods */
 	this.run = function () {
 		_q_handler.addEventListener('start-quiz',this.start_test);
 		_q_handler.waitForLoad(function(elem, aux){
@@ -27,7 +27,6 @@ function UIHandler (quiz_handler) {
 
 			/* load middle card */
 			load_mid(0);
-			
 		}, {});
 	};
 
@@ -59,7 +58,7 @@ function UIHandler (quiz_handler) {
 		}
 	};
 
-	/* private functions */
+	/* private methods */
 	function load_mid (index) {
 		var mid_wrapper  = document.getElementsByClassName('middle')[0];
 		var success = load_content(index, mid_wrapper);
@@ -122,10 +121,6 @@ function UIHandler (quiz_handler) {
 	}
 }
 
-
-function start() {
-	next_question();
-};
 
 function resize_app() {
 	document.getElementById('app-wrapper').style.width = 
