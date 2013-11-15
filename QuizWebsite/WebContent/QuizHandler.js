@@ -17,9 +17,21 @@ function QuizHandler(quiz_id, servlet_url) {
 	var _isLoaded = false;
 	var _quiz_id = quiz_id;
 	var _servlet_url = servlet_url;
+	var _start_callbacks = [];
+	var _next_callbacks = [];
 	
 	
 	/* public methods */
+	this.addEventListener = function (event, callback) {
+		switch (event) {
+			case 'start-quiz':
+				_start_callbacks.push(callback);
+				break;
+			case 'next-question':
+				_next_callbacks.push(callback);
+				break;
+		}
+	}
 	this.isLoaded = function() {
 		return _isLoaded;
 	};
@@ -46,6 +58,21 @@ function QuizHandler(quiz_id, servlet_url) {
 		}
 		return null;
 	};
+
+	this.indexExists = function (index) {
+		return (
+				this.isLoaded() && (
+					(index < _questions.length)
+				)
+			);
+	}
+
+	this.getAtIndex = function (index) {
+		if (this.indexExists(index)) {
+			return _questions[index].getDOMSubStructure();
+		}
+		return null;
+	}
 	
 	this.waitForLoad = function(callback, auxiliary_data) {
 		_load_quiz_json(_servlet_url, _quiz_id, function(aux){
@@ -53,8 +80,10 @@ function QuizHandler(quiz_id, servlet_url) {
 			if (quiz_title) document.title = quiz_title;
 			var elem = document.createElement('div');
 			elem.innerHTML = 'Start';
-			elem.id = "start-test-wrapper";
-			elem.setAttribute('onclick', 'start()');
+			elem.id = 'start-test-wrapper';
+			for (var i = 0; i < _start_callbacks.length; i++) {
+				elem.addEventListener('click',_start_callbacks[i]);
+			};
 			aux.client_callback(elem, aux.client_aux);
 		}, {client_aux:auxiliary_data, client_callback:callback});
 	};
@@ -77,6 +106,11 @@ function QuizHandler(quiz_id, servlet_url) {
 	this.informQuestionAnswered = function() {
 		_questions[_iterator].answered_question();
 	};
+
+	this.informQuestionAnsweredAtIndex = function (index) {
+		console.log(_questions[index]);
+		_questions[index].answered_question();	
+	}
 	
 	
 	

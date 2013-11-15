@@ -40,13 +40,6 @@ function PictureResponseHandler(data, q_id) {
 		_user_input_elem.id = 'pict-resp-input-'+_question_id;
 		_user_input_elem.className = 'center-block';
 		wrapper.appendChild(_user_input_elem);
-		
-		var sub = document.createElement('input');
-		sub.type = "button";
-		sub.value = "Next";
-		sub.className = 'submit-button';
-		sub.setAttribute('onclick','question_answered();');
-		wrapper.appendChild(sub);
 		return wrapper;
 	};
 	
@@ -80,13 +73,6 @@ function SingleAnswerHandler(data, q_id) {
 		_user_input_elem.id = 'single-c-input-'+_question_id;
 		_user_input_elem.className = 'center-block';
 		wrapper.appendChild(_user_input_elem);
-		
-		var sub = document.createElement('input');
-		sub.type = "button";
-		sub.value = "Next";
-		sub.className = 'submit-button';
-		sub.setAttribute('onclick','question_answered();');
-		wrapper.appendChild(sub);
 		return wrapper;
 	};
 	
@@ -139,12 +125,6 @@ function MultipleChoiceHandler(data, q_id) {
 			options_ul.appendChild(new_option_wrapper);
 		}	
 		wrapper.appendChild(options_ul);
-		var sub = document.createElement('input');
-		sub.type = "button";
-		sub.value = "Next";
-		sub.className = 'submit-button';
-		sub.setAttribute('onclick','question_answered();');
-		wrapper.appendChild(sub);
 		return wrapper;
 	};
 	/* returns object properly formatted to be returned with answer JSON */

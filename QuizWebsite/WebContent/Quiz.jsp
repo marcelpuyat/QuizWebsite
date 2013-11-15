@@ -19,10 +19,10 @@
 		<%= HTMLTemplater.getSidebarHTML("Quiz")  %>
 		<div id="app-wrapper">
 			<div id="quiz-content-wrapper">
-				<div id="quiz-content">
-					<div id="quiz-prompt-content">
-						Loading!!
-					</div>
+				<div id="quiz-cards-wrapper">
+					<div class="card front tilt-align"></div>
+					<div class="card middle tilt-left"></div>
+					<div class="card back  tilt-right"></div>
 				</div>
 			</div>
 		</div>
