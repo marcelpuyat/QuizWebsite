@@ -25,7 +25,6 @@ function PictureResponseHandler(data, q_id) {
 		return "picture-response";
 	};
 	this.getDOMSubStructure = function () {
-		console.log('here');
 		var wrapper = document.createElement('div');
 		var img_disp = document.createElement('img');
 		img_disp.src = _data.img_url;

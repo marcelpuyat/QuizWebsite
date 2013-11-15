@@ -5,16 +5,18 @@ var wrapper_elem = document.getElementById('quiz-prompt-content');
 function init_js(quiz_id) {
 	resize_app();
 	window.onresize = resize_app;
-	var ui_handler = new UIHandler(new QuizHandler(quiz_id, "/QuizWebsite/QuizServletStub"));
+	var ui_handler = new UIHandler(new QuizHandler(quiz_id, "/QuizWebsite/QuizServletStub"),
+						document.getElementById('quiz-cards-wrapper'));
 	ui_handler.run();
 }
 
-function UIHandler (quiz_handler) {
+function UIHandler (quiz_handler, card_wrapper) {
 	/* private vars */
 	var _q_handler = quiz_handler;
 	var _iterator = -1;//question index corresponding to front page. start on intro page
 	var _active = true;
 	var _this = this;
+	var _card_wrapper = card_wrapper;
 
 	/* public methods */
 	this.run = function () {
@@ -75,6 +77,11 @@ function UIHandler (quiz_handler) {
 			}
 		}
 	}
+	/* Steps:
+	   > middle promoted to front
+	   > front demoted to back
+	   > create new middle
+	*/
 	function cycle_cards () {
 		/* get all card elems, turn into standard array */
 		var card_classes = [['back'  ],//'tilt-right'],
@@ -84,23 +91,31 @@ function UIHandler (quiz_handler) {
 		var cards = Array.prototype.slice.call(document.getElementsByClassName('card'));
 		for (var i = 0; i < cards.length; i++){
 			var elem = cards[i];
-			for (var ii = 0; ii < card_classes.length; ii++) {
-				var classes_rem = card_classes[ii];
-				if (!match_class(elem, classes_rem)) continue;
-				
-				for (var c = 0; c < classes_rem.length; c++) {
-					elem.classList.remove(classes_rem[c]);
-				}
-
-				var classes_add = card_classes[(ii+1).mod(card_classes.length)];
-				for (var c = 0; c < classes_add.length; c++) {
-					elem.classList.add(classes_add[c]);
-				}
-				break;
+			if (match_classes(elem, ['middle'])) {
+				elem.classList.remove('middle');
+				elem.classList.add('front');
+			} else if (match_classes(elem, ['front'])) {
+				elem.classList.remove('front');
+				elem.classList.add('back');
+				var rot = (Math.random() * 8) - 4;
+				elem.setCSS3Attr('Transform','rotateZ('+ rot +'deg)');
+				flip(elem);
 			}
-		}	
+
+		}
+		var middle = document.createElement('div');
+		middle.classList.add('card');
+		middle.classList.add('middle');
+		middle.classList.add('tilt-align');
+		_card_wrapper.appendChild(middle);
 	}
-	function match_class(elem, class_match) {
+	function flip (elem) {
+		elem.classList.add('flipping');
+		setTimeout(function () {
+			elem.classList.remove('flipping');
+		}, 0.5 * 1000);
+	}
+	function match_classes(elem, class_match) {
 		for (var i = 0; i < class_match.length; i++) {
 			if (!elem.classList.contains(class_match[i])) return false;
 		}
@@ -132,4 +147,25 @@ function resize_app() {
 Number.prototype.mod = function (n) {
 	return ((this % n) + n) % n;
 }
+
+String.prototype.capitalizeFirst = function() {
+	return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
+Node.prototype.setCSS3Attr = function(attr, val) {
+	var css3_kits = ['webkit',
+					'Moz',
+					'O',
+					'ms',
+					''];
+	for (var i = 0; i < css3_kits.length; i++) {
+		var formatted_val = val.replace('%-kit-','-'+css3_kits[i]+'-');
+		if (css3_kits[i] != '') {
+			formatted_val = formatted_val.replace('%kit',css3_kits[i]);
+		}
+		if (this.style[css3_kits[i]+attr.capitalizeFirst()] != undefined) {
+			this.style[css3_kits[i]+attr.capitalizeFirst()] = val;
+		}
+	};
+};
 

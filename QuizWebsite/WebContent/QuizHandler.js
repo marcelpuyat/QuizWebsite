@@ -108,7 +108,6 @@ function QuizHandler(quiz_id, servlet_url) {
 	};
 
 	this.informQuestionAnsweredAtIndex = function (index) {
-		console.log(_questions[index]);
 		_questions[index].answered_question();	
 	}
 	

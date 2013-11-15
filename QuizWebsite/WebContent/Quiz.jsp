@@ -20,9 +20,10 @@
 		<div id="app-wrapper">
 			<div id="quiz-content-wrapper">
 				<div id="quiz-cards-wrapper">
-					<div class="card front tilt-align"></div>
-					<div class="card middle tilt-left"></div>
+					<div class="card front"></div>
+					<div class="card middle"></div>
 					<div class="card back  tilt-right"></div>
+					<div class="card back  tilt-left"></div>
 				</div>
 			</div>
 		</div>
