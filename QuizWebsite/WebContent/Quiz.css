@@ -76,6 +76,15 @@ body {
 				
 			}
 
+			#play-now-button {
+				color: #50707E;
+			}
+
+			#play-now-button:hover,
+			#play-now-button:focus {
+				color: rgb(116, 155, 172);
+			}
+
 			#start-test-wrapper {
 				position:absolute;
 				top:50%;

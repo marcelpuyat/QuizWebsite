@@ -16,6 +16,10 @@ function getQuestionHandler(type, data, q_id) {
 	}
 };
 
+function _forward_enter_clicked (elem) {
+	// body...
+}
+
 function PictureResponseHandler(data, q_id) {
 	var _data = data;
 	var _answer;
@@ -39,6 +43,7 @@ function PictureResponseHandler(data, q_id) {
 		_user_input_elem.id = 'pict-resp-input-'+_question_id;
 		_user_input_elem.type = 'text';
 		_user_input_elem.classList.add('center-block');
+		_user_input_elem.attach_enter_listener(ui_handler.next);
 		wrapper.appendChild(_user_input_elem);
 		return wrapper;
 	};
@@ -72,6 +77,7 @@ function SingleAnswerHandler(data, q_id) {
 		_user_input_elem.id = 'single-c-input-'+_question_id;
 		_user_input_elem.type = 'text';
 		_user_input_elem.classList.add('center-block');
+		_user_input_elem.attach_enter_listener(ui_handler.next);
 		wrapper.appendChild(_user_input_elem);
 		return wrapper;
 	};

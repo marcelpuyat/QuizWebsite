@@ -34,7 +34,7 @@ function QuizHandler(quiz_id, servlet_url) {
 				_next_callbacks.push(callback);
 				break;
 		}
-	}
+	};
 	this.isLoaded = function() {
 		return _isLoaded;
 	};
@@ -96,6 +96,7 @@ function QuizHandler(quiz_id, servlet_url) {
 			var play_now_button = document.createElement('div');
 			play_now_button.innerHTML = "Play Now!";
 			play_now_button.classList.add('pointable','center');
+			play_now_button.id = "play-now-button";
 			for (var i = 0; i < _start_callbacks.length; i++) {
 				play_now_button.addEventListener('click',_start_callbacks[i]);
 				_start_callbacks[i]

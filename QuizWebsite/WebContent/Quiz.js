@@ -2,10 +2,11 @@
  * 
  */
 var wrapper_elem = document.getElementById('quiz-prompt-content');
+var ui_handler;
 function init_js(quiz_id) {
 	resize_app();
 	window.onresize = resize_app;
-	var ui_handler = new UIHandler(new QuizHandler(quiz_id, "/QuizWebsite/QuizServletStub"),
+	ui_handler = new UIHandler(new QuizHandler(quiz_id, "/QuizWebsite/QuizServletStub"),
 						document.getElementById('quiz-cards-wrapper'));
 	ui_handler.run();
 }
@@ -35,7 +36,7 @@ function UIHandler (quiz_handler, card_wrapper) {
 	this.start_test = function () {
 		enable_arrow_keys();
 		_this.next();
-	}
+	};
 
 	this.next = function () {
 		var prev_it = _iterator;
@@ -150,6 +151,16 @@ Number.prototype.mod = function (n) {
 
 String.prototype.capitalizeFirst = function() {
 	return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
+Node.prototype.attach_enter_listener = function(fn) {
+	console.log('attaching');
+	this.addEventListener('keypress', function (e) {
+		switch (e.keyCode) {
+			case (13):
+				fn();
+		}
+	})
 };
 
 Node.prototype.setCSS3Attr = function(attr, val) {

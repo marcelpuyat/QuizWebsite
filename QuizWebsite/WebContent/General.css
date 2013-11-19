@@ -53,6 +53,17 @@ input[type="text"] {
 					text-decoration:none;
 					color:#D0D0D0;
 				}
+
+				#app-selection-ul > li > a:hover,
+				#app-selection-ul > li > a:focus {
+					color: #E0E0E0;
+				}
 				#app-selection-ul > li > a.active {
 					color:#F0F0F0;
 				}
+				#app-selection-ul > li > a.active:hover,
+				#app-selection-ul > li > a.active:focus {
+					color: #FFFFFF;
+				}
+
+				
