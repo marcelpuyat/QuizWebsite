@@ -19,16 +19,18 @@
 		<%= HTMLTemplater.getSidebarHTML("Quiz")  %>
 		<div id="app-wrapper">
 			<div id="quiz-content-wrapper">
-				<div id="quiz-content">
-					<div id="quiz-prompt-content">
-						<div id="start-test-wrapper" onclick="start()">Start!</div>
-					</div>
+				<div id="quiz-cards-wrapper">
+					<div class="card front"></div>
+					<div class="card middle"></div>
+					<div class="card back  tilt-right"></div>
+					<div class="card back  tilt-left"></div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<script src="/QuizWebsite/AJAXUtil.js" type="text/javascript"></script>
 	<script src="/QuizWebsite/QuestionTypes.js" type="text/javascript"></script>
+	<script src="/QuizWebsite/QuizHandler.js" type="text/javascript"></script>
 	<script src="/QuizWebsite/Quiz.js" type="text/javascript"></script>
 </body>
 </html>

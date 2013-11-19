@@ -1,7 +1,6 @@
 package quizPckg;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 
 import questionPckg.Question;
 
@@ -142,26 +141,6 @@ public class Quiz {
 	 */
 	public String getName() {
 		return this.quizName;
-	}
-	
-	/** NOT SURE IF THIS METHOD IS NEEDED
-	 * 
-	 * Return map of answers to questions. Useful for displaying results to user that just took quiz.
-	 * 
-	 * i.e. Question 1: You answered x, which was correct!
-	 *      Question 2: You answered y, which was wrong.
-	 *      
-	 * @param answers List of answers to this quiz
-	 * @return Map of answers (which are strings) to question
-	 */
-	public HashMap<String, Question> getMapOfAnswersToQuestions(ArrayList<String> answers) {
-		HashMap<String, Question> map = new HashMap<String, Question>();
-		
-		for (int i = 0; i < questions.size(); i++) {
-			map.put(answers.get(i), questions.get(i));
-		}
-		
-		return map;
 	}
 	
 	@Override
