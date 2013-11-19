@@ -17,9 +17,9 @@ import databasesPckg.QuizInfoDBHandler;
 import databasesPckg.QuizTakingDBHandler;
 
 /**
- * Servlet implementation class QuizServletStub
+ * Servlet implementation class QuizServlet
  */
-@WebServlet("/QuizServletStub")
+@WebServlet("/QuizServlet")
 public class QuizServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
