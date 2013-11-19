@@ -8,7 +8,10 @@
  *     void    informQuestionAnswered();
  *     
  */
-
+ var last_q;
+ function get_ans_index (index) {
+ 	return last_q[index].format_answer();
+ }
 function QuizHandler(quiz_id, servlet_url) {
 	/* init vars */
 	var _questions = [];
@@ -69,6 +72,8 @@ function QuizHandler(quiz_id, servlet_url) {
 
 	this.getAtIndex = function (index) {
 		if (this.indexExists(index)) {
+			console.log('::questions::');
+			console.log(_build_results());
 			return _questions[index].getDOMSubStructure();
 		}
 		return null;
@@ -78,13 +83,32 @@ function QuizHandler(quiz_id, servlet_url) {
 		_load_quiz_json(_servlet_url, _quiz_id, function(aux){
 			var quiz_title = _data.quiz_name;
 			if (quiz_title) document.title = quiz_title;
-			var elem = document.createElement('div');
-			elem.innerHTML = 'Start';
-			elem.id = 'start-test-wrapper';
+
+
+			var load_display_wrapper = document.createElement('div');
+			load_display_wrapper.classList.add('fill-container','plus');
+
+			var title = document.createElement('h1');
+			title.innerHTML = quiz_title;
+			title.classList.add('center');
+			load_display_wrapper.appendChild(title);
+
+			var play_now_button = document.createElement('div');
+			play_now_button.innerHTML = "Play Now!";
+			play_now_button.classList.add('pointable','center');
 			for (var i = 0; i < _start_callbacks.length; i++) {
-				elem.addEventListener('click',_start_callbacks[i]);
+				play_now_button.addEventListener('click',_start_callbacks[i]);
+				_start_callbacks[i]
 			};
-			aux.client_callback(elem, aux.client_aux);
+			load_display_wrapper.appendChild(play_now_button);
+
+
+			// load_display_wrapper.innerHTML = 'Start';
+			// load_display_wrapper.id = 'start-test-wrapper';
+			// for (var i = 0; i < _start_callbacks.length; i++) {
+			// 	load_display_wrapper.addEventListener('click',_start_callbacks[i]);
+			// };
+			aux.client_callback(load_display_wrapper, aux.client_aux);
 		}, {client_aux:auxiliary_data, client_callback:callback});
 	};
 	
@@ -104,11 +128,11 @@ function QuizHandler(quiz_id, servlet_url) {
 	};
 	
 	this.informQuestionAnswered = function() {
-		_questions[_iterator].answered_question();
+		//_questions[_iterator].answered_question();
 	};
 
 	this.informQuestionAnsweredAtIndex = function (index) {
-		_questions[index].answered_question();	
+		//_questions[index].answered_question();	
 	}
 	
 	
@@ -132,6 +156,8 @@ function QuizHandler(quiz_id, servlet_url) {
 		}, {quiz_id:quiz_id, client_aux:aux, client_callback:callback});
 	}
 	function _build_results() {
+		console.log('build');
+		last_q = _questions;
 		var answers = [];
 		for (var i = 0; i < _questions.length; i++) {
 			answers.push({type:_questions[i].getType(),data:_questions[i].format_answer()});
