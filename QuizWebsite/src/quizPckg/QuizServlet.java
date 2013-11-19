@@ -20,13 +20,13 @@ import databasesPckg.QuizTakingDBHandler;
  * Servlet implementation class QuizServletStub
  */
 @WebServlet("/QuizServletStub")
-public class QuizServletStub extends HttpServlet {
+public class QuizServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public QuizServletStub() {
+    public QuizServlet() {
         super();
         // TODO Auto-generated constructor stub
     }

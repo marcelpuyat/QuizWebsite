@@ -49,6 +49,7 @@ public class QuizInfoDBHandler {
 		QuizInfo quizInfo = new QuizInfo(description, creator, bestFiveOfAllTime, bestFiveOfToday, mostRecent, averageScore, isEditable);
 		return quizInfo;
 	}
+	
 	/**
 	 * Sorts according to how spec is in Wiki
 	 * @param quizInfo

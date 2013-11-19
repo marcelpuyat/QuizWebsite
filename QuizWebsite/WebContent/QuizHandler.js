@@ -169,6 +169,6 @@ function QuizHandler(quiz_id, servlet_url) {
 	function _send_quiz_results(data, callback, aux) {
 		console.log('sending data:');
 		console.log(data);
-		post_json_to_url("/QuizWebsite/QuizServletStub", data, callback, aux);
+		post_json_to_url("/QuizWebsite/QuizServlet", data, callback, aux);
 	}
 }

@@ -112,8 +112,8 @@ public class QuizDatabaseStub {
 		
 		/* Image question test */
 		HashSet<String> possibleAnswers2 = new HashSet<String>(2);
-		possibleAnswers.add("Google");
-		possibleAnswers.add("GOOGLE");
+		possibleAnswers2.add("Google");
+		possibleAnswers2.add("GOOGLE");
 		PictureQuestion question2 = new PictureQuestion("What company invented a web-browser with this logo?", possibleAnswers2, "https://lh3.ggpht.com/7O3H3V0fEBumwJlqDLD03t1fmwl8fH9YoBsPwB2UQ_aiBilM7OAOe2gkFB3wrojJqbM=w300");
 		questions.add(question2);
 		
