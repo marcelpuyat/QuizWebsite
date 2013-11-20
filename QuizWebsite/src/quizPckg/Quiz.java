@@ -1,4 +1,8 @@
 package quizPckg;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -13,24 +17,9 @@ import questionPckg.Question;
  */
 public class Quiz {
 
-	private String quizName;
-	private String description;
-	private String id;
-	private ArrayList<Question> questions;
-	private int maxScore;
-	
-	// True if questions are to be given in random order
-	private boolean isRandom;
-	
-	// True if questions are to be shown on multiple pages
-	private boolean isMultiplePage;
-	
-	// True if answers are displayed per question to the user
-	private boolean isImmediatelyCorrected;
-	
-	// True if quiz can be practiced
-	private boolean isPracticable;
-	
+	private String quiz_id;
+	private Connection con;
+
 	/**
 	 * Initializes Quiz object given list of questions and a quiz id
 	 * @param questions
@@ -40,21 +29,31 @@ public class Quiz {
 	 * @param isImmediatelyCorrected
 	 * @param isPracticable
 	 */
-	public Quiz(String quizName, String description,  ArrayList<Question> questions, String id, boolean isRandom,
-			boolean isMultiplePage, boolean isImmediatelyCorrected, boolean isPracticable) {
-		this.quizName = quizName;
-		this.description = description;
-		this.questions = questions;
-		this.maxScore = 0;
-		this.id = id;
-		this.isRandom = isRandom;
-		this.isMultiplePage = isMultiplePage;
-		this.isImmediatelyCorrected = isImmediatelyCorrected;
-		this.isPracticable = isPracticable;
-		
-		for (Question question : questions) {
-			this.maxScore += question.getScore();
+	public Quiz(String quiz_id, Connection con) {
+		this.quiz_id = quiz_id;
+		this.con = con;
+	}
+	
+	public String getName() {
+		try {
+			Statement stmt = con.createStatement();
+			String getNameQuery = "SELECT name FROM Quizzes WHERE id = \"" + this.quiz_id + "\"";
+			ResultSet rs = stmt.executeQuery(getNameQuery);
+			rs.next();
+			return rs.getString("name");
 		}
+		catch (Exception e) { e.printStackTrace(); return null; }
+	}
+	
+	public String getDescription() {
+		try {
+			Statement stmt = con.createStatement();
+			String getNameQuery = "SELECT description FROM Quizzes WHERE id = \"" + this.quiz_id + "\"";
+			ResultSet rs = stmt.executeQuery(getNameQuery);
+			rs.next();
+			return rs.getString("description");
+		}
+		catch (Exception e) { e.printStackTrace(); return null; }
 	}
 	
 	/**
@@ -62,10 +61,29 @@ public class Quiz {
 	 * @return ArrayList of Question objects
 	 */
 	public ArrayList<Question> getQuestions() {
-		if (this.isRandom) {
-			Collections.shuffle(this.questions);
+		
+		try {
+			Statement stmt = con.createStatement();
+			String getNameQuery = "SELECT questions FROM Quizzes WHERE id = \"" + this.quiz_id + "\"";
+			ResultSet rs = stmt.executeQuery(getNameQuery);
+			rs.next();
+			Blob questionBlob = rs.getBlob("questions");
+			byte[] bytes = questionBlob.getBytes(1, (int)questionBlob.length());
+			@SuppressWarnings("unchecked")
+			ArrayList<Question> questions = (ArrayList<Question>) deserialize(bytes);
+			if (this.isRandom()) {
+				Collections.shuffle(questions);
+			}
+			return questions;
 		}
-		return this.questions;
+		catch (Exception e) { e.printStackTrace(); return null; }
+		
+	}
+	
+	private Object deserialize(byte[] data) throws IOException, ClassNotFoundException {
+	    ByteArrayInputStream in = new ByteArrayInputStream(data);
+	    ObjectInputStream is = new ObjectInputStream(in);
+	    return is.readObject();
 	}
 	
 	/**
@@ -74,8 +92,12 @@ public class Quiz {
 	 * @param answers List of answers to questions.
 	 * @return score (int)
 	 */
+	
+	// IMPLEMENT RANDOM CHECKING USING INDEXING (PASS THROUGH GET REQUEST INFO)
 	public int checkAnswers(ArrayList<String> answers) {
 		int userScore = 0;
+		
+		ArrayList<Question> questions = this.getQuestions();
 		
 		for (int question = 0; question < questions.size(); question++) {
 			Question currQuestion = questions.get(question);
@@ -92,7 +114,14 @@ public class Quiz {
 	 * @return max score
 	 */
 	public int getMaxScore() {
-		return this.maxScore;
+		try {
+			Statement stmt = con.createStatement();
+			String getNameQuery = "SELECT max_score FROM Quizzes WHERE id = \"" + this.quiz_id + "\"";
+			ResultSet rs = stmt.executeQuery(getNameQuery);
+			rs.next();
+			return rs.getInt("max_score");
+		}
+		catch (Exception e) { e.printStackTrace(); return 0; }
 	}
 	
 	/**
@@ -100,15 +129,39 @@ public class Quiz {
 	 * @return id
 	 */
 	public String getID() {
-		return this.id;
+		try {
+			Statement stmt = con.createStatement();
+			String getNameQuery = "SELECT id FROM Quizzes WHERE id = \"" + this.quiz_id + "\"";
+			ResultSet rs = stmt.executeQuery(getNameQuery);
+			rs.next();
+			return rs.getString("id");
+		}
+		catch (Exception e) { e.printStackTrace(); return null; }
 	}
 	
+	public String getCreator() {
+		try {
+			Statement stmt = con.createStatement();
+			String getNameQuery = "SELECT creator FROM Quizzes WHERE id = \"" + this.quiz_id + "\"";
+			ResultSet rs = stmt.executeQuery(getNameQuery);
+			rs.next();
+			return rs.getString("creator");
+		}
+		catch (Exception e) { e.printStackTrace(); return null; }
+	}
 	/**
 	 * True if quiz is shown on multiple pages
 	 * @return
 	 */
 	public boolean isMultiplePage() {
-		return this.isMultiplePage;
+		try {
+			Statement stmt = con.createStatement();
+			String getNameQuery = "SELECT is_multiple_page FROM Quizzes WHERE id = \"" + this.quiz_id + "\"";
+			ResultSet rs = stmt.executeQuery(getNameQuery);
+			rs.next();
+			return rs.getBoolean("is_multiple_page");
+		}
+		catch (Exception e) { e.printStackTrace(); return false; }
 	}
 	
 	/**
@@ -116,7 +169,14 @@ public class Quiz {
 	 * @return
 	 */
 	public boolean isRandom() {
-		return this.isRandom;
+		try {
+			Statement stmt = con.createStatement();
+			String getNameQuery = "SELECT is_randomizable FROM Quizzes WHERE id = \"" + this.quiz_id + "\"";
+			ResultSet rs = stmt.executeQuery(getNameQuery);
+			rs.next();
+			return rs.getBoolean("is_randomizable");
+		}
+		catch (Exception e) { e.printStackTrace(); return false; }
 	}
 	
 	/**
@@ -124,7 +184,14 @@ public class Quiz {
 	 * @return
 	 */
 	public boolean isImmediatelyCorrected() {
-		return this.isImmediatelyCorrected;
+		try {
+			Statement stmt = con.createStatement();
+			String getNameQuery = "SELECT is_immediately_corrected FROM Quizzes WHERE id = \"" + this.quiz_id + "\"";
+			ResultSet rs = stmt.executeQuery(getNameQuery);
+			rs.next();
+			return rs.getBoolean("is_immediately_corrected");
+		}
+		catch (Exception e) { e.printStackTrace(); return false; }
 	}
 	
 	/**
@@ -132,31 +199,20 @@ public class Quiz {
 	 * @return
 	 */
 	public boolean isPracticable() {
-		return this.isPracticable;
+		try {
+			Statement stmt = con.createStatement();
+			String getNameQuery = "SELECT is_practicable FROM Quizzes WHERE id = \"" + this.quiz_id + "\"";
+			ResultSet rs = stmt.executeQuery(getNameQuery);
+			rs.next();
+			return rs.getBoolean("is_practicable");
+		}
+		catch (Exception e) { e.printStackTrace(); return false; }
 	}
-	
-	/**
-	 * Return name of quiz
-	 * @return
-	 */
-	public String getName() {
-		return this.quizName;
-	}
+
 	
 	@Override
 	public String toString() {
-		String quizString = "";
-		for (int i = 0; i < this.questions.size(); i++) {
-			quizString += "Question " + i + ": " + this.questions.get(i).toString() + "\n";
-		}
-		return quizString;
-	}
-
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
+		return "not supported";
 	}
 	
 }

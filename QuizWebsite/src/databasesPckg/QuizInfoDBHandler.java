@@ -16,11 +16,11 @@ import quizPckg.QuizResults;
  */
 public class QuizInfoDBHandler {
 
-	private QuizDatabaseStub database;
+	private InsertTestQuizzesIntoMySQL database;
 	private QuizResultsDBHandler resultsHandler;
 	
 	public QuizInfoDBHandler() {
-		database = new QuizDatabaseStub();
+		database = new InsertTestQuizzesIntoMySQL();
 		resultsHandler = new QuizResultsDBHandler();
 	}
 	

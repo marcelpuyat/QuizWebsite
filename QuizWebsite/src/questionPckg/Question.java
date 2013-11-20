@@ -1,4 +1,5 @@
 package questionPckg;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -8,7 +9,7 @@ import java.util.HashSet;
  * @author marcelp
  *
  */
-public abstract class Question {
+public abstract class Question implements Serializable {
 
 	/** Question string */
 	protected String prompt;

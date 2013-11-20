@@ -2,6 +2,7 @@ package quizPckg;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
@@ -43,9 +44,9 @@ public class QuizServlet extends HttpServlet {
 		//System.out.println("quiz_id: "+quiz_id);
 
 		ServletContext context = getServletContext(); 
-		QuizTakingDBHandler quizDBHandler = (QuizTakingDBHandler)context.getAttribute("quiz_handler");
+		Connection databaseConnection = (Connection)context.getAttribute("database_connection");
 		
-		Quiz quiz = quizDBHandler.getQuizForID(quiz_id);
+		Quiz quiz = new Quiz(quiz_id, databaseConnection);
 		
 		// Places quiz in session for now, so it is accessible in doPost
 		request.getSession().setAttribute("quiz", quiz);
@@ -54,9 +55,8 @@ public class QuizServlet extends HttpServlet {
 		ArrayList<QuizResults> emptyList = new ArrayList<QuizResults>(0);
 		
 		// Get quiz info from quiz info db handler
-		QuizInfo quizInfo = (new QuizInfoDBHandler()).getQuizInfoGivenID(quiz_id);
 		
-		JSONObject jSONquiz = JSONParser.parseQuizIntoJSON(quiz, quizInfo, emptyList);
+		JSONObject jSONquiz = JSONParser.parseQuizIntoJSON(quiz, null, emptyList);
 		
 		response.getWriter().println(jSONquiz.toString());
 	}

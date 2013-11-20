@@ -55,16 +55,16 @@ public class JSONParser {
 		jSONquiz.put("questions", questionsFormatted);
 		jSONquiz.put("quiz_id", quiz.getID());
 		jSONquiz.put("quiz_name", quiz.getName());
-		jSONquiz.put("description", quizInfo.getDescription());
-		jSONquiz.put("creator", quizInfo.getUsernameOfCreator());
+		jSONquiz.put("description", quiz.getDescription());
+		jSONquiz.put("creator", quiz.getCreator());
 		jSONquiz.put("is_immediately_corrected", quiz.isImmediatelyCorrected());
 		jSONquiz.put("max_score", quiz.getMaxScore());
 		jSONquiz.put("user_history", parseListIntoSpec(userHistory));
-		jSONquiz.put("best_alltime", parseListIntoSpec(quizInfo.getBestScoresAllTime()));
-		jSONquiz.put("best_today", parseListIntoSpec(quizInfo.getBestScoresToday()));
-		jSONquiz.put("recent_scores", parseListIntoSpec(quizInfo.getRecentScores()));
-		jSONquiz.put("average_score", quizInfo.getAverageScore());
-		jSONquiz.put("is_editable", quizInfo.isEditable());
+//		jSONquiz.put("best_alltime", parseListIntoSpec(quizInfo.getBestScoresAllTime()));
+//		jSONquiz.put("best_today", parseListIntoSpec(quizInfo.getBestScoresToday()));
+//		jSONquiz.put("recent_scores", parseListIntoSpec(quizInfo.getRecentScores()));
+//		jSONquiz.put("average_score", quizInfo.getAverageScore());
+//		jSONquiz.put("is_editable", quizInfo.isEditable());
 		return jSONquiz;
 	}
 	

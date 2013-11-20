@@ -12,13 +12,13 @@ public class QuizTakingDBHandler {
 	/**
 	 * Stub database made
 	 */
-	private QuizDatabaseStub stubDatabase;
+	private InsertTestQuizzesIntoMySQL stubDatabase;
 	
 	/**
 	 * This handler will have a stub database ready and initialized
 	 */
 	public QuizTakingDBHandler() {
-		stubDatabase = new QuizDatabaseStub();
+		stubDatabase = new InsertTestQuizzesIntoMySQL();
 	}
 	
 	/**
