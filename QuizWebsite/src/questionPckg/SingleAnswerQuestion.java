@@ -11,6 +11,7 @@ import java.util.HashSet;
  * @author marcelp
  *
  */
+@SuppressWarnings("serial")
 public class SingleAnswerQuestion extends Question {
 
 	public SingleAnswerQuestion(String questionString, HashSet<String> answers) {

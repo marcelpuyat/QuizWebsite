@@ -24,7 +24,7 @@ import questionPckg.Question;
 import questionPckg.SingleAnswerQuestion;
 
 /**
- * Contains a bunch of test Quizzes
+ * Contains a bunch of test Quizzes. Run this to insert these Quizzes into the SQL Database.
  * @author marcelp
  *
  */
@@ -82,11 +82,11 @@ public class InsertTestQuizzesIntoMySQL {
 	 * @throws IOException 
 	 */
 	private void addQuiz(String id, String name, String creator, String description, ArrayList<Question> questions, int maxScore, 
-			boolean isRandomizable, boolean isMultiplePage, boolean isPracticable) throws IOException
+			boolean isRandomizable, boolean isMultiplePage, boolean isPracticable, boolean isImmediatelyCorrected) throws IOException
 	{
 		PreparedStatement stmt;
 		try {
-			stmt = con.prepareStatement("INSERT INTO Quizzes VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			stmt = con.prepareStatement("INSERT INTO Quizzes VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			stmt.setString(1, id);
 			stmt.setString(2, name);
 			stmt.setString(3, creator);
@@ -98,6 +98,7 @@ public class InsertTestQuizzesIntoMySQL {
 			stmt.setBoolean(7, isRandomizable);
 			stmt.setBoolean(8, isMultiplePage);
 			stmt.setBoolean(9, isPracticable);
+			stmt.setBoolean(10, isImmediatelyCorrected);
 			stmt.executeUpdate();
 			
 		} catch (SQLException e) {
@@ -181,8 +182,9 @@ public class InsertTestQuizzesIntoMySQL {
 		boolean isRandomizable = true;
 		boolean isMultiplePage = true;
 		boolean isPracticable = false;
-		
-		addQuiz(id, name, "Nobody", description, questions, maxScore, isRandomizable, isMultiplePage, isPracticable);
+		boolean isImmediatelyCorrected = false;
+
+		addQuiz(id, name, "Nobody", description, questions, maxScore, isRandomizable, isMultiplePage, isPracticable, isImmediatelyCorrected);
 	}
 	
 	/**
@@ -214,8 +216,9 @@ public class InsertTestQuizzesIntoMySQL {
 		boolean isRandomizable = false;
 		boolean isMultiplePage = true;
 		boolean isPracticable = false;
+		boolean isImmediatelyCorrected = false;
 		
-		addQuiz(id, name, "Nobody", description, questions, maxScore, isRandomizable, isMultiplePage, isPracticable);
+		addQuiz(id, name, "Nobody", description, questions, maxScore, isRandomizable, isMultiplePage, isPracticable, isImmediatelyCorrected);
 	}
 	
 	/**

@@ -10,7 +10,6 @@ import javax.servlet.annotation.WebListener;
 
 import java.sql.*;
 
-import databasesPckg.QuizTakingDBHandler;
 import databasesPckg.*;
 /**
  * Application Lifecycle Listener implementation class ContextListener

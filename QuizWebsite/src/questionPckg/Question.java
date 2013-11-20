@@ -9,6 +9,7 @@ import java.util.HashSet;
  * @author marcelp
  *
  */
+@SuppressWarnings("serial")
 public abstract class Question implements Serializable {
 
 	/** Question string */

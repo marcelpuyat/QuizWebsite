@@ -14,8 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
-import databasesPckg.QuizInfoDBHandler;
-import databasesPckg.QuizTakingDBHandler;
 
 /**
  * Servlet implementation class QuizServlet

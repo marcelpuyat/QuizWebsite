@@ -8,6 +8,7 @@ import java.util.HashSet;
  * @author marcelp
  *
  */
+@SuppressWarnings("serial")
 public class PictureQuestion extends Question {
 
 	private String pictureURL;

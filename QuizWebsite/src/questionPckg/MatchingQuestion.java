@@ -2,6 +2,7 @@ package questionPckg;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("serial")
 public class MatchingQuestion extends Question {
 
 	private ArrayList<String> leftOptions;

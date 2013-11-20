@@ -8,6 +8,7 @@ import java.util.ArrayList;
  * @author marcelp
  *
  */
+@SuppressWarnings("serial")
 public class MultChoiceMultAnswerQuestion extends Question {
 
 	// In form "01010" where 0 means dont select and 1 means select

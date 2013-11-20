@@ -9,6 +9,7 @@ import java.util.ArrayList;
  * @author marcelp
  *
  */
+@SuppressWarnings("serial")
 public class MultipleChoiceQuestion extends Question {
 
 	// Index of the answer in the options list.
