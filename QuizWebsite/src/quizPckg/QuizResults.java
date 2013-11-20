@@ -11,7 +11,7 @@ import java.util.Calendar;
 public class QuizResults {
 
 	private String username;
-	private String quizID;
+	private int quizID;
 	private Calendar dateTaken;
 	private long timeTaken;
 	private int userScore;
@@ -25,7 +25,7 @@ public class QuizResults {
 	 * @param userScore
 	 * @param maxScore
 	 */
-	public QuizResults(String username, String quizID, int userScore,
+	public QuizResults(String username, int quizID, int userScore,
 			int maxScore, Calendar dateTaken, long timeTaken) {
 		this.username = username;
 		this.quizID = quizID;
@@ -47,7 +47,7 @@ public class QuizResults {
 	 * Returns the quizID
 	 * @return quiz ID
 	 */
-	public String getQuizID() {
+	public int getQuizID() {
 		return quizID;
 	}
 	

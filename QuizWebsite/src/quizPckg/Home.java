@@ -25,14 +25,14 @@ public class Home extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("Quiz.jsp?quiz_id=000000");
+		response.sendRedirect("Quiz.jsp?quiz_id=000005"); // 3 is Mult Choice, 5 is Single Answer
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("Quiz.jsp?quiz_id=000000");
+		response.sendRedirect("Quiz.jsp?quiz_id=000005"); // 3 is Mult Choice, 5 is Single Answer
 	}
 
 }

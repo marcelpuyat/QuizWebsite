@@ -17,7 +17,7 @@ import questionPckg.Question;
  */
 public class Quiz {
 
-	private String quiz_id;
+	private int quiz_id;
 	private Connection con;
 
 	/**
@@ -29,7 +29,7 @@ public class Quiz {
 	 * @param isImmediatelyCorrected
 	 * @param isPracticable
 	 */
-	public Quiz(String quiz_id, Connection con) {
+	public Quiz(int quiz_id, Connection con) {
 		this.quiz_id = quiz_id;
 		this.con = con;
 	}
@@ -128,15 +128,15 @@ public class Quiz {
 	 * Returns quiz id
 	 * @return id
 	 */
-	public String getID() {
+	public int getID() {
 		try {
 			Statement stmt = con.createStatement();
 			String getNameQuery = "SELECT id FROM Quizzes WHERE id = \"" + this.quiz_id + "\"";
 			ResultSet rs = stmt.executeQuery(getNameQuery);
 			rs.next();
-			return rs.getString("id");
+			return rs.getInt("id");
 		}
-		catch (Exception e) { e.printStackTrace(); return null; }
+		catch (Exception e) { e.printStackTrace(); return 0; }
 	}
 	
 	public String getCreator() {

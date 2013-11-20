@@ -36,6 +36,8 @@ public class QuizServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String quiz_id = request.getParameter("quiz_id");
+		int id = Integer.parseInt(quiz_id);
+		
 		response.setContentType("application/json");
 		
 		// REMOVE THIS AFTER DEBUGGING PHASE IS OVER
@@ -44,7 +46,7 @@ public class QuizServlet extends HttpServlet {
 		ServletContext context = getServletContext(); 
 		Connection databaseConnection = (Connection)context.getAttribute("database_connection");
 		
-		Quiz quiz = new Quiz(quiz_id, databaseConnection);
+		Quiz quiz = new Quiz(id, databaseConnection);
 		
 		// Places quiz in session for now, so it is accessible in doPost
 		request.getSession().setAttribute("quiz", quiz);

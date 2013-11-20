@@ -81,24 +81,23 @@ public class InsertTestQuizzesIntoMySQL {
 	 * @param isPracticable
 	 * @throws IOException 
 	 */
-	private void addQuiz(String id, String name, String creator, String description, ArrayList<Question> questions, int maxScore, 
+	private void addQuiz(String name, String creator, String description, ArrayList<Question> questions, int maxScore, 
 			boolean isRandomizable, boolean isMultiplePage, boolean isPracticable, boolean isImmediatelyCorrected) throws IOException
 	{
 		PreparedStatement stmt;
 		try {
-			stmt = con.prepareStatement("INSERT INTO Quizzes VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-			stmt.setString(1, id);
-			stmt.setString(2, name);
-			stmt.setString(3, creator);
-			stmt.setString(4, description);			
+			stmt = con.prepareStatement("INSERT INTO Quizzes (name, creator, description, questions, max_score, is_randomizable, is_multiple_page, is_practicable, is_immediately_corrected) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			stmt.setString(1, name);
+			stmt.setString(2, creator);
+			stmt.setString(3, description);			
 			byte[] questionBytes = serialize(questions);
 			Blob questionBlob = new SerialBlob(questionBytes);
-			stmt.setBlob(5, questionBlob);
-			stmt.setInt(6, maxScore);
-			stmt.setBoolean(7, isRandomizable);
-			stmt.setBoolean(8, isMultiplePage);
-			stmt.setBoolean(9, isPracticable);
-			stmt.setBoolean(10, isImmediatelyCorrected);
+			stmt.setBlob(4, questionBlob);
+			stmt.setInt(5, maxScore);
+			stmt.setBoolean(6, isRandomizable);
+			stmt.setBoolean(7, isMultiplePage);
+			stmt.setBoolean(8, isPracticable);
+			stmt.setBoolean(9, isImmediatelyCorrected);
 			stmt.executeUpdate();
 			
 		} catch (SQLException e) {
@@ -184,7 +183,7 @@ public class InsertTestQuizzesIntoMySQL {
 		boolean isPracticable = false;
 		boolean isImmediatelyCorrected = false;
 
-		addQuiz(id, name, "Nobody", description, questions, maxScore, isRandomizable, isMultiplePage, isPracticable, isImmediatelyCorrected);
+		addQuiz(name, "Nobody", description, questions, maxScore, isRandomizable, isMultiplePage, isPracticable, isImmediatelyCorrected);
 	}
 	
 	/**
@@ -218,7 +217,7 @@ public class InsertTestQuizzesIntoMySQL {
 		boolean isPracticable = false;
 		boolean isImmediatelyCorrected = false;
 		
-		addQuiz(id, name, "Nobody", description, questions, maxScore, isRandomizable, isMultiplePage, isPracticable, isImmediatelyCorrected);
+		addQuiz(name, "Nobody", description, questions, maxScore, isRandomizable, isMultiplePage, isPracticable, isImmediatelyCorrected);
 	}
 	
 	/**
