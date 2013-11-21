@@ -2,12 +2,12 @@ package question;
 
 import java.util.ArrayList;
 
+import customObjects.StringPair;
+
 @SuppressWarnings("serial")
 public class MatchingQuestion extends Question {
 
-	private ArrayList<String> leftOptions;
-	private ArrayList<String> rightOptions;
-	private ArrayList<Integer> correctAnswers;
+	private ArrayList<StringPair> correctPairs;
 	
 	/**
 	 * Correct answers are formatted like this:
@@ -25,16 +25,14 @@ public class MatchingQuestion extends Question {
 	 * the 0th index in rightChoices.
 	 * 
 	 * @param questionString
-	 * @param leftChoices
-	 * @param rightChoices
-	 * @param correctAnswers
+	 * @param pairs
+	 * @param score
 	 */
-	public MatchingQuestion(String questionString, ArrayList<String> leftChoices, 
-			ArrayList<String> rightChoices, ArrayList<Integer> correctAnswers) {
+	public MatchingQuestion(String questionString, ArrayList<StringPair> pairs, 
+			int score) {
 		this.prompt = questionString;
-		this.leftOptions = leftChoices;
-		this.rightOptions = rightChoices;
-		this.correctAnswers = correctAnswers;
+		this.correctPairs = pairs;
+		this.score = score;
 	}
 	
 	@Override
@@ -54,48 +52,14 @@ public class MatchingQuestion extends Question {
 	public ArrayList<String> getOptions() {
 		return null;
 	}
-	
-	/**
-	 * Returns list of strings of left options
-	 * @return
-	 */
-	public ArrayList<String> getLeftOptions() {
-		return this.leftOptions;
-	}
-	
-	/**
-	 * Returns list of strings of right options
-	 * @return
-	 */
-	public ArrayList<String> getRightOptions() {
-		return this.rightOptions;
-	}
-	
-	@Override
-	public boolean isCorrect(String answer) {
-		ArrayList<Integer> userAnswers = new ArrayList<Integer>(answer.length());
-		for (int i = 0; i < answer.length(); i++) {
-			// Convert ith char into an integer object
-			Integer num = new Integer(Integer.parseInt(String.valueOf(answer.charAt(i))));
-			userAnswers.add(num);
-		}
-		return userAnswers.equals(this.correctAnswers);
-	}
 
 	@Override
 	public int getScore() {
 		return 1;
 	}
 
-	/**
-	 * Returns correct answer in the form of:
-	 * 
-	 * nth index is the nth number of the leftOptions array - 
-	 * value of nth index is the index of the rightOptions it should match to.
-	 * @return
-	 */
-	public ArrayList<Integer> getAnswer() {
-		return this.correctAnswers;
+	public ArrayList<StringPair> getPairs() {
+		return correctPairs;
 	}
 	
 	@Override

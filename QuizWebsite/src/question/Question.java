@@ -57,13 +57,6 @@ public abstract class Question implements Serializable {
 	public abstract ArrayList<String> getOptions();
 	
 	/**
-	 * Returns true if passed in answer is correct, false if not
-	 * @param answer Answer
-	 * @return True for correct, False for wrong
-	 */
-	public abstract boolean isCorrect(String answer);
-	
-	/**
 	 * Returns the amount of points this question is worth
 	 * @return points
 	 */

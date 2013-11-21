@@ -44,11 +44,6 @@ public class MultipleChoiceQuestion extends Question {
 	public ArrayList<String> getOptions() {
 		return options;
 	}
-
-	@Override
-	public boolean isCorrect(String answer) {
-		return (possibleAnswers.contains(answer));
-	}
 	
 	@Override
 	/**

@@ -2,6 +2,9 @@ package question;
 
 import java.util.ArrayList;
 
+import customObjects.StringBooleanPair;
+
+
 /**
  * Question with choices and can have multiple numbers of them selected.
  * Answer is a combination of selected choices.
@@ -11,8 +14,7 @@ import java.util.ArrayList;
 @SuppressWarnings("serial")
 public class MultChoiceMultAnswerQuestion extends Question {
 
-	// In form "01010" where 0 means dont select and 1 means select
-	private String answer;
+	private ArrayList<StringBooleanPair> pairs;
 	
 	/**
 	 * Constructor.
@@ -20,13 +22,12 @@ public class MultChoiceMultAnswerQuestion extends Question {
 	 * @param options choices
 	 * @param correctOptions String in the form of 0s and 1s, 1 number for each choice. 1 if it is selected, 0 if not.
 	 */
-	public MultChoiceMultAnswerQuestion(String questionString, ArrayList<String> options,
-			String correctOptions) {
+	public MultChoiceMultAnswerQuestion(String questionString, ArrayList<StringBooleanPair> choicesAndAnswers, int score) {
 		this.prompt = questionString;
-		this.options = options;
-		this.answer = correctOptions;
+		this.pairs = choicesAndAnswers;
+		this.score = score;
 	}
-	
+
 	@Override
 	public int getQuestionType() {
 		return QuestionTypes.MULT_CHOICE_MULT_ANSWER;
@@ -41,19 +42,14 @@ public class MultChoiceMultAnswerQuestion extends Question {
 	public ArrayList<String> getOptions() {
 		return this.options;
 	}
-
-	@Override
-	public boolean isCorrect(String answer) {
-		return this.answer.equals(answer);
-	}
 	
-	public String getAnswer() {
-		return this.answer;
+	public ArrayList<StringBooleanPair> getPairs() {
+		return this.pairs;
 	}
 	
 	@Override
 	public int getScore() {
-		return 1;
+		return this.score;
 	}
 
 	@Override

@@ -7,6 +7,9 @@ import java.util.Calendar;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import customObjects.StringBooleanPair;
+import customObjects.StringPair;
+
 import question.MatchingQuestion;
 import question.MultChoiceMultAnswerQuestion;
 import question.MultipleChoiceQuestion;
@@ -109,68 +112,14 @@ public class JSONParser {
 		int userScore = jSONresults.getInt("user_score");
 		String quizIDString = jSONresults.getString("quiz_id");
 		long quizID = Long.parseLong(quizIDString);
+		
+		/* Use this later on if you want to calculate percentage score */
 		Quiz thisQuiz = new Quiz(quizID, con);
 		
 		QuizResults results = new QuizResults(0, quizID, userScore, timeTaken);
 		return results;
 	}
-	
-	/**
-	 * Returns the answer string given a multiple choice JSON answer object (based on spec)
-	 * @param data
-	 * @return
-	 */
-	private static String getAnswerFromMultChoiceJSON(JSONObject data) {
-		return data.getString("index_selected");
-	}
-	
-	/**
-	 * Returns the answer string given a single-answer JSON answer object (based on spec)
-	 * @param data
-	 * @return
-	 */
-	private static String getAnswerFromSingleAnswerJSON(JSONObject data) {
-		return data.getString("answer");
-	}
-	
-	/**
-	 * Returns the answer string given a picture-response JSON answer object (based on spec)
-	 * @param data
-	 * @return
-	 */
-	private static String getAnswerFromPictureResponseJSON(JSONObject data) {
-		return data.getString("answer");
-	}
-	
-	/**
-	 * Returns answer string (in form 001010 where 1 is true and 0 is false)
-	 * @param data
-	 * @return
-	 */
-	private static String getAnswerFromMultChoiceMultAnswerJSON(JSONObject data) {
-		String answer = "";
-		JSONArray list = (JSONArray)data.getJSONArray("answer");
-		for (int i = 0; i < list.length(); i++) {
-			if (list.getBoolean(i)) answer += "1";
-			else answer += "0";
-		}
-		return answer;
-	}
-	
-	/**
-	 * Returns answer string (in form of "015324" where ArrayList of ints had values [0, 1, 5, 3, 2, 4] )
-	 * @param data
-	 * @return
-	 */
-	private static String getAnswerFromMatchingAnswerJSON(JSONObject data) {
-		String answer = "";
-		JSONArray list = (JSONArray)data.getJSONArray("answer");
-		for (int i = 0; i < list.length(); i++) {
-			answer += String.valueOf(((Integer)list.get(i)).intValue());
-		}
-		return answer;
-	}
-	
+
 	/**
 	 * Parses a question into a JSONObject. Read below to see how each type
 	 * is formatted.
@@ -287,14 +236,19 @@ public class JSONParser {
 		JSONObject q_data = new JSONObject();
 		
 		q_data.accumulate("prompt", question.getPrompt());
-		q_data.accumulate("options", question.getOptions());
-		ArrayList<Boolean> answers = new ArrayList<Boolean>();
-		String answer = question.getAnswer();
-		for (int i = 0; i < answer.length(); i++) {
-			if (answer.charAt(i) == '0') answers.add(false);
-			else answers.add(true);
+		
+		ArrayList<StringBooleanPair> optionsAndAnswers = question.getPairs();
+		
+		JSONArray pairsArray = new JSONArray();
+		
+		for (StringBooleanPair pair : optionsAndAnswers) {
+			JSONArray newPair = new JSONArray();
+			newPair.put(pair.getStr());
+			newPair.put(pair.getBool());
+			pairsArray.put(newPair);
 		}
-		q_data.accumulate("correct", answers);
+		
+		q_data.accumulate("answers", pairsArray);
 		q_data.accumulate("score", question.getScore());
 		questionInfo.accumulate("data", q_data);
 		return questionInfo;
@@ -319,9 +273,18 @@ public class JSONParser {
 		JSONObject q_data = new JSONObject();
 		
 		q_data.accumulate("prompt", question.getPrompt());
-		q_data.accumulate("left_options", question.getLeftOptions());
-		q_data.accumulate("right_options", question.getRightOptions());
-		q_data.accumulate("correct", question.getAnswer());
+		ArrayList<StringPair> optionsAndAnswers = question.getPairs();
+		
+		JSONArray pairsArray = new JSONArray();
+		
+		for (StringPair pair : optionsAndAnswers) {
+			JSONArray newPair = new JSONArray();
+			newPair.put(pair.getFirst());
+			newPair.put(pair.getSecond());
+			pairsArray.put(newPair);
+		}
+		
+		q_data.accumulate("answers", pairsArray);
 		q_data.accumulate("score", question.getScore());
 		questionInfo.accumulate("data", q_data);
 		return questionInfo;

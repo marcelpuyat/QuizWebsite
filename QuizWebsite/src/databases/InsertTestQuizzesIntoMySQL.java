@@ -17,11 +17,14 @@ import java.util.HashSet;
 
 import javax.sql.rowset.serial.SerialBlob;
 
+import question.MatchingQuestion;
 import question.MultChoiceMultAnswerQuestion;
 import question.MultipleChoiceQuestion;
 import question.PictureQuestion;
 import question.Question;
 import question.SingleAnswerQuestion;
+import customObjects.StringBooleanPair;
+import customObjects.StringPair;
 
 /**
  * Contains a bunch of test Quizzes. Run this to insert these Quizzes into the SQL Database.
@@ -123,9 +126,10 @@ public class InsertTestQuizzesIntoMySQL {
 	 * @throws IOException 
 	 */
 	private void initializeStubDatabase() throws IOException {
-		addMultipleChoiceQuiz(); 				// ID "000000"
-		addSingleAnswerAndPictureQuiz(); 		// ID "000001"
-		//addMultipleChoiceMultipleAnswerQuiz(); 	// ID "000002"
+//		addMultipleChoiceQuiz();
+//		addSingleAnswerAndPictureQuiz(); 	
+//		addMultipleChoiceMultipleAnswerQuiz();
+		addMatchingQuiz();
 	}
 	
 	/**
@@ -174,7 +178,6 @@ public class InsertTestQuizzesIntoMySQL {
 		questions.add(question2);
 		questions.add(question3);
 		
-		String id = "000000";
 		String name = "Multiple-Choice Quiz";
 		String description = "This is our 1st quiz";
 		int maxScore = 3;
@@ -208,7 +211,6 @@ public class InsertTestQuizzesIntoMySQL {
 		questions.add(question2);
 		
 		
-		String id = "000001";
 		String name = "Single Answer And Picture Quiz";
 		String description = "This is our 2nd quiz";
 		int maxScore = 2;
@@ -222,26 +224,62 @@ public class InsertTestQuizzesIntoMySQL {
 	
 	/**
 	 * Adds a test quiz for this type
+	 * @throws IOException 
 	 */
-	private void addMultipleChoiceMultipleAnswerQuiz() {
+	private void addMultipleChoiceMultipleAnswerQuiz() throws IOException {
 		ArrayList<Question> questions = new ArrayList<Question>();
 
 		/* Multiple Choice Multiple Answer test */
-		String correctAnswers = "0110";
 		String prompt = "Which 2 out of these 4 algorithms run in O(log (n)) time?";
 		
-		ArrayList<String> options = new ArrayList<String>();
+		ArrayList<StringBooleanPair> pairs = new ArrayList<StringBooleanPair>();
 		
-		options.add("Quicksort");
-		options.add("Binary search");
-		options.add("Inserting into a Binary Heap");
-		options.add("Bubble-sort");
-		MultChoiceMultAnswerQuestion question = new MultChoiceMultAnswerQuestion(prompt, options, correctAnswers);
+		pairs.add(new StringBooleanPair("Quicksort", false));
+		pairs.add(new StringBooleanPair("Binary search", true));
+		pairs.add(new StringBooleanPair("Inserting into a Binary Search Tree", true));
+		pairs.add(new StringBooleanPair("Bubble-sort", false));
+
+		MultChoiceMultAnswerQuestion question = new MultChoiceMultAnswerQuestion(prompt, pairs, 1);
 		questions.add(question);
 		
-		String id = "000002";
-	//	Quiz quiz = new Quiz("MultChoiceMultAnswer Quiz", "This is our 3rd quiz.", questions, id, false, true, true, false);
-		//quizzes.put(id, quiz);
+		String name = "Multiple Answer Quiz";
+		String description = "This is our 3rd quiz";
+		int maxScore = 1;
+		boolean isRandomizable = false;
+		boolean isMultiplePage = false;
+		boolean isPracticable = false;
+		boolean isImmediatelyCorrected = false;
+		
+		addQuiz(name, "Nobody", description, questions, maxScore, isRandomizable, isMultiplePage, isPracticable, isImmediatelyCorrected);
+	}
+	
+	private void addMatchingQuiz() throws IOException {
+		ArrayList<Question> questions = new ArrayList<Question>();
+
+		/* Multiple Choice Multiple Answer test */
+		String prompt = "Pair up countries and their respective capitals";
+		
+		ArrayList<StringPair> pairs = new ArrayList<StringPair>();
+		
+		pairs.add(new StringPair("U.S.", "Washington D.C."));
+		pairs.add(new StringPair("Italy", "Rome"));
+		pairs.add(new StringPair("Germany", "Berlin"));
+		pairs.add(new StringPair("Spain", "Madrid"));
+		pairs.add(new StringPair("Philippines", "Manila"));
+
+
+		MatchingQuestion question = new MatchingQuestion(prompt, pairs, 1);
+		questions.add(question);
+		
+		String name = "Matching Quiz";
+		String description = "This is our 4th quiz";
+		int maxScore = 1;
+		boolean isRandomizable = false;
+		boolean isMultiplePage = false;
+		boolean isPracticable = false;
+		boolean isImmediatelyCorrected = false;
+		
+		addQuiz(name, "Nobody", description, questions, maxScore, isRandomizable, isMultiplePage, isPracticable, isImmediatelyCorrected);
 	}
 	
 	private void test() {

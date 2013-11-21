@@ -41,11 +41,6 @@ public class PictureQuestion extends Question {
 	}
 
 	@Override
-	public boolean isCorrect(String answer) {
-		return this.possibleAnswers.contains(answer);
-	}
-
-	@Override
 	public int getScore() {
 		return 1;
 	}
