@@ -3,7 +3,7 @@
  * 	   				 getType() - returns type
  *                   getDOMSubStructure(bool addButton) - returns displayed DOM structure
  *                   format_answer() - returns object to be inserted into JSON
- *                   // depreciated answered_question() - handles answered question
+ *					 grade() - returns user score
  */
 function getQuestionHandler(type, data, q_id) {
 	switch (type) {
@@ -15,10 +15,6 @@ function getQuestionHandler(type, data, q_id) {
 		return new PictureResponseHandler(data, q_id);
 	}
 };
-
-function _forward_enter_clicked (elem) {
-	// body...
-}
 
 function PictureResponseHandler(data, q_id) {
 	var _data = data;
@@ -54,6 +50,14 @@ function PictureResponseHandler(data, q_id) {
 		}
 		return {answer:_user_input_elem.value};
 	};
+	this.grade = function () {
+		var user_answer = _user_input_elem.value;
+		if (_data.correct.indexOf(user_answer) != -1) {
+			return _data.score;
+		} else {
+			return 0;
+		}
+	}
 }
 
 
@@ -88,6 +92,15 @@ function SingleAnswerHandler(data, q_id) {
 		}
 		return {answer:_user_input_elem.value};
 	};
+
+	this.grade = function () {
+		var user_answer = _user_input_elem.value;
+		if (_data.correct.indexOf(user_answer) != -1) {
+			return _data.score;
+		} else {
+			return 0;
+		}
+	}
 }
 
 
@@ -143,6 +156,15 @@ function MultipleChoiceHandler(data, q_id) {
 		}
 	};
 	
+	this.grade = function () {
+		var user_answer = get_checked().value;
+		if (_data.correct == user_answer.index) {
+			return _data.score;
+		} else {
+			return 0;
+		}
+	}
+
 	function get_checked() {
 		var check_boxes = document.getElementsByName('mult-c-option-'+_question_id);
 		for (var i = 0; i < check_boxes.length; i++) {
