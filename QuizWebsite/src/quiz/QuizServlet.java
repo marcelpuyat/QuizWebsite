@@ -72,17 +72,13 @@ public class QuizServlet extends HttpServlet {
 		while( (str = br.readLine()) != null ){
 			json_str_response.append(str);
 	    }  
-		JSONObject jSONanswer = new JSONObject(json_str_response.toString());
+		JSONObject jSONresults = new JSONObject(json_str_response.toString());
 		
-		/* Get quiz from Database given ID */   // For now just uses session
-		Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
+		Connection con = (Connection) getServletContext().getAttribute("database_connection");
 		
-		QuizResults results = JSONParser.parseJSONIntoQuizResults(jSONanswer, quiz);
-		
-		JSONObject jSONresults = JSONParser.parseQuizResultsIntoJSON(results);
-		
-		response.getWriter().println(jSONresults.toString());
-		
+		QuizResults results = JSONParser.parseJSONIntoQuizResults(jSONresults, con);
+
+		// TODO put results into database
 	}
 
 }

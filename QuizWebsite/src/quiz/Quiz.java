@@ -17,7 +17,7 @@ import question.*;
  */
 public class Quiz {
 
-	private int quiz_id;
+	private long quiz_id;
 	private Connection con;
 
 	/**
@@ -29,7 +29,7 @@ public class Quiz {
 	 * @param isImmediatelyCorrected
 	 * @param isPracticable
 	 */
-	public Quiz(int quiz_id, Connection con) {
+	public Quiz(long quiz_id, Connection con) {
 		this.quiz_id = quiz_id;
 		this.con = con;
 	}
@@ -71,42 +71,26 @@ public class Quiz {
 			byte[] bytes = questionBlob.getBytes(1, (int)questionBlob.length());
 			@SuppressWarnings("unchecked")
 			ArrayList<Question> questions = (ArrayList<Question>) deserialize(bytes);
-			if (this.isRandom()) {
-				Collections.shuffle(questions);
-			}
+//			if (this.isRandom()) {
+//				Collections.shuffle(questions);
+//			}
 			return questions;
 		}
 		catch (Exception e) { e.printStackTrace(); return null; }
 		
 	}
 	
+	/**
+	 * Used for turning BLOBs into Question Arrays
+	 * @param data
+	 * @return
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	private Object deserialize(byte[] data) throws IOException, ClassNotFoundException {
 	    ByteArrayInputStream in = new ByteArrayInputStream(data);
 	    ObjectInputStream is = new ObjectInputStream(in);
 	    return is.readObject();
-	}
-	
-	/**
-	 * Assumes ArrayList of answers is same size as ArrayList
-	 * of questions. Returns user score given answers.
-	 * @param answers List of answers to questions.
-	 * @return score (int)
-	 */
-	
-	// IMPLEMENT RANDOM CHECKING USING INDEXING (PASS THROUGH GET REQUEST INFO)
-	public int checkAnswers(ArrayList<String> answers) {
-		int userScore = 0;
-		
-		ArrayList<Question> questions = this.getQuestions();
-		
-		for (int question = 0; question < questions.size(); question++) {
-			Question currQuestion = questions.get(question);
-			String currAnswer = answers.get(question);
-			
-			if (currQuestion.isCorrect(currAnswer)) userScore++;
-		}
-		
-		return userScore;
 	}
 	
 	/**

@@ -1,5 +1,6 @@
 package quiz;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -59,6 +60,9 @@ public class JSONParser {
 		jSONquiz.put("creator", quiz.getCreator());
 		jSONquiz.put("is_immediately_corrected", quiz.isImmediatelyCorrected());
 		jSONquiz.put("max_score", quiz.getMaxScore());
+		jSONquiz.put("is_multiple_page", quiz.isMultiplePage());
+		jSONquiz.put("is_randomized", quiz.isRandom());
+		jSONquiz.put("is_practicable", quiz.isPracticable());
 		jSONquiz.put("user_history", parseListIntoSpec(userHistory));
 //		jSONquiz.put("best_alltime", parseListIntoSpec(quizInfo.getBestScoresAllTime()));
 //		jSONquiz.put("best_today", parseListIntoSpec(quizInfo.getBestScoresToday()));
@@ -93,75 +97,21 @@ public class JSONParser {
 	}
 	
 	/**
-	 * Returns a JSONObject given quiz results in this format:
-	 * {
-	 *   feedback: {
-	 *      total_score:100
-	 *      total_correct: 4
-	 *      total_possible: 20
-	 *      }
-	 * }
-	 * @param quizResults QuizResults object
-	 * @return JSONObject according to our spec
-	 */
-	public static JSONObject parseQuizResultsIntoJSON(QuizResults quizResults) {
-		JSONObject jSONresults = new JSONObject();
-		
-		JSONObject feedback = new JSONObject();
-		
-		feedback.accumulate("total_score", (double)quizResults.getUserScore() / quizResults.getMaxScore());
-		feedback.accumulate("total_correct", quizResults.getUserScore());
-		feedback.accumulate("total_possible", quizResults.getMaxScore());
-		
-		jSONresults.put("feedback", feedback);
-		
-		return jSONresults;
-	}
-	
-	/**
 	 * Return a QuizResults object given a JSONObject of answers from the client.
 	 * 
 	 * @param jSONanswers JSON of answers
 	 * @param quiz The quiz taken
 	 * @return
 	 */
-	public static QuizResults parseJSONIntoQuizResults(JSONObject jSONanswers, Quiz quiz) {
+	public static QuizResults parseJSONIntoQuizResults(JSONObject jSONresults, Connection con) {
 		
-		ArrayList<String> answers = new ArrayList<String>();
+		long timeTaken = jSONresults.getLong("time");
+		int userScore = jSONresults.getInt("user_score");
+		String quizIDString = jSONresults.getString("quiz_id");
+		long quizID = Long.parseLong(quizIDString);
+		Quiz thisQuiz = new Quiz(quizID, con);
 		
-		JSONArray arrayOfAnswers = (JSONArray) jSONanswers.get("answers");
-		
-		for (int i = 0; i < arrayOfAnswers.length(); i++) {
-			JSONObject questionResult = (JSONObject)arrayOfAnswers.get(i);
-			String type = (String)questionResult.get("type");
-			
-			JSONObject data = (JSONObject)questionResult.get("data");
-			
-			if (type.equals("multiple-choice")) {
-				answers.add(getAnswerFromMultChoiceJSON(data));
-			}
-			else if (type.equals("single-answer")) {
-				answers.add(getAnswerFromSingleAnswerJSON(data));
-			}
-			else if(type.equals("picture-response")) {
-				answers.add(getAnswerFromPictureResponseJSON(data));
-			}
-			else if(type.equals("multiple-answer")) {
-				answers.add(getAnswerFromMultChoiceMultAnswerJSON(data));
-			}
-			else if (type.equals("matching")) {
-				answers.add(getAnswerFromMatchingAnswerJSON(data));
-			}
-			else break;
-			// TODO FINISH THIS WITH MORE TYPES
-		}
-		
-		int userScore = quiz.checkAnswers(answers);
-		
-		Calendar currentDate = Calendar.getInstance();
-		
-		// UPDATE THIS TO INCLUDE TIME ONCE IT IS PASSED THROUGH JSON! 
-		QuizResults results = new QuizResults(null, quiz.getID(), userScore, quiz.getMaxScore(), currentDate, 0);
+		QuizResults results = new QuizResults(0, quizID, userScore, timeTaken);
 		return results;
 	}
 	

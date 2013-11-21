@@ -10,28 +10,23 @@ import java.util.Calendar;
  */
 public class QuizResults {
 
-	private String username;
-	private int quizID;
-	private Calendar dateTaken;
+	private long user_id;
+	private long quizID;
 	private long timeTaken;
 	private int userScore;
-	private int maxPossibleScore;
 	
 	/**
 	 * Simply stores all info passed in as a Quiz Results object.
 	 * Has a getter method for each field.
-	 * @param username
+	 * @param user_id
 	 * @param quizID
 	 * @param userScore
-	 * @param maxScore
+	 * @param timeTaken
 	 */
-	public QuizResults(String username, int quizID, int userScore,
-			int maxScore, Calendar dateTaken, long timeTaken) {
-		this.username = username;
+	public QuizResults(long user_id, long quizID, int userScore, long timeTaken) {
+		this.user_id = user_id;
 		this.quizID = quizID;
 		this.userScore = userScore;
-		this.maxPossibleScore = maxScore;
-		this.dateTaken = dateTaken;
 		this.timeTaken = timeTaken;
 	}
 	
@@ -39,15 +34,19 @@ public class QuizResults {
 	 * Returns username for user who took the quiz
 	 * @return String username
 	 */
+	public long getUserID() {
+		return user_id;
+	}
+	
 	public String getUsername() {
-		return username;
+		return "To be implemented";
 	}
 	
 	/**
 	 * Returns the quizID
 	 * @return quiz ID
 	 */
-	public int getQuizID() {
+	public long getQuizID() {
 		return quizID;
 	}
 	
@@ -59,13 +58,6 @@ public class QuizResults {
 		return userScore;
 	}
 	
-	/**
-	 * Returns max possible score
-	 * @return max possible score
-	 */
-	public int getMaxScore() {
-		return maxPossibleScore;
-	}
 
 	/**
 	 * Returns a Date object representing when
@@ -73,7 +65,7 @@ public class QuizResults {
 	 * @return
 	 */
 	public Calendar getDateTaken() {
-		return this.dateTaken;
+		return null; //TODO
 	}
 	
 	/**
