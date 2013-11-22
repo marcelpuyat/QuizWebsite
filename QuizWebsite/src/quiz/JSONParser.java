@@ -109,13 +109,10 @@ public class JSONParser {
 	 */
 	public static QuizResults parseJSONIntoQuizResults(JSONObject jSONresults, Connection con) {
 		
-		double timeTaken = jSONresults.getLong("time");
-		double userPercentageScore = jSONresults.getInt("percentage");
+		double timeTaken = jSONresults.getDouble("time");
+		double userPercentageScore = jSONresults.getDouble("percentage");
 		String quizIDString = jSONresults.getString("quiz_id");
 		long quizID = Long.parseLong(quizIDString);
-		
-		/* Use this later on if you want to calculate percentage score */
-		Quiz thisQuiz = new Quiz(quizID, con);
 		
 		QuizResults results = new QuizResults((long)0, quizID, userPercentageScore, timeTaken, con);
 		return results;
@@ -275,6 +272,7 @@ public class JSONParser {
 		
 //		q_data.accumulate("answers,pairsArray);
 		q_data.accumulate("score", question.getScore());
+		q_data.accumulate("partial_credit", question.isPartialCredit());
 		questionInfo.accumulate("data", q_data);
 		return questionInfo;
 	}

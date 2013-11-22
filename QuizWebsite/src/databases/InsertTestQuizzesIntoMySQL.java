@@ -48,6 +48,23 @@ public class InsertTestQuizzesIntoMySQL {
 		closeConnection();
 	}
 	
+	/**
+	 * Adds all test quizzes to quiz map
+	 * @throws IOException 
+	 */
+	private void initializeStubDatabase() throws IOException {
+		addQuizTests();
+		//addQuizResultsTests();
+	}
+	
+	private void addQuizTests() throws IOException {
+		addMultipleChoiceQuiz();
+		addSingleAnswerAndPictureQuiz(); 	
+		addMultipleChoiceMultipleAnswerQuiz();
+		addMatchingQuiz();
+		addFillBlankQuestion();
+	}
+	
 	private Connection createConnection() {
     	try { 
 			Class.forName("com.mysql.jdbc.Driver"); 
@@ -123,22 +140,6 @@ public class InsertTestQuizzesIntoMySQL {
 	    return is.readObject();
 	}
 	
-	/**
-	 * Adds all test quizzes to quiz map
-	 * @throws IOException 
-	 */
-	private void initializeStubDatabase() throws IOException {
-		//addQuizTests();
-		addQuizResultsTests();
-	}
-	
-	private void addQuizTests() throws IOException {
-		addMultipleChoiceQuiz();
-		addSingleAnswerAndPictureQuiz(); 	
-		addMultipleChoiceMultipleAnswerQuiz();
-		addMatchingQuiz();
-		addFillBlankQuestion();
-	}
 	
 	private void addQuizResultsTests() throws IOException {
 		addMultipleChoiceQuizResults();
@@ -261,8 +262,9 @@ public class InsertTestQuizzesIntoMySQL {
 		pairs.add(new StringBooleanPair("Binary search", true));
 		pairs.add(new StringBooleanPair("Inserting into a Binary Search Tree", true));
 		pairs.add(new StringBooleanPair("Bubble-sort", false));
-
-		MultChoiceMultAnswerQuestion question = new MultChoiceMultAnswerQuestion(prompt, pairs, 1);
+		boolean partialCredit = true;
+		
+		MultChoiceMultAnswerQuestion question = new MultChoiceMultAnswerQuestion(prompt, pairs, 1, partialCredit);
 		questions.add(question);
 		
 		String name = "Multiple Answer Quiz";

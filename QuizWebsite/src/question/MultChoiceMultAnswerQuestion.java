@@ -15,6 +15,7 @@ import customObjects.StringBooleanPair;
 public class MultChoiceMultAnswerQuestion extends Question {
 
 	private ArrayList<StringBooleanPair> pairs;
+	private boolean partialCredit;
 	
 	/**
 	 * Constructor.
@@ -22,12 +23,17 @@ public class MultChoiceMultAnswerQuestion extends Question {
 	 * @param options choices
 	 * @param correctOptions String in the form of 0s and 1s, 1 number for each choice. 1 if it is selected, 0 if not.
 	 */
-	public MultChoiceMultAnswerQuestion(String questionString, ArrayList<StringBooleanPair> choicesAndAnswers, int score) {
+	public MultChoiceMultAnswerQuestion(String questionString, ArrayList<StringBooleanPair> choicesAndAnswers, int score, boolean partialCredit) {
 		this.prompt = questionString;
 		this.pairs = choicesAndAnswers;
 		this.score = score;
+		this.partialCredit = partialCredit;
 	}
 
+	public boolean isPartialCredit() {
+		return this.partialCredit;
+	}
+	
 	@Override
 	public int getQuestionType() {
 		return QuestionTypes.MULT_CHOICE_MULT_ANSWER;
