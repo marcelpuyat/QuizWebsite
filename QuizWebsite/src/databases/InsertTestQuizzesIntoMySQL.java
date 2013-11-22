@@ -24,6 +24,7 @@ import question.MultipleChoiceQuestion;
 import question.PictureQuestion;
 import question.Question;
 import question.SingleAnswerQuestion;
+import quiz.QuizResults;
 import customObjects.StringBooleanPair;
 import customObjects.StringPair;
 
@@ -43,7 +44,7 @@ public class InsertTestQuizzesIntoMySQL {
 	public InsertTestQuizzesIntoMySQL() throws IOException {
 		con = createConnection();
 		initializeStubDatabase();
-		test();
+//		test();
 		closeConnection();
 	}
 	
@@ -127,11 +128,24 @@ public class InsertTestQuizzesIntoMySQL {
 	 * @throws IOException 
 	 */
 	private void initializeStubDatabase() throws IOException {
+		//addQuizTests();
+		addQuizResultsTests();
+	}
+	
+	private void addQuizTests() throws IOException {
 		addMultipleChoiceQuiz();
 		addSingleAnswerAndPictureQuiz(); 	
 		addMultipleChoiceMultipleAnswerQuiz();
 		addMatchingQuiz();
 		addFillBlankQuestion();
+	}
+	
+	private void addQuizResultsTests() throws IOException {
+		addMultipleChoiceQuizResults();
+	}
+	
+	private void addMultipleChoiceQuizResults() {
+		QuizResults qr = new QuizResults(0, 49, 66.666, 32.31, this.con);
 	}
 	
 	/**

@@ -92,7 +92,7 @@ public class JSONParser {
 			date.put("date", list.get(i).getDateTaken().get(Calendar.DATE));
 			quizTakingInstance.put("date", date);
 			quizTakingInstance.put("time", list.get(i).getTimeTaken());
-			quizTakingInstance.put("score", list.get(i).getUserScore());
+			quizTakingInstance.put("score", list.get(i).getUserPercentageScore());
 			quizTakingInstance.put("name", list.get(i).getUsername());
 			
 			userQuizTakingInstances.put(quizTakingInstance);
@@ -109,15 +109,15 @@ public class JSONParser {
 	 */
 	public static QuizResults parseJSONIntoQuizResults(JSONObject jSONresults, Connection con) {
 		
-		long timeTaken = jSONresults.getLong("time");
-		int userScore = jSONresults.getInt("user_score");
+		double timeTaken = jSONresults.getLong("time");
+		double userPercentageScore = jSONresults.getInt("percentage");
 		String quizIDString = jSONresults.getString("quiz_id");
 		long quizID = Long.parseLong(quizIDString);
 		
 		/* Use this later on if you want to calculate percentage score */
 		Quiz thisQuiz = new Quiz(quizID, con);
 		
-		QuizResults results = new QuizResults(0, quizID, userScore, timeTaken);
+		QuizResults results = new QuizResults((long)0, quizID, userPercentageScore, timeTaken, con);
 		return results;
 	}
 

@@ -1,5 +1,10 @@
 package quiz;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.Calendar;
 
 /**
@@ -12,22 +17,43 @@ public class QuizResults {
 
 	private long user_id;
 	private long quizID;
-	private long timeTaken;
-	private int userScore;
+	private Connection con;
 	
 	/**
-	 * Simply stores all info passed in as a Quiz Results object.
-	 * Has a getter method for each field.
+	 * Use this to create a new QuizResults instance in database.
 	 * @param user_id
 	 * @param quizID
 	 * @param userScore
 	 * @param timeTaken
 	 */
-	public QuizResults(long user_id, long quizID, int userScore, long timeTaken) {
+	public QuizResults(long user_id, long quizID, double userPercentageScore, double timeTaken, Connection con) {
 		this.user_id = user_id;
 		this.quizID = quizID;
-		this.userScore = userScore;
-		this.timeTaken = timeTaken;
+		this.con = con;
+		createNewQuizResultsInstance(user_id, quizID, userPercentageScore, timeTaken);
+	}
+	
+	/**
+	 * Use this when simply querying a QuizResults instance from database.
+	 * @param user_id
+	 * @param quizID
+	 */
+	public QuizResults(long user_id, long quizID, Connection con) {
+		this.user_id = user_id;
+		this.quizID = quizID;
+		this.con = con;
+	}
+	
+	private void createNewQuizResultsInstance(long user_id, long quizID, double userPercentageScore, double timeTaken) {
+		try {
+			PreparedStatement stmt;
+			stmt = con.prepareStatement("INSERT INTO QuizResults (user_id, quiz_id, time_duration, user_percentage_score) VALUES(?, ?, ?, ?)");
+			stmt.setLong(1, user_id);
+			stmt.setLong(2, quizID);
+			stmt.setDouble(3, timeTaken);
+			stmt.setDouble(4, userPercentageScore);
+			stmt.executeUpdate();
+		} catch (Exception e) { e.printStackTrace(); }
 	}
 	
 	/**
@@ -38,6 +64,7 @@ public class QuizResults {
 		return user_id;
 	}
 	
+	// TODO Use Users database to get username
 	public String getUsername() {
 		return "To be implemented";
 	}
@@ -54,10 +81,15 @@ public class QuizResults {
 	 * Returns the user's score
 	 * @return user's score
 	 */
-	public int getUserScore() {
-		return userScore;
-	}
-	
+	public double getUserPercentageScore() {
+		try {
+			Statement stmt = con.createStatement();
+			String getNameQuery = "SELECT user_percentage_score FROM QuizResults WHERE id = \"" + this.quizID + "\"";
+			ResultSet rs = stmt.executeQuery(getNameQuery);
+			rs.next();
+			return rs.getInt("user_percentage_score");
+		} catch (Exception e) { e.printStackTrace(); } return -1;
+	}	
 
 	/**
 	 * Returns a Date object representing when
@@ -65,7 +97,16 @@ public class QuizResults {
 	 * @return
 	 */
 	public Calendar getDateTaken() {
-		return null; //TODO
+		try {
+			Statement stmt = con.createStatement();
+			String getNameQuery = "SELECT date_taken FROM QuizResults WHERE id = \"" + this.quizID + "\"";
+			ResultSet rs = stmt.executeQuery(getNameQuery);
+			rs.next();
+			Timestamp ts = rs.getTimestamp("date_taken");
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTimeInMillis(ts.getTime());
+			return calendar;
+		} catch (Exception e) { e.printStackTrace(); } return null;
 	}
 	
 	/**
@@ -73,7 +114,13 @@ public class QuizResults {
 	 * to complete this quiz.
 	 * @return
 	 */
-	public long getTimeTaken() {
-		return this.timeTaken;
+	public double getTimeTaken() {
+		try {
+			Statement stmt = con.createStatement();
+			String getNameQuery = "SELECT time_taken FROM QuizResults WHERE id = \"" + this.quizID + "\"";
+			ResultSet rs = stmt.executeQuery(getNameQuery);
+			rs.next();
+			return rs.getInt("time_taken");
+		} catch (Exception e) { e.printStackTrace(); } return -1;
 	}
 }
