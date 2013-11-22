@@ -249,7 +249,9 @@ function FillInBlankHandler (data, q_id) {
 		_user_input_elem = document.createElement('input');
 		_user_input_elem.id = 'single-c-input-'+_question_id;
 		_user_input_elem.type = 'text';
-		_user_input_elem.attach_enter_listener(ui_handler.next);
+		_user_input_elem.attach_enter_listener(function() {
+			ui_handler.next();
+		});
 		_user_input_elem.addEventListener('keydown',
 			function(e){
 				_user_input_elem.style.width = max(5,_user_input_elem.value.length/1.7) + 'em';
@@ -380,7 +382,9 @@ function PictureResponseHandler(data, q_id) {
 		_user_input_elem.id = 'pict-resp-input-'+_question_id;
 		_user_input_elem.type = 'text';
 		_user_input_elem.classList.add('center-block');
-		_user_input_elem.attach_enter_listener(ui_handler.next);
+		_user_input_elem.attach_enter_listener(function() {
+			ui_handler.next();
+		});
 		wrapper.appendChild(_user_input_elem);
 		return wrapper;
 	};
@@ -418,7 +422,9 @@ function SingleAnswerHandler(data, q_id) {
 		_user_input_elem.id = 'single-c-input-'+_question_id;
 		_user_input_elem.type = 'text';
 		_user_input_elem.classList.add('center-block');
-		_user_input_elem.attach_enter_listener(ui_handler.next);
+		_user_input_elem.attach_enter_listener(function() {
+			ui_handler.next();
+		});
 		wrapper.appendChild(_user_input_elem);
 		return wrapper;
 	};
