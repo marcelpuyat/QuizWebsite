@@ -116,28 +116,29 @@ function MultipleChoiceHandler(data, q_id) {
 		var lis = [];
 		for (var i = 0; i < options.length; i++) {
 			lis.push(document.createElement('li'));
-			var new_in = document.createElement('input');
-			new_in.type = 'radio';
-			new_in.name = "mult-c-option-"+_question_id;
-			new_in.index_selected = i;
-			new_in.value = options[i];
-			if (i == 0) {
-				new_in.checked = true;
-				_last_clicked = i;
-			}
-			new_in.addEventListener('click', function (e) {
-				if (e.x != 0 && e.y != 0) {
-					_last_clicked = e.toElement.index_selected;
-				}
-			})
 			var new_option_label = document.createElement('span');
 			new_option_label.innerHTML = options[i];
 			new_option_label.classList.add('mult-c-option-label');
-			lis[i].appendChild(new_in);
 			lis[i].appendChild(new_option_label);
+			lis[i].index_selected = i;
+			lis[i].prompt_name = options[i];
+			lis[i].classList.add('pointable','mult-c-selection');
+			var click_listener = function (e) {
+				for (var i = 0; i < lis.length; i++) {
+					lis[i].classList.remove('selected');
+				}
+				_last_clicked = this.index_selected;
+				this.classList.add('selected');
+				console.log(this.prompt_name);
+			};
+			lis[i].addEventListener('click', click_listener, false);//bubble
 		};
 		lis.shuffle();
 		for (var i = 0; i < lis.length; i++) {
+			if (i == 0) {
+				lis[i].classList.add('selected');
+				_last_clicked = lis[i].index_selected;
+			}
 			options_ul.appendChild(lis[i]);
 		};
 		wrapper.appendChild(options_ul);
