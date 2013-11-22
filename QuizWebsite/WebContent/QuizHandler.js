@@ -167,12 +167,9 @@ function QuizHandler(quiz_id, servlet_url) {
 		}, {quiz_id:quiz_id, client_aux:aux, client_callback:callback});
 	}
 	function _build_results() {
-		console.log('build');
 		var score_data = {quiz_id:_quiz_id,time:get_elapsed_time(),user_score:0,possible_score:0,percentage:0};
 		for (var i = 0; i < _questions.length; i++) {
 			var score_for_q = _questions[i].grade(); //{score:int,possible:int}
-			console.log('grading '+i+':');
-			console.log(score_for_q);
 			score_data.user_score += score_for_q.score;
 			score_data.possible_score += score_for_q.possible;
 		}

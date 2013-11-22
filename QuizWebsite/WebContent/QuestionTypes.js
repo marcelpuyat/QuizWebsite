@@ -146,7 +146,6 @@ function MultipleChoiceHandler(data, q_id) {
 			}
 			new_in.addEventListener('click', function (e) {
 				if (e.x != 0 && e.y != 0) {
-					console.log(e);
 					_last_clicked = e.toElement.index_selected;
 				}
 			})
