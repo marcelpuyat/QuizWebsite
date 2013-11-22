@@ -1,14 +1,6 @@
 /**
  * 
  */
-function print_all_mc () {
-	for (var i = 0; i < 20; i++) {
-		var mc = document.getElementsByName('mult-c-option-'+i);
-		for (var n = 0; n < mc.length; n++) {
-			if(mc[n].checked) console.log(mc[n].value);
-		};
-	};
-}
 var wrapper_elem = document.getElementById('quiz-prompt-content');
 var ui_handler;
 function init_js(quiz_id) {
