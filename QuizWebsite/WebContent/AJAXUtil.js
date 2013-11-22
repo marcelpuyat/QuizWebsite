@@ -62,6 +62,13 @@ function max (a,b,comp) {
 	else return b;
 }
 
+// adapted from...
+//+ Jonas Raoni Soares Silva
+//@ http://jsfromhell.com/array/shuffle [v1.0]
+Array.prototype.shuffle = function () {
+	for(var j, x, i = this.length; i; j = Math.floor(Math.random() * i), x = this[--i], this[i] = this[j], this[j] = x);
+	return this;
+}
 
 //q.addEventListener('keydown',function(e){q.style.width = max(10,q.value.length/1.6) + 'em';});
 //q.style.textAlign = 'center'

@@ -114,8 +114,8 @@ function MultipleChoiceHandler(data, q_id) {
 	var _data = data;
 	var _selection;
 	var _this = this;
-	var _user_input_elems = [];
 	var _question_id = q_id;
+	var _last_clicked;
 	this.getType = function () {
 		return 'multiple-choice';
 	};
@@ -132,22 +132,34 @@ function MultipleChoiceHandler(data, q_id) {
 		var options = _data.options;
 		var options_ul = document.createElement('ul');
 		options_ul.classList.add('mult-c-options');
+		var lis = [];
 		for (var i = 0; i < options.length; i++) {
-			var new_option_wrapper = document.createElement('li');
-			_user_input_elems.push(document.createElement('input'));
-			_user_input_elems[i].type = 'radio';
-			_user_input_elems[i].name = "mult-c-option-"+_question_id;
-			_user_input_elems[i].index_selected = i;
-			_user_input_elems[i].title = i.toString();
-			_user_input_elems[i].value = options[i];
-			_user_input_elems[i].checked = true;
+			lis.push(document.createElement('li'));
+			var new_in = document.createElement('input');
+			new_in.type = 'radio';
+			new_in.name = "mult-c-option-"+_question_id;
+			new_in.index_selected = i;
+			new_in.value = options[i];
+			if (i == 0) {
+				new_in.checked = true;
+				_last_clicked = i;
+			}
+			new_in.addEventListener('click', function (e) {
+				if (e.x != 0 && e.y != 0) {
+					console.log(e);
+					_last_clicked = e.toElement.index_selected;
+				}
+			})
 			var new_option_label = document.createElement('span');
 			new_option_label.innerHTML = options[i];
 			new_option_label.classList.add('mult-c-option-label');
-			new_option_wrapper.appendChild(_user_input_elems[i]);
-			new_option_wrapper.appendChild(new_option_label);
-			options_ul.appendChild(new_option_wrapper);
-		}	
+			lis[i].appendChild(new_in);
+			lis[i].appendChild(new_option_label);
+		};
+		lis.shuffle();
+		for (var i = 0; i < lis.length; i++) {
+			options_ul.appendChild(lis[i]);
+		};
 		wrapper.appendChild(options_ul);
 		return wrapper;
 	};
@@ -164,13 +176,7 @@ function MultipleChoiceHandler(data, q_id) {
 	
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
-		var user_answer = get_checked();
-		console.log('selection:'+user_answer.index_selected+'-'+user_answer.value+' correct: ' + _data.correct);
-		if (_data.correct.toString() == user_answer.index_selected) {
-			score.score = _data.score;
-		} else {
-			score.score = 0;
-		}
+		if (_last_clicked == _data.correct) score.score = _data.score;
 		return score;
 	}
 

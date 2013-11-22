@@ -203,6 +203,12 @@ function UIHandler (quiz_handler, card_wrapper) {
 	                    case 38: break;
 	                    case 39://right
 	                    	_this.next();
+	                    	if(e && e.stopPropagation) {
+	                    		e.stopPropagation();
+	                    	} else {
+	                    		e = window.event;
+	                    		e.cancelBubble = true;
+	                    	}
 	                    	break;
 	                    case 40: break;
 	                }
@@ -228,10 +234,16 @@ String.prototype.capitalizeFirst = function() {
 
 Node.prototype.attach_enter_listener = function(fn) {
 	console.log('attaching');
-	this.addEventListener('keypress', function (e) {
+	this.addEventListener('keydown', function (e) {
 		switch (e.keyCode) {
 			case (13):
 				fn();
+				if(e && e.stopPropagation) {
+					e.stopPropagation();
+				} else {
+					e = window.event;
+					e.cancelBubble = true;
+				}
 		}
 	})
 };
