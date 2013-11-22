@@ -25,20 +25,22 @@ public class Home extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("Quiz.jsp?quiz_id=000047"); // 29 is Mult Choice
-														  // 31 is Single Answer 
-														  // 33 is Multiple Answer
-														  // 35 is Matching Question
+		response.sendRedirect("Quiz.jsp?quiz_id=000041"); // 39 is Mult Choice
+														  // 41 is Single Answer 
+														  // 43 is Multiple Answer
+														  // 45 is Matching Question
+														  // 47 is Fill in Blank questions
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("Quiz.jsp?quiz_id=000047"); // 29 is Mult Choice
-														  // 31 is Single Answer 
-														  // 33 is Multiple Answer
-														  // 35 is Matching Question
+		response.sendRedirect("Quiz.jsp?quiz_id=000041"); // 39 is Mult Choice
+														  // 41 is Single Answer 
+														  // 43 is Multiple Answer
+														  // 45 is Matching Question
+														  // 47 is Fill in Blank questions
 	}
 
 }
