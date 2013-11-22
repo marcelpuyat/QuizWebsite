@@ -80,10 +80,16 @@ function MatchingHandler (data, q_id) {
 				}
 			};
 			var did_drag = function (e) {
+				deselect_all(['selected','false']);
 				if (_drag.target) {
-					get_capture_elem(e);
+					get_capture_elem(e,['selected']);
 					_drag.target.style.left = (e.clientX - _drag.captureX) + 'px';
 					_drag.target.style.top = (e.clientY - _drag.captureY) + 'px';
+				} else {
+					var capture = get_capture_elem(e,[]);
+					if (capture && capture.captive) {
+						capture.classList.add('false');
+					}
 				}
 			}
 			var begin_drag = function (e) {
@@ -93,8 +99,9 @@ function MatchingHandler (data, q_id) {
 				_drag.target.classList.add('moving');
 			}
 			var end_drag = function (e) {
+				deselect_all(['selected']);
 				if (_drag.target) {
-					var capture = get_capture_elem(e);
+					var capture = get_capture_elem(e,['selected']);
 					if (capture) {
 						if (capture.captive) {
 							release_captive(capture);
@@ -115,17 +122,22 @@ function MatchingHandler (data, q_id) {
 				capture.captive.classList.remove('moving','hide');
 				capture.captive.isCaptive = false;
 				capture.captive = undefined;
+			};
+			var deselect_all = function (classes) {
+				for (var i = 0; i < _capture_lis.length; i++) {
+					for (var c = 0; c < classes.length; c++) _capture_lis[i].classList.remove(classes[c]);
+				};
 			}
-			var get_capture_elem = function (e) {
+			var get_capture_elem = function (e, toggle_classes) {
 				var cap_li;
 				for (var i = 0; i < _capture_lis.length; i++) {
 					var bounding_rect = _capture_lis[i].getBoundingClientRect();
 					if (e.clientX > bounding_rect.left && e.clientX < bounding_rect.left + bounding_rect.width &&
 						e.clientY > bounding_rect.top && e.clientY < bounding_rect.top + bounding_rect.height) {
-						_capture_lis[i].classList.add('selected');
+						for (var c = 0; c < toggle_classes.length; c++) _capture_lis[i].classList.add(toggle_classes[c]);
 						cap_li = _capture_lis[i];
 					} else {
-						_capture_lis[i].classList.remove('selected');
+						for (var c = 0; c < toggle_classes.length; c++) _capture_lis[i].classList.remove(toggle_classes[c]);
 					}
 				};
 				return cap_li;

@@ -40,8 +40,6 @@ function UIHandler (quiz_handler, card_wrapper) {
 	};
 
 	this.next = function () {
-		console.log('caller:');
-		console.log(this);
 		if (_q_handler.isMultiPage()) {
 			var prev_it = _iterator;
 			if (_q_handler.indexExists(++_iterator)) {
