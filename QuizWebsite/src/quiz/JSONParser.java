@@ -152,15 +152,11 @@ public class JSONParser {
 		q_data.accumulate("optional_prompt", question.getOptionalPrompt());
 		q_data.accumulate("first_prompt", question.getFirstPrompt());
 		q_data.accumulate("second_prompt", question.getSecondPrompt());
-		
-//		JSONArray answersArray = new JSONArray();
-		
+				
 		for (String answer : question.getPossibleAnswers()) {
-//			answersArray.put(answer);
 			q_data.accumulate("answers", answer);
 		}
 		
-//		q_data.accumulate("answers", answersArray);
 		q_data.accumulate("score", question.getScore());
 		questionInfo.accumulate("data", q_data);
 		return questionInfo;
@@ -259,18 +255,14 @@ public class JSONParser {
 		q_data.accumulate("prompt", question.getPrompt());
 		
 		ArrayList<StringBooleanPair> optionsAndAnswers = question.getPairs();
-		
-//		JSONArray pairsArray = new JSONArray();
-		
+				
 		for (StringBooleanPair pair : optionsAndAnswers) {
 			JSONArray newPair = new JSONArray();
 			newPair.put(pair.getStr());
 			newPair.put(pair.getBool());
-//			pairsArray.put(newPair);
 			q_data.accumulate("answers", newPair);
 		}
 		
-//		q_data.accumulate("answers,pairsArray);
 		q_data.accumulate("score", question.getScore());
 		q_data.accumulate("partial_credit", question.isPartialCredit());
 		questionInfo.accumulate("data", q_data);

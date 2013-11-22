@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import question.*;
 
@@ -17,6 +16,7 @@ import question.*;
  */
 public class Quiz {
 
+	public static int AUTO_INCREMENT_OFFSET = 1;
 	private long quiz_id;
 	private Connection con;
 
@@ -34,7 +34,16 @@ public class Quiz {
 		this.con = con;
 	}
 	
-	public int getNextAvailableID() {
+	/**
+	 * Use this to create new quiz, passing in all necessary fields
+	 * @param con
+	 */
+	public Quiz(Connection con) {
+		this.quiz_id = Quiz.getNextAvailableID(con);
+		this.con = con;
+	}
+	
+	public static int getNextAvailableID(Connection con) {
 		try {
 			Statement stmt = con.createStatement();
 			String getNextIDQuery = "SELECT AUTO_INCREMENT FROM information_schema.tables WHERE table_name = 'Quizzes' AND table_schema = 'c_cs108_marcelp'";
@@ -42,14 +51,15 @@ public class Quiz {
 			rs.next();
 			int nextID = rs.getInt(1);
 			System.out.println(nextID);
-			return nextID;
+			return nextID + AUTO_INCREMENT_OFFSET;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("-1");
 			return -1;
 		}
-		
 	}
+	
+	
 	public String getName() {
 		try {
 			Statement stmt = con.createStatement();

@@ -47,8 +47,7 @@ public class InsertTestQuizzesIntoMySQL {
 		//initializeStubDatabase();
 //		test();
 		
-		Quiz q = new Quiz((long)2, con);
-		q.getNextAvailableID();
+		Quiz.getNextAvailableID(con);
 		closeConnection();
 	}
 	
