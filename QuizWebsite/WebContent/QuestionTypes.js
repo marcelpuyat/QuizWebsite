@@ -129,7 +129,6 @@ function MultipleChoiceHandler(data, q_id) {
 				}
 				_last_clicked = this.index_selected;
 				this.classList.add('selected');
-				console.log(this.prompt_name);
 			};
 			lis[i].addEventListener('click', click_listener, false);//bubble
 		};
@@ -171,7 +170,9 @@ function PictureResponseHandler(data, q_id) {
 		var wrapper = document.createElement('div');
 		var img_disp = document.createElement('img');
 		img_disp.src = _data.img_url;
-		img_disp.classList.add('picutre-response-img','center-block');
+		img_disp.classList.add('picutre-response-img',
+							'center-block',
+							(_data.prompt == undefined || _data.prompt == '')? 'large':'small');
 		wrapper.appendChild(img_disp);
 		var prompt_div = document.createElement('h2');
 		prompt_div.classList.add('prompt');

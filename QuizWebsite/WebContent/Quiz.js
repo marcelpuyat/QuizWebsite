@@ -217,7 +217,6 @@ function resize_app() {
 
 
 Node.prototype.attach_enter_listener = function(fn) {
-	console.log('attaching');
 	this.addEventListener('keydown', function (e) {
 		switch (e.keyCode) {
 			case (13):
