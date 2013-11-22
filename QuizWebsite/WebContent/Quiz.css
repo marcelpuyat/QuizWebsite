@@ -100,44 +100,78 @@ body {
 				background-color:#E0F0E0;
 			}
 			
-			.mult-c-selection {
-				padding:3px;
-				margin:5px 0px;
-				box-shadow:0px 1px 7px rgba(0,0,0,0.15);
-				border-radius: 3px;
-
-				-webkit-transition:0.4s;
-				-moz-transition:0.4s;
-				-o-transition:0.4s;
-				-ms-transition:0.4s;
-				transition:0.4s;
-			}
-
-			.mult-c-selection.selected {
-				box-shadow:0px 1px 3px rgba(0,0,0,0.06) inset;
-				background-color: rgba(102, 233, 155, 0.4);
-			}
-			
 
 /* prompt */
 
 
 /* QUIZ SPECIFIC STYLING */
+.selection {
+	padding:3px;
+	margin:5px 0px;
+	box-shadow:0px 1px 7px rgba(0,0,0,0.15);
+	border-radius: 3px;
+
+	-webkit-transition:0.4s;
+	-moz-transition:0.4s;
+	-o-transition:0.4s;
+	-ms-transition:0.4s;
+	transition:0.4s;
+}
+
+
+.selection.movable {
+	display: inline;
+}
+
+.no-highlight {
+	-webkit-user-select:none;
+	-moz-user-select:none;
+	-o-user-select:none;
+	-ms-user-select:none;
+	user-select:none;
+}
+
+.selection.movable.moving {
+	position: relative;
+	-webkit-transition:0.0s;
+	-moz-transition:0.0s;
+	-o-transition:0.0s;
+	-ms-transition:0.0s;
+	transition:0.0s;
+}
+
+.selection.selected, .selection.true {
+	background-color: rgba(102, 233, 155, 0.4);
+}
+.selection.true, .selection.false, .selection.selected {
+	box-shadow:0px 1px 3px rgba(0,0,0,0.06) inset;
+}
+.selection.false {
+	background-color: rgba(200,138,124,0.6);
+}
 h2.prompt {
 	margin:20px auto;
 	font-weight:lighter;
 	text-align:center
 }
-ul.mult-c-options {
-	width:50%;
+ul.options {
 	margin:auto;
 	padding:0;
 }
+ul.options:not(.cluster) {
+	width:50%;
+}
+ul.options.cluster {
+	text-align: center;
+}
 	
-	.mult-c-option-label {
+	.option-label {
 		padding:0px 10px;
 	}
 	
+.option-label.right {
+	float: right;
+}
 /* picture response */
 .picutre-response-img {
 	border-radius: 3px;

@@ -9,13 +9,11 @@ function getQuestionHandler(type, data, q_id) {
 	case ('multiple-choice'):
 		return new MultipleChoiceHandler(data, q_id);
 	case ('multiple-answer'):
-		console.log(type+' NOT IMPLEMENTED');
-		return;
+		return new MultipleAnswerHandler(data, q_id);
 	case ('picture-response'):
 		return new PictureResponseHandler(data, q_id);
 	case ('matching'):
-		console.log(type+' NOT IMPLEMENTED');
-		return;
+		return new MatchingHandler(data, q_id);
 	case ('fill-blank'):
 		return new FillInBlankHandler(data, q_id);
 	case ('single-answer'):
@@ -25,9 +23,208 @@ function getQuestionHandler(type, data, q_id) {
 
 // function QuestionHandler (data, q_id) {
 // 	this.getType = function () {};
-// 	this.getDOMSubStructure = function () {}
-// 	this.grade = function () {return {score:0,possible:_data.score};}
+// 	this.getDOMSubStructure = function () {};
+// 	this.grade = function () {return {score:0,possible:_data.score};};
 // }
+
+function MatchingHandler (data, q_id) {
+	var _data = data;
+	var _this = this;
+	var _question_id = q_id;
+	var _drag = {target:undefined,captureX:0,captureY:0,reciever:undefined};
+	_capture_lis = [];
+	this.getType = function () { return 'matching'};
+	this.getDOMSubStructure = function () {
+		var wrapper = document.createElement('div');
+		
+		var prompt = _data.prompt;
+		var prompt_div = document.createElement('h2');
+		prompt_div.classList.add('prompt');
+		prompt_div.innerHTML = _data.prompt;
+		wrapper.appendChild(prompt_div);
+		
+		var options = _data.answers;
+		var options_ul = document.createElement('ul');
+		options_ul.classList.add('options','cluster','no-highlight');
+
+		var capture_ul = document.createElement('ul');
+		capture_ul.classList.add('options','no-highlight');
+
+
+		var option_lis = [];
+		for (var i = 0; i < options.length; i++) {
+			_capture_lis.push(document.createElement('li'));
+			var new_capture_label = document.createElement('span');
+			new_capture_label.innerHTML = options[i][0];
+			new_capture_label.classList.add('match','option-label','pointable');
+			_capture_lis[i].appendChild(new_capture_label);
+
+			var captured_item_label = document.createElement('span');
+			captured_item_label.classList.add('match','option-label','right','pointable');
+			_capture_lis[i].appendChild(captured_item_label);
+			_capture_lis[i].captured_item_label = captured_item_label;
+			_capture_lis[i].sorting_index = i;
+			_capture_lis[i].classList.add('match','selection','pointable');
+
+			option_lis.push(document.createElement('li'));
+			var new_option_label = document.createElement('span');
+			new_option_label.innerHTML = options[i][1];
+			new_option_label.classList.add('match','option-label','pointable');
+			option_lis[i].appendChild(new_option_label);
+			option_lis[i].classList.add('pointable','match','selection','movable');
+			option_lis[i].isCaptive = false;
+			option_lis[i].label_text = options[i][1];
+			var click_listener = function (e) {
+				if (this.captive) {
+					release_captive(this);
+				}
+			};
+			var did_drag = function (e) {
+				if (_drag.target) {
+					get_capture_elem(e);
+					_drag.target.style.left = (e.clientX - _drag.captureX) + 'px';
+					_drag.target.style.top = (e.clientY - _drag.captureY) + 'px';
+				}
+			}
+			var begin_drag = function (e) {
+				_drag.target = this;
+				_drag.captureX = e.clientX;
+				_drag.captureY = e.clientY;
+				_drag.target.classList.add('moving');
+			}
+			var end_drag = function (e) {
+				if (_drag.target) {
+					var capture = get_capture_elem(e);
+					if (capture) {
+						if (capture.captive) {
+							release_captive(capture);
+						}
+						capture.captive = _drag.target;
+						_drag.target.classList.add('hide');
+						_drag.target.isCaptive = true;
+						capture.captured_item_label.innerHTML = _drag.target.label_text;
+					} else {
+						_drag.target.classList.remove('moving');
+					}
+					_drag.target = undefined;
+					_drag.reciever = undefined;
+				}
+			}
+			var release_captive = function (capture) {
+				capture.captured_item_label.innerHTML = '';
+				capture.captive.classList.remove('moving','hide');
+				capture.captive.isCaptive = false;
+				capture.captive = undefined;
+			}
+			var get_capture_elem = function (e) {
+				var cap_li;
+				for (var i = 0; i < _capture_lis.length; i++) {
+					var bounding_rect = _capture_lis[i].getBoundingClientRect();
+					if (e.clientX > bounding_rect.left && e.clientX < bounding_rect.left + bounding_rect.width &&
+						e.clientY > bounding_rect.top && e.clientY < bounding_rect.top + bounding_rect.height) {
+						_capture_lis[i].classList.add('selected');
+						cap_li = _capture_lis[i];
+					} else {
+						_capture_lis[i].classList.remove('selected');
+					}
+				};
+				return cap_li;
+			}
+			_capture_lis[i].addEventListener('click', click_listener);//bubble
+			window.addEventListener('mousemove',did_drag, true);
+			option_lis[i].addEventListener('mousedown',begin_drag);
+			window.addEventListener('mouseup',end_drag);
+		};
+		option_lis.shuffle();
+		for (var i = 0; i < option_lis.length; i++) {
+			options_ul.appendChild(option_lis[i]);
+		};
+		wrapper.appendChild(options_ul);
+
+		_capture_lis.shuffle();
+		for (var i = 0; i < _capture_lis.length; i++) {
+			capture_ul.appendChild(_capture_lis[i]);
+		};
+		wrapper.appendChild(capture_ul);
+		return wrapper;
+	};
+	this.grade = function () {
+		var score = {score:0,possible:_data.score};
+		var per_match_score = _data.score / _capture_lis.length;
+		_capture_lis.sort(function (a,b) {
+			return a.sorting_index - b.sorting_index;
+		});
+		for (var i = 0; i < _capture_lis.length; i++) {
+			if (_capture_lis[i].captive && _capture_lis[i].captive.label_text == _data.answers[i][1]) score.score += per_match_score;
+		};
+		return score;
+	};
+}
+
+function MultipleAnswerHandler(data, q_id) {
+	var _data = data;
+	var _selection;
+	var _this = this;
+	var _question_id = q_id;
+	var _lis = [];
+	this.getType = function () {return 'multiple-answer';};
+	/* returns a DOM element which will be inserted into the quiz's 'quiz-content' div */
+	this.getDOMSubStructure = function () {
+		var wrapper = document.createElement('div');
+		
+		var prompt = _data.prompt;
+		var prompt_div = document.createElement('h2');
+		prompt_div.classList.add('prompt');
+		prompt_div.innerHTML = _data.prompt;
+		wrapper.appendChild(prompt_div);
+		
+		var options = _data.answers;
+		var options_ul = document.createElement('ul');
+		options_ul.classList.add('options');
+		for (var i = 0; i < options.length; i++) {
+			_lis.push(document.createElement('li'));
+			var new_option_label = document.createElement('span');
+			new_option_label.innerHTML = options[i][0];
+			new_option_label.classList.add('mult-ans','option-label');
+			_lis[i].appendChild(new_option_label);
+			_lis[i].truth_eval = false;
+			_lis[i].sorting_index = i;
+			_lis[i].classList.add('pointable','mult-ans','selection');
+			var click_listener = function (e) {
+				this.truth_eval = !this.truth_eval;
+				this.classList.remove('true','false');
+				this.classList.add(this.truth_eval ? 'true' : 'false');
+			};
+			_lis[i].addEventListener('click', click_listener, false);//bubble
+		};
+		_lis.shuffle();
+		for (var i = 0; i < _lis.length; i++) {
+			_lis[i].classList.add(this.truth_eval ? 'true' : 'false');
+			options_ul.appendChild(_lis[i]);
+		};
+		wrapper.appendChild(options_ul);
+		return wrapper;
+	};
+	
+	this.grade = function () {
+		var score = {score:0,possible:_data.score};
+		var per_match_score = _data.score / _lis.length;
+		_lis.sort(function (a,b) {
+			return a.sorting_index - b.sorting_index;
+		});
+		for (var i = 0; i < _lis.length; i++) {
+			if (_lis[i].truth_eval == _data.answers[i][1]) score.score += per_match_score;
+		};
+		return score;
+	}
+
+	function get_checked() {
+		var check_boxes = _user_input_elems;
+		for (var i = 0; i < check_boxes.length; i++) {
+			if (check_boxes[i].checked) return check_boxes[i];
+		}
+	}
+}
 
 function FillInBlankHandler (data, q_id) {
 	var _data = data;
@@ -112,17 +309,17 @@ function MultipleChoiceHandler(data, q_id) {
 		
 		var options = _data.options;
 		var options_ul = document.createElement('ul');
-		options_ul.classList.add('mult-c-options');
+		options_ul.classList.add('mult-c','options');
 		var lis = [];
 		for (var i = 0; i < options.length; i++) {
 			lis.push(document.createElement('li'));
 			var new_option_label = document.createElement('span');
 			new_option_label.innerHTML = options[i];
-			new_option_label.classList.add('mult-c-option-label');
+			new_option_label.classList.add('mult-c','option-label');
 			lis[i].appendChild(new_option_label);
 			lis[i].index_selected = i;
 			lis[i].prompt_name = options[i];
-			lis[i].classList.add('pointable','mult-c-selection');
+			lis[i].classList.add('pointable','mult-c','selection');
 			var click_listener = function (e) {
 				for (var i = 0; i < lis.length; i++) {
 					lis[i].classList.remove('selected');

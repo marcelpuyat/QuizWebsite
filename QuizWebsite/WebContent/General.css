@@ -57,7 +57,7 @@ input[type="text"] {
 }
 
 .hide {
-	display: none;
+	display: none!important;
 }
 
 #content-wrapper {
