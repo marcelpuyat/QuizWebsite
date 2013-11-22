@@ -2,113 +2,33 @@
  * MUST IMPLEMENT!!: __constructor__(data, q_id) - id must be unique to ensure unique id tags in generated elems
  * 	   				 getType() - returns type
  *                   getDOMSubStructure(bool addButton) - returns displayed DOM structure
- *                   format_answer() - returns object to be inserted into JSON
  *					 grade() - returns user score in form {score:int, possible:int};
  */
 function getQuestionHandler(type, data, q_id) {
 	switch (type) {
 	case ('multiple-choice'):
 		return new MultipleChoiceHandler(data, q_id);
-	case ('single-answer'):
-		return new SingleAnswerHandler(data, q_id);
+	case ('multiple-answer'):
+		console.log(type+' NOT IMPLEMENTED');
+		return;
 	case ('picture-response'):
 		return new PictureResponseHandler(data, q_id);
+	case ('matching'):
+		console.log(type+' NOT IMPLEMENTED');
+		return;
+	case ('fill-blank'):
+		console.log(type+' NOT IMPLEMENTED');
+		return;
+	case ('single-answer'):
+		return new SingleAnswerHandler(data, q_id);
 	}
 };
 
-function PictureResponseHandler(data, q_id) {
-	var _data = data;
-	var _answer;
-	var _user_input_elem;
-	var _question_id = q_id;
-	this.getType = function() {
-		return "picture-response";
-	};
-	this.getDOMSubStructure = function () {
-		var wrapper = document.createElement('div');
-		var img_disp = document.createElement('img');
-		img_disp.src = _data.img_url;
-		img_disp.classList.add('picutre-response-img','center-block');
-		wrapper.appendChild(img_disp);
-		var prompt_div = document.createElement('h2');
-		prompt_div.classList.add('prompt');
-		prompt_div.innerHTML = _data.prompt;
-		wrapper.appendChild(prompt_div);
-		
-		_user_input_elem = document.createElement('input');
-		_user_input_elem.id = 'pict-resp-input-'+_question_id;
-		_user_input_elem.type = 'text';
-		_user_input_elem.classList.add('center-block');
-		_user_input_elem.attach_enter_listener(ui_handler.next);
-		wrapper.appendChild(_user_input_elem);
-		return wrapper;
-	};
-	
-	this.format_answer = function() {
-		if (_user_input_elem == undefined) {
-			return {answer:null};
-		}
-		return {answer:_user_input_elem.value};
-	};
-	this.grade = function () {
-		var score = {score:0,possible:_data.score};
-		var user_answer = _user_input_elem.value;
-		if (_data.correct.indexOf(user_answer) != -1) {
-			score.score = _data.score;
-		} else {
-			score.score = 0;
-		}
-		return score;
-	}
-}
-
-
-
-function SingleAnswerHandler(data, q_id) {
-	var _data = data;
-	var _answer;
-	var _user_input_elem;
-	var _question_id = q_id;
-	this.getType = function () {
-		return 'single-answer';
-	};
-	this.getDOMSubStructure = function () {
-		var wrapper = document.createElement('div');
-		var prompt_div = document.createElement('h2');
-		prompt_div.classList.add('prompt');
-		prompt_div.innerHTML = _data.prompt;
-		wrapper.appendChild(prompt_div);
-		
-		_user_input_elem = document.createElement('input');
-		_user_input_elem.id = 'single-c-input-'+_question_id;
-		_user_input_elem.type = 'text';
-		_user_input_elem.classList.add('center-block');
-		_user_input_elem.attach_enter_listener(ui_handler.next);
-		wrapper.appendChild(_user_input_elem);
-		return wrapper;
-	};
-	
-	this.format_answer = function() {
-		if (_user_input_elem == undefined) {
-			return {answer:null};
-		}
-		return {answer:_user_input_elem.value};
-	};
-
-	this.grade = function () {
-		var score = {score:0,possible:_data.score};
-		var user_answer = _user_input_elem.value;
-		if (_data.correct.indexOf(user_answer) != -1) {
-			score.score = _data.score;
-		} else {
-			score.score = 0;
-		}
-		return score;
-	}
-}
-
-
-
+// function QuestionHandler (data, q_id) {
+// 	this.getType = function () {};
+// 	this.getDOMSubStructure = function () {}
+// 	this.grade = function () {return {score:0,possible:_data.score};}
+// }
 
 function MultipleChoiceHandler(data, q_id) {
 	var _data = data;
@@ -162,16 +82,6 @@ function MultipleChoiceHandler(data, q_id) {
 		wrapper.appendChild(options_ul);
 		return wrapper;
 	};
-	/* returns object properly formatted to be returned with answer JSON */
-	this.format_answer = function() {
-		var checked = get_checked();
-		if (checked == undefined) {
-			return {};
-		} else {
-			var checked = get_checked();
-			return {item_selected:checked.value,index_selected:checked.index_selected};
-		}
-	};
 	
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
@@ -186,3 +96,84 @@ function MultipleChoiceHandler(data, q_id) {
 		}
 	}
 }
+
+function PictureResponseHandler(data, q_id) {
+	var _data = data;
+	var _answer;
+	var _user_input_elem;
+	var _question_id = q_id;
+	this.getType = function() {
+		return "picture-response";
+	};
+	this.getDOMSubStructure = function () {
+		var wrapper = document.createElement('div');
+		var img_disp = document.createElement('img');
+		img_disp.src = _data.img_url;
+		img_disp.classList.add('picutre-response-img','center-block');
+		wrapper.appendChild(img_disp);
+		var prompt_div = document.createElement('h2');
+		prompt_div.classList.add('prompt');
+		prompt_div.innerHTML = _data.prompt;
+		wrapper.appendChild(prompt_div);
+		
+		_user_input_elem = document.createElement('input');
+		_user_input_elem.id = 'pict-resp-input-'+_question_id;
+		_user_input_elem.type = 'text';
+		_user_input_elem.classList.add('center-block');
+		_user_input_elem.attach_enter_listener(ui_handler.next);
+		wrapper.appendChild(_user_input_elem);
+		return wrapper;
+	};
+	
+	this.grade = function () {
+		var score = {score:0,possible:_data.score};
+		var user_answer = _user_input_elem.value;
+		if (_data.correct.indexOf(user_answer) != -1) {
+			score.score = _data.score;
+		} else {
+			score.score = 0;
+		}
+		return score;
+	}
+}
+
+
+
+function SingleAnswerHandler(data, q_id) {
+	var _data = data;
+	var _answer;
+	var _user_input_elem;
+	var _question_id = q_id;
+	this.getType = function () {
+		return 'single-answer';
+	};
+	this.getDOMSubStructure = function () {
+		var wrapper = document.createElement('div');
+		var prompt_div = document.createElement('h2');
+		prompt_div.classList.add('prompt');
+		prompt_div.innerHTML = _data.prompt;
+		wrapper.appendChild(prompt_div);
+		
+		_user_input_elem = document.createElement('input');
+		_user_input_elem.id = 'single-c-input-'+_question_id;
+		_user_input_elem.type = 'text';
+		_user_input_elem.classList.add('center-block');
+		_user_input_elem.attach_enter_listener(ui_handler.next);
+		wrapper.appendChild(_user_input_elem);
+		return wrapper;
+	};
+	
+
+	this.grade = function () {
+		var score = {score:0,possible:_data.score};
+		var user_answer = _user_input_elem.value;
+		if (_data.correct.indexOf(user_answer) != -1) {
+			score.score = _data.score;
+		} else {
+			score.score = 0;
+		}
+		return score;
+	}
+}
+
+
