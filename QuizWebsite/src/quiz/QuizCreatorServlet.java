@@ -8,39 +8,32 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class Home
+ * Servlet implementation class QuizCreatorServlet
  */
-@WebServlet("")
-public class Home extends HttpServlet {
+@WebServlet("/QuizCreatorServlet")
+public class QuizCreatorServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Home() {
+    public QuizCreatorServlet() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("Quiz.jsp?quiz_id=000079"); // 79 is Mult Choice
-														  // 81 is Single Answer 
-														  // 83 is Multiple Answer
-														  // 85 is Matching Question
-														  // 87 is Fill in Blank questions
+		// TODO Auto-generated method stub
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("Quiz.jsp?quiz_id=000079"); // 79 is Mult Choice
-														  // 81 is Single Answer 
-														  // 83 is Multiple Answer
-														  // 85 is Matching Question
-														  // 87 is Fill in Blank questions
+		// TODO Auto-generated method stub
 	}
 
 }

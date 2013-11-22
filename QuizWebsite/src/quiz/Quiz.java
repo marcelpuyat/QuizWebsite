@@ -34,6 +34,22 @@ public class Quiz {
 		this.con = con;
 	}
 	
+	public int getNextAvailableID() {
+		try {
+			Statement stmt = con.createStatement();
+			String getNextIDQuery = "SELECT AUTO_INCREMENT FROM information_schema.tables WHERE table_name = 'Quizzes' AND table_schema = 'c_cs108_marcelp'";
+			ResultSet rs = stmt.executeQuery(getNextIDQuery);
+			rs.next();
+			int nextID = rs.getInt(1);
+			System.out.println(nextID);
+			return nextID;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("-1");
+			return -1;
+		}
+		
+	}
 	public String getName() {
 		try {
 			Statement stmt = con.createStatement();

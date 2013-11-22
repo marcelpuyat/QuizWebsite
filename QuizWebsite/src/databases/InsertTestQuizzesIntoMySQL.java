@@ -24,6 +24,7 @@ import question.MultipleChoiceQuestion;
 import question.PictureQuestion;
 import question.Question;
 import question.SingleAnswerQuestion;
+import quiz.Quiz;
 import quiz.QuizResults;
 import customObjects.StringBooleanPair;
 import customObjects.StringPair;
@@ -43,8 +44,11 @@ public class InsertTestQuizzesIntoMySQL {
 	 */
 	public InsertTestQuizzesIntoMySQL() throws IOException {
 		con = createConnection();
-		initializeStubDatabase();
+		//initializeStubDatabase();
 //		test();
+		
+		Quiz q = new Quiz((long)2, con);
+		q.getNextAvailableID();
 		closeConnection();
 	}
 	
