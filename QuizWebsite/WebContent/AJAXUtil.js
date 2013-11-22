@@ -70,5 +70,31 @@ Array.prototype.shuffle = function () {
 	return this;
 }
 
+Node.prototype.setCSS3Attr = function(attr, val) {
+	var css3_kits = ['webkit',
+					'Moz',
+					'O',
+					'ms',
+					''];
+	for (var i = 0; i < css3_kits.length; i++) {
+		var formatted_val = val.replace('%-kit-','-'+css3_kits[i]+'-');
+		if (css3_kits[i] != '') {
+			formatted_val = formatted_val.replace('%kit',css3_kits[i]);
+		}
+		if (this.style[css3_kits[i]+attr.capitalizeFirst()] != undefined) {
+			this.style[css3_kits[i]+attr.capitalizeFirst()] = val;
+		}
+	};
+};
+
+/* fixing javascripts TERRRRRRRIBLE mod operator, from Stack Overflow user Enrique */
+Number.prototype.mod = function (n) {
+	return ((this % n) + n) % n;
+}
+
+String.prototype.capitalizeFirst = function() {
+	return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
 //q.addEventListener('keydown',function(e){q.style.width = max(10,q.value.length/1.6) + 'em';});
 //q.style.textAlign = 'center'
