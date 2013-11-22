@@ -17,6 +17,7 @@ import java.util.HashSet;
 
 import javax.sql.rowset.serial.SerialBlob;
 
+import question.FillBlankQuestion;
 import question.MatchingQuestion;
 import question.MultChoiceMultAnswerQuestion;
 import question.MultipleChoiceQuestion;
@@ -126,10 +127,11 @@ public class InsertTestQuizzesIntoMySQL {
 	 * @throws IOException 
 	 */
 	private void initializeStubDatabase() throws IOException {
-//		addMultipleChoiceQuiz();
-//		addSingleAnswerAndPictureQuiz(); 	
-//		addMultipleChoiceMultipleAnswerQuiz();
+		addMultipleChoiceQuiz();
+		addSingleAnswerAndPictureQuiz(); 	
+		addMultipleChoiceMultipleAnswerQuiz();
 		addMatchingQuiz();
+		addFillBlankQuestion();
 	}
 	
 	/**
@@ -208,7 +210,14 @@ public class InsertTestQuizzesIntoMySQL {
 		possibleAnswers2.add("Google");
 		possibleAnswers2.add("GOOGLE");
 		PictureQuestion question2 = new PictureQuestion("What company invented a web-browser with this logo?", possibleAnswers2, "https://lh3.ggpht.com/7O3H3V0fEBumwJlqDLD03t1fmwl8fH9YoBsPwB2UQ_aiBilM7OAOe2gkFB3wrojJqbM=w300");
+		
+		HashSet<String> possibleAnswers3 = new HashSet<String>(2);
+		possibleAnswers3.add("Obama");
+		possibleAnswers3.add("Barack");
+		PictureQuestion question3 = new PictureQuestion("", possibleAnswers3, "http://upload.wikimedia.org/wikipedia/commons/e/e9/Official_portrait_of_Barack_Obama.jpg");
+		
 		questions.add(question2);
+		questions.add(question3);
 		
 		
 		String name = "Single Answer And Picture Quiz";
@@ -273,6 +282,45 @@ public class InsertTestQuizzesIntoMySQL {
 		
 		String name = "Matching Quiz";
 		String description = "This is our 4th quiz";
+		int maxScore = 1;
+		boolean isRandomizable = false;
+		boolean isMultiplePage = false;
+		boolean isPracticable = false;
+		boolean isImmediatelyCorrected = false;
+		
+		addQuiz(name, "Nobody", description, questions, maxScore, isRandomizable, isMultiplePage, isPracticable, isImmediatelyCorrected);
+	}
+	
+	private void addFillBlankQuestion() throws IOException {
+		ArrayList<Question> questions = new ArrayList<Question>();
+
+		/* Fill in blank test */
+		String optionalPrompt = "Fill in the blank with the correct number.";
+		
+		String firstPrompt = "1 + 1 = ";
+		String secondPrompt = "";
+
+		HashSet<String> set = new HashSet<String>();
+		set.add("2");
+		
+		FillBlankQuestion question = new FillBlankQuestion(optionalPrompt, firstPrompt, secondPrompt, set, 1);
+		questions.add(question);
+		
+		String optionalPrompt2 = "";
+		
+		String firstPrompt2 = "George ";
+		String secondPrompt2 = " was a U.S. President";
+		
+		HashSet<String> set2 = new HashSet<String>();
+		
+		set2.add("Washington");
+		set2.add("Bush");
+		
+		FillBlankQuestion question2 = new FillBlankQuestion(optionalPrompt2, firstPrompt2, secondPrompt2, set2, 1);
+		questions.add(question2);
+		
+		String name = "Fill in blank Quiz";
+		String description = "This is our 5th quiz";
 		int maxScore = 1;
 		boolean isRandomizable = false;
 		boolean isMultiplePage = false;

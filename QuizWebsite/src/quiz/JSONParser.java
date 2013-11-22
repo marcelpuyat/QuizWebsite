@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import customObjects.StringBooleanPair;
 import customObjects.StringPair;
 
+import question.FillBlankQuestion;
 import question.MatchingQuestion;
 import question.MultChoiceMultAnswerQuestion;
 import question.MultipleChoiceQuestion;
@@ -141,8 +142,30 @@ public class JSONParser {
 		
 		case QuestionTypes.MATCHING: return parseMatchingIntoJSON((MatchingQuestion)question, questionInfo);
 		
+		case QuestionTypes.FILL_BLANK: return parseBlankIntoJSON((FillBlankQuestion)question, questionInfo);
 		default: return null; // Add more types
 		}
+	}
+	
+	private static JSONObject parseBlankIntoJSON(FillBlankQuestion question, JSONObject questionInfo) {
+		questionInfo.accumulate("type", "fill-blank");
+		
+		JSONObject q_data = new JSONObject();
+		
+		q_data.accumulate("optional_prompt", question.getOptionalPrompt());
+		q_data.accumulate("first_prompt", question.getFirstPrompt());
+		q_data.accumulate("second_prompt", question.getSecondPrompt());
+		
+		JSONArray answersArray = new JSONArray();
+		
+		for (String answer : question.getPossibleAnswers()) {
+			answersArray.put(answer);
+		}
+		
+		q_data.accumulate("answers", answersArray);
+		q_data.accumulate("score", question.getScore());
+		questionInfo.accumulate("data", q_data);
+		return questionInfo;
 	}
 	
 	/**
