@@ -3,7 +3,7 @@
  * 	   				 getType() - returns type
  *                   getDOMSubStructure(bool addButton) - returns displayed DOM structure
  *                   format_answer() - returns object to be inserted into JSON
- *					 grade() - returns user score
+ *					 grade() - returns user score in form {score:int, possible:int};
  */
 function getQuestionHandler(type, data, q_id) {
 	switch (type) {
@@ -51,12 +51,14 @@ function PictureResponseHandler(data, q_id) {
 		return {answer:_user_input_elem.value};
 	};
 	this.grade = function () {
+		var score = {score:0,possible:_data.score};
 		var user_answer = _user_input_elem.value;
 		if (_data.correct.indexOf(user_answer) != -1) {
-			return _data.score;
+			score.score = _data.score;
 		} else {
-			return 0;
+			score.score = 0;
 		}
+		return score;
 	}
 }
 
@@ -94,12 +96,14 @@ function SingleAnswerHandler(data, q_id) {
 	};
 
 	this.grade = function () {
+		var score = {score:0,possible:_data.score};
 		var user_answer = _user_input_elem.value;
 		if (_data.correct.indexOf(user_answer) != -1) {
-			return _data.score;
+			score.score = _data.score;
 		} else {
-			return 0;
+			score.score = 0;
 		}
+		return score;
 	}
 }
 
@@ -109,6 +113,7 @@ function SingleAnswerHandler(data, q_id) {
 function MultipleChoiceHandler(data, q_id) {
 	var _data = data;
 	var _selection;
+	var _this = this;
 	var _user_input_elems = [];
 	var _question_id = q_id;
 	this.getType = function () {
@@ -132,9 +137,10 @@ function MultipleChoiceHandler(data, q_id) {
 			_user_input_elems.push(document.createElement('input'));
 			_user_input_elems[i].type = 'radio';
 			_user_input_elems[i].name = "mult-c-option-"+_question_id;
-			_user_input_elems[i].index = i.toString();
+			_user_input_elems[i].index_selected = i;
+			_user_input_elems[i].title = i.toString();
 			_user_input_elems[i].value = options[i];
-			if (i == 0) _user_input_elems[i].checked = true;
+			_user_input_elems[i].checked = true;
 			var new_option_label = document.createElement('span');
 			new_option_label.innerHTML = options[i];
 			new_option_label.classList.add('mult-c-option-label');
@@ -152,21 +158,24 @@ function MultipleChoiceHandler(data, q_id) {
 			return {};
 		} else {
 			var checked = get_checked();
-			return {item_selected:checked.value,index_selected:checked.index};
+			return {item_selected:checked.value,index_selected:checked.index_selected};
 		}
 	};
 	
 	this.grade = function () {
-		var user_answer = get_checked().value;
-		if (_data.correct == user_answer.index) {
-			return _data.score;
+		var score = {score:0,possible:_data.score};
+		var user_answer = get_checked();
+		console.log('selection:'+user_answer.index_selected+'-'+user_answer.value+' correct: ' + _data.correct);
+		if (_data.correct.toString() == user_answer.index_selected) {
+			score.score = _data.score;
 		} else {
-			return 0;
+			score.score = 0;
 		}
+		return score;
 	}
 
 	function get_checked() {
-		var check_boxes = document.getElementsByName('mult-c-option-'+_question_id);
+		var check_boxes = _user_input_elems;
 		for (var i = 0; i < check_boxes.length; i++) {
 			if (check_boxes[i].checked) return check_boxes[i];
 		}

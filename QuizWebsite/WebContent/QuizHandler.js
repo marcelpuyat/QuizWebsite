@@ -8,10 +8,7 @@
  *     void    informQuestionAnswered();
  *     
  */
- var last_q;
- function get_ans_index (index) {
- 	return last_q[index].format_answer();
- }
+
 function QuizHandler(quiz_id, servlet_url) {
 	/* init vars */
 	var _questions = [];
@@ -21,22 +18,48 @@ function QuizHandler(quiz_id, servlet_url) {
 	var _quiz_id = quiz_id;
 	var _servlet_url = servlet_url;
 	var _start_callbacks = [];
-	var _next_callbacks = [];
+	var _next_callbacks  = [];
+	var _start_callbacks_live = true;
+	var _next_callbacks_live  = true;
 	
 	
 	/* public methods */
 	this.addEventListener = function (event, callback) {
 		switch (event) {
 			case 'start-quiz':
-				_start_callbacks.push(callback);
+				if (_start_callbacks_live) _start_callbacks.push(callback);
 				break;
 			case 'next-question':
-				_next_callbacks.push(callback);
+				if (_next_callbacks_live) _next_callbacks.push(callback);
+				break;
+		}
+	};
+	this.muteEventListener = function (event) {
+		switch (event) {
+			case 'start-quiz':
+				_start_callbacks_live = false;
+				break;
+			case 'next-question':
+				_next_callbacks_live = false;
+				break;
+		}
+	};
+	this.enableEventListener = function (event) {
+		switch (event) {
+			case 'start-quiz':
+				_start_callbacks_live = true;
+				break;
+			case 'next-question':
+				_next_callbacks_live = true;
 				break;
 		}
 	};
 	this.isLoaded = function() {
 		return _isLoaded;
+	};
+
+	this.getQuizName = function () {
+		return _data.quiz_name;
 	};
 	
 	this.hasNext = function() {
@@ -72,11 +95,16 @@ function QuizHandler(quiz_id, servlet_url) {
 
 	this.getAtIndex = function (index) {
 		if (this.indexExists(index)) {
-			console.log('::questions::');
-			console.log(_build_results());
 			return _questions[index].getDOMSubStructure();
 		}
 		return null;
+	}
+
+	this.getScoreAtIndex = function (index) {
+		if (this.indexExists(index)) {
+			return _questions[index].grade();
+		}
+		return -1;
 	}
 	
 	this.waitForLoad = function(callback, auxiliary_data) {
@@ -99,16 +127,9 @@ function QuizHandler(quiz_id, servlet_url) {
 			play_now_button.id = "play-now-button";
 			for (var i = 0; i < _start_callbacks.length; i++) {
 				play_now_button.addEventListener('click',_start_callbacks[i]);
-				_start_callbacks[i]
 			};
 			load_display_wrapper.appendChild(play_now_button);
 
-
-			// load_display_wrapper.innerHTML = 'Start';
-			// load_display_wrapper.id = 'start-test-wrapper';
-			// for (var i = 0; i < _start_callbacks.length; i++) {
-			// 	load_display_wrapper.addEventListener('click',_start_callbacks[i]);
-			// };
 			aux.client_callback(load_display_wrapper, aux.client_aux);
 		}, {client_aux:auxiliary_data, client_callback:callback});
 	};
@@ -116,24 +137,14 @@ function QuizHandler(quiz_id, servlet_url) {
 	this.waitForResults = function(callback, auxiliary_data) {
 		/* build and send answer data */
 		var answer = _build_results();
-		_send_quiz_results(answer, function (data, aux) {
-			
-			/* build display element */
-			var elem = document.createElement('div');
-			var feedback = data.feedback;
-			elem.innerHTML = 'total correct: '+ feedback.total_correct+'\ntotal possible: '+feedback.total_possible+'\ntotal score: '+feedback.total_score;
-			console.log(data);
-			callback(elem, aux.client_aux);
-			
-		}, {client_aux:auxiliary_data,dev_aux:{}});
+		_send_quiz_results(answer);
+		var elem = document.createElement('div');
+		elem.innerHTML = 'total correct: '+ answer.user_score+'\ntotal possible: '+answer.possible_score;
+		callback(elem, auxiliary_data);
 	};
 	
-	this.informQuestionAnswered = function() {
-		//_questions[_iterator].answered_question();
-	};
-
-	this.informQuestionAnsweredAtIndex = function (index) {
-		//_questions[index].answered_question();	
+	this.isMultiPage = function () {
+		return _data.is_multiple_page;
 	}
 	
 	
@@ -144,7 +155,6 @@ function QuizHandler(quiz_id, servlet_url) {
 		console.log('loading ' + quiz_id);
 		get_json_from_url(servlet_url+"?quiz_id="+quiz_id, function (data, aux) {
 			console.log('::loaded quiz::');
-			console.log('..data:');
 			console.log(data);
 			_data = data;
 			var questions_json = data.questions;
@@ -158,12 +168,20 @@ function QuizHandler(quiz_id, servlet_url) {
 	}
 	function _build_results() {
 		console.log('build');
-		last_q = _questions;
-		var answers = [];
+		var score_data = {quiz_id:_quiz_id,time:get_elapsed_time(),user_score:0,possible_score:0,percentage:0};
 		for (var i = 0; i < _questions.length; i++) {
-			answers.push({type:_questions[i].getType(),data:_questions[i].format_answer()});
+			var score_for_q = _questions[i].grade(); //{score:int,possible:int}
+			console.log('grading '+i+':');
+			console.log(score_for_q);
+			score_data.user_score += score_for_q.score;
+			score_data.possible_score += score_for_q.possible;
 		}
-		return  {quiz_id:_quiz_id,'answers':answers};
+		score_data.percentage = score_data.user_score / score_data.possible_score;
+		return  score_data;
+	}
+
+	function get_elapsed_time () {
+		return 55.2;
 	}
 	
 	function _send_quiz_results(data, callback, aux) {

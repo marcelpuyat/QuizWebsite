@@ -19,6 +19,15 @@ input[type="text"] {
 	padding: 3px;
 }
 
+.center-block {
+	margin:auto;
+	display:block;
+}
+
+.space-under {
+	margin-bottom: 30px;
+}
+
 #content-wrapper {
 	width:100%;
 	height:100%;

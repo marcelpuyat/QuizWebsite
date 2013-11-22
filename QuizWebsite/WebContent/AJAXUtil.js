@@ -29,7 +29,9 @@ function post_json_to_url (url, data, completionHandler, args) {
 	}
 	xmlhttp.onreadystatechange=function() {
 		if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-	    	completionHandler(JSON.parse(xmlhttp.responseText), args);
+			if (completionHandler) {
+				completionHandler(JSON.parse(xmlhttp.responseText), args);
+			}
 		}
 	};
 	//xmlhttp.setRequestHeader('Content-Type', 'application/json;');
