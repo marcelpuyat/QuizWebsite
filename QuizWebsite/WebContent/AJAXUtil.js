@@ -95,6 +95,3 @@ Number.prototype.mod = function (n) {
 String.prototype.capitalizeFirst = function() {
 	return this.charAt(0).toUpperCase() + this.slice(1);
 };
-
-//q.addEventListener('keydown',function(e){q.style.width = max(10,q.value.length/1.6) + 'em';});
-//q.style.textAlign = 'center'

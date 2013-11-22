@@ -17,8 +17,7 @@ function getQuestionHandler(type, data, q_id) {
 		console.log(type+' NOT IMPLEMENTED');
 		return;
 	case ('fill-blank'):
-		console.log(type+' NOT IMPLEMENTED');
-		return;
+		return new FillInBlankHandler(data, q_id);
 	case ('single-answer'):
 		return new SingleAnswerHandler(data, q_id);
 	}
@@ -29,6 +28,68 @@ function getQuestionHandler(type, data, q_id) {
 // 	this.getDOMSubStructure = function () {}
 // 	this.grade = function () {return {score:0,possible:_data.score};}
 // }
+
+function FillInBlankHandler (data, q_id) {
+	var _data = data;
+	var _answer;
+	var _user_input_elem;
+	var _question_id = q_id;
+	this.getType = function () {
+		return 'single-answer';
+	};
+	this.getDOMSubStructure = function () {
+		var wrapper = document.createElement('div');
+		var prompt_div = document.createElement('h2');
+		prompt_div.classList.add('prompt');
+		prompt_div.innerHTML = _data.optional_prompt;
+		wrapper.appendChild(prompt_div);
+		
+		var pre_prompt  = document.createElement('p');
+		var post_prompt = document.createElement('p');
+		pre_prompt.innerHTML  = _data.first_prompt;
+		post_prompt.innerHTML = _data.second_prompt;
+
+		_user_input_elem = document.createElement('input');
+		_user_input_elem.id = 'single-c-input-'+_question_id;
+		_user_input_elem.type = 'text';
+		_user_input_elem.attach_enter_listener(ui_handler.next);
+		_user_input_elem.addEventListener('keydown',
+			function(e){
+				_user_input_elem.style.width = max(5,_user_input_elem.value.length/1.7) + 'em';
+			}
+		);
+		_user_input_elem.style.textAlign = 'center'
+		_user_input_elem.style.width = '5em';
+		_user_input_elem.style.maxWidth = '60%';
+
+		var fill_in_wrapper = document.createElement('div');
+		fill_in_wrapper.classList.add('text-center');
+
+		pre_prompt.classList.add('inline');
+		_user_input_elem.classList.add('inline');
+		post_prompt.classList.add('inline');
+
+		fill_in_wrapper.appendChild(pre_prompt);
+		fill_in_wrapper.appendChild(_user_input_elem);
+		fill_in_wrapper.appendChild(post_prompt);
+
+		wrapper.appendChild(fill_in_wrapper);
+		return wrapper;
+	};
+	
+
+	this.grade = function () {
+		console.log('user ans: '+_user_input_elem.value+' correct: '+_data.answers[0]);
+		var score = {score:0,possible:_data.score};
+		var user_answer = _user_input_elem.value;
+		if (_data.answers.indexOf(user_answer) != -1) {
+			score.score = _data.score;
+		} else {
+			score.score = 0;
+		}
+		return score;
+	}
+}
 
 function MultipleChoiceHandler(data, q_id) {
 	var _data = data;
