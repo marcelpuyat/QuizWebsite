@@ -36,3 +36,30 @@ function post_json_to_url (url, data, completionHandler, args) {
 	xmlhttp.open("POST",url,true);
 	xmlhttp.send(JSON.stringify(data));
 };
+
+
+function min (a,b,comp) {
+	var diff;
+	if (comp) {
+		diff = comp(a,b);
+	} else {
+		diff = a - b;
+	}
+	if (diff < 0) return a;
+	else return b;
+}
+
+function max (a,b,comp) {
+	var diff;
+	if (comp) {
+		diff = comp(a,b);
+	} else {
+		diff = a - b;
+	}
+	if (diff > 0) return a;
+	else return b;
+}
+
+
+//q.addEventListener('keydown',function(e){q.style.width = max(10,q.value.length/1.6) + 'em';});
+//q.style.textAlign = 'center'
