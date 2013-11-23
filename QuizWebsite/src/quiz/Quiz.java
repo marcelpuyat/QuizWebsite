@@ -1,9 +1,13 @@
 package quiz;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.sql.*;
 import java.util.ArrayList;
+
+import javax.sql.rowset.serial.SerialBlob;
 
 import question.*;
 
@@ -38,11 +42,24 @@ public class Quiz {
 	 * Use this to create new quiz, passing in all necessary fields
 	 * @param con
 	 */
-	public Quiz(Connection con) {
+	public Quiz(Connection con, String name, String creator, String description, ArrayList<Question> questions, int maxScore, 
+			boolean isRandomizable, boolean isMultiplePage, boolean isPracticable, boolean isImmediatelyCorrected) {
 		this.quiz_id = Quiz.getNextAvailableID(con);
 		this.con = con;
+		try {
+			addQuiz(name, creator, description, questions, maxScore, isRandomizable, isMultiplePage, isPracticable,
+					isImmediatelyCorrected);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
+	/**
+	 * Returns next available ID
+	 * @param con
+	 * @return
+	 */
 	public static int getNextAvailableID(Connection con) {
 		try {
 			Statement stmt = con.createStatement();
@@ -59,6 +76,49 @@ public class Quiz {
 		}
 	}
 	
+	/**
+	 * Adds quiz to DB
+	 * @param name
+	 * @param creator
+	 * @param description
+	 * @param questions
+	 * @param maxScore
+	 * @param isRandomizable
+	 * @param isMultiplePage
+	 * @param isPracticable
+	 * @param isImmediatelyCorrected
+	 * @throws IOException
+	 */
+	private void addQuiz(String name, String creator, String description, ArrayList<Question> questions, int maxScore, 
+			boolean isRandomizable, boolean isMultiplePage, boolean isPracticable, boolean isImmediatelyCorrected) throws IOException
+	{
+		PreparedStatement stmt;
+		try {
+			stmt = con.prepareStatement("INSERT INTO Quizzes (name, creator, description, questions, max_score, is_randomizable, is_multiple_page, is_practicable, is_immediately_corrected) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			stmt.setString(1, name);
+			stmt.setString(2, creator);
+			stmt.setString(3, description);			
+			byte[] questionBytes = serialize(questions);
+			Blob questionBlob = new SerialBlob(questionBytes);
+			stmt.setBlob(4, questionBlob);
+			stmt.setInt(5, maxScore);
+			stmt.setBoolean(6, isRandomizable);
+			stmt.setBoolean(7, isMultiplePage);
+			stmt.setBoolean(8, isPracticable);
+			stmt.setBoolean(9, isImmediatelyCorrected);
+			stmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private byte[] serialize(ArrayList<Question> questions) throws IOException {
+	    ByteArrayOutputStream out = new ByteArrayOutputStream();
+	    ObjectOutputStream os = new ObjectOutputStream(out);
+	    os.writeObject(questions);
+	    return out.toByteArray();
+	}
 	
 	public String getName() {
 		try {

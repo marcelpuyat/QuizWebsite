@@ -76,6 +76,29 @@ public class JSONParser {
 		return jSONquiz;
 	}
 	
+	private static Quiz parseJSONintoQuiz(JSONObject jSONquiz) {
+		String quizName = jSONquiz.getString("quiz_name");
+		String description = jSONquiz.getString("description");
+		String creator = jSONquiz.getString("creator");
+		int max_score = jSONquiz.getInt("max_score");
+		boolean isImmediatelyCorrected = jSONquiz.getBoolean("is_immediately_corrected");
+		boolean isMultiPage = jSONquiz.getBoolean("is_multiple_page");
+		boolean isRandom = jSONquiz.getBoolean("is_randomized:true");
+		boolean isPracticable = jSONquiz.getBoolean("is_practicable:false");
+		
+		ArrayList<Question> questions = new ArrayList<Question>();
+		
+		JSONArray jSONquestions = jSONquiz.getJSONArray("questions");
+		
+		for (int i = 0; i < jSONquestions.length(); i++) {
+			JSONObject question = (JSONObject) jSONquestions.get(i);
+			String type = question.getString("type");
+			
+		}
+		
+		return null;
+	}
+	
 	/**
 	 * Format is in spec
 	 * @param userHistory

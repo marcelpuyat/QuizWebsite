@@ -44,10 +44,10 @@ public class InsertTestQuizzesIntoMySQL {
 	 */
 	public InsertTestQuizzesIntoMySQL() throws IOException {
 		con = createConnection();
-		//initializeStubDatabase();
+		initializeStubDatabase();
 //		test();
 		
-		Quiz.getNextAvailableID(con);
+//		Quiz.getNextAvailableID(con);
 		closeConnection();
 	}
 	
@@ -61,11 +61,12 @@ public class InsertTestQuizzesIntoMySQL {
 	}
 	
 	private void addQuizTests() throws IOException {
-		addMultipleChoiceQuiz();
-		addSingleAnswerAndPictureQuiz(); 	
-		addMultipleChoiceMultipleAnswerQuiz();
-		addMatchingQuiz();
-		addFillBlankQuestion();
+//		addMultipleChoiceQuiz();
+//		addSingleAnswerAndPictureQuiz(); 	
+//		addMultipleChoiceMultipleAnswerQuiz();
+//		addMatchingQuiz();
+//		addFillBlankQuestion();
+		addMultipleChoiceMultipleAnswerQuiz2();
 	}
 	
 	private Connection createConnection() {
@@ -124,7 +125,6 @@ public class InsertTestQuizzesIntoMySQL {
 			stmt.setBoolean(8, isPracticable);
 			stmt.setBoolean(9, isImmediatelyCorrected);
 			stmt.executeUpdate();
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -279,6 +279,36 @@ public class InsertTestQuizzesIntoMySQL {
 		boolean isImmediatelyCorrected = false;
 		
 		addQuiz(name, "Nobody", description, questions, maxScore, isRandomizable, isMultiplePage, isPracticable, isImmediatelyCorrected);
+	}
+	
+	private void addMultipleChoiceMultipleAnswerQuiz2() throws IOException {
+		ArrayList<Question> questions = new ArrayList<Question>();
+
+		/* Multiple Choice Multiple Answer test */
+		String prompt = "Which 3 out of these 5 are names of Stanford CS classes?";
+		
+		ArrayList<StringBooleanPair> pairs = new ArrayList<StringBooleanPair>();
+		
+		pairs.add(new StringBooleanPair("CS 106A", true));
+		pairs.add(new StringBooleanPair("CS 10000001", false));
+		pairs.add(new StringBooleanPair("CS 107", true));
+		pairs.add(new StringBooleanPair("CS 106B", true));
+		pairs.add(new StringBooleanPair("CS 99.9", false));
+
+		boolean partialCredit = false;
+		
+		MultChoiceMultAnswerQuestion question = new MultChoiceMultAnswerQuestion(prompt, pairs, 1, partialCredit);
+		questions.add(question);
+		
+		String name = "Another Multiple Answer Quiz";
+		String description = "This is our 6th quiz";
+		int maxScore = 1;
+		boolean isRandomizable = true;
+		boolean isMultiplePage = true;
+		boolean isPracticable = false;
+		boolean isImmediatelyCorrected = false;
+		
+		Quiz newQuiz = new Quiz(con, name, "Nobody", description, questions, maxScore, isRandomizable, isMultiplePage, isPracticable, isImmediatelyCorrected);
 	}
 	
 	private void addMatchingQuiz() throws IOException {
