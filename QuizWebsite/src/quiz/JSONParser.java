@@ -1,14 +1,15 @@
 package quiz;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import customObjects.StringBooleanPair;
-import customObjects.StringPair;
 
 import question.FillBlankQuestion;
 import question.MatchingQuestion;
@@ -18,6 +19,8 @@ import question.PictureQuestion;
 import question.Question;
 import question.QuestionTypes;
 import question.SingleAnswerQuestion;
+import customObjects.StringBooleanPair;
+import customObjects.StringPair;
 
 
 /**
@@ -33,6 +36,16 @@ import question.SingleAnswerQuestion;
 public class JSONParser {
 
 
+	public static JSONObject getJSONfromRequest(HttpServletRequest request) throws IOException {
+		StringBuilder json_str_response = new StringBuilder();
+		BufferedReader br = request.getReader();
+		String str;
+		while( (str = br.readLine()) != null ){
+			json_str_response.append(str);
+	    }  
+		return new JSONObject(json_str_response.toString());
+	}
+	
 	/**
 	 * Quiz is formatted differently depending on type.
 	 *    
@@ -93,7 +106,7 @@ public class JSONParser {
 		for (int i = 0; i < jSONquestions.length(); i++) {
 			JSONObject question = (JSONObject) jSONquestions.get(i);
 			String type = question.getString("type");
-			
+			// TODO
 		}
 		
 		return null;
