@@ -40,12 +40,22 @@ function UIHandler (quiz_handler, card_wrapper) {
 		}
 	};
 
+	this.kiil_front = function () {
+		if (_iterator >= 0) {
+			_q_handler.sleepCard(_iterator);
+			console.log('kill: '+(_iterator));
+		}
+	}
 	this.next = function () {
 		if (_q_handler.isMultiPage()) {
 			var prev_it = _iterator;
 			if (_q_handler.indexExists(++_iterator)) {
 				/* inform quiz data recieved if legitamate question index */
 				cycle_cards();
+				if (_iterator - 1 >= 0) {
+					_q_handler.sleepCard(_iterator - 1);
+					console.log('kill: '+(_iterator - 1));
+				}
 				load_mid(_iterator+1);
 			} else if (_active) {
 				_active = false;

@@ -3,6 +3,7 @@
  * 	   				 getType() - returns type
  *                   getDOMSubStructure(bool addButton) - returns displayed DOM structure
  *					 grade() - returns user score in form {score:int, possible:int};
+ *                   killListeners() - removes appropriate action listeners from object, should disable the users ability to change answers
  */
 function getQuestionHandler(type, data, q_id) {
 	switch (type) {
@@ -34,6 +35,7 @@ function MatchingHandler (data, q_id) {
 	var _this = this;
 	var _question_id = q_id;
 	var _drag = {target:undefined,captureX:0,captureY:0,reciever:undefined};
+	var _listeners = [];
 	_capture_lis = [];
 	this.getType = function () { return 'matching'};
 	this.getDOMSubStructure = function () {
@@ -145,9 +147,16 @@ function MatchingHandler (data, q_id) {
 				return cap_li;
 			}
 			_capture_lis[i].addEventListener('click', click_listener);//bubble
+			_listeners.push({elem:_capture_lis[i],action:'click',callback:click_listener});
+
 			window.addEventListener('mousemove',did_drag, true);
+			_listeners.push({elem:window,action:'mousemove',callback:did_drag});
+
 			option_lis[i].addEventListener('mousedown',begin_drag);
+			_listeners.push({elem:option_lis[i],action:'mousedown',callback:begin_drag});
+
 			window.addEventListener('mouseup',end_drag);
+			_listeners.push({elem:window,action:'mouseup',callback:end_drag});
 		};
 		option_lis.shuffle();
 		for (var i = 0; i < option_lis.length; i++) {
@@ -161,6 +170,12 @@ function MatchingHandler (data, q_id) {
 		};
 		wrapper.appendChild(capture_ul);
 		return wrapper;
+	};
+	this.killListeners = function () {
+		for (var i = 0; i < _listeners.length; i++) {
+			var lis_obj = _listeners[i];
+			lis_obj.elem.removeEventListener(lis_obj.action,lis_obj.callback,false);
+		};
 	};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
@@ -184,6 +199,7 @@ function MultipleAnswerHandler(data, q_id) {
 	var _this = this;
 	var _question_id = q_id;
 	var _lis = [];
+	var _listeners = [];
 	this.getType = function () {return 'multiple-answer';};
 	/* returns a DOM element which will be inserted into the quiz's 'quiz-content' div */
 	this.getDOMSubStructure = function () {
@@ -213,6 +229,7 @@ function MultipleAnswerHandler(data, q_id) {
 				this.classList.add(this.truth_eval ? 'true' : 'false');
 			};
 			_lis[i].addEventListener('click', click_listener, false);//bubble
+			_listeners.push({elem:_lis[i],action:'click',callback:click_listener});
 		};
 		_lis.shuffle();
 		for (var i = 0; i < _lis.length; i++) {
@@ -223,6 +240,12 @@ function MultipleAnswerHandler(data, q_id) {
 		return wrapper;
 	};
 	
+	this.killListeners = function () {
+			for (var i = 0; i < _listeners.length; i++) {
+				var lis_obj = _listeners[i];
+				lis_obj.elem.removeEventListener(lis_obj.action,lis_obj.callback,false);
+			};
+		};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
 		var per_match_score = _data.score / _lis.length;
@@ -251,6 +274,7 @@ function FillInBlankHandler (data, q_id) {
 	var _answer;
 	var _user_input_elem;
 	var _question_id = q_id;
+	var _listeners = [];
 	this.getType = function () {
 		return 'single-answer';
 	};
@@ -272,11 +296,11 @@ function FillInBlankHandler (data, q_id) {
 		_user_input_elem.attach_enter_listener(function() {
 			ui_handler.next();
 		});
-		_user_input_elem.addEventListener('keydown',
-			function(e){
-				_user_input_elem.style.width = max(5,_user_input_elem.value.length/1.7) + 'em';
-			}
-		);
+		var resize_text = function(e){
+			_user_input_elem.style.width = max(5,_user_input_elem.value.length/1.7) + 'em';
+		}
+		_user_input_elem.addEventListener('keydown', resize_text);
+		_listeners.push({elem:_user_input_elem,action:'keydown',callback:resize_text});
 		_user_input_elem.style.textAlign = 'center'
 		_user_input_elem.style.width = '5em';
 		_user_input_elem.style.maxWidth = '60%';
@@ -297,6 +321,12 @@ function FillInBlankHandler (data, q_id) {
 	};
 	
 
+	this.killListeners = function () {
+			for (var i = 0; i < _listeners.length; i++) {
+				var lis_obj = _listeners[i];
+				lis_obj.elem.removeEventListener(lis_obj.action,lis_obj.callback,false);
+			};
+		};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
 		var user_answer = _user_input_elem.value;
@@ -315,6 +345,7 @@ function MultipleChoiceHandler(data, q_id) {
 	var _this = this;
 	var _question_id = q_id;
 	var _last_clicked;
+	var _listeners = [];
 	this.getType = function () {
 		return 'multiple-choice';
 	};
@@ -349,6 +380,7 @@ function MultipleChoiceHandler(data, q_id) {
 				this.classList.add('selected');
 			};
 			lis[i].addEventListener('click', click_listener, false);//bubble
+			_listeners.push({elem:lis[i],action:'click',callback:click_listener});
 		};
 		lis.shuffle();
 		for (var i = 0; i < lis.length; i++) {
@@ -362,6 +394,12 @@ function MultipleChoiceHandler(data, q_id) {
 		return wrapper;
 	};
 	
+	this.killListeners = function () {
+		for (var i = 0; i < _listeners.length; i++) {
+			var lis_obj = _listeners[i];
+			lis_obj.elem.removeEventListener(lis_obj.action,lis_obj.callback,false);
+		};
+	};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
 		if (_last_clicked == _data.correct) score.score = _data.score;
@@ -381,6 +419,7 @@ function PictureResponseHandler(data, q_id) {
 	var _answer;
 	var _user_input_elem;
 	var _question_id = q_id;
+	var _listeners = [];
 	this.getType = function() {
 		return "picture-response";
 	};
@@ -408,6 +447,12 @@ function PictureResponseHandler(data, q_id) {
 		return wrapper;
 	};
 	
+	this.killListeners = function () {
+		for (var i = 0; i < _listeners.length; i++) {
+			var lis_obj = _listeners[i];
+			lis_obj.elem.removeEventListener(lis_obj.action,lis_obj.callback,false);
+		};
+	};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
 		var user_answer = _user_input_elem.value;
@@ -427,6 +472,7 @@ function SingleAnswerHandler(data, q_id) {
 	var _answer;
 	var _user_input_elem;
 	var _question_id = q_id;
+	var _listeners = [];
 	this.getType = function () {
 		return 'single-answer';
 	};
@@ -449,6 +495,12 @@ function SingleAnswerHandler(data, q_id) {
 	};
 	
 
+	this.killListeners = function () {
+		for (var i = 0; i < _listeners.length; i++) {
+			var lis_obj = _listeners[i];
+			lis_obj.elem.removeEventListener(lis_obj.action,lis_obj.callback,false);
+		};
+	};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
 		var user_answer = _user_input_elem.value;

@@ -102,7 +102,6 @@ function Timer (fps) {
 	var timer_id;
 	var seconds = 1000;
 	var _fps = fps || 1;
-	console.log(_fps);
 	this.start = function () {
 		if (timer_id == undefined) {
 			timer_id = setInterval(function () {

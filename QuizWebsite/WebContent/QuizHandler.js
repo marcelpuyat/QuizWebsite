@@ -107,6 +107,12 @@ function QuizHandler(quiz_id, servlet_url) {
 		}
 		return -1;
 	}
+
+	this.sleepCard = function (index) {
+		if (this.indexExists(index)) {
+			_questions[index].killListeners();
+		}
+	}
 	
 	this.waitForLoad = function(callback, auxiliary_data) {
 		_load_quiz_json(_servlet_url, _quiz_id, function(aux){
@@ -165,6 +171,7 @@ function QuizHandler(quiz_id, servlet_url) {
 				var question_obj = questions_json[i];
 				_questions.push(getQuestionHandler(question_obj.type, question_obj.data, i));
 			}
+			if (_data.is_randomized) _questions.shuffle();
 			_isLoaded = true;
 			aux.client_callback(aux.client_aux);
 		}, {quiz_id:quiz_id, client_aux:aux, client_callback:callback});
