@@ -21,6 +21,7 @@ function QuizHandler(quiz_id, servlet_url) {
 	var _next_callbacks  = [];
 	var _start_callbacks_live = true;
 	var _next_callbacks_live  = true;
+	var _quiz_timer = new Timer(10);
 	
 	
 	/* public methods */
@@ -146,7 +147,9 @@ function QuizHandler(quiz_id, servlet_url) {
 	this.isMultiPage = function () {
 		return _data.is_multiple_page;
 	}
-	
+	this.informStart = function () {
+		_quiz_timer.start();
+	}
 	
 	
 	
@@ -178,7 +181,7 @@ function QuizHandler(quiz_id, servlet_url) {
 	}
 
 	function get_elapsed_time () {
-		return 55.2;
+		return _quiz_timer.getSecondsElapsed();
 	}
 	
 	function _send_quiz_results(data, callback, aux) {

@@ -95,3 +95,29 @@ Number.prototype.mod = function (n) {
 String.prototype.capitalizeFirst = function() {
 	return this.charAt(0).toUpperCase() + this.slice(1);
 };
+
+
+function Timer (fps) {
+	var elapsed = 0;
+	var timer_id;
+	var seconds = 1000;
+	var _fps = fps || 1;
+	console.log(_fps);
+	this.start = function () {
+		if (timer_id == undefined) {
+			timer_id = setInterval(function () {
+				elapsed+=seconds/_fps;
+			}, seconds/_fps);
+		}
+	}
+	this.pause = function () {
+		window.clearInterval(timer_id);
+		timer_id = undefined;
+	}
+	this.getElapsed = function () {
+		return elapsed;
+	}
+	this.getSecondsElapsed = function () {
+		return elapsed / seconds;
+	}
+}
