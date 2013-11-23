@@ -29,7 +29,7 @@ function UIHandler (quiz_handler, card_wrapper) {
 			else build_singlepage(elem);
 		}, {});
 	};
-
+	
 	this.start_test = function () {
 		if (_q_handler.isMultiPage()) {
 			enable_arrow_keys();

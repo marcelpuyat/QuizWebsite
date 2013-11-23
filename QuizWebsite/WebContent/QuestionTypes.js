@@ -21,6 +21,8 @@ function getQuestionHandler(type, data, q_id) {
 	}
 };
 
+
+
 // function QuestionHandler (data, q_id) {
 // 	this.getType = function () {};
 // 	this.getDOMSubStructure = function () {};
@@ -163,12 +165,15 @@ function MatchingHandler (data, q_id) {
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
 		var per_match_score = _data.score / _capture_lis.length;
+		var perfect_score = true;
 		_capture_lis.sort(function (a,b) {
 			return a.sorting_index - b.sorting_index;
 		});
 		for (var i = 0; i < _capture_lis.length; i++) {
 			if (_capture_lis[i].captive && _capture_lis[i].captive.label_text == _data.answers[i][1]) score.score += per_match_score;
+			else perfect_score = false;
 		};
+		if (!_data.partial_credit) score.score = perfect_score ? score.possible:0;
 		return score;
 	};
 }
@@ -221,12 +226,15 @@ function MultipleAnswerHandler(data, q_id) {
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
 		var per_match_score = _data.score / _lis.length;
+		var perfect_score = true;
 		_lis.sort(function (a,b) {
 			return a.sorting_index - b.sorting_index;
 		});
 		for (var i = 0; i < _lis.length; i++) {
 			if (_lis[i].truth_eval == _data.answers[i][1]) score.score += per_match_score;
+			else perfect_score = false;
 		};
+		if (!_data.partial_credit) score.score = perfect_score ? score.possible:0;
 		return score;
 	}
 
@@ -290,7 +298,6 @@ function FillInBlankHandler (data, q_id) {
 	
 
 	this.grade = function () {
-		console.log('user ans: '+_user_input_elem.value+' correct: '+_data.answers[0]);
 		var score = {score:0,possible:_data.score};
 		var user_answer = _user_input_elem.value;
 		if (_data.answers.indexOf(user_answer) != -1) {
