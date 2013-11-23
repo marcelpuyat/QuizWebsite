@@ -6,7 +6,7 @@ var ui_handler;
 function init_js(quiz_id) {
 	resize_app();
 	window.onresize = resize_app;
-	ui_handler = new UIHandler(new QuizHandler(quiz_id, "/QuizWebsite/QuizServlet"),
+	ui_handler = new UIHandler(new QuizHandler(quiz_id, "/QuizWebsite/QuizServlet","/QuizWebsite/QuizResultsServlet"),
 						document.getElementById('quiz-cards-wrapper'));
 	ui_handler.run();
 }

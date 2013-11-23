@@ -9,14 +9,15 @@
  *     
  */
 
-function QuizHandler(quiz_id, servlet_url) {
+function QuizHandler(quiz_id, load_url, post_url) {
 	/* init vars */
 	var _questions = [];
 	var _data;
 	var _iterator;
 	var _isLoaded = false;
 	var _quiz_id = quiz_id;
-	var _servlet_url = servlet_url;
+	var _servlet_load_url = load_url;
+	var _servlet_post_url = post_url;
 	var _start_callbacks = [];
 	var _next_callbacks  = [];
 	var _start_callbacks_live = true;
@@ -116,7 +117,7 @@ function QuizHandler(quiz_id, servlet_url) {
 	}
 	
 	this.waitForLoad = function(callback, auxiliary_data) {
-		_load_quiz_json(_servlet_url, _quiz_id, function(aux){
+		_load_quiz_json(_servlet_load_url, _quiz_id, function(aux){
 			var quiz_title = _data.quiz_name;
 			if (quiz_title) document.title = quiz_title;
 
@@ -195,6 +196,6 @@ function QuizHandler(quiz_id, servlet_url) {
 	function _send_quiz_results(data, callback, aux) {
 		console.log('sending data:');
 		console.log(data);
-		post_json_to_url(_servlet_url, data, callback, aux);
+		post_json_to_url(_servlet_post_url, data, callback, aux);
 	}
 }
