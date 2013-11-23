@@ -22,6 +22,7 @@ function QuizHandler(quiz_id, servlet_url) {
 	var _start_callbacks_live = true;
 	var _next_callbacks_live  = true;
 	var _quiz_timer = new Timer(10);
+	var _is_practice_quiz = false;
 	
 	
 	/* public methods */
@@ -144,7 +145,7 @@ function QuizHandler(quiz_id, servlet_url) {
 	this.waitForResults = function(callback, auxiliary_data) {
 		/* build and send answer data */
 		var answer = _build_results();
-		_send_quiz_results(answer);
+		if(!_is_practice_quiz) _send_quiz_results(answer);
 		var elem = document.createElement('div');
 		elem.innerHTML = 'total correct: '+ answer.user_score+'\ntotal possible: '+answer.possible_score;
 		callback(elem, auxiliary_data);

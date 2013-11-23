@@ -4,6 +4,7 @@
  *                   getDOMSubStructure(bool addButton) - returns displayed DOM structure
  *					 grade() - returns user score in form {score:int, possible:int};
  *                   killListeners() - removes appropriate action listeners from object, should disable the users ability to change answers
+ *                   displayCorrected() - displays the corrected version of the card
  */
 function getQuestionHandler(type, data, q_id) {
 	switch (type) {
