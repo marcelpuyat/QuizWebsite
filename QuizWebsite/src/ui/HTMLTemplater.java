@@ -21,4 +21,11 @@ public class HTMLTemplater {
 		return html;
 	}
 	
+	public static String getBlueBar () {
+		String html = "";
+		html += "<div>";
+		html += "</div>";
+		return html;
+	}
+	
 }

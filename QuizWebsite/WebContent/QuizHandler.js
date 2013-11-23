@@ -194,7 +194,7 @@ function QuizHandler(quiz_id, load_url, post_url) {
 	}
 	
 	function _send_quiz_results(data, callback, aux) {
-		console.log('sending data:');
+		console.log('sending data to:'+_servlet_post_url);
 		console.log(data);
 		post_json_to_url(_servlet_post_url, data, callback, aux);
 	}
