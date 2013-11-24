@@ -38,7 +38,7 @@ function MatchingHandler (data, q_id) {
 	var _drag = {target:undefined,captureX:0,captureY:0,reciever:undefined};
 	var _listeners = [];
 	_capture_lis = [];
-	this.getType = function () { return 'matching'};
+	this.getType = function () { return 'matching'; };
 	this.getDOMSubStructure = function () {
 		var wrapper = document.createElement('div');
 		
@@ -96,13 +96,13 @@ function MatchingHandler (data, q_id) {
 						capture.classList.add('false');
 					}
 				}
-			}
+			};
 			var begin_drag = function (e) {
 				_drag.target = this;
 				_drag.captureX = e.clientX;
 				_drag.captureY = e.clientY;
 				_drag.target.classList.add('moving');
-			}
+			};
 			var end_drag = function (e) {
 				deselect_all(['selected']);
 				if (_drag.target) {
@@ -121,7 +121,7 @@ function MatchingHandler (data, q_id) {
 					_drag.target = undefined;
 					_drag.reciever = undefined;
 				}
-			}
+			};
 			var release_captive = function (capture) {
 				capture.captured_item_label.innerHTML = '';
 				capture.captive.classList.remove('moving','hide');
@@ -132,7 +132,7 @@ function MatchingHandler (data, q_id) {
 				for (var i = 0; i < _capture_lis.length; i++) {
 					for (var c = 0; c < classes.length; c++) _capture_lis[i].classList.remove(classes[c]);
 				};
-			}
+			};
 			var get_capture_elem = function (e, toggle_classes) {
 				var cap_li;
 				for (var i = 0; i < _capture_lis.length; i++) {
@@ -146,7 +146,7 @@ function MatchingHandler (data, q_id) {
 					}
 				};
 				return cap_li;
-			}
+			};
 			_capture_lis[i].addEventListener('click', click_listener);//bubble
 			_listeners.push({elem:_capture_lis[i],action:'click',callback:click_listener});
 
@@ -260,7 +260,7 @@ function MultipleAnswerHandler(data, q_id) {
 		};
 		if (!_data.partial_credit) score.score = perfect_score ? score.possible:0;
 		return score;
-	}
+	};
 
 	function get_checked() {
 		var check_boxes = _user_input_elems;
@@ -299,10 +299,10 @@ function FillInBlankHandler (data, q_id) {
 		});
 		var resize_text = function(e){
 			_user_input_elem.style.width = max(5,_user_input_elem.value.length/1.7) + 'em';
-		}
+		};
 		_user_input_elem.addEventListener('keydown', resize_text);
 		_listeners.push({elem:_user_input_elem,action:'keydown',callback:resize_text});
-		_user_input_elem.style.textAlign = 'center'
+		_user_input_elem.style.textAlign = 'center';
 		_user_input_elem.style.width = '5em';
 		_user_input_elem.style.maxWidth = '60%';
 
@@ -337,7 +337,7 @@ function FillInBlankHandler (data, q_id) {
 			score.score = 0;
 		}
 		return score;
-	}
+	};
 }
 
 function MultipleChoiceHandler(data, q_id) {
@@ -405,7 +405,7 @@ function MultipleChoiceHandler(data, q_id) {
 		var score = {score:0,possible:_data.score};
 		if (_last_clicked == _data.correct) score.score = _data.score;
 		return score;
-	}
+	};
 
 	function get_checked() {
 		var check_boxes = _user_input_elems;
@@ -463,7 +463,7 @@ function PictureResponseHandler(data, q_id) {
 			score.score = 0;
 		}
 		return score;
-	}
+	};
 }
 
 
@@ -511,7 +511,7 @@ function SingleAnswerHandler(data, q_id) {
 			score.score = 0;
 		}
 		return score;
-	}
+	};
 }
 
 

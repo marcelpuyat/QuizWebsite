@@ -68,7 +68,7 @@ function max (a,b,comp) {
 Array.prototype.shuffle = function () {
 	for(var j, x, i = this.length; i; j = Math.floor(Math.random() * i), x = this[--i], this[i] = this[j], this[j] = x);
 	return this;
-}
+};
 
 Node.prototype.setCSS3Attr = function(attr, val) {
 	var css3_kits = ['webkit',
@@ -90,7 +90,7 @@ Node.prototype.setCSS3Attr = function(attr, val) {
 /* fixing javascripts TERRRRRRRIBLE mod operator, from Stack Overflow user Enrique */
 Number.prototype.mod = function (n) {
 	return ((this % n) + n) % n;
-}
+};
 
 String.prototype.capitalizeFirst = function() {
 	return this.charAt(0).toUpperCase() + this.slice(1);
@@ -108,15 +108,15 @@ function Timer (fps) {
 				elapsed+=seconds/_fps;
 			}, seconds/_fps);
 		}
-	}
+	};
 	this.pause = function () {
 		window.clearInterval(timer_id);
 		timer_id = undefined;
-	}
+	};
 	this.getElapsed = function () {
 		return elapsed;
-	}
+	};
 	this.getSecondsElapsed = function () {
 		return elapsed / seconds;
-	}
+	};
 }

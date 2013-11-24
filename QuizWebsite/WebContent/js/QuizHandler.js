@@ -94,27 +94,27 @@ function QuizHandler(quiz_id, load_url, post_url) {
 					(index < _questions.length)
 				)
 			);
-	}
+	};
 
 	this.getAtIndex = function (index) {
 		if (this.indexExists(index)) {
 			return _questions[index].getDOMSubStructure();
 		}
 		return null;
-	}
+	};
 
 	this.getScoreAtIndex = function (index) {
 		if (this.indexExists(index)) {
 			return _questions[index].grade();
 		}
 		return -1;
-	}
+	};
 
 	this.sleepCard = function (index) {
 		if (this.indexExists(index)) {
 			_questions[index].killListeners();
 		}
-	}
+	};
 	
 	this.waitForLoad = function(callback, auxiliary_data) {
 		_load_quiz_json(_servlet_load_url, _quiz_id, function(aux){
@@ -154,10 +154,10 @@ function QuizHandler(quiz_id, load_url, post_url) {
 	
 	this.isMultiPage = function () {
 		return _data.is_multiple_page;
-	}
+	};
 	this.informStart = function () {
 		_quiz_timer.start();
-	}
+	};
 	
 	
 	

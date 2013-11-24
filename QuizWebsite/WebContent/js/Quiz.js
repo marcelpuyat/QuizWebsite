@@ -208,7 +208,7 @@ function UIHandler (quiz_handler, card_wrapper) {
 	                    	break;
 	                    case 40: break;
 	                }
-		}
+		};
 	}
 }
 
@@ -231,7 +231,7 @@ Node.prototype.attach_enter_listener = function(fn) {
 					e.cancelBubble = true;
 				}
 		}
-	})
+	});
 };
 
 
