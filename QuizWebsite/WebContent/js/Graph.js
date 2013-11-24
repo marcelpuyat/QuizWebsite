@@ -12,8 +12,11 @@ function GraphHandler (graph_search_bar, graph_search_ul, graph_url) {
 	(function init () {
 		_bar_elem.addEventListener('keyup',function () {
 			var query = _bar_elem.value;
+			console.log('query: _'+query+'_');
 			get_json_from_url(_graph_url + '?query='+query, function (data) {
-				update_display(data);
+				console.log('loaded:');
+				console.log(data);
+				update_display(query,data);
 			});
 		});
 		window.addEventListener('click',function (e) {
@@ -22,7 +25,7 @@ function GraphHandler (graph_search_bar, graph_search_ul, graph_url) {
 		_bar_elem.addEventListener('click', function () {
 			if 	(_graph_search_ul.children.length == 0) {
 				get_json_from_url(_graph_url + '?query=', function (data) {
-					update_display(data);
+					update_display('',data);
 				});
 			} else {
 				_bar_elem.innerHTML = '';
@@ -30,20 +33,30 @@ function GraphHandler (graph_search_bar, graph_search_ul, graph_url) {
 		})
 	})();
 
-	function update_display (data) {
+	function update_display (query, data) {
 		_graph_search_ul.innerHTML = '';
-		var quiz_high = data.quiz_high;
-		if (quiz_high) {
-			for (var i = 0; i < quiz_high.length; i++) {
+		var results = data.results;
+		if (results) {
+			for (var i = 0; i < results.length; i++) {
 				_graph_search_ul.appendChild(
 					get_display_li(
-						{href:'/QuizWebsite/Quiz.jsp?quiz_id='+quiz_high[i].id,
-						text:quiz_high[i].name,
-						type:'QUIZ'}
+						{href:'/QuizWebsite/Quiz.jsp?quiz_id='+results[i].id,
+						text:format_result(query, results[i].name),
+						type:results[i].type}
 					)
 				);
 			};
 		}
+	}
+
+	function format_result (query_text, result) {
+		if (!query_text || query_text == '') return result;
+		var result_lwr = result.toLowerCase();
+		var query_lwr  = query_text.toLowerCase();
+
+		var start = result_lwr.search(query_lwr);
+		var end = start + query_lwr.length;
+		return result.substring(0,start)+ '<b>' + result.substring(start,end) + '</b>' + result.substring(end);
 	}
 
 	function get_display_li (content) {

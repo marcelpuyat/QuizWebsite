@@ -42,7 +42,7 @@ public class HTMLTemplater {
 						"<a class=\"sprite2 admin admin-button\" href=\"/QuizWebsite/Admin.jsp\"></a>"+
 					"</div>"+
 					"<div class=\"search-bar\">"+
-						"<input type=\"text\" id=\"graph-search-bar\" placeholder=\"Search for People, Quizzes, and Topics\">"+
+						"<input type=\"text\" id=\"graph-search-bar\" placeholder=\"Search for People, Quizzes, and Topics\" value=\"\">"+
 						"<ul id=\"graph-search-results\">"+
 						"</ul>"+	
 						"<div class=\"sprite search-mag\" id=\"search-mag\"></div>"+
