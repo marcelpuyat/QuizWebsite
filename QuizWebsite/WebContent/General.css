@@ -260,8 +260,15 @@ ul#graph-search-results {
 		display: block;
 	}
 
+		.graph-search-result > span {
+			font-size: 9px;
+			color: rgba(0,0,0,0.3);
+			padding-right: 4px;
+		}
+
 		.graph-search-result > a {
 			text-decoration: none;
+			color: purple;
 		}
 
 	.graph-search-result:not(:first-child) {
