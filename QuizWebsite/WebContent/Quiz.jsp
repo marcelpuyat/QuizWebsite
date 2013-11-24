@@ -16,7 +16,7 @@
 </head>
 <body onload="init_js('<%= getQuizID(request) %>')">
 	<div id="content-wrapper">
-		<%= HTMLTemplater.getSidebarHTML("Quiz")  %>
+		<%= HTMLTemplater.getBlueBar("Bobby Womack","#")  %>
 		<div id="app-wrapper">
 			<div id="quiz-content-wrapper">
 				<div id="quiz-cards-wrapper">

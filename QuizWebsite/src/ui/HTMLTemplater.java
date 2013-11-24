@@ -21,11 +21,27 @@ public class HTMLTemplater {
 		return html;
 	}
 	
-	public static String getBlueBar () {
-		String html = "";
-		html += "<div>";
-		html += "</div>";
-		return html;
+	public static String getBlueBar (String username, String user_url) {
+		return 
+		"<div id=\"blue-bar\">"+
+			"<div id=\"page-head\" class=\"page-width wide\">"+
+				"<a href=\"/\" id=\"masthead-logo\" class=\"sprite logo\"></a>"+
+				"<div class=\"header-wrapper\">"+
+					"<div class=\"navbar right\">"+
+						"<ul class=\"nav\">"+
+							"<li class=\"sprite requests\"></li>"+
+							"<li class=\"sprite messages\"></li>"+
+							"<li class=\"sprite notifications\"></li>"+
+						"</ul>"+
+						"<a id=\"username-link-header\" href=\"user_url\">"+username+"</a>"+
+					"</div>"+
+					"<div class=\"search-bar\">"+
+						"<input type=\"text\" id=\"graph-search-bar\">"+
+						"<div class=\"sprite search-mag\" id=\"search-mag\"></div>"+
+					"</div>"+
+				"</div>"+
+			"</div>"+
+		"</div>";
 	}
 	
 }

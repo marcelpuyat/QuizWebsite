@@ -215,8 +215,7 @@ function UIHandler (quiz_handler, card_wrapper) {
 
 function resize_app() {
 	document.getElementById('app-wrapper').style.width = 
-		document.getElementById('app-selection-wrapper').parentElement.clientWidth 
-		- document.getElementById('app-selection-wrapper').clientWidth - 10 + "px";
+		window.innerWidth - 10 + "px";
 }
 
 
