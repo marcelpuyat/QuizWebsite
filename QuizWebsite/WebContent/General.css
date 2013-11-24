@@ -40,6 +40,10 @@ input[type="text"] {
 	float: right;
 }
 
+.left {
+	float: left;
+}
+
 .inline {
 	display: inline;
 }
@@ -110,6 +114,24 @@ input[type="text"] {
 
 .page-width.wide {
 	width: 980px;
+}
+.page-width.thin {
+	width: 554px;
+}
+.side-panel {
+	width: 213px;
+}
+.panel {
+	position: absolute;
+}
+
+#center-wrapper {
+	position: relative;
+	left: 50%;
+	margin-left: -490px;
+}
+#inner-center-wrapper {
+	left: 213px;
 }
 
 #masthead-logo {

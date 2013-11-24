@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONObject;
+
 /**
  * Servlet implementation class GraphServlet
  */
@@ -38,7 +40,12 @@ public class GraphServlet extends HttpServlet {
 		
 		ServletContext context = getServletContext(); 
 		Connection databaseConnection = (Connection)context.getAttribute("database_connection");
-		response.getWriter().println(GraphSearch.simple_search(databaseConnection, query, limit).toString());
+		JSONObject responseJSON = GraphSearch.simple_search(databaseConnection, query, limit);
+		if (responseJSON == null) {
+			response.sendError(HttpServletResponse.SC_GATEWAY_TIMEOUT);
+			return;
+		}
+		response.getWriter().println(responseJSON.toString());
 	}
 
 	/**

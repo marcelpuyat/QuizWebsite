@@ -23,6 +23,7 @@ public class GraphSearch {
 				int id = rs.getInt("id");
 				entry.accumulate("id", id);
 				entry.accumulate("type", "QUIZ");
+				entry.accumulate("url", "/QuizWebsite/Quiz.jsp?quiz_id="+id);
 				results.append("results", entry);
 				reapedQuizzes.add(id);
 				quizes_reaped++;
@@ -37,6 +38,7 @@ public class GraphSearch {
 						entry.accumulate("id", id);
 						entry.accumulate("name", rs.getString("name"));
 						entry.accumulate("type", "QUIZ");
+						entry.accumulate("url", "/QuizWebsite/Quiz.jsp?quiz_id="+id);
 						results.append("results", entry);
 						reapedQuizzes.add(id);
 					}
@@ -44,12 +46,10 @@ public class GraphSearch {
 			}
 			results.accumulate("status", 200);
 		} catch (SQLException e) {
-			results.accumulate("status", 505);
-			results.accumulate("message", "sql exception");
+			return null;
 		}
 		catch(java.lang.NullPointerException e) {
-			results.accumulate("status", 505);
-			results.accumulate("message", "no connection");
+			return null;
 		}
 		return results;
 	}

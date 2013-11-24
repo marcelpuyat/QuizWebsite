@@ -12,10 +12,7 @@ function GraphHandler (graph_search_bar, graph_search_ul, graph_url) {
 	(function init () {
 		_bar_elem.addEventListener('keyup',function () {
 			var query = _bar_elem.value;
-			console.log('query: _'+query+'_');
 			get_json_from_url(_graph_url + '?query='+query, function (data) {
-				console.log('loaded:');
-				console.log(data);
 				update_display(query,data);
 			});
 		});
@@ -40,7 +37,7 @@ function GraphHandler (graph_search_bar, graph_search_ul, graph_url) {
 			for (var i = 0; i < results.length; i++) {
 				_graph_search_ul.appendChild(
 					get_display_li(
-						{href:'/QuizWebsite/Quiz.jsp?quiz_id='+results[i].id,
+						{href:results[i].url,
 						text:format_result(query, results[i].name),
 						type:results[i].type}
 					)
