@@ -1,4 +1,4 @@
-package quiz;
+package routing;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -25,23 +25,14 @@ public class Home extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("Quiz.jsp?quiz_id=000081"); // 79 is Mult Choice
-														  // 81 is Single Answer 
-														  // 83 is Multiple Answer
-														  // 85 is Matching Question
-														  // 87 is Fill in Blank questions
-														  // 
+		response.sendRedirect("Home.jsp");
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.sendRedirect("Quiz.jsp?quiz_id=000081"); // 79 is Mult Choice
-														  // 81 is Single Answer 
-														  // 83 is Multiple Answer
-														  // 85 is Matching Question
-														  // 87 is Fill in Blank questions
+		response.sendRedirect("Home.jsp");
 	}
 
 }
