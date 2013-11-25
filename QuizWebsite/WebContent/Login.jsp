@@ -5,12 +5,17 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Create New Quiz</title>
+<title>Login</title>
 <link rel="stylesheet" type="text/css" href="/QuizWebsite/General.css">
 </head>
 <body>
 	<div id="content-wrapper">
 		<%= HTMLTemplater.getBlueBar(session)  %>
+		<form action="/QuizWebsite/UserServlet?api=login" method="POST">
+			username:<input type="text" name="username">
+			password:<input type="password" name="password">
+			<input type="submit">
+		</form>
 	</div>
 	<script src="/QuizWebsite/js/AJAXUtil.js" type="text/javascript"></script>
 	<script src="/QuizWebsite/js/Graph.js" type="text/javascript"></script>

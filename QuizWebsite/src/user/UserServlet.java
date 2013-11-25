@@ -40,28 +40,13 @@ public class UserServlet extends HttpServlet {
 		/* API SWITCH */
 		String api = request.getParameter("api");
 		
-		/* login */
-		if (api.equals("login")) {
-			String username = request.getParameter("username");
-			String password = request.getParameter("password");
-			if (Users.usernameExists(username,databaseConnection)) {
-				User u = new User(username, databaseConnection);
-				if (u.matchesPassword(password)) {
-					responseJSON.accumulate("status", "success");
-				} else {
-					responseJSON.accumulate("status", "password does not match");
-				}
-			} else {
-				responseJSON.accumulate("status", "username does not exist");
-			}
-		
-		}
-		
 		/* check availability */
-		else if (api.equals("availability")) {
+		if (api.equals("availability")) {
 			String username = request.getParameter("username");
 			responseJSON.accumulate("available", !Users.usernameExists(username, databaseConnection));
 			responseJSON.accumulate("username", username);
+		} else {
+			responseJSON.accumulate("result", "api not found");
 		}
 		
 		
@@ -72,20 +57,50 @@ public class UserServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
+		ServletContext context = getServletContext(); 
+		Connection databaseConnection = (Connection)context.getAttribute("database_connection");
 		
 		response.setContentType("application/json");
 		JSONObject responseJSON = new JSONObject();
 		
-		ServletContext context = getServletContext(); 
-		Connection databaseConnection = (Connection)context.getAttribute("database_connection");
+		/* API SWITCH */
+		String api = request.getParameter("api");
 		
-		if (Users.createUser(username, password, databaseConnection)) {
-			responseJSON.accumulate("status", "success");
-		} else {
-			responseJSON.accumulate("status", "failure");
+		/* create new user */
+		if (api.equals("create_user")) {
+			String username = request.getParameter("username");
+			String password = request.getParameter("password");
+			if (Users.createUser(username, password, databaseConnection)) {
+				responseJSON.accumulate("status", "success");
+			} else {
+				responseJSON.accumulate("status", "failure");
+			}
 		}
+		
+		/* login */
+		else if (api.equals("login")) {
+			String username = request.getParameter("username");
+			String password = request.getParameter("password");
+			if (Users.usernameExists(username,databaseConnection)) {
+				User u = new User(username, databaseConnection);
+				if (u.matchesPassword(password)) {
+					responseJSON.accumulate("status", "success");
+					responseJSON.accumulate("user_info", u.getPublicJSONSummary());
+					request.getSession().setAttribute("user", u);
+					response.sendRedirect("Home.jsp");
+				} else {
+					responseJSON.accumulate("status", "password does not match");
+				}
+			} else {
+				responseJSON.accumulate("status", "username does not exist");
+			}
+		
+		}
+		
+		
+
+		
+		
 		response.getWriter().println(responseJSON.toString());
 		
 	}

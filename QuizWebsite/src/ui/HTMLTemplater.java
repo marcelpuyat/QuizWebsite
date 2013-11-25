@@ -2,10 +2,18 @@ package ui;
 
 import javax.servlet.http.HttpSession;
 
+import user.User;
+
 public class HTMLTemplater {
 	public static String getBlueBar (HttpSession session) {
-		String username = "Bobby Womack";
-		String user_url = "http://www.imgur.com";
+		User curr_user = (User)session.getAttribute("user");
+		String username = "Login";
+		String user_url = "/QuizWebsite/Login.jsp";
+		if (curr_user != null) {
+			username = curr_user.getDisplayName();
+			user_url = curr_user.getUserURL();
+		}
+		
 		return 
 		"<div id=\"blue-bar\">"+
 			"<div id=\"page-head\" class=\"page-width wide\">"+
