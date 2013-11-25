@@ -46,10 +46,10 @@ public class GraphSearch {
 			}
 			results.accumulate("status", 200);
 		} catch (SQLException e) {
-			return null;
+			e.printStackTrace(); 
 		}
 		catch(java.lang.NullPointerException e) {
-			return null;
+			e.printStackTrace(); 
 		}
 		return results;
 	}
