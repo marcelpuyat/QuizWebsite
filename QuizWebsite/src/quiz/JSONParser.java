@@ -19,6 +19,7 @@ import question.PictureQuestion;
 import question.Question;
 import question.QuestionTypes;
 import question.SingleAnswerQuestion;
+import user.User;
 import customObjects.StringBooleanPair;
 import customObjects.StringPair;
 
@@ -143,14 +144,14 @@ public class JSONParser {
 	 * @param quiz The quiz taken
 	 * @return
 	 */
-	public static QuizResults parseJSONIntoQuizResults(JSONObject jSONresults, Connection con) {
+	public static QuizResults parseJSONIntoQuizResults(JSONObject jSONresults, Connection con, User user) {
 		
 		double timeTaken = jSONresults.getDouble("time");
 		double userPercentageScore = jSONresults.getDouble("percentage");
 		String quizIDString = jSONresults.getString("quiz_id");
 		long quizID = Long.parseLong(quizIDString);
 		
-		QuizResults results = new QuizResults((long)0, quizID, userPercentageScore, timeTaken, con);
+		QuizResults results = new QuizResults(user.getUserId(), quizID, userPercentageScore, timeTaken, con);
 		return results;
 	}
 

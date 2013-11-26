@@ -8,8 +8,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
+
+import user.User;
 
 /**
  * Servlet implementation class QuizResultsServlet
@@ -40,9 +43,11 @@ public class QuizResultsServlet extends HttpServlet {
 		JSONObject jSONresults = JSONParser.getJSONfromRequest(request);
 		
 		Connection con = (Connection) getServletContext().getAttribute("database_connection");
+		HttpSession session = (HttpSession) request.getSession();
+		User user = (User) session.getAttribute("user");
 		
 		// Adds to database automatically
-		JSONParser.parseJSONIntoQuizResults(jSONresults, con);
+		JSONParser.parseJSONIntoQuizResults(jSONresults, con, user);
 	}
 
 }

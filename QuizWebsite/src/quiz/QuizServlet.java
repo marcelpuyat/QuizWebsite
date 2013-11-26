@@ -65,20 +65,7 @@ public class QuizServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
-		/* Forms JSONObject from request */
-		StringBuilder json_str_response = new StringBuilder();
-		BufferedReader br = request.getReader();
-		String str;
-		while( (str = br.readLine()) != null ){
-			json_str_response.append(str);
-	    }  
-		JSONObject jSONresults = new JSONObject(json_str_response.toString());
-		
-		Connection con = (Connection) getServletContext().getAttribute("database_connection");
-		
-		QuizResults results = JSONParser.parseJSONIntoQuizResults(jSONresults, con);
-
-		// TODO put results into database
+		// TODO Implement Quiz Creation/Editing
 	}
 
 }
