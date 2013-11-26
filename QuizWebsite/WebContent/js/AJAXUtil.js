@@ -96,6 +96,11 @@ String.prototype.capitalizeFirst = function() {
 	return this.charAt(0).toUpperCase() + this.slice(1);
 };
 
+String.prototype.isOfCharSet = function (charSet) {
+	var regex = new RegExp('['+charSet+']*');
+	return this.match(regex)[0].length == this.length;
+}
+
 
 function Timer (fps) {
 	var elapsed = 0;

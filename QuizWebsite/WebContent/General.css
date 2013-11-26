@@ -25,7 +25,19 @@ input[type="password"] {
 
 .error-message {
 	color: red;
+}
+
+.smaller {
 	font-size: 60%;
+}
+
+.lighter {
+	font-weight: lighter;
+}
+
+.faint {
+	opacity:0.70;
+	filter:Alpha(opacity=070); /* IE8 and earlier */
 }
 
 .center-block {
@@ -73,6 +85,11 @@ input[type="password"] {
 
 .hide {
 	display: none!important;
+}
+
+.opacity-hide {
+	opacity:0.00;
+	filter:Alpha(opacity=000); /* IE8 and earlier */
 }
 
 .sprite,.sprite2 {

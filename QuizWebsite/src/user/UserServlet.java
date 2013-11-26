@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
+import quiz.JSONParser;
+
 /**
  * Servlet implementation class UserServlet
  */
@@ -68,9 +70,10 @@ public class UserServlet extends HttpServlet {
 		
 		/* create new user */
 		if (api.equals("create_user")) {
-			String username = request.getParameter("new-username");
-			String password = request.getParameter("new-password");
-			String pass_chk = request.getParameter("new-password-redundant");
+			JSONObject usrJSON = JSONParser.getJSONfromRequest(request);
+			String username = usrJSON.getString("new_username");
+			String password = usrJSON.getString("new_password");
+			String pass_chk = usrJSON.getString("new_password_redundant");
 			if (Users.createUser(username, password, databaseConnection) &&
 					password.equals(pass_chk)) {
 				responseJSON.accumulate("status", "success");
@@ -83,13 +86,18 @@ public class UserServlet extends HttpServlet {
 		else if (api.equals("login")) {
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
+			String forward_to = request.getParameter("forward_to");
 			if (Users.usernameExists(username,databaseConnection)) {
 				User u = new User(username, databaseConnection);
 				if (u.matchesPassword(password)) {
 					responseJSON.accumulate("status", "success");
 					responseJSON.accumulate("user_info", u.getPublicJSONSummary());
 					request.getSession().setAttribute("user", u);
-					response.sendRedirect("Home.jsp");
+					if (forward_to != null && forward_to.equals("settings")) {
+						response.sendRedirect("Settings.jsp");
+					} else {
+						response.sendRedirect("Home.jsp");
+					}
 				} else {
 					responseJSON.accumulate("status", "password does not match");
 				}
