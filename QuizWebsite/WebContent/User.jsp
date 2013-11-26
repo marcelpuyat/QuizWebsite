@@ -4,6 +4,11 @@
 <%@ page import="user.*" %>
 <%@ page import="java.sql.*" %>
 <%@ page import="javax.servlet.ServletContext" %>
+<%@ page import="user.*" %>
+<%
+	User u = (User)session.getAttribute("user");
+	if (u == null) response.sendRedirect("/QuizWebsite/Login.jsp");
+%>
 <%!
 	String getUserName(HttpServletRequest req, ServletContext context) {
 		Connection con = (Connection)context.getAttribute("database_connection");

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page import="ui.HTMLTemplater" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -20,7 +21,7 @@
 					<li><input type="text" name="username"></li>
 					<li><div class="faint">password</div></li>
 					<li><input type="password" name="password"></li>
-					<input class="hide" type="text" name="forward_to" id="forward-to">
+					<li class="hide"><input class="hide" type="text" name="forward_to" id="forward-to"></li>
 					<li><input type="submit"></li>
 				</ul>
 			</form>
