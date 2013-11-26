@@ -50,7 +50,7 @@ public class GraphSearch {
 		}
 		catch(java.lang.NullPointerException e) {
 			e.printStackTrace(); 
-		}
+		} finally {}
 		return results;
 	}
 	

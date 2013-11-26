@@ -27,7 +27,7 @@ function GraphHandler (graph_search_bar, graph_search_ul, graph_url) {
 			} else {
 				_bar_elem.innerHTML = '';
 			}
-		})
+		});
 	})();
 
 	function update_display (query, data) {

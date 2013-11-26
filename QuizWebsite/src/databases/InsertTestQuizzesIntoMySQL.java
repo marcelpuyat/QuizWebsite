@@ -149,6 +149,7 @@ public class InsertTestQuizzesIntoMySQL {
 	}
 	
 	private void addMultipleChoiceQuizResults() {
+		@SuppressWarnings("unused")
 		QuizResults qr = new QuizResults(0, 49, 66.666, 32.31, this.con);
 	}
 	

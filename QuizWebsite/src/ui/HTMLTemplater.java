@@ -25,9 +25,10 @@ public class HTMLTemplater {
 							"<li class=\"sprite messages\"></li>"+
 							"<li class=\"sprite notifications\"></li>"+
 						"</ul>"+
-						"<a class=\"header-text\" href=\""+user_url+"\">"+username+"</a>"+
 						"<a class=\"header-text\" href=\"/QuizWebsite/\">Home</a>"+
+						"<a class=\"header-text\" href=\""+user_url+"\">"+username+"</a>"+
 						"<a class=\"sprite2 admin admin-button\" href=\"/QuizWebsite/Admin.jsp\"></a>"+
+						"<div class=\"sprite settings admin-button\"></div>"+
 					"</div>"+
 					"<div class=\"search-bar\">"+
 						"<input type=\"text\" id=\"graph-search-bar\" placeholder=\"Search for People, Quizzes, and Topics\" value=\"\">"+

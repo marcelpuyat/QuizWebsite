@@ -68,9 +68,11 @@ public class UserServlet extends HttpServlet {
 		
 		/* create new user */
 		if (api.equals("create_user")) {
-			String username = request.getParameter("username");
-			String password = request.getParameter("password");
-			if (Users.createUser(username, password, databaseConnection)) {
+			String username = request.getParameter("new-username");
+			String password = request.getParameter("new-password");
+			String pass_chk = request.getParameter("new-password-redundant");
+			if (Users.createUser(username, password, databaseConnection) &&
+					password.equals(pass_chk)) {
 				responseJSON.accumulate("status", "success");
 			} else {
 				responseJSON.accumulate("status", "failure");

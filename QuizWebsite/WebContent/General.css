@@ -16,10 +16,16 @@ ul {
 	list-style-type: none;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="password"] {
 	border-radius: 3px;
 	border: solid 1px #C0C0C0;
 	padding: 3px;
+}
+
+.error-message {
+	color: red;
+	font-size: 60%;
 }
 
 .center-block {
@@ -111,6 +117,11 @@ input[type="text"] {
 		width: 16px;
 		background-position: -81px -108px;
 	}
+	.sprite.settings {
+		background-position: -35px -665px;
+		height: 13px;
+		width: 13px;
+	}
 
 .page-width.wide {
 	width: 980px;
@@ -171,6 +182,7 @@ div#blue-bar {
 		}
 		ul.nav > li {
 			display: inline-block;
+			margin-left: 4px;
 		}
 
 		div#search-mag {
@@ -199,7 +211,7 @@ div#blue-bar {
 		.admin-button {
 			display: inline-block;
 			margin-bottom: 6px;
-			margin-left: 7px;
+			margin-left: 12px;
 		}
 
 		.header-text {
