@@ -26,6 +26,7 @@ import question.Question;
 import question.SingleAnswerQuestion;
 import quiz.Quiz;
 import quiz.QuizResults;
+import customObjects.SelfRefreshingConnection;
 import customObjects.StringBooleanPair;
 import customObjects.StringPair;
 
@@ -36,13 +37,14 @@ import customObjects.StringPair;
  */
 public class InsertTestQuizzesIntoMySQL {
 	
-	private Connection con;
+	private SelfRefreshingConnection con;
 	
 	/**
 	 * Database stub that contains a bunch of test quizzes
 	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	public InsertTestQuizzesIntoMySQL() throws IOException {
+	public InsertTestQuizzesIntoMySQL() throws IOException, ClassNotFoundException {
 		con = createConnection();
 		initializeStubDatabase();
 //		test();
@@ -54,13 +56,14 @@ public class InsertTestQuizzesIntoMySQL {
 	/**
 	 * Adds all test quizzes to quiz map
 	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	private void initializeStubDatabase() throws IOException {
+	private void initializeStubDatabase() throws IOException, ClassNotFoundException {
 		addQuizTests();
 		//addQuizResultsTests();
 	}
 	
-	private void addQuizTests() throws IOException {
+	private void addQuizTests() throws IOException, ClassNotFoundException {
 //		addMultipleChoiceQuiz();
 //		addSingleAnswerAndPictureQuiz(); 	
 //		addMultipleChoiceMultipleAnswerQuiz();
@@ -69,7 +72,7 @@ public class InsertTestQuizzesIntoMySQL {
 		addMultipleChoiceMultipleAnswerQuiz2();
 	}
 	
-	private Connection createConnection() {
+	private SelfRefreshingConnection createConnection() {
     	try { 
 			Class.forName("com.mysql.jdbc.Driver"); 
 
@@ -77,7 +80,7 @@ public class InsertTestQuizzesIntoMySQL {
 					( "jdbc:mysql://" + DBInfo.MYSQL_DATABASE_SERVER, DBInfo.MYSQL_USERNAME ,DBInfo.MYSQL_PASSWORD);
 			Statement stmt = con.createStatement();
 			stmt.executeQuery("USE " + DBInfo.MYSQL_DATABASE_NAME);
-			return con;
+			return new SelfRefreshingConnection(con);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -106,9 +109,10 @@ public class InsertTestQuizzesIntoMySQL {
 	 * @param isMultiplePage
 	 * @param isPracticable
 	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
 	private void addQuiz(String name, String creator, String description, ArrayList<Question> questions, int maxScore, 
-			boolean isRandomizable, boolean isMultiplePage, boolean isPracticable, boolean isImmediatelyCorrected) throws IOException
+			boolean isRandomizable, boolean isMultiplePage, boolean isPracticable, boolean isImmediatelyCorrected) throws IOException, ClassNotFoundException
 	{
 		PreparedStatement stmt;
 		try {
@@ -156,8 +160,9 @@ public class InsertTestQuizzesIntoMySQL {
 	/**
 	 * Adds a test quiz for this type
 	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	private void addMultipleChoiceQuiz() throws IOException {
+	private void addMultipleChoiceQuiz() throws IOException, ClassNotFoundException {
 		
 		/* Question 1 */
     	ArrayList<String> options = new ArrayList<String>(2);
@@ -213,8 +218,9 @@ public class InsertTestQuizzesIntoMySQL {
 	/**
 	 * Adds a test quiz for this type
 	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	private void addSingleAnswerAndPictureQuiz() throws IOException {
+	private void addSingleAnswerAndPictureQuiz() throws IOException, ClassNotFoundException {
 		ArrayList<Question> questions = new ArrayList<Question>();
 		
 		HashSet<String> possibleAnswers = new HashSet<String>(3);
@@ -253,8 +259,9 @@ public class InsertTestQuizzesIntoMySQL {
 	/**
 	 * Adds a test quiz for this type
 	 * @throws IOException 
+	 * @throws ClassNotFoundException 
 	 */
-	private void addMultipleChoiceMultipleAnswerQuiz() throws IOException {
+	private void addMultipleChoiceMultipleAnswerQuiz() throws IOException, ClassNotFoundException {
 		ArrayList<Question> questions = new ArrayList<Question>();
 
 		/* Multiple Choice Multiple Answer test */
@@ -282,7 +289,7 @@ public class InsertTestQuizzesIntoMySQL {
 		addQuiz(name, "Nobody", description, questions, maxScore, isRandomizable, isMultiplePage, isPracticable, isImmediatelyCorrected);
 	}
 	
-	private void addMultipleChoiceMultipleAnswerQuiz2() throws IOException {
+	private void addMultipleChoiceMultipleAnswerQuiz2() throws IOException, ClassNotFoundException {
 		ArrayList<Question> questions = new ArrayList<Question>();
 
 		/* Multiple Choice Multiple Answer test */
@@ -312,7 +319,7 @@ public class InsertTestQuizzesIntoMySQL {
 		Quiz newQuiz = new Quiz(con, name, "Nobody", description, questions, maxScore, isRandomizable, isMultiplePage, isPracticable, isImmediatelyCorrected);
 	}
 	
-	private void addMatchingQuiz() throws IOException {
+	private void addMatchingQuiz() throws IOException, ClassNotFoundException {
 		ArrayList<Question> questions = new ArrayList<Question>();
 
 		/* Multiple Choice Multiple Answer test */
@@ -341,7 +348,7 @@ public class InsertTestQuizzesIntoMySQL {
 		addQuiz(name, "Nobody", description, questions, maxScore, isRandomizable, isMultiplePage, isPracticable, isImmediatelyCorrected);
 	}
 	
-	private void addFillBlankQuestion() throws IOException {
+	private void addFillBlankQuestion() throws IOException, ClassNotFoundException {
 		ArrayList<Question> questions = new ArrayList<Question>();
 
 		/* Fill in blank test */

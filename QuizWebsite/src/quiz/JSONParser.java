@@ -2,9 +2,9 @@ package quiz;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,6 +19,8 @@ import question.PictureQuestion;
 import question.Question;
 import question.QuestionTypes;
 import question.SingleAnswerQuestion;
+import user.User;
+import customObjects.SelfRefreshingConnection;
 import customObjects.StringBooleanPair;
 import customObjects.StringPair;
 
@@ -46,6 +48,129 @@ public class JSONParser {
 		return new JSONObject(json_str_response.toString());
 	}
 	
+	public static void storeNewQuizWithJSON(JSONObject newQuizJSON, SelfRefreshingConnection con) throws ClassNotFoundException {
+		String quizName = newQuizJSON.getString("quiz_name");
+		String description = newQuizJSON.getString("description");
+		String creator = newQuizJSON.getString("creator");
+		int maxScore = newQuizJSON.getInt("max_score");
+		boolean isImmediatelyCorrected = newQuizJSON.getBoolean("is_immediately_corrected");
+		boolean isMultPage = newQuizJSON.getBoolean("is_multiple_page");
+		boolean isRandomized = newQuizJSON.getBoolean("is_randomized");
+		boolean isPracticable = newQuizJSON.getBoolean("is_practicable");
+		ArrayList<Question> questions = getQuestionsFromJSONArray(newQuizJSON.getJSONArray("questions"));
+		
+		// Adds Quiz to db
+		Quiz newQuiz = new Quiz(con, quizName, creator, description, questions, maxScore, isRandomized, isMultPage, isPracticable, isImmediatelyCorrected);
+		return;
+	}
+	
+	private static ArrayList<Question> getQuestionsFromJSONArray(JSONArray jSONquestions) {
+		ArrayList<Question> questions = new ArrayList<Question>(jSONquestions.length());
+		for (int i = 0; i < jSONquestions.length(); i++) {
+			questions.add(parseQuestionJSONIntoQuestion((JSONObject) jSONquestions.get(i)));
+		}
+		return null;
+	}
+	
+	private static Question parseQuestionJSONIntoQuestion(JSONObject question) {
+		String type = question.getString("type");
+		
+		if (type.equals("multiple-choice")) {
+			return parseJSONIntoMultipleChoiceQuestion(question);
+		} else if (type.equals("multiple-answer")) {
+			return parseJSONIntoMultAnswerQuestion(question);
+		} else if (type.equals("picture-response")) {
+			return parseJSONIntoPictureQuestion(question);
+		} else if (type.equals("matching")) {
+			return parseJSONIntoMatchingQuestion(question);
+		} else if (type.equals("fill-blank")) {
+			return parseJSONIntoFillBlankQuestion(question);
+		} else if (type.equals("single-answer")) {
+			return parseJSONIntoSingleAnswerQuestion(question);
+		}
+		
+		// Means type was wrongly formatted
+		else return null;
+	}
+	
+	private static Question parseJSONIntoSingleAnswerQuestion(
+			JSONObject question) {
+		String prompt = question.getString("prompt");
+		JSONArray answers = question.getJSONArray("answers");
+		HashSet<String> possibleAnswers = new HashSet<String>();
+		for (int i = 0; i < answers.length(); i++) {
+			possibleAnswers.add(answers.getString(i));
+		}
+		return new SingleAnswerQuestion(prompt, possibleAnswers);
+	}
+
+	private static Question parseJSONIntoFillBlankQuestion(JSONObject question) {
+		String optionalPrompt = question.getString("optional_prompt");
+		String firstPrompt = question.getString("first_prompt");
+		String secondPrompt = question.getString("second_prompt");
+		int score = question.getInt("score");
+		JSONArray answers = question.getJSONArray("answers");
+		HashSet<String> possibleAnswers = new HashSet<String>();
+		for (int i = 0; i < answers.length(); i++) {
+			possibleAnswers.add(answers.getString(i));
+		}
+		return new FillBlankQuestion(optionalPrompt, firstPrompt, secondPrompt, possibleAnswers, score);
+	}
+
+	private static Question parseJSONIntoMatchingQuestion(JSONObject question) {
+		String prompt = question.getString("prompt");
+		JSONArray arrayOfStringPairs = question.getJSONArray("answers");
+		int score = question.getInt("score");
+		ArrayList<StringPair> pairs = new ArrayList<StringPair>();
+		for (int i = 0; i < arrayOfStringPairs.length(); i++) {
+			JSONArray strings = (JSONArray)arrayOfStringPairs.get(i);
+			String firstString = (String)strings.get(0);
+			String secondString = (String)strings.get(1);
+			StringPair newPair = new StringPair(firstString, secondString);
+			pairs.add(newPair);
+		}
+		return new MatchingQuestion(prompt, pairs, score);
+	}
+
+	private static Question parseJSONIntoPictureQuestion(JSONObject question) {
+		String prompt = question.getString("prompt");
+		String imgUrl = question.getString("img_url");
+		JSONArray answers = question.getJSONArray("answers");
+		HashSet<String> possibleAnswers = new HashSet<String>();
+		for (int i = 0; i < answers.length(); i++) {
+			possibleAnswers.add(answers.getString(i));
+		}
+		return new PictureQuestion(prompt, possibleAnswers, imgUrl);
+	}
+
+	private static Question parseJSONIntoMultAnswerQuestion(JSONObject question) {
+		String prompt = question.getString("prompt");
+		JSONArray arrayOfStringPairs = question.getJSONArray("answers");
+		int score = question.getInt("score");
+		boolean partialCredit = question.getBoolean("partial_credit");
+		ArrayList<StringBooleanPair> pairs = new ArrayList<StringBooleanPair>();
+		for (int i = 0; i < arrayOfStringPairs.length(); i++) {
+			JSONArray strings = (JSONArray)arrayOfStringPairs.get(i);
+			String string = (String)strings.get(0);
+			Boolean value = (Boolean)strings.get(1);
+			StringBooleanPair newPair = new StringBooleanPair(string, value.booleanValue());
+			pairs.add(newPair);
+		}
+		return new MultChoiceMultAnswerQuestion(prompt, pairs, score, partialCredit);
+	}
+
+	private static Question parseJSONIntoMultipleChoiceQuestion(
+			JSONObject question) {
+		String prompt = question.getString("prompt");
+		int answerIndex = question.getInt("correct");
+		ArrayList<String> options = new ArrayList<String>();
+		JSONArray jSONoptions = question.getJSONArray("options");
+		for (int i = 0; i < jSONoptions.length(); i++) {
+			options.add(jSONoptions.getString(i));
+		}
+		return new MultipleChoiceQuestion(prompt, options, answerIndex);
+	}
+
 	/**
 	 * Quiz is formatted differently depending on type.
 	 *    
@@ -143,14 +268,14 @@ public class JSONParser {
 	 * @param quiz The quiz taken
 	 * @return
 	 */
-	public static QuizResults parseJSONIntoQuizResults(JSONObject jSONresults, Connection con) {
+	public static QuizResults parseJSONIntoQuizResults(JSONObject jSONresults, SelfRefreshingConnection con, User user) {
 		
 		double timeTaken = jSONresults.getDouble("time");
 		double userPercentageScore = jSONresults.getDouble("percentage");
 		String quizIDString = jSONresults.getString("quiz_id");
 		long quizID = Long.parseLong(quizIDString);
 		
-		QuizResults results = new QuizResults((long)0, quizID, userPercentageScore, timeTaken, con);
+		QuizResults results = new QuizResults(user.getUserId(), quizID, userPercentageScore, timeTaken, con);
 		return results;
 	}
 

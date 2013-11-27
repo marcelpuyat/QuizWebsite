@@ -1,6 +1,7 @@
-package graph;
+package quiz;
 
 import java.io.IOException;
+import java.sql.Connection;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -9,21 +10,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONObject;
-
-import customObjects.SelfRefreshingConnection;
-
 /**
- * Servlet implementation class GraphServlet
+ * Servlet implementation class QuizInfoServlet
  */
-@WebServlet("/GraphServlet")
-public class GraphServlet extends HttpServlet {
+@WebServlet("/QuizInfoServlet")
+public class QuizInfoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GraphServlet() {
+    public QuizInfoServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,27 +29,14 @@ public class GraphServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String query = request.getParameter("query");
-		String lim_s = request.getParameter("limit");
-		if (lim_s == null || lim_s.equals("")) lim_s = "10";
-		int limit    = Integer.parseInt(lim_s);
-		
+		String quiz_id = request.getParameter("quiz_id");
+		int id = Integer.parseInt(quiz_id);
+
 		response.setContentType("application/json");
-		
+
 		ServletContext context = getServletContext(); 
-		SelfRefreshingConnection databaseConnection = (SelfRefreshingConnection)context.getAttribute("database_connection");
-		JSONObject responseJSON;
-		try {
-			responseJSON = GraphSearch.simple_search(databaseConnection, query, limit);
-			if (responseJSON == null) {
-				response.sendError(HttpServletResponse.SC_GATEWAY_TIMEOUT);
-				return;
-			}
-			response.getWriter().println(responseJSON.toString());
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Connection databaseConnection = (Connection)context.getAttribute("database_connection");
+		
 		
 	}
 

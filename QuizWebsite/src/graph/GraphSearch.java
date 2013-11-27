@@ -1,13 +1,18 @@
 package graph;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashSet;
+import java.util.Set;
 
-import org.json.*;
+import org.json.JSONObject;
+
+import customObjects.SelfRefreshingConnection;
 
 public class GraphSearch {
 	
-	public static JSONObject simple_search(Connection db_connection, String text, int limit) {
+	public static JSONObject simple_search(SelfRefreshingConnection db_connection, String text, int limit) throws ClassNotFoundException {
 		JSONObject results = new JSONObject();
 		try {
 			Set<Integer> reapedQuizzes = new HashSet<Integer>();

@@ -1,5 +1,6 @@
 package listener;
 
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
@@ -8,9 +9,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
-import java.sql.*;
-
-import databases.*;
+import customObjects.SelfRefreshingConnection;
+import databases.DBInfo;
 
 /**
  * This whole class is a stub and will be deleted eventually.
@@ -31,7 +31,7 @@ public class ContextListener implements ServletContextListener {
      */
     public void contextInitialized(ServletContextEvent arg0) {
     	ServletContext context = arg0.getServletContext();
-    	context.setAttribute("database_connection", this.createConnection());
+    	context.setAttribute("database_connection", new SelfRefreshingConnection(this.createConnection()));
     }
     
     /**
@@ -60,7 +60,7 @@ public class ContextListener implements ServletContextListener {
      */
     public void contextDestroyed(ServletContextEvent arg0) {
         ServletContext context = arg0.getServletContext();
-        Connection con = (Connection)context.getAttribute("database_connection");
+        SelfRefreshingConnection con = (SelfRefreshingConnection)context.getAttribute("database_connection");
         try {
         	con.close();
         } catch (Exception ignored) { ignored.printStackTrace(); }

@@ -10,9 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import quiz.JSONParser;
+import customObjects.SelfRefreshingConnection;
 
 /**
  * Servlet implementation class UserServlet
@@ -34,7 +36,7 @@ public class UserServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ServletContext context = getServletContext(); 
-		Connection databaseConnection = (Connection)context.getAttribute("database_connection");
+		SelfRefreshingConnection databaseConnection = (SelfRefreshingConnection)context.getAttribute("database_connection");
 		
 		response.setContentType("application/json");
 		JSONObject responseJSON = new JSONObject();
@@ -45,7 +47,15 @@ public class UserServlet extends HttpServlet {
 		/* check availability */
 		if (api.equals("availability")) {
 			String username = request.getParameter("username");
-			responseJSON.accumulate("available", !Users.usernameExists(username, databaseConnection));
+			try {
+				responseJSON.accumulate("available", !Users.usernameExists(username, databaseConnection));
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			responseJSON.accumulate("username", username);
 		} else {
 			responseJSON.accumulate("result", "api not found");
@@ -60,7 +70,7 @@ public class UserServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ServletContext context = getServletContext(); 
-		Connection databaseConnection = (Connection)context.getAttribute("database_connection");
+		SelfRefreshingConnection databaseConnection = (SelfRefreshingConnection)context.getAttribute("database_connection");
 		
 		response.setContentType("application/json");
 		JSONObject responseJSON = new JSONObject();
@@ -74,6 +84,7 @@ public class UserServlet extends HttpServlet {
 			String username = usrJSON.getString("new_username");
 			String password = usrJSON.getString("new_password");
 			String pass_chk = usrJSON.getString("new_password_redundant");
+<<<<<<< HEAD
 			if (Users.createUser(username, password, databaseConnection) &&
 					password.equals(pass_chk)) {
 				responseJSON.accumulate("status", "success");
@@ -83,6 +94,21 @@ public class UserServlet extends HttpServlet {
 				responseJSON.accumulate("status", "failure");
 				response.getWriter().println(responseJSON.toString());
 				return;
+=======
+			try {
+				if (Users.createUser(username, password, databaseConnection) &&
+						password.equals(pass_chk)) {
+					responseJSON.accumulate("status", "success");
+				} else {
+					responseJSON.accumulate("status", "failure");
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+>>>>>>> 75607f9a2077640111c30e4cb2c24c1a26982f41
 			}
 		}
 		
@@ -91,6 +117,7 @@ public class UserServlet extends HttpServlet {
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
 			String forward_to = request.getParameter("forward_to");
+<<<<<<< HEAD
 			if (Users.usernameExists(username,databaseConnection)) {
 				User u = new User(username, databaseConnection);
 				if (u.matchesPassword(password)) {
@@ -109,6 +136,32 @@ public class UserServlet extends HttpServlet {
 			} else {
 				response.sendRedirect("Login.jsp");
 				return;
+=======
+			try {
+				if (Users.usernameExists(username,databaseConnection)) {
+					User u = new User(username, databaseConnection);
+					if (u.matchesPassword(password)) {
+						responseJSON.accumulate("status", "success");
+						responseJSON.accumulate("user_info", u.getPublicJSONSummary());
+						request.getSession().setAttribute("user", u);
+						if (forward_to != null && forward_to.equals("settings")) {
+							response.sendRedirect("Settings.jsp");
+						} else {
+							response.sendRedirect("Home.jsp");
+						}
+					} else {
+						responseJSON.accumulate("status", "password does not match");
+					}
+				} else {
+					responseJSON.accumulate("status", "username does not exist");
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+>>>>>>> 75607f9a2077640111c30e4cb2c24c1a26982f41
 			}
 		
 		}

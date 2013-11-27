@@ -1,10 +1,16 @@
 package user;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import customObjects.SelfRefreshingConnection;
 
 public class Users {
 	
-	public static boolean createUser(String username, String password, Connection con) {
+	public static boolean createUser(String username, String password, SelfRefreshingConnection con) throws ClassNotFoundException {
 		//try to create user, if username already exists or fields are incorrect, return null
 		try {
 			if (usernameExists(username, con)) return false;
@@ -25,7 +31,7 @@ public class Users {
 	}
 	
 	
-	public static boolean usernameExists(String username, Connection con) {
+	public static boolean usernameExists(String username, SelfRefreshingConnection con) throws ClassNotFoundException {
 		try {
 			Statement stmt = con.createStatement();
 			String getAccountByUsername = "SELECT username FROM Users WHERE username = '"+username+"'";
