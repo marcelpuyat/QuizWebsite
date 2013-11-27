@@ -49,6 +49,30 @@ public class GraphSearch {
 					}
 				}
 			}
+			
+			try {
+				Statement stmt2 = db_connection.createStatement();
+				String tagMatchString = "SELECT Quizzes.name, Quizzes.id FROM Quizzes INNER JOIN Tags on Quizzes.id = Tags.quiz_id AND Tags.name = \"" + text + "\"";
+				ResultSet rs2 = stmt2.executeQuery(tagMatchString);
+				
+				while (rs2.next()) {
+					int id = rs2.getInt("id");
+					if (!reapedQuizzes.contains(id)) {
+						JSONObject entry = new JSONObject();
+						entry.accumulate("id", id);
+						entry.accumulate("name", rs2.getString("name"));
+						entry.accumulate("type", "QUIZ");
+						entry.accumulate("url", "/QuizWebsite/Quiz.jsp?quiz_id="+id);
+						results.append("results", entry);
+						reapedQuizzes.add(id);
+					}
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+			
 			results.accumulate("status", 200);
 		} catch (SQLException e) {
 			e.printStackTrace(); 
@@ -57,6 +81,36 @@ public class GraphSearch {
 			e.printStackTrace(); 
 		} finally {}
 		return results;
+	}
+	
+	private static JSONObject tagSearch(JSONObject results, SelfRefreshingConnection con, String text
+			, Set<Integer> reapedQuizzes) {
+		
+		Statement stmt;
+		try {
+			stmt = con.createStatement();
+			String tagMatchString = "SELECT Quizzes.name, Quizzes.id FROM Quizzes INNER JOIN Tags on Quizzes.id = Tags.quiz_id AND Tags.name = " + text;
+			ResultSet rs = stmt.executeQuery(tagMatchString);
+			
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				if (!reapedQuizzes.contains(id)) {
+					JSONObject entry = new JSONObject();
+					entry.accumulate("id", id);
+					entry.accumulate("name", rs.getString("name"));
+					entry.accumulate("type", "QUIZ");
+					entry.accumulate("url", "/QuizWebsite/Quiz.jsp?quiz_id="+id);
+					results.append("results", entry);
+					reapedQuizzes.add(id);
+				}
+			}
+			return results;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} return null;
+		
 	}
 	
 	
