@@ -79,6 +79,11 @@ public class UserServlet extends HttpServlet {
 				responseJSON.accumulate("status", "success");
 			} else {
 				responseJSON.accumulate("status", "failure");
+<<<<<<< HEAD
+=======
+				response.getWriter().println(responseJSON.toString());
+				return;
+>>>>>>> parent of 98d6b7c... Merge branch 'master' of https://github.com/djoeman84/QuizWebsite
 			}
 		}
 		
@@ -102,7 +107,12 @@ public class UserServlet extends HttpServlet {
 					responseJSON.accumulate("status", "password does not match");
 				}
 			} else {
+<<<<<<< HEAD
 				responseJSON.accumulate("status", "username does not exist");
+=======
+				response.sendRedirect("Login.jsp");
+				return;
+>>>>>>> parent of 98d6b7c... Merge branch 'master' of https://github.com/djoeman84/QuizWebsite
 			}
 		
 		}
