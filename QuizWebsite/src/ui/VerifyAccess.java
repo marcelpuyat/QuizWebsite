@@ -38,6 +38,7 @@ public class VerifyAccess {
 			Quiz quiz = new Quiz(id, databaseConnection);
 			
 			User u = (User)session.getAttribute("user");
+			if (u.isAdmin()) return;
 			if(quiz.getCreator().equals(u.getUserName())){
 				return;
 			}

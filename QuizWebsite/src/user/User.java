@@ -189,6 +189,20 @@ public class User {
 		return resultJSON;
 	}
 	
+	public boolean isAdmin() {
+		try {
+			String statement = "SELECT is_admin FROM Users WHERE (id = ?)";
+			PreparedStatement pstmt = this.con.prepareStatement(statement);
+			pstmt.setLong(1, this.user_id);
+			ResultSet rs = pstmt.executeQuery();
+			if (!rs.next()) return false;
+			return rs.getBoolean("is_admin");
+		}
+		catch (SQLException e) {e.printStackTrace();}
+		catch(ClassNotFoundException e){e.printStackTrace();}
+		return false;
+	}
+	
 	
 	
 	
