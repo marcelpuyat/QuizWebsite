@@ -6,9 +6,9 @@
 <%@ page import="javax.servlet.ServletContext" %>
 <%@ page import="user.*" %>
 <%@ page import="customObjects.*" %>
+<%@ page import="ui.*" %>
 <%
-	User u = (User)session.getAttribute("user");
-	if (u == null) response.sendRedirect("/QuizWebsite/Login.jsp");
+	VerifyAccess.verify("Settings.jsp",session, request, response);
 %>
 <%!
 	String getUserName(HttpServletRequest req, ServletContext context) {

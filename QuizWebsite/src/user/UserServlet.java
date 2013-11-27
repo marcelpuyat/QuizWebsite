@@ -27,7 +27,6 @@ public class UserServlet extends HttpServlet {
      */
     public UserServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -49,10 +48,8 @@ public class UserServlet extends HttpServlet {
 			try {
 				responseJSON.accumulate("available", !Users.usernameExists(username, databaseConnection));
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			responseJSON.accumulate("username", username);
@@ -87,16 +84,16 @@ public class UserServlet extends HttpServlet {
 				if (Users.createUser(username, password, databaseConnection) &&
 						password.equals(pass_chk)) {
 					responseJSON.accumulate("status", "success");
+					response.getWriter().println(responseJSON.toString());
+					return;
 				} else {
 					responseJSON.accumulate("status", "failure");
+					response.getWriter().println(responseJSON.toString());
+					return;
 				}
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
+			catch (JSONException e) {e.printStackTrace();}
+			catch (ClassNotFoundException e) {e.printStackTrace();}
 		}
 		
 		/* login */
@@ -118,25 +115,48 @@ public class UserServlet extends HttpServlet {
 						}
 					} else {
 						responseJSON.accumulate("status", "password does not match");
+						response.sendRedirect("Home.jsp");
 					}
 				} else {
 					responseJSON.accumulate("status", "username does not exist");
+					response.sendRedirect("Home.jsp");
 				}
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
+			catch (JSONException e) {e.printStackTrace();}
+			catch (ClassNotFoundException e) {e.printStackTrace();}
 		
 		}
 		
 		
-
-		
-		
-		response.getWriter().println(responseJSON.toString());
+		/* set property name */
+		else if (api.equals("update")) {
+			try {
+				JSONObject usrJSON = JSONParser.getJSONfromRequest(request);
+				String field = request.getParameter("field");
+				User update_user = (User) request.getSession().getAttribute("user");
+				if (update_user == null || !update_user.existsInDB()) {
+					responseJSON.accumulate("status", "failure");
+					response.getWriter().println(responseJSON.toString());
+					return;
+				}
+				if (field.equals("first_name")) {
+					update_user.setFirstName(usrJSON.getString("first_name"));
+					responseJSON.accumulate("status", "success");
+					responseJSON.accumulate("message", "wrote "+usrJSON.getString("first_name"));
+					response.getWriter().println(responseJSON.toString());
+					return;
+				}
+				else if (field.equals("last_name")) {
+					update_user.setLastName(usrJSON.getString("last_name"));
+					responseJSON.accumulate("status", "success");
+					response.getWriter().println(responseJSON.toString());
+					return;
+				}
+			}
+			catch (ClassNotFoundException e) {}
+			responseJSON.accumulate("status", "failure");
+			response.getWriter().println(responseJSON.toString());
+		}
 		
 	}
 
