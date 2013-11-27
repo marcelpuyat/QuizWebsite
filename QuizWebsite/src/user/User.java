@@ -62,24 +62,6 @@ public class User {
 		return false;
 	}
 	
-	public boolean hasCompletedProfile() {
-		try {
-			String statement = "SELECT first_name, last_name FROM Users WHERE (id = ?)";
-			PreparedStatement pstmt = this.con.prepareStatement(statement);
-			pstmt.setLong(1, this.user_id);
-			ResultSet rs = pstmt.executeQuery();
-			if (!rs.next()) return false;
-			String first_name = rs.getString("first_name");
-			if (first_name == null || first_name.equals("")) return false;
-			String last_name = rs.getString("last_name");
-			if (last_name == null || last_name.equals("")) return false;
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-	
 	public long getUserId() {
 		return user_id;
 	}
@@ -194,37 +176,13 @@ public class User {
 	
 	/* SETTERS */
 	public void setFirstName(String first_name) {
-		try {
-			String statement = "UPDATE Users SET first_name = (?) WHERE (id = ?)";
-			PreparedStatement pstmt = this.con.prepareStatement(statement);
-			pstmt.setString(1, first_name);
-			pstmt.setLong(2, this.user_id);
-			pstmt.execute();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		
 	}
 	public void setLastName(String last_name) {
-		try {
-			String statement = "UPDATE Users SET last_name = (?) WHERE (id = ?)";
-			PreparedStatement pstmt = this.con.prepareStatement(statement);
-			pstmt.setString(1, last_name);
-			pstmt.setLong(2, this.user_id);
-			pstmt.execute();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		
 	}
 	public void setProfilePicture(String profile_picture_url) {
-		try {
-			String statement = "UPDATE Users SET profile_picture = (?) WHERE (id = ?)";
-			PreparedStatement pstmt = this.con.prepareStatement(statement);
-			pstmt.setString(1, profile_picture_url);
-			pstmt.setLong(2, this.user_id);
-			pstmt.execute();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		
 	}
 	public void setAdminStatus(boolean isAdmin) {
 		

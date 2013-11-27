@@ -88,10 +88,9 @@ public class UserServlet extends HttpServlet {
 			if (Users.createUser(username, password, databaseConnection) &&
 					password.equals(pass_chk)) {
 				responseJSON.accumulate("status", "success");
-				response.getWriter().println(responseJSON.toString());
-				return;
 			} else {
 				responseJSON.accumulate("status", "failure");
+<<<<<<< HEAD
 				response.getWriter().println(responseJSON.toString());
 				return;
 =======
@@ -109,6 +108,8 @@ public class UserServlet extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 >>>>>>> 75607f9a2077640111c30e4cb2c24c1a26982f41
+=======
+>>>>>>> parent of e112b79... Poorly made and minimally functional settings page up
 			}
 		}
 		
@@ -121,19 +122,19 @@ public class UserServlet extends HttpServlet {
 			if (Users.usernameExists(username,databaseConnection)) {
 				User u = new User(username, databaseConnection);
 				if (u.matchesPassword(password)) {
+					responseJSON.accumulate("status", "success");
+					responseJSON.accumulate("user_info", u.getPublicJSONSummary());
 					request.getSession().setAttribute("user", u);
 					if (forward_to != null && forward_to.equals("settings")) {
 						response.sendRedirect("Settings.jsp");
-						return;
 					} else {
 						response.sendRedirect("Home.jsp");
-						return;
 					}
 				} else {
-					response.sendRedirect("Login.jsp");
-					return;
+					responseJSON.accumulate("status", "password does not match");
 				}
 			} else {
+<<<<<<< HEAD
 				response.sendRedirect("Login.jsp");
 				return;
 			try {
@@ -160,34 +161,19 @@ public class UserServlet extends HttpServlet {
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+=======
+				responseJSON.accumulate("status", "username does not exist");
+>>>>>>> parent of e112b79... Poorly made and minimally functional settings page up
 			}
 		
 		}
 		
-		/* set property name */
-		else if (api.equals("update")) {
-			JSONObject usrJSON = JSONParser.getJSONfromRequest(request);
-			String field = request.getParameter("field");
-			User update_user = (User) request.getSession().getAttribute("user");
-			if (update_user == null || !update_user.existsInDB()) {
-				responseJSON.accumulate("status", "failure");
-				response.getWriter().println(responseJSON.toString());
-				return;
-			}
-			if (field.equals("first_name")) {
-				update_user.setFirstName(usrJSON.getString("first_name"));
-				responseJSON.accumulate("status", "success");
-				responseJSON.accumulate("message", "wrote "+usrJSON.getString("first_name"));
-				response.getWriter().println(responseJSON.toString());
-				return;
-			}
-			else if (field.equals("last_name")) {
-				update_user.setLastName(usrJSON.getString("last_name"));
-				responseJSON.accumulate("status", "success");
-				response.getWriter().println(responseJSON.toString());
-				return;
-			}
-		}
+		
+
+		
+		
+		response.getWriter().println(responseJSON.toString());
+		
 	}
 
 }
