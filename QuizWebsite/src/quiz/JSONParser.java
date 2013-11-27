@@ -61,6 +61,7 @@ public class JSONParser {
 		ArrayList<Question> questions = getQuestionsFromJSONArray(newQuizJSON.getJSONArray("questions"));
 		
 		// Adds Quiz to db
+		@SuppressWarnings("unused")
 		Quiz newQuiz = new Quiz(con, quizName, creator, description, questions, maxScore, isRandomized, isMultPage, isPracticable, isImmediatelyCorrected);
 		return;
 	}
@@ -242,7 +243,7 @@ public class JSONParser {
 	
 	/**
 	 * Format is in spec
-	 * @param userHistory
+	 * @param list
 	 * @return
 	 */
 	private static JSONArray parseListIntoSpec(ArrayList<QuizResults> list) {
