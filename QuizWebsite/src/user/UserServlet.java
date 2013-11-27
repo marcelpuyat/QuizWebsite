@@ -136,7 +136,6 @@ public class UserServlet extends HttpServlet {
 			} else {
 				response.sendRedirect("Login.jsp");
 				return;
-=======
 			try {
 				if (Users.usernameExists(username,databaseConnection)) {
 					User u = new User(username, databaseConnection);
@@ -161,7 +160,6 @@ public class UserServlet extends HttpServlet {
 			} catch (ClassNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
->>>>>>> 75607f9a2077640111c30e4cb2c24c1a26982f41
 			}
 		
 		}
