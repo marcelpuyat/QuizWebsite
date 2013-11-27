@@ -61,6 +61,41 @@ public class Quiz {
 	}
 	
 	/**
+	 * Use this to edit quiz
+	 * @param con
+	 * @param name
+	 * @param creator
+	 * @param description
+	 * @param questions
+	 * @param maxScore
+	 * @param isRandomizable
+	 * @param isMultiplePage
+	 * @param isPracticable
+	 * @param isImmediatelyCorrected
+	 * @param quiz_id
+	 */
+	public static void editQuiz(long quiz_id, SelfRefreshingConnection con, String name, String creator, String description, ArrayList<Question> questions, int maxScore, 
+			boolean isRandomizable, boolean isMultiplePage, boolean isPracticable, boolean isImmediatelyCorrected) {
+		String editUpdate = "UPDATE Quizzes SET name = ?, creator = ?, description = ?, questions = ?, maxScore = ?, is_randomizable = ?, is_multiple_page = ?, is_practicable = ?, is_immediately_corrected = ? " +
+		"WHERE id = " + quiz_id;
+		try {
+			PreparedStatement stmt = con.prepareStatement(editUpdate);
+			stmt.setString(1, name);
+			stmt.setString(2, creator);
+			stmt.setString(3, description);			
+			byte[] questionBytes = serialize(questions);
+			Blob questionBlob = new SerialBlob(questionBytes);
+			stmt.setBlob(4, questionBlob);
+			stmt.setInt(5, maxScore);
+			stmt.setBoolean(6, isRandomizable);
+			stmt.setBoolean(7, isMultiplePage);
+			stmt.setBoolean(8, isPracticable);
+			stmt.setBoolean(9, isImmediatelyCorrected);
+			stmt.executeUpdate();
+		} catch (Exception e) { e.printStackTrace(); }
+	}
+	
+	/**
 	 * Returns next available ID
 	 * @param con
 	 * @return
@@ -120,7 +155,7 @@ public class Quiz {
 		}
 	}
 	
-	private byte[] serialize(ArrayList<Question> questions) throws IOException {
+	private static byte[] serialize(ArrayList<Question> questions) throws IOException {
 	    ByteArrayOutputStream out = new ByteArrayOutputStream();
 	    ObjectOutputStream os = new ObjectOutputStream(out);
 	    os.writeObject(questions);

@@ -1,6 +1,7 @@
 package quiz;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import user.User;
@@ -34,8 +36,8 @@ public class QuizInfoServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String quiz_id = request.getParameter("quiz_id");
-		int id = Integer.parseInt(quiz_id);
+		String quiz_idString = request.getParameter("quiz_id");
+		int quiz_id = Integer.parseInt(quiz_idString);
 
 		response.setContentType("application/json");
 
@@ -46,13 +48,27 @@ public class QuizInfoServlet extends HttpServlet {
 		User user = (User) session.getAttribute("user");
 		if (user == null) user = new User(43, databaseConnection);
 		
-		QuizInfo quizInfo = new QuizInfo(id, databaseConnection);
+		QuizInfo quizInfo = new QuizInfo(quiz_id, databaseConnection);
 		
 		JSONObject jSONinfo = JSONParser.parseQuizInfoIntoJSON(quizInfo, user);
+		
+		addTagsToJSONQuizInfo(jSONinfo, quiz_id, databaseConnection);
 		
 		response.getWriter().println(jSONinfo.toString());
 	}
 
+	private JSONObject addTagsToJSONQuizInfo(JSONObject jSONinfo, int quiz_id, SelfRefreshingConnection con) {
+		Tag tag = new Tag(con, quiz_id);
+		ArrayList<String> tags = tag.getAllTags();
+		
+		JSONArray tagStrings = new JSONArray();
+		for (int i = 0; i < tags.size(); i++) {
+			tagStrings.put(tags.get(i));
+		}
+		jSONinfo.put("tags", tagStrings);
+		return jSONinfo;
+	}
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */

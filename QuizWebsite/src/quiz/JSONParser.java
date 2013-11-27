@@ -66,6 +66,20 @@ public class JSONParser {
 		return;
 	}
 	
+	public static void editQuizWithJSON(JSONObject newQuizJSON, SelfRefreshingConnection con, int quiz_id) {
+		String quizName = newQuizJSON.getString("quiz_name");
+		String description = newQuizJSON.getString("description");
+		String creator = newQuizJSON.getString("creator");
+		int maxScore = newQuizJSON.getInt("max_score");
+		boolean isImmediatelyCorrected = newQuizJSON.getBoolean("is_immediately_corrected");
+		boolean isMultPage = newQuizJSON.getBoolean("is_multiple_page");
+		boolean isRandomized = newQuizJSON.getBoolean("is_randomized");
+		boolean isPracticable = newQuizJSON.getBoolean("is_practicable");
+		ArrayList<Question> questions = getQuestionsFromJSONArray(newQuizJSON.getJSONArray("questions"));
+		Quiz.editQuiz(quiz_id, con, quizName, creator, description, questions, maxScore, isRandomized, isMultPage, isPracticable, isImmediatelyCorrected);
+		return;
+	}
+	
 	private static ArrayList<Question> getQuestionsFromJSONArray(JSONArray jSONquestions) {
 		ArrayList<Question> questions = new ArrayList<Question>(jSONquestions.length());
 		for (int i = 0; i < jSONquestions.length(); i++) {
