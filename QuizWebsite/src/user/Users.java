@@ -1,6 +1,15 @@
 package user;
 
+<<<<<<< HEAD
 import java.sql.*;
+=======
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import customObjects.SelfRefreshingConnection;
+>>>>>>> CustomConnectionBranch
 
 public class Users {
 	
