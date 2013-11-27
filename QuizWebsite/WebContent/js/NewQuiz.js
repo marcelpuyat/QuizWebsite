@@ -1,0 +1,6 @@
+/**
+ * 
+ */
+ function init_js () {
+ 	
+ }
