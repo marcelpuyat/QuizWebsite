@@ -1,13 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ page import="ui.HTMLTemplater" %>
+<%@ page import="ui.*" %>
 <%@ page import="user.*" %>
 <%@ page import="java.sql.*" %>
 <%@ page import="javax.servlet.ServletContext" %>
 <%@ page import="user.*" %>
 <%
-	User u = (User)session.getAttribute("user");
-	if (u == null) response.sendRedirect("/QuizWebsite/Login.jsp");
+	VerifyAccess.verify("Login.jsp",session, request, response);
 %>
 <%!
 	String getUserName(HttpServletRequest req, ServletContext context) {

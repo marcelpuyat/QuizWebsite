@@ -1,10 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ page import="ui.HTMLTemplater" %>
+<%@ page import="ui.*" %>
 <%@ page import="user.*" %>
 <%
-	User u = (User)session.getAttribute("user");
-	if (u == null) response.sendRedirect("/QuizWebsite/Login.jsp");
+	VerifyAccess.verify("Quiz.jsp",session, request, response);
 %>
 <%!
 	String getQuizID(HttpServletRequest req) {

@@ -1,10 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ page import="ui.HTMLTemplater" %>
-<%@ page import="user.*" %>
+<%@ page import="ui.*"" %>
 <%
-	User u = (User)session.getAttribute("user");
-	if (u == null) response.sendRedirect("/QuizWebsite/Login.jsp");
+	VerifyAccess.verify("NewQuiz.jsp",session, request, response);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
