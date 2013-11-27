@@ -1,5 +1,6 @@
 package quiz;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -12,8 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
-
-import customObjects.SelfRefreshingConnection;
 
 
 /**
@@ -45,9 +44,12 @@ public class QuizServlet extends HttpServlet {
 		//System.out.println("quiz_id: "+quiz_id);
 
 		ServletContext context = getServletContext(); 
-		SelfRefreshingConnection databaseConnection = (SelfRefreshingConnection)context.getAttribute("database_connection");
+		Connection databaseConnection = (Connection)context.getAttribute("database_connection");
 		
 		Quiz quiz = new Quiz(id, databaseConnection);
+		
+		// Places quiz in session for now, so it is accessible in doPost
+		request.getSession().setAttribute("quiz", quiz);
 		
 		// Creates empty list (for testing) to pass in for a user's quiz taking history
 		ArrayList<QuizResults> emptyList = new ArrayList<QuizResults>(0);
@@ -63,14 +65,20 @@ public class QuizServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
-		JSONObject newQuiz = JSONParser.getJSONfromRequest(request);
+		/* Forms JSONObject from request */
+		StringBuilder json_str_response = new StringBuilder();
+		BufferedReader br = request.getReader();
+		String str;
+		while( (str = br.readLine()) != null ){
+			json_str_response.append(str);
+	    }  
+		JSONObject jSONresults = new JSONObject(json_str_response.toString());
 		
-		try {
-			JSONParser.storeNewQuizWithJSON(newQuiz, (SelfRefreshingConnection)(getServletContext().getAttribute("database_connection")));
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Connection con = (Connection) getServletContext().getAttribute("database_connection");
+		
+		QuizResults results = JSONParser.parseJSONIntoQuizResults(jSONresults, con);
+
+		// TODO put results into database
 	}
 
 }

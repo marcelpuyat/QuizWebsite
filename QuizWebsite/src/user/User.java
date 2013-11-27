@@ -1,25 +1,20 @@
 package user;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 import org.json.JSONObject;
-
-import customObjects.SelfRefreshingConnection;
 
 public class User {
 	
 	private long user_id = -1;
-	private SelfRefreshingConnection con;
+	private Connection con;
 	
-	public User(long user_id, SelfRefreshingConnection con) {
+	public User(long user_id, Connection con) {
 		this.user_id = user_id;
 		this.con = con;
 	}
 	
-	public User(String username, SelfRefreshingConnection con) {
+	public User(String username, Connection con) {
 		this.con = con;
 		try {
 			String statement = "SELECT id FROM Users WHERE username = (?)";
@@ -33,7 +28,7 @@ public class User {
 		catch (Exception e) { e.printStackTrace();}
 	}
 	
-	public boolean existsInDB() throws ClassNotFoundException {
+	public boolean existsInDB() {
 		if (this.user_id == -1) return false;
 		try {
 			String statement = "SELECT id FROM Users WHERE id = ?";
@@ -47,7 +42,7 @@ public class User {
 		return false;
 	}
 	
-	public boolean matchesPassword(String password) throws ClassNotFoundException {
+	public boolean matchesPassword(String password) {
 		byte[] hashedPass = Hasher.hashPassword(password, this.getSalt());
 		try {
 			String statement = "SELECT password FROM Users WHERE (id = ? AND password = ?)";
@@ -70,7 +65,7 @@ public class User {
 		return "/QuizWebsite/User.jsp?user_id="+user_id;
 	}
 	
-	public String getDisplayName() throws ClassNotFoundException {
+	public String getDisplayName() {
 		try {
 			String statement = "SELECT first_name, last_name FROM Users WHERE (id = ?)";
 			PreparedStatement pstmt = this.con.prepareStatement(statement);
@@ -85,7 +80,7 @@ public class User {
 		return "";
 	}
 	
-	public String getFirstName() throws ClassNotFoundException {
+	public String getFirstName() {
 		try {
 			String statement = "SELECT first_name FROM Users WHERE (id = ?)";
 			PreparedStatement pstmt = this.con.prepareStatement(statement);
@@ -100,7 +95,7 @@ public class User {
 		return "";
 	}
 	
-	public String getLastName() throws ClassNotFoundException {
+	public String getLastName() {
 		try {
 			String statement = "SELECT last_name FROM Users WHERE (id = ?)";
 			PreparedStatement pstmt = this.con.prepareStatement(statement);
@@ -115,7 +110,7 @@ public class User {
 		return "";
 	}
 	
-	public String getUserName() throws ClassNotFoundException {
+	public String getUserName() {
 		try {
 			String statement = "SELECT username FROM Users WHERE (id = ?)";
 			PreparedStatement pstmt = this.con.prepareStatement(statement);
@@ -130,7 +125,7 @@ public class User {
 		return "";
 	}
 	
-	public String getProfilePicture() throws ClassNotFoundException {
+	public String getProfilePicture() {
 		try {
 			String statement = "SELECT profile_picture FROM Users WHERE (id = ?)";
 			PreparedStatement pstmt = this.con.prepareStatement(statement);
@@ -145,7 +140,7 @@ public class User {
 		return "";
 	}
 	
-	public JSONObject getPublicJSONSummary() throws ClassNotFoundException {
+	public JSONObject getPublicJSONSummary() {
 		JSONObject resultJSON = new JSONObject();
 		try {
 			String statement = "SELECT username, profile_picture, first_name, last_name FROM Users WHERE (id = ?)";
@@ -192,7 +187,7 @@ public class User {
 	
 	/* PRIVATE */
 	
-	private byte[] getSalt() throws ClassNotFoundException {
+	private byte[] getSalt() {
 		try {
 			String statement = "SELECT salt FROM Users WHERE id = (?)";
 			PreparedStatement pstmt = con.prepareStatement(statement);

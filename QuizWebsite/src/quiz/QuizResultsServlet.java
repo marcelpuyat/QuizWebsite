@@ -1,18 +1,15 @@
 package quiz;
 
 import java.io.IOException;
+import java.sql.Connection;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
-
-import user.User;
-import customObjects.SelfRefreshingConnection;
 
 /**
  * Servlet implementation class QuizResultsServlet
@@ -42,12 +39,10 @@ public class QuizResultsServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		JSONObject jSONresults = JSONParser.getJSONfromRequest(request);
 		
-		SelfRefreshingConnection con = (SelfRefreshingConnection) getServletContext().getAttribute("database_connection");
-		HttpSession session = (HttpSession) request.getSession();
-		User user = (User) session.getAttribute("user");
+		Connection con = (Connection) getServletContext().getAttribute("database_connection");
 		
 		// Adds to database automatically
-		JSONParser.parseJSONIntoQuizResults(jSONresults, con, user);
+		JSONParser.parseJSONIntoQuizResults(jSONresults, con);
 	}
 
 }

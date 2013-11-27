@@ -1,12 +1,11 @@
 package quiz;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Calendar;
-
-import customObjects.SelfRefreshingConnection;
 
 /**
  * Contains information on how a user did on a particular quiz.
@@ -18,7 +17,7 @@ public class QuizResults {
 
 	private long user_id;
 	private long quizID;
-	private SelfRefreshingConnection con;
+	private Connection con;
 	
 	/**
 	 * Use this to create a new QuizResults instance in database.
@@ -27,7 +26,7 @@ public class QuizResults {
 	 * @param userScore
 	 * @param timeTaken
 	 */
-	public QuizResults(long user_id, long quizID, double userPercentageScore, double timeTaken, SelfRefreshingConnection con) {
+	public QuizResults(long user_id, long quizID, double userPercentageScore, double timeTaken, Connection con) {
 		this.user_id = user_id;
 		this.quizID = quizID;
 		this.con = con;
@@ -39,7 +38,7 @@ public class QuizResults {
 	 * @param user_id
 	 * @param quizID
 	 */
-	public QuizResults(long user_id, long quizID, SelfRefreshingConnection con) {
+	public QuizResults(long user_id, long quizID, Connection con) {
 		this.user_id = user_id;
 		this.quizID = quizID;
 		this.con = con;

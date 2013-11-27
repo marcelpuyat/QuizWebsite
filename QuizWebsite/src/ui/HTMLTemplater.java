@@ -5,7 +5,7 @@ import javax.servlet.http.HttpSession;
 import user.User;
 
 public class HTMLTemplater {
-	public static String getBlueBar (HttpSession session) throws ClassNotFoundException {
+	public static String getBlueBar (HttpSession session) {
 		User curr_user = (User)session.getAttribute("user");
 		String username = "Login";
 		String user_url = "/QuizWebsite/Login.jsp";
