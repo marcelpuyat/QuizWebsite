@@ -1,0 +1,127 @@
+package quiz;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.Calendar;
+
+import customObjects.SelfRefreshingConnection;
+
+/**
+ * Contains information on how a user did on a particular quiz.
+ * 
+ * @author marcelp
+ *
+ */
+public class QuizResults {
+
+	private long user_id;
+	private long quizID;
+	private SelfRefreshingConnection con;
+	
+	/**
+	 * Use this to create a new QuizResults instance in database.
+	 * @param user_id
+	 * @param quizID
+	 * @param userScore
+	 * @param timeTaken
+	 */
+	public QuizResults(long user_id, long quizID, double userPercentageScore, double timeTaken, SelfRefreshingConnection con) {
+		this.user_id = user_id;
+		this.quizID = quizID;
+		this.con = con;
+		createNewQuizResultsInstance(user_id, quizID, userPercentageScore, timeTaken);
+	}
+	
+	/**
+	 * Use this when simply querying a QuizResults instance from database.
+	 * @param user_id
+	 * @param quizID
+	 */
+	public QuizResults(long user_id, long quizID, SelfRefreshingConnection con) {
+		this.user_id = user_id;
+		this.quizID = quizID;
+		this.con = con;
+	}
+	
+	private void createNewQuizResultsInstance(long user_id, long quizID, double userPercentageScore, double timeTaken) {
+		try {
+			PreparedStatement stmt;
+			stmt = con.prepareStatement("INSERT INTO QuizResults (user_id, quiz_id, time_duration, user_percentage_score) VALUES(?, ?, ?, ?)");
+			stmt.setLong(1, user_id);
+			stmt.setLong(2, quizID);
+			stmt.setDouble(3, timeTaken);
+			stmt.setDouble(4, userPercentageScore);
+			stmt.executeUpdate();
+		} catch (Exception e) { e.printStackTrace(); }
+	}
+	
+	/**
+	 * Returns username for user who took the quiz
+	 * @return String username
+	 */
+	public long getUserID() {
+		return user_id;
+	}
+	
+	// TODO Use Users database to get username
+	public String getUsername() {
+		return "To be implemented";
+	}
+	
+	/**
+	 * Returns the quizID
+	 * @return quiz ID
+	 */
+	public long getQuizID() {
+		return quizID;
+	}
+	
+	/**
+	 * Returns the user's score
+	 * @return user's score
+	 */
+	public double getUserPercentageScore() {
+		try {
+			Statement stmt = con.createStatement();
+			String getNameQuery = "SELECT user_percentage_score FROM QuizResults WHERE id = \"" + this.quizID + "\"";
+			ResultSet rs = stmt.executeQuery(getNameQuery);
+			rs.next();
+			return rs.getInt("user_percentage_score");
+		} catch (Exception e) { e.printStackTrace(); } return -1;
+	}	
+
+	/**
+	 * Returns a Date object representing when
+	 * these results were recorded.
+	 * @return
+	 */
+	public Calendar getDateTaken() {
+		try {
+			Statement stmt = con.createStatement();
+			String getNameQuery = "SELECT date_taken FROM QuizResults WHERE id = \"" + this.quizID + "\"";
+			ResultSet rs = stmt.executeQuery(getNameQuery);
+			rs.next();
+			Timestamp ts = rs.getTimestamp("date_taken");
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTimeInMillis(ts.getTime());
+			return calendar;
+		} catch (Exception e) { e.printStackTrace(); } return null;
+	}
+	
+	/**
+	 * Returns the time it took for the user
+	 * to complete this quiz.
+	 * @return
+	 */
+	public double getTimeTaken() {
+		try {
+			Statement stmt = con.createStatement();
+			String getNameQuery = "SELECT time_taken FROM QuizResults WHERE id = \"" + this.quizID + "\"";
+			ResultSet rs = stmt.executeQuery(getNameQuery);
+			rs.next();
+			return rs.getInt("time_taken");
+		} catch (Exception e) { e.printStackTrace(); } return -1;
+	}
+}

@@ -1,0 +1,23 @@
+@CHARSET "UTF-8";
+.login-ul {
+	padding: 0;
+	margin: 0;
+}
+
+#login-division {
+	width:200px;
+	border-bottom:1px solid rgba(0,0,0,0.1);
+	margin-top:20px;
+}
+
+.login-ul {
+	-webkit-transition:1s;
+	-moz-transition:1s;
+	-o-transition:1s;
+	-ms-transition:1s;
+	transition:1s;
+}
+
+#now-sign-in-prompt {
+	color: #7CBB95;
+}
