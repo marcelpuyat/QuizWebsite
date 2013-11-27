@@ -9,6 +9,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.json.JSONObject;
+
+import user.User;
+import customObjects.SelfRefreshingConnection;
 
 /**
  * Servlet implementation class QuizInfoServlet
@@ -35,9 +41,17 @@ public class QuizInfoServlet extends HttpServlet {
 		response.setContentType("application/json");
 
 		ServletContext context = getServletContext(); 
-		Connection databaseConnection = (Connection)context.getAttribute("database_connection");
+		SelfRefreshingConnection databaseConnection = (SelfRefreshingConnection)context.getAttribute("database_connection");
 		
+		HttpSession session = (HttpSession) request.getSession();
+		User user = (User) session.getAttribute("user");
+		if (user == null) user = new User(43, databaseConnection);
 		
+		QuizInfo quizInfo = new QuizInfo(id, databaseConnection);
+		
+		JSONObject jSONinfo = JSONParser.parseQuizInfoIntoJSON(quizInfo, user);
+		
+		response.getWriter().println(jSONinfo.toString());
 	}
 
 	/**

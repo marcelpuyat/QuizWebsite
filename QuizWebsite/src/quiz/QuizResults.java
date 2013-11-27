@@ -6,6 +6,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Calendar;
 
+import user.User;
 import customObjects.SelfRefreshingConnection;
 
 /**
@@ -16,6 +17,7 @@ import customObjects.SelfRefreshingConnection;
  */
 public class QuizResults {
 
+	private long id;
 	private long user_id;
 	private long quizID;
 	private SelfRefreshingConnection con;
@@ -39,7 +41,8 @@ public class QuizResults {
 	 * @param user_id
 	 * @param quizID
 	 */
-	public QuizResults(long user_id, long quizID, SelfRefreshingConnection con) {
+	public QuizResults(long id, long user_id, long quizID, SelfRefreshingConnection con) {
+		this.id = id;
 		this.user_id = user_id;
 		this.quizID = quizID;
 		this.con = con;
@@ -66,8 +69,13 @@ public class QuizResults {
 	}
 	
 	// TODO Use Users database to get username
-	public String getUsername() {
-		return "To be implemented";
+	public String getUsername() throws ClassNotFoundException {
+		User user = new User(this.user_id, this.con);
+		return user.getUserName();
+	}
+	
+	public long getID() {
+		return this.id;
 	}
 	
 	/**
@@ -85,10 +93,11 @@ public class QuizResults {
 	public double getUserPercentageScore() {
 		try {
 			Statement stmt = con.createStatement();
-			String getNameQuery = "SELECT user_percentage_score FROM QuizResults WHERE id = \"" + this.quizID + "\"";
+			String getNameQuery = "SELECT user_percentage_score FROM QuizResults WHERE quiz_id = " + this.quizID + 
+			" AND user_id = " + this.user_id + " AND id = " + this.id;
 			ResultSet rs = stmt.executeQuery(getNameQuery);
 			rs.next();
-			return rs.getInt("user_percentage_score");
+			return rs.getDouble("user_percentage_score");
 		} catch (Exception e) { e.printStackTrace(); } return -1;
 	}	
 
@@ -100,7 +109,8 @@ public class QuizResults {
 	public Calendar getDateTaken() {
 		try {
 			Statement stmt = con.createStatement();
-			String getNameQuery = "SELECT date_taken FROM QuizResults WHERE id = \"" + this.quizID + "\"";
+			String getNameQuery = "SELECT date_taken FROM QuizResults WHERE quiz_id = " + this.quizID + 
+			" AND user_id = " + this.user_id + " AND id = " + this.id;
 			ResultSet rs = stmt.executeQuery(getNameQuery);
 			rs.next();
 			Timestamp ts = rs.getTimestamp("date_taken");
@@ -118,10 +128,11 @@ public class QuizResults {
 	public double getTimeTaken() {
 		try {
 			Statement stmt = con.createStatement();
-			String getNameQuery = "SELECT time_taken FROM QuizResults WHERE id = \"" + this.quizID + "\"";
+			String getNameQuery = "SELECT time_duration FROM QuizResults WHERE quiz_id = " + this.quizID + 
+			" AND user_id = " + this.user_id + " AND id = " + this.id;
 			ResultSet rs = stmt.executeQuery(getNameQuery);
 			rs.next();
-			return rs.getInt("time_taken");
+			return rs.getDouble("time_duration");
 		} catch (Exception e) { e.printStackTrace(); } return -1;
 	}
 }

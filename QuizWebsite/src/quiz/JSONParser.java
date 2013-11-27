@@ -9,6 +9,7 @@ import java.util.HashSet;
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import question.FillBlankQuestion;
@@ -205,36 +206,38 @@ public class JSONParser {
 		jSONquiz.put("is_multiple_page", quiz.isMultiplePage());
 		jSONquiz.put("is_randomized", quiz.isRandom());
 		jSONquiz.put("is_practicable", quiz.isPracticable());
-		jSONquiz.put("user_history", parseListIntoSpec(userHistory));
-//		jSONquiz.put("best_alltime", parseListIntoSpec(quizInfo.getBestScoresAllTime()));
-//		jSONquiz.put("best_today", parseListIntoSpec(quizInfo.getBestScoresToday()));
-//		jSONquiz.put("recent_scores", parseListIntoSpec(quizInfo.getRecentScores()));
-//		jSONquiz.put("average_score", quizInfo.getAverageScore());
-//		jSONquiz.put("is_editable", quizInfo.isEditable());
 		return jSONquiz;
 	}
 	
-	private static Quiz parseJSONintoQuiz(JSONObject jSONquiz) {
-		String quizName = jSONquiz.getString("quiz_name");
-		String description = jSONquiz.getString("description");
-		String creator = jSONquiz.getString("creator");
-		int max_score = jSONquiz.getInt("max_score");
-		boolean isImmediatelyCorrected = jSONquiz.getBoolean("is_immediately_corrected");
-		boolean isMultiPage = jSONquiz.getBoolean("is_multiple_page");
-		boolean isRandom = jSONquiz.getBoolean("is_randomized:true");
-		boolean isPracticable = jSONquiz.getBoolean("is_practicable:false");
+	public static JSONObject parseQuizInfoIntoJSON(QuizInfo quizInfo, User user) {
+		JSONObject jSONinfo = new JSONObject();
 		
-		ArrayList<Question> questions = new ArrayList<Question>();
+		/* This long block is explained by the Wiki spec here:
+		 * https://github.com/djoeman84/QuizWebsite/wiki/Quiz-Page-Servlet-Interaction 
+		 */
+		jSONinfo.put("user_history", parseListIntoSpec(quizInfo.getUserHistory(user.getUserId())));
+		jSONinfo.put("best_alltime", parseListIntoSpec(quizInfo.getBestScoresAllTime()));
+		jSONinfo.put("best_today", parseListIntoSpec(quizInfo.getBestScoresToday()));
+		jSONinfo.put("recent_scores", parseListIntoSpec(quizInfo.getRecentScores()));
+		jSONinfo.put("average_score", quizInfo.getAverageScore());
+		jSONinfo.put("description", quizInfo.getDescription());
+		jSONinfo.put("creator", quizInfo.getUsernameOfCreator());
+		jSONinfo.put("quiz_name", quizInfo.getQuizName());
+		jSONinfo.put("is_practicable", quizInfo.isPracticable());
 		
-		JSONArray jSONquestions = jSONquiz.getJSONArray("questions");
+		boolean isEditable = false;
 		
-		for (int i = 0; i < jSONquestions.length(); i++) {
-			JSONObject question = (JSONObject) jSONquestions.get(i);
-			String type = question.getString("type");
-			// TODO
+		try {
+			if (user != null) {
+				isEditable = user.getUserName().equals(quizInfo.getUsernameOfCreator());
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		}
+	
+		jSONinfo.put("is_editable", isEditable);
 		
-		return null;
+		return jSONinfo;
 	}
 	
 	/**
@@ -248,13 +251,26 @@ public class JSONParser {
 			JSONObject quizTakingInstance = new JSONObject();
 			
 			JSONObject date = new JSONObject();
-			date.put("year", list.get(i).getDateTaken().get(Calendar.YEAR));
-			date.put("month", list.get(i).getDateTaken().get(Calendar.MONTH));
-			date.put("date", list.get(i).getDateTaken().get(Calendar.DATE));
+			
+			Calendar dateTaken = list.get(i).getDateTaken();
+				int year = dateTaken.get(Calendar.YEAR);
+				int month = dateTaken.get(Calendar.MONTH) + 1; // MONTHS ARE INDEXED FROM 0!
+				int day = dateTaken.get(Calendar.DATE);
+				date.put("year", year);
+				date.put("month", month);
+				date.put("date", day);
 			quizTakingInstance.put("date", date);
 			quizTakingInstance.put("time", list.get(i).getTimeTaken());
 			quizTakingInstance.put("score", list.get(i).getUserPercentageScore());
-			quizTakingInstance.put("name", list.get(i).getUsername());
+			try {
+				quizTakingInstance.put("name", list.get(i).getUsername());
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			userQuizTakingInstances.put(quizTakingInstance);
 		}

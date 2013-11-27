@@ -1,6 +1,10 @@
 package quiz;
 
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
+
+import customObjects.SelfRefreshingConnection;
 
 /**
  * Stores info to be used when displaying quiz profile page.
@@ -9,133 +13,173 @@ import java.util.ArrayList;
  */
 public class QuizInfo {
 
-	private String description;
-	private String usernameOfCreator;
-	private ArrayList<QuizResults> bestScoresAllTime;
-	private ArrayList<QuizResults> bestScoresToday;
-	private ArrayList<QuizResults> recentScores;
-	private double averageScore;
-	private boolean isEditable;
+	private long quiz_id;
+	private SelfRefreshingConnection con;
 	
 	/**
 	 * Simply keeps track of each of these and has getters for each.
-	 * @param description
-	 * @param usernameOfCreator
-	 * @param pastResults
-	 * @param bestScoresAllTime
-	 * @param bestScoresToday
-	 * @param recentScores
-	 * @param averageScore
-	 * @param isEditable
+	 * @param quiz_id
+	 * @param connection
 	 */
-	public QuizInfo(String description, String usernameOfCreator, ArrayList<QuizResults> bestScoresAllTime, 
-			ArrayList<QuizResults> bestScoresToday, ArrayList<QuizResults> recentScores, 
-			 double averageScore, boolean isEditable) {
-		this.setDescription(description);
-		this.setUsernameOfCreator(usernameOfCreator);
-		this.setBestScoresAllTime(bestScoresAllTime);
-		this.setBestScoresToday(bestScoresToday);
-		this.setRecentScores(recentScores);
-		this.setAverageScore(averageScore);
-		this.setEditable(isEditable);
-	}
-
-	/**
-	 * @param description the description to set
-	 */
-	private void setDescription(String description) {
-		this.description = description;
+	public QuizInfo(long quiz_id, SelfRefreshingConnection con) {
+		this.quiz_id = quiz_id;
+		this.con = con;
 	}
 
 	/**
 	 * @return the description
 	 */
 	public String getDescription() {
-		return description;
+		try {
+			Statement stmt = con.createStatement();
+			String getNameQuery = "SELECT description FROM Quizzes WHERE id = \"" + this.quiz_id + "\"";
+			ResultSet rs = stmt.executeQuery(getNameQuery);
+			rs.next();
+			return rs.getString("description");
+		}
+		catch (Exception e) { e.printStackTrace(); return null; }
 	}
 
-	/**
-	 * @param usernameOfCreator the usernameOfCreator to set
-	 */
-	private void setUsernameOfCreator(String usernameOfCreator) {
-		this.usernameOfCreator = usernameOfCreator;
+	public String getQuizName() {
+		try {
+			Statement stmt = con.createStatement();
+			String getNameQuery = "SELECT name FROM Quizzes WHERE id = \"" + this.quiz_id + "\"";
+			ResultSet rs = stmt.executeQuery(getNameQuery);
+			rs.next();
+			return rs.getString("name");
+		}
+		catch (Exception e) { e.printStackTrace(); return null; }
 	}
-
+	
+	public boolean isPracticable() {
+		try {
+			Statement stmt = con.createStatement();
+			String getNameQuery = "SELECT is_practicable FROM Quizzes WHERE id = \"" + this.quiz_id + "\"";
+			ResultSet rs = stmt.executeQuery(getNameQuery);
+			rs.next();
+			return rs.getBoolean("is_practicable");
+		}
+		catch (Exception e) { e.printStackTrace(); return false; }
+		
+	}
 	/**
 	 * @return the usernameOfCreator
 	 */
 	public String getUsernameOfCreator() {
-		return usernameOfCreator;
-	}
-
-	/**
-	 * @param bestScoresAllTime the bestScoresAllTime to set
-	 */
-	private void setBestScoresAllTime(ArrayList<QuizResults> bestScoresAllTime) {
-		this.bestScoresAllTime = bestScoresAllTime;
+		try {
+			Statement stmt = con.createStatement();
+			String getNameQuery = "SELECT creator FROM Quizzes WHERE id = \"" + this.quiz_id + "\"";
+			ResultSet rs = stmt.executeQuery(getNameQuery);
+			rs.next();
+			return rs.getString("creator");
+		}
+		catch (Exception e) { e.printStackTrace(); return null; }
 	}
 
 	/**
 	 * @return the bestScoresAllTime
 	 */
 	public ArrayList<QuizResults> getBestScoresAllTime() {
-		return bestScoresAllTime;
-	}
-
-	/**
-	 * @param bestScoresToday the bestScoresToday to set
-	 */
-	private void setBestScoresToday(ArrayList<QuizResults> bestScoresToday) {
-		this.bestScoresToday = bestScoresToday;
+		try {
+			Statement stmt = con.createStatement();
+			String getTop5TodayQuery = "select id, user_id, quiz_id" +
+			" from QuizResults where quiz_id = " + this.quiz_id +
+			" ORDER BY user_percentage_score desc, time_duration asc " +
+			"LIMIT 5";			
+			ResultSet rs = stmt.executeQuery(getTop5TodayQuery);
+			
+			ArrayList<QuizResults> top5AllTime = new ArrayList<QuizResults>();
+			
+			while(rs.next()) {
+				top5AllTime.add(new QuizResults(rs.getLong("id"), rs.getLong("user_id"), rs.getLong("quiz_id"), this.con));
+			}
+			
+			return top5AllTime;
+		}
+		catch (Exception e) { e.printStackTrace(); return null; }
 	}
 
 	/**
 	 * @return the bestScoresToday
 	 */
 	public ArrayList<QuizResults> getBestScoresToday() {
-		return bestScoresToday;
-	}
-
-	/**
-	 * @param recentScores the recentScores to set
-	 */
-	private void setRecentScores(ArrayList<QuizResults> recentScores) {
-		this.recentScores = recentScores;
+		
+		try {
+			Statement stmt = con.createStatement();
+			String getTop5TodayQuery = "select id, user_id, quiz_id" +
+			" from QuizResults where quiz_id = " + this.quiz_id + " AND " +
+			"DATEDIFF(NOW(), date_taken) <= 1 " +
+			"ORDER BY user_percentage_score desc, time_duration asc " +
+			"LIMIT 5";			
+			ResultSet rs = stmt.executeQuery(getTop5TodayQuery);
+			
+			ArrayList<QuizResults> top5TodayResults = new ArrayList<QuizResults>();
+			
+			while(rs.next()) {
+				top5TodayResults.add(new QuizResults(rs.getLong("id"), rs.getLong("user_id"), rs.getLong("quiz_id"), this.con));
+			}
+			
+			return top5TodayResults;
+		}
+		catch (Exception e) { e.printStackTrace(); return null; }
+		
 	}
 
 	/**
 	 * @return the recentScores
 	 */
 	public ArrayList<QuizResults> getRecentScores() {
-		return recentScores;
+		try {
+			Statement stmt = con.createStatement();
+			String getTop5TodayQuery = "select id, user_id, quiz_id" +
+			" from QuizResults where quiz_id = " + this.quiz_id +
+			" ORDER BY date_taken desc " +
+			"LIMIT 5";			
+			ResultSet rs = stmt.executeQuery(getTop5TodayQuery);
+			
+			ArrayList<QuizResults> mostRecentResults = new ArrayList<QuizResults>();
+			
+			while(rs.next()) {
+				mostRecentResults.add(new QuizResults(rs.getLong("id"), rs.getLong("user_id"), rs.getLong("quiz_id"), this.con));
+			}
+			
+			return mostRecentResults;
+		}
+		catch (Exception e) { e.printStackTrace(); return null; }
 	}
-
-	/**
-	 * @param averageScore the averageScore to set
-	 */
-	private void setAverageScore(double averageScore) {
-		this.averageScore = averageScore;
+	
+	public ArrayList<QuizResults> getUserHistory(long userID) {
+		try {
+			Statement stmt = con.createStatement();
+			String getUserHistory = "select id, user_id, quiz_id" +
+			" from QuizResults where quiz_id = " + this.quiz_id + " AND user_id = " + userID +
+			" ORDER BY date_taken desc " +
+			"LIMIT 5";			
+			ResultSet rs = stmt.executeQuery(getUserHistory);
+			
+			ArrayList<QuizResults> mostRecentResults = new ArrayList<QuizResults>();
+			
+			while(rs.next()) {
+				mostRecentResults.add(new QuizResults(rs.getLong("id"), rs.getLong("user_id"), rs.getLong("quiz_id"), this.con));
+			}
+			
+			return mostRecentResults;
+		}
+		catch (Exception e) { e.printStackTrace(); return null; }
 	}
 
 	/**
 	 * @return the averageScore
 	 */
 	public double getAverageScore() {
-		return averageScore;
-	}
-
-	/**
-	 * @param isEditable the isEditable to set
-	 */
-	private void setEditable(boolean isEditable) {
-		this.isEditable = isEditable;
-	}
-
-	/**
-	 * @return the isEditable
-	 */
-	public boolean isEditable() {
-		return isEditable;
+		try {
+			Statement stmt = con.createStatement();
+			String getAverageQuery = "select avg(user_percentage_score) from QuizResults where quiz_id = " + this.quiz_id;		
+			ResultSet rs = stmt.executeQuery(getAverageQuery);			
+			rs.next();
+			return rs.getDouble(1);
+		}
+		catch (Exception e) { e.printStackTrace(); return -1; }
 	}
 
 }

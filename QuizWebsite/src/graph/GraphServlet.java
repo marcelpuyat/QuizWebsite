@@ -1,7 +1,6 @@
 package graph;
 
 import java.io.IOException;
-import java.sql.Connection;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -11,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
+
+import customObjects.SelfRefreshingConnection;
 
 /**
  * Servlet implementation class GraphServlet
@@ -39,13 +40,20 @@ public class GraphServlet extends HttpServlet {
 		response.setContentType("application/json");
 		
 		ServletContext context = getServletContext(); 
-		Connection databaseConnection = (Connection)context.getAttribute("database_connection");
-		JSONObject responseJSON = GraphSearch.simple_search(databaseConnection, query, limit);
-		if (responseJSON == null) {
-			response.sendError(HttpServletResponse.SC_GATEWAY_TIMEOUT);
-			return;
+		SelfRefreshingConnection databaseConnection = (SelfRefreshingConnection)context.getAttribute("database_connection");
+		JSONObject responseJSON;
+		try {
+			responseJSON = GraphSearch.simple_search(databaseConnection, query, limit);
+			if (responseJSON == null) {
+				response.sendError(HttpServletResponse.SC_GATEWAY_TIMEOUT);
+				return;
+			}
+			response.getWriter().println(responseJSON.toString());
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		response.getWriter().println(responseJSON.toString());
+		
 	}
 
 	/**
