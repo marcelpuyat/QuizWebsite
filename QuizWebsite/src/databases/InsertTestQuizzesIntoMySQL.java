@@ -401,7 +401,6 @@ public class InsertTestQuizzesIntoMySQL {
 				System.out.println(questions.get(0).getPrompt());
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
