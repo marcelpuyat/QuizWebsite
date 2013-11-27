@@ -67,7 +67,6 @@ public class QuizServlet extends HttpServlet {
 		try {
 			JSONParser.storeNewQuizWithJSON(newQuiz, (SelfRefreshingConnection)(getServletContext().getAttribute("database_connection")));
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
