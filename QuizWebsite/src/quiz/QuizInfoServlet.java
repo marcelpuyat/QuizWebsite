@@ -1,9 +1,7 @@
 package quiz;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.Connection;
-import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -12,24 +10,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONObject;
-
-
 /**
- * Servlet implementation class QuizServlet
+ * Servlet implementation class QuizInfoServlet
  */
-@WebServlet("/QuizServlet")
-public class QuizServlet extends HttpServlet {
+@WebServlet("/QuizInfoServlet")
+public class QuizInfoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public QuizServlet() {
+    public QuizInfoServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
-    
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -37,34 +31,20 @@ public class QuizServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String quiz_id = request.getParameter("quiz_id");
 		int id = Integer.parseInt(quiz_id);
-		
+
 		response.setContentType("application/json");
-		
-		// REMOVE THIS AFTER DEBUGGING PHASE IS OVER
-		//System.out.println("quiz_id: "+quiz_id);
 
 		ServletContext context = getServletContext(); 
 		Connection databaseConnection = (Connection)context.getAttribute("database_connection");
 		
-		Quiz quiz = new Quiz(id, databaseConnection);
 		
-		// Creates empty list (for testing) to pass in for a user's quiz taking history
-		ArrayList<QuizResults> emptyList = new ArrayList<QuizResults>(0);
-		
-		// Get quiz info from quiz info db handler
-		
-		JSONObject jSONquiz = JSONParser.parseQuizIntoJSON(quiz, null, emptyList);
-		
-		response.getWriter().println(jSONquiz.toString());
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
-		JSONObject newQuiz = JSONParser.getJSONfromRequest(request);
-		
-		JSONParser.storeNewQuizWithJSON(newQuiz, (Connection)(getServletContext().getAttribute("database_connection")));
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 	}
 
 }
