@@ -30,14 +30,25 @@ public class SelfRefreshingConnection {
 	private void refreshConnection() throws SQLException, ClassNotFoundException {
 		if (!con.isValid(TIMEOUT_LENGTH)) {
 			con.close();
-			Class.forName("com.mysql.jdbc.Driver"); 
-
-			Connection newCon = DriverManager.getConnection 
+			this.con = this.generateNewConnection();
+		}
+	}
+	
+	private Connection generateNewConnection() {
+		Connection newCon;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			newCon = DriverManager.getConnection 
 					( "jdbc:mysql://" + DBInfo.MYSQL_DATABASE_SERVER, DBInfo.MYSQL_USERNAME ,DBInfo.MYSQL_PASSWORD);
 			Statement stmt = newCon.createStatement();
 			stmt.executeQuery("USE " + DBInfo.MYSQL_DATABASE_NAME);
-			this.con = newCon;
+			return newCon;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		}
+		return null;
 	}
 	
 	public void close() throws SQLException {
