@@ -2,7 +2,11 @@ package ui;
 
 import java.io.IOException;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.*;
+
+import quiz.Quiz;
+import customObjects.SelfRefreshingConnection;
 import user.*;
 
 public class VerifyAccess {
@@ -23,5 +27,23 @@ public class VerifyAccess {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void verifyQuizOwner(HttpSession session, HttpServletRequest request, HttpServletResponse response, ServletContext application) {
+		try {
+			String quiz_id = request.getParameter("quiz_id");
+			if (quiz_id == "new") return;
+			int id = Integer.parseInt(quiz_id);
+			SelfRefreshingConnection databaseConnection = (SelfRefreshingConnection)application.getAttribute("database_connection");
+			Quiz quiz = new Quiz(id, databaseConnection);
+			
+			User u = (User)session.getAttribute("user");
+			if(quiz.getCreator().equals(u.getUserName())){
+				return;
+			}
+			response.sendRedirect("/QuizWebsite/Home.jsp");
+		}
+		catch (ClassNotFoundException e) {e.printStackTrace();}
+		catch (IOException e) {e.printStackTrace();}
 	}
 }
