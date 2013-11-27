@@ -1,6 +1,5 @@
 package quiz;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -13,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
+
+import customObjects.SelfRefreshingConnection;
 
 
 /**
@@ -44,7 +45,7 @@ public class QuizServlet extends HttpServlet {
 		//System.out.println("quiz_id: "+quiz_id);
 
 		ServletContext context = getServletContext(); 
-		Connection databaseConnection = (Connection)context.getAttribute("database_connection");
+		SelfRefreshingConnection databaseConnection = (SelfRefreshingConnection)context.getAttribute("database_connection");
 		
 		Quiz quiz = new Quiz(id, databaseConnection);
 		
@@ -64,7 +65,12 @@ public class QuizServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
 		JSONObject newQuiz = JSONParser.getJSONfromRequest(request);
 		
-		JSONParser.storeNewQuizWithJSON(newQuiz, (Connection)(getServletContext().getAttribute("database_connection")));
+		try {
+			JSONParser.storeNewQuizWithJSON(newQuiz, (SelfRefreshingConnection)(getServletContext().getAttribute("database_connection")));
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

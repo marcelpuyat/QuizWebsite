@@ -4,12 +4,18 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.sql.*;
+import java.sql.Blob;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import javax.sql.rowset.serial.SerialBlob;
 
-import question.*;
+import question.Question;
+import customObjects.SelfRefreshingConnection;
 
 /**
  * Quiz object that holds a list of questions. Supports score checking
@@ -22,7 +28,7 @@ public class Quiz {
 
 	public static int AUTO_INCREMENT_OFFSET = 1;
 	private long quiz_id;
-	private Connection con;
+	private SelfRefreshingConnection con;
 
 	/**
 	 * Initializes Quiz object given list of questions and a quiz id
@@ -33,7 +39,7 @@ public class Quiz {
 	 * @param isImmediatelyCorrected
 	 * @param isPracticable
 	 */
-	public Quiz(long quiz_id, Connection con) {
+	public Quiz(long quiz_id, SelfRefreshingConnection con) {
 		this.quiz_id = quiz_id;
 		this.con = con;
 	}
@@ -41,9 +47,10 @@ public class Quiz {
 	/**
 	 * Use this to create new quiz, passing in all necessary fields
 	 * @param con
+	 * @throws ClassNotFoundException 
 	 */
-	public Quiz(Connection con, String name, String creator, String description, ArrayList<Question> questions, int maxScore, 
-			boolean isRandomizable, boolean isMultiplePage, boolean isPracticable, boolean isImmediatelyCorrected) {
+	public Quiz(SelfRefreshingConnection con, String name, String creator, String description, ArrayList<Question> questions, int maxScore, 
+			boolean isRandomizable, boolean isMultiplePage, boolean isPracticable, boolean isImmediatelyCorrected) throws ClassNotFoundException {
 		this.quiz_id = Quiz.getNextAvailableID(con);
 		this.con = con;
 		try {
@@ -59,8 +66,9 @@ public class Quiz {
 	 * Returns next available ID
 	 * @param con
 	 * @return
+	 * @throws ClassNotFoundException 
 	 */
-	public static int getNextAvailableID(Connection con) {
+	public static int getNextAvailableID(SelfRefreshingConnection con) throws ClassNotFoundException {
 		try {
 			Statement stmt = con.createStatement();
 			String getNextIDQuery = "SELECT AUTO_INCREMENT FROM information_schema.tables WHERE table_name = 'Quizzes' AND table_schema = 'c_cs108_marcelp'";
@@ -88,9 +96,10 @@ public class Quiz {
 	 * @param isPracticable
 	 * @param isImmediatelyCorrected
 	 * @throws IOException
+	 * @throws ClassNotFoundException 
 	 */
 	private void addQuiz(String name, String creator, String description, ArrayList<Question> questions, int maxScore, 
-			boolean isRandomizable, boolean isMultiplePage, boolean isPracticable, boolean isImmediatelyCorrected) throws IOException
+			boolean isRandomizable, boolean isMultiplePage, boolean isPracticable, boolean isImmediatelyCorrected) throws IOException, ClassNotFoundException
 	{
 		PreparedStatement stmt;
 		try {

@@ -2,7 +2,6 @@ package quiz;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -21,6 +20,7 @@ import question.Question;
 import question.QuestionTypes;
 import question.SingleAnswerQuestion;
 import user.User;
+import customObjects.SelfRefreshingConnection;
 import customObjects.StringBooleanPair;
 import customObjects.StringPair;
 
@@ -48,7 +48,7 @@ public class JSONParser {
 		return new JSONObject(json_str_response.toString());
 	}
 	
-	public static void storeNewQuizWithJSON(JSONObject newQuizJSON, Connection con) {
+	public static void storeNewQuizWithJSON(JSONObject newQuizJSON, SelfRefreshingConnection con) throws ClassNotFoundException {
 		String quizName = newQuizJSON.getString("quiz_name");
 		String description = newQuizJSON.getString("description");
 		String creator = newQuizJSON.getString("creator");
@@ -268,7 +268,7 @@ public class JSONParser {
 	 * @param quiz The quiz taken
 	 * @return
 	 */
-	public static QuizResults parseJSONIntoQuizResults(JSONObject jSONresults, Connection con, User user) {
+	public static QuizResults parseJSONIntoQuizResults(JSONObject jSONresults, SelfRefreshingConnection con, User user) {
 		
 		double timeTaken = jSONresults.getDouble("time");
 		double userPercentageScore = jSONresults.getDouble("percentage");
