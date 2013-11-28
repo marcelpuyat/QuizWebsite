@@ -28,7 +28,7 @@ public class SelfRefreshingConnection {
 	}
 	
 	private void refreshConnection() throws SQLException, ClassNotFoundException {
-		if (!con.isValid(TIMEOUT_LENGTH)) {
+		if (con == null || !con.isValid(TIMEOUT_LENGTH)) {
 			con.close();
 			this.con = this.generateNewConnection();
 		}

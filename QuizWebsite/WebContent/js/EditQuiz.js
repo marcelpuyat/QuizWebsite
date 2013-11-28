@@ -9,13 +9,24 @@
  function QuestionsHandler (wrapper, quiz_id) {
  	var _quiz_id = quiz_id;
  	var _wrapper = wrapper;
+ 	var _questions = [];
 
  	(function init () {
  		
  		console.log(_quiz_id);
- 		_wrapper.appendChild(get_divider());
-
+ 		get_json_from_url(
+ 				'/QuizWebsite/QuizServlet?quiz_id='+quiz_id,
+ 				construct_ui
+ 			);
  	})();
+
+ 	function construct_ui (data) {
+ 		var questions = data.questions;
+ 		_wrapper.appendChild(get_divider());
+ 		for (var i = questions.length - 1; i >= 0; i--) {
+ 			console.log(questions[i]);
+ 		};
+ 	}
 
  	function get_divider () {
  		var li = document.createElement('li');
