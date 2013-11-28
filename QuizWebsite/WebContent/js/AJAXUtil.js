@@ -99,7 +99,7 @@ String.prototype.capitalizeFirst = function() {
 String.prototype.isOfCharSet = function (charSet) {
 	var regex = new RegExp('['+charSet+']*');
 	return this.match(regex)[0].length == this.length;
-}
+};
 
 
 function Timer (fps) {

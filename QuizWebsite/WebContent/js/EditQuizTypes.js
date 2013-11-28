@@ -36,11 +36,11 @@ function TypeHandler (wrapper, parent) {
  			wrapper.innerHTML = '';
  			wrapper.q_handler = new type.question_class(_this, type);
  			wrapper.appendChild(wrapper.q_handler.getElem());
- 		})
+ 		});
  		wrapper.appendChild(types_input);
  		wrapper.appendChild(select_type_button);
  		return wrapper;
- 	}
+ 	};
 
 	this.getWithData = function (data) {
 		var type = data.type;
@@ -64,7 +64,7 @@ function TypeHandler (wrapper, parent) {
 			console.log(data);
 			return this.getSelector();
 		}
-	}
+	};
 
 	this.postData = function () {
 		var questions = [];
@@ -78,7 +78,7 @@ function TypeHandler (wrapper, parent) {
 		var jsonResponse = _parent.getMeta();
 		jsonResponse.questions = questions;
 		console.log(jsonResponse);
-	}
+	};
 }
 
 
@@ -145,7 +145,7 @@ function MultipleChoiceHandler (parent, type) {
 	}
 	this.ingestData = function (data) {
 		_data = data;
-	}
+	};
 	this.reap = function () {
 		var opsObj = get_options();
 		return {
@@ -155,7 +155,7 @@ function MultipleChoiceHandler (parent, type) {
 			correct:opsObj.checked,
 			score:1
 		};
-	}
+	};
 	function get_options () {
 		var options_lis =document.getElementsByClassName('multiple-choice-li-'+_id);
 		var checked = -1;
@@ -208,13 +208,13 @@ function MultipleAnswerHandler (parent, type) {
 		var div = document.createElement('div');
 		div.innerHTML = 'hi';
 		return div;
-	}
+	};
 	this.ingestData = function (data) {
 		_data = data;
-	}
+	};
 	this.reap = function () {
 		return {};
-	}
+	};
 }
 function PictureResponseHandler (parent, type) {
 	var _id = unique_id++;
@@ -225,13 +225,13 @@ function PictureResponseHandler (parent, type) {
 		var div = document.createElement('div');
 		div.innerHTML = 'hi';
 		return div;
-	}
+	};
 	this.ingestData = function (data) {
 		_data = data;
-	}
+	};
 	this.reap = function () {
 		return {};
-	}
+	};
 }
 function MatchingHandler (parent, type) {
 	var _id = unique_id++;
@@ -242,13 +242,13 @@ function MatchingHandler (parent, type) {
 		var div = document.createElement('div');
 		div.innerHTML = 'hi';
 		return div;
-	}
+	};
 	this.ingestData = function (data) {
 		_data = data;
-	}
+	};
 	this.reap = function () {
 		return {};
-	}
+	};
 }
 function FillInBlankHandler (parent, type) {
 	var _id = unique_id++;
@@ -259,13 +259,13 @@ function FillInBlankHandler (parent, type) {
 		var div = document.createElement('div');
 		div.innerHTML = 'hi';
 		return div;
-	}
+	};
 	this.ingestData = function (data) {
 		_data = data;
-	}
+	};
 	this.reap = function () {
 		return {};
-	}
+	};
 }
 function SingleAnswerHandler (parent, type) {
 	var _id = unique_id++;
@@ -276,12 +276,12 @@ function SingleAnswerHandler (parent, type) {
 		var div = document.createElement('div');
 		div.innerHTML = 'hi';
 		return div;
-	}
+	};
 	this.ingestData = function (data) {
 		_data = data;
-	}
+	};
 	this.reap = function () {
 		return {};
-	}
+	};
 }
 
