@@ -92,9 +92,9 @@ public class QuizServlet extends HttpServlet {
 		
 		boolean isCreating = quiz_id_string.equals("new");
 				
+		JSONObject newQuizResponse = new JSONObject();
 		/* Quiz Creation */
 		if (isCreating) {
-			JSONObject newQuizResponse = new JSONObject();
 			try {
 				Quiz newQuiz = JSONParser.storeNewQuizWithJSON(newQuizData, con);
 				
@@ -126,9 +126,14 @@ public class QuizServlet extends HttpServlet {
 				
 				createTags(newTags, con, quiz_id);
 				
+				newQuizResponse.accumulate("status", "success");
+				newQuizResponse.accumulate("id", quiz_id);
+				
 			} catch (Exception e) {
 				e.printStackTrace();
+				newQuizResponse.accumulate("status", "failed");
 			}
+			response.getWriter().println(newQuizResponse.toString());
 		}
 	}
 	
