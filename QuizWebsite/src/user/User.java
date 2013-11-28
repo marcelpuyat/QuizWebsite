@@ -3,6 +3,8 @@ package user;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 import org.json.JSONObject;
 
@@ -244,6 +246,73 @@ public class User {
 		
 	}
 	
+	/* Achievement Related */
+	
+	/**
+	 * Return all achievements associated with this user
+	 * @return ArrayList of achievement objects
+	 */
+	public ArrayList<Achievement> getAllAchievements() {
+		try {
+			Statement stmt = con.createStatement();
+			String achievementsQuery = "SELECT id, user_id FROM Achievements WHERE user_id = " + user_id;
+			ResultSet rs = stmt.executeQuery(achievementsQuery);
+			
+			ArrayList<Achievement> achievements = new ArrayList<Achievement>();
+			
+			while (rs.next()) {
+				long curr_user_id = rs.getLong("user_id");
+				long id = rs.getLong("id");
+				achievements.add(new Achievement(id, curr_user_id, con));
+			}
+			
+			return achievements;
+		} catch (Exception e) { e.printStackTrace(); }
+		return null;
+	}
+	
+	/**
+	 * Returns boolean of whether passed in User has the achievement of that id (compared by title)
+	 * @param achievement_id
+	 * @param user
+	 * @param con
+	 * @return
+	 */
+	public static boolean hasAchievement(long achievement_id, User user, SelfRefreshingConnection con) {
+		try {
+			Statement stmt = con.createStatement();
+			String title = Achievement.getTitleForAchievementID(con, achievement_id);
+			String query = "SELECT Achievements.id FROM Achievements INNER JOIN Users ON Achievements.title = \"" + title + "\" AND Achievements.user_id = Users.id";
+			ResultSet rs = stmt.executeQuery(query);
+			boolean searchEmpty = true;
+			
+			if (rs.next()) searchEmpty = false;
+			
+			return (!searchEmpty);
+		} catch (Exception e) { e.printStackTrace(); return false; }
+	}
+	
+	/**
+	 * Returns boolean of whether passed in user has the achievement of that title
+	 * @param title
+	 * @param user
+	 * @param con
+	 * @return
+	 */
+	public static boolean hasAchievement(String title, User user, SelfRefreshingConnection con) {
+		try {
+			Statement stmt = con.createStatement();
+			String query = "SELECT Achievements.id FROM Achievements INNER JOIN Users ON Achievements.title = \"" + title + "\" AND Achievements.user_id = Users.id";
+			ResultSet rs = stmt.executeQuery(query);
+			boolean searchEmpty = true;
+			
+			if (rs.next()) searchEmpty = false;
+			
+			return (!searchEmpty);
+		} catch (Exception e) { e.printStackTrace(); return false; }
+	}
+	
+	/* End of achievement methods */
 	
 	
 	/* PRIVATE */

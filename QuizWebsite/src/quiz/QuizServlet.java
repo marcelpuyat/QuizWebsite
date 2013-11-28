@@ -40,9 +40,6 @@ public class QuizServlet extends HttpServlet {
 		int id = Integer.parseInt(quiz_id);
 		
 		response.setContentType("application/json");
-		
-		// REMOVE THIS AFTER DEBUGGING PHASE IS OVER
-		//System.out.println("quiz_id: "+quiz_id);
 
 		ServletContext context = getServletContext(); 
 		SelfRefreshingConnection databaseConnection = (SelfRefreshingConnection)context.getAttribute("database_connection");
