@@ -66,14 +66,19 @@ public class QuizServlet extends HttpServlet {
 		
 		boolean isCreating = quiz_id_string.equals("new");
 		
-		JSONObject newQuiz = JSONParser.getJSONfromRequest(request);
+		JSONObject newQuizData = JSONParser.getJSONfromRequest(request);
 		
 		if (isCreating) {
+			JSONObject newQuizResponse = new JSONObject();
 			try {
-				JSONParser.storeNewQuizWithJSON(newQuiz, (SelfRefreshingConnection)(getServletContext().getAttribute("database_connection")));
+				Quiz newQuiz = JSONParser.storeNewQuizWithJSON(newQuizData, (SelfRefreshingConnection)(getServletContext().getAttribute("database_connection")));
+				newQuizResponse.accumulate("status", "success");
+				newQuizResponse.accumulate("id", newQuiz.getID());
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
+				newQuizResponse.accumulate("status", "failed");
 			}
+			response.getWriter().println(newQuizResponse.toString());
 		}
 		
 		/* Edit quiz */
@@ -82,7 +87,7 @@ public class QuizServlet extends HttpServlet {
 			ServletContext context = getServletContext(); 
 			SelfRefreshingConnection databaseConnection = (SelfRefreshingConnection)context.getAttribute("database_connection");
 			try {
-				JSONParser.editQuizWithJSON(newQuiz, databaseConnection, quiz_id);
+				JSONParser.editQuizWithJSON(newQuizData, databaseConnection, quiz_id);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

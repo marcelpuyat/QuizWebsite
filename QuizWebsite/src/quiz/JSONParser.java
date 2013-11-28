@@ -49,7 +49,7 @@ public class JSONParser {
 		return new JSONObject(json_str_response.toString());
 	}
 	
-	public static void storeNewQuizWithJSON(JSONObject newQuizJSON, SelfRefreshingConnection con) throws ClassNotFoundException {
+	public static Quiz storeNewQuizWithJSON(JSONObject newQuizJSON, SelfRefreshingConnection con) throws ClassNotFoundException {
 		String quizName = newQuizJSON.getString("quiz_name");
 		String description = newQuizJSON.getString("description");
 		String creator = newQuizJSON.getString("creator");
@@ -61,9 +61,8 @@ public class JSONParser {
 		ArrayList<Question> questions = getQuestionsFromJSONArray(newQuizJSON.getJSONArray("questions"));
 		
 		// Adds Quiz to db
-		@SuppressWarnings("unused")
 		Quiz newQuiz = new Quiz(con, quizName, creator, description, questions, maxScore, isRandomized, isMultPage, isPracticable, isImmediatelyCorrected);
-		return;
+		return newQuiz;
 	}
 	
 	public static void editQuizWithJSON(JSONObject newQuizJSON, SelfRefreshingConnection con, int quiz_id) {
