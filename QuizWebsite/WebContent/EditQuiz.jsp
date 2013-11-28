@@ -16,6 +16,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Edit Quiz</title>
 <link rel="stylesheet" type="text/css" href="/QuizWebsite/General.css">
+<link rel="stylesheet" type="text/css" href="/QuizWebsite/Login.css">
 <link rel="stylesheet" type="text/css" href="/QuizWebsite/EditQuiz.css">
 </head>
 <body onload="init_js('<%= getQuizID(request) %>')">

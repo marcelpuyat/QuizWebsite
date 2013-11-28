@@ -16,6 +16,7 @@ function TypeHandler (wrapper) {
 
  	this.getSelector = function () {
  		var wrapper = document.createElement('div');
+ 		wrapper.classList.add('center');
  		var types_input = document.createElement('select');
  		for (var i = 0; i < types.length; i++) {
  			var option = document.createElement('option');
@@ -31,7 +32,7 @@ function TypeHandler (wrapper) {
  			var selected_index = types_input.options[types_input.selectedIndex];
  			var type = types[selected_index.value];
  			wrapper.innerHTML = '';
- 			wrapper.q_handler = new type.question_class(_this);
+ 			wrapper.q_handler = new type.question_class(_this, type);
  			wrapper.appendChild(wrapper.q_handler.getElem());
  		})
  		wrapper.appendChild(types_input);
@@ -57,24 +58,47 @@ function TypeHandler (wrapper) {
 }
 
 
-function MultipleChoiceHandler (parent) {
+function MultipleChoiceHandler (parent, type) {
+	var _type = type;
 	var _data;
 	var _parent = parent;
 	var _prompt;
 	this.getElem = function () {
-		var div = document.createElement('div');
+		var ul = document.createElement('ul');
+		ul.classList.add('login-ul','center');
+
+
+		/* title */
+		var title_li = document.createElement('li');
+		var title = document.createElement('h2');
+		title.innerHTML = type.display_name;
+		title.classList.add('lighter');
+		title_li.appendChild(title);
+		ul.appendChild(title_li);
+
+		/* prompt title */
+		var prompt_title_li = document.createElement('li');
+		var prompt_title = document.createElement('div');
+		prompt_title.classList.add('faint');
+		prompt_title.innerHTML = 'prompt';
+		prompt_title_li.appendChild(prompt_title);
+		ul.appendChild(prompt_title_li);
+
+		/* prompt */
+		var prompt_li = document.createElement('li');
 		_prompt = document.createElement('input');
 		_prompt.type = "text";
 		_prompt.addEventListener('keyup',_parent.postData);
-		div.appendChild(_prompt);
-		return div;
+		prompt_li.appendChild(_prompt);
+		ul.appendChild(prompt_li);
+		return ul;
 	}
 	this.ingestData = function (data) {
 		_data = data;
 	}
 	this.reap = function () {
 		return {
-			type:'multiple-choice',
+			type:_type.json_name,
 			prompt:_prompt.value,
 			options:[],
 			correct:0,
@@ -82,7 +106,8 @@ function MultipleChoiceHandler (parent) {
 		};
 	}
 }
-function MultipleAnswerHandler (parent) {
+function MultipleAnswerHandler (parent, type) {
+	var _type = type;
 	var _data;
 	var _parent = parent;
 	this.getElem = function () {
@@ -97,7 +122,8 @@ function MultipleAnswerHandler (parent) {
 		return {};
 	}
 }
-function PictureResponseHandler (parent) {
+function PictureResponseHandler (parent, type) {
+	var _type = type;
 	var _data;
 	var _parent = parent;
 	this.getElem = function () {
@@ -112,7 +138,8 @@ function PictureResponseHandler (parent) {
 		return {};
 	}
 }
-function MatchingHandler (parent) {
+function MatchingHandler (parent, type) {
+	var _type = type;
 	var _data;
 	var _parent = parent;
 	this.getElem = function () {
@@ -127,7 +154,8 @@ function MatchingHandler (parent) {
 		return {};
 	}
 }
-function FillInBlankHandler (parent) {
+function FillInBlankHandler (parent, type) {
+	var _type = type;
 	var _data;
 	var _parent = parent;
 	this.getElem = function () {
@@ -142,7 +170,8 @@ function FillInBlankHandler (parent) {
 		return {};
 	}
 }
-function SingleAnswerHandler (parent) {
+function SingleAnswerHandler (parent, type) {
+	var _type = type;
 	var _data;
 	var _parent = parent;
 	this.getElem = function () {
