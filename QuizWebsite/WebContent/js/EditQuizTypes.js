@@ -113,6 +113,8 @@ function MultipleChoiceHandler (parent, type) {
 		var prompt_li = document.createElement('li');
 		_prompt = document.createElement('input');
 		_prompt.type = "text";
+		_prompt.value = _data.data.prompt;
+		_prompt.classList.add('prompt-input');
 		_prompt.addEventListener('keyup',_parent.postData);
 		prompt_li.appendChild(_prompt);
 		ul.appendChild(prompt_li);
@@ -131,7 +133,8 @@ function MultipleChoiceHandler (parent, type) {
 		if (_data && _data.data && _data.data.options) {
 			var options = _data.data.options;
 			for (var i = 0; i < options.length; i++) {
-				_options_ul.appendChild(get_choice(options[i]));
+				var checked = (i == _data.data.correct);
+				_options_ul.appendChild(get_choice(options[i],checked));
 			};
 		}
 		options_container_li.appendChild(_options_ul);
@@ -144,27 +147,52 @@ function MultipleChoiceHandler (parent, type) {
 		_data = data;
 	}
 	this.reap = function () {
+		var opsObj = get_options();
 		return {
 			type:_type.json_name,
 			prompt:_prompt.value,
-			options:[],
-			correct:0,
+			options:opsObj.options,
+			correct:opsObj.checked,
 			score:1
 		};
 	}
-	function get_choice (value) {
+	function get_options () {
+		var options_lis =document.getElementsByClassName('multiple-choice-li-'+_id);
+		var checked = -1;
+		var options = [];
+		for (var i = 0; i < options_lis.length; i++) {
+			var children = options_lis[i].children;
+			for (var c = 0; c < children.length; c++) {
+				if (children[c].type == 'radio' && children[c].checked) {
+					checked = i;
+				}
+				if (children[c].type == 'text') {
+					options.push(children[c].value);
+				}
+			}
+		};
+		console.log('checked: '+options[checked]);
+		return {options:options, checked:checked};
+	}
+
+	function get_choice (value, checked) {
 		console.log(value);
 		value = value || "";
 		var li = document.createElement('li');
+		li.classList.add('multiple-choice-li-'+_id);
 
 		var radio = document.createElement('input');
 		radio.type = 'radio';
 		radio.name = 'multiple-choice-radio-'+_id;
+		radio.checked = checked;
 
 		var text = document.createElement('input');
 		text.type = 'text';
 		text.name = 'multiple-choice-text-'+_id;
 		text.value = value;
+
+		radio.addEventListener('click',_parent.postData);
+		text.addEventListener('keyup',_parent.postData);
 
 		li.appendChild(radio);
 		li.appendChild(text);

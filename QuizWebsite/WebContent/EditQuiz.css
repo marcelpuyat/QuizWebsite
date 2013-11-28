@@ -35,3 +35,8 @@
 .question-section {
 	padding: 20px 0px;
 }
+
+.prompt-input {
+	width: 300px;
+	text-align: center;
+}
