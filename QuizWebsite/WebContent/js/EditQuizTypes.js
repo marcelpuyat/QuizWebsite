@@ -51,9 +51,13 @@ function TypeHandler (wrapper) {
 			}
 		};
 		if (index != -1) {
+			var wrapper = document.createElement('div');
+ 			wrapper.classList.add('center');
 			var qh = new types[index].question_class(_this, types[index]);
 			qh.ingestData(data);
-			return qh.getElem();
+			wrapper.appendChild(qh.getElem());
+			wrapper.q_handler = qh;
+			return wrapper;
 		} else {
 			console.log('type not found');
 			console.log(data);
