@@ -140,7 +140,9 @@ function MultipleChoiceHandler (parent, type) {
 		var prompt_li = document.createElement('li');
 		_prompt = document.createElement('input');
 		_prompt.type = "text";
-		_prompt.value = _data.data.prompt;
+		if (_data && _data.data && _data.data.prompt) {
+			_prompt.value = _data.data.prompt;
+		}
 		_prompt.classList.add('prompt-input');
 		_prompt.addEventListener('keyup',_parent.postData);
 		prompt_li.appendChild(_prompt);
