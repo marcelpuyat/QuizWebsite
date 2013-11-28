@@ -120,6 +120,7 @@ function MultipleChoiceHandler (parent, type) {
 		if (_data && _data.data && _data.data.score) score = _data.data.score;
 		var score_li = document.createElement('li');
 		_score_input = document.createElement('input');
+		_score_input.classList.add('center');
 		_score_input.type = 'number';
 		_score_input.min = 0;
 		_score_input.addEventListener('change',_parent.postData);
@@ -160,9 +161,10 @@ function MultipleChoiceHandler (parent, type) {
 			var options = _data.data.options;
 			for (var i = 0; i < options.length; i++) {
 				var checked = (i == _data.data.correct);
-				_options_ul.appendChild(get_choice(options[i],checked));
+				_options_ul.appendChild(get_choice(options[i],checked, false));
 			};
 		}
+		append_blank_option(_options_ul);
 		options_container_li.appendChild(_options_ul);
 
 		ul.appendChild(options_container_li);
@@ -182,26 +184,33 @@ function MultipleChoiceHandler (parent, type) {
 			score:_score_input.value
 		};
 	};
+	function append_blank_option (ul) {
+		var li = get_choice("",false, true);
+		li.ul = ul;
+		li.addEventListener('keyup', new_option_keyup_handler);
+		ul.appendChild(li);
+	}
+	function new_option_keyup_handler () {
+		this.removeEventListener('keyup',new_option_keyup_handler);
+		append_blank_option(this.ul);
+	}
 	function get_options () {
-		var options_lis =document.getElementsByClassName('multiple-choice-li-'+_id);
+		var options_lis = document.getElementsByClassName('multiple-choice-li-'+_id);
 		var checked = -1;
 		var options = [];
 		for (var i = 0; i < options_lis.length; i++) {
 			var children = options_lis[i].children;
-			for (var c = 0; c < children.length; c++) {
-				if (children[c].type == 'radio' && children[c].checked) {
-					checked = i;
-				}
-				if (children[c].type == 'text') {
-					options.push(children[c].value);
+			if (options_lis[i].text.value != "") {
+				options.push(options_lis[i].text.value);
+				if (options_lis[i].radio.checked) {
+					checked = options.length - 1; //will be last element in array
 				}
 			}
 		};
 		console.log('checked: '+options[checked]);
 		return {options:options, checked:checked};
 	}
-
-	function get_choice (value, checked) {
+	function get_choice (value, checked, disabled) {
 		console.log(value);
 		value = value || "";
 		var li = document.createElement('li');
@@ -211,14 +220,24 @@ function MultipleChoiceHandler (parent, type) {
 		radio.type = 'radio';
 		radio.name = 'multiple-choice-radio-'+_id;
 		radio.checked = checked;
+		radio.disabled = disabled;
+		radio.text = text;
 
 		var text = document.createElement('input');
 		text.type = 'text';
 		text.name = 'multiple-choice-text-'+_id;
 		text.value = value;
+		text.radio = radio;
+
+		li.text = text;
+		li.radio = radio;
 
 		radio.addEventListener('click',_parent.postData);
-		text.addEventListener('keyup',_parent.postData);
+		text.addEventListener('keyup', function () {
+			if (text.value == "") radio.disabled = true;
+			else radio.disabled = false;
+			_parent.postData();
+		});
 
 		li.appendChild(radio);
 		li.appendChild(text);
