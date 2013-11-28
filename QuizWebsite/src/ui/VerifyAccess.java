@@ -32,7 +32,10 @@ public class VerifyAccess {
 	public static void verifyQuizOwner(HttpSession session, HttpServletRequest request, HttpServletResponse response, ServletContext application) {
 		try {
 			String quiz_id = request.getParameter("quiz_id");
-			if (quiz_id == "new") return;
+			if (quiz_id == null || quiz_id.equals("")) {
+				response.sendError(HttpServletResponse.SC_NOT_FOUND);
+			}
+			if (quiz_id.equals("new")) return;
 			int id = Integer.parseInt(quiz_id);
 			SelfRefreshingConnection databaseConnection = (SelfRefreshingConnection)application.getAttribute("database_connection");
 			Quiz quiz = new Quiz(id, databaseConnection);

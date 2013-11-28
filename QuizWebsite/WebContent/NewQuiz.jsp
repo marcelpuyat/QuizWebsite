@@ -16,6 +16,7 @@
 <body onload="init_js()">
 	<div id="content-wrapper">
 		<%= HTMLTemplater.getBlueBar(session)  %>
+		<div id="question-wrapper" class="page-width wide"></div>
 	</div>
 	<script src="/QuizWebsite/js/AJAXUtil.js" type="text/javascript"></script>
 	<script src="/QuizWebsite/js/Graph.js" type="text/javascript"></script>
