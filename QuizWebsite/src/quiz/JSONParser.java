@@ -84,7 +84,7 @@ public class JSONParser {
 		for (int i = 0; i < jSONquestions.length(); i++) {
 			questions.add(parseQuestionJSONIntoQuestion((JSONObject) jSONquestions.get(i)));
 		}
-		return null;
+		return questions;
 	}
 	
 	private static Question parseQuestionJSONIntoQuestion(JSONObject question) {
