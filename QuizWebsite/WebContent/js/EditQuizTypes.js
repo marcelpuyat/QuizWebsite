@@ -2,7 +2,7 @@
  * 
  */
 var unique_id = 0;
-function TypeHandler (wrapper, parent) {
+function TypeHandler (wrapper, parent, quiz_id) {
 	var types = [
 		{json_name:'multiple-choice',question_class:MultipleChoiceHandler,display_name:'Multiple Choice'},
 		{json_name:'multiple-answer',question_class:MultipleAnswerHandler,display_name:'Multiple Answer'},
@@ -15,6 +15,7 @@ function TypeHandler (wrapper, parent) {
 	var _questionHandler;
 	var _this = this;
 	var _parent = parent;
+	var _quiz_id = quiz_id;
 
  	this.getSelector = function () {
  		var wrapper = document.createElement('div');
@@ -81,7 +82,13 @@ function TypeHandler (wrapper, parent) {
 		var jsonResponse = _parent.getMeta();
 		jsonResponse.questions = questions;
 		jsonResponse.score = total_score;
-		console.log(jsonResponse);
+		post_json_to_url(
+			'/QuizWebsite/QuizServlet?quiz_id='+_quiz_id,
+			jsonResponse,
+			function (data) {
+				console.log(data);
+			}
+		);
 	};
 }
 
@@ -712,22 +719,192 @@ function MatchingHandler (parent, type) {
 		return li;
 	}
 }
+
 function FillInBlankHandler (parent, type) {
 	var _id = unique_id++;
 	var _type = type;
 	var _data;
 	var _parent = parent;
+	var _prompt;
+	var _before_prompt
+	var _after_prompt;
+	var _options_ul;
+	var _score_input;
 	this.getElem = function () {
-		var div = document.createElement('div');
-		div.innerHTML = 'hi';
-		return div;
-	};
+		var ul = document.createElement('ul');
+		ul.classList.add('login-ul','center');
+
+		/* title */
+		var title_li = document.createElement('li');
+		var title = document.createElement('h2');
+		title.innerHTML = type.display_name;
+		title.classList.add('lighter');
+		title_li.appendChild(title);
+		ul.appendChild(title_li);
+
+		/* score title */
+		var prompt_title_li = document.createElement('li');
+		var prompt_title = document.createElement('div');
+		prompt_title.classList.add('faint');
+		prompt_title.innerHTML = 'score possible';
+		prompt_title_li.appendChild(prompt_title);
+		ul.appendChild(prompt_title_li);
+
+
+		/* score */
+		var score = 1;
+		if (_data && _data.data && _data.data.score) score = _data.data.score;
+		var score_li = document.createElement('li');
+		_score_input = document.createElement('input');
+		_score_input.classList.add('center');
+		_score_input.type = 'number';
+		_score_input.min = 0;
+		_score_input.addEventListener('change',_parent.postData);
+		_score_input.value = score;
+		score_li.appendChild(_score_input);
+		ul.appendChild(score_li);
+
+		/* prompt title */
+		var prompt_title_li = document.createElement('li');
+		var prompt_title = document.createElement('div');
+		prompt_title.classList.add('faint');
+		prompt_title.innerHTML = 'prompt';
+		prompt_title_li.appendChild(prompt_title);
+		ul.appendChild(prompt_title_li);
+
+		/* prompt */
+		var prompt_li = document.createElement('li');
+		_prompt = document.createElement('input');
+		_prompt.type = "text";
+		if (_data && _data.data && _data.data.optional_prompt) {
+			_prompt.value = _data.data.optional_prompt;
+		}
+		_prompt.classList.add('prompt-input');
+		_prompt.addEventListener('keyup',_parent.postData);
+		prompt_li.appendChild(_prompt);
+		ul.appendChild(prompt_li);
+
+
+		/* before prompt title */
+		var before_prompt_title_li = document.createElement('li');
+		var before_prompt_title = document.createElement('div');
+		before_prompt_title.classList.add('faint');
+		before_prompt_title.innerHTML = 'before prompt';
+		before_prompt_title_li.appendChild(before_prompt_title);
+		ul.appendChild(before_prompt_title_li);
+
+		/* before prompt */
+		var before_prompt_li = document.createElement('li');
+		_before_prompt = document.createElement('input');
+		_before_prompt.type = "text";
+		if (_data && _data.data && _data.data.first_prompt) {
+			_before_prompt.value = _data.data.first_prompt;
+		}
+		_before_prompt.classList.add('prompt-input');
+		_before_prompt.addEventListener('keyup',_parent.postData);
+		before_prompt_li.appendChild(_before_prompt);
+		ul.appendChild(before_prompt_li);
+
+
+		/* options title */
+		var options_title_li = document.createElement('li');
+		var options_title = document.createElement('div');
+		options_title.classList.add('faint');
+		options_title.innerHTML = 'options';
+		options_title_li.appendChild(options_title);
+		ul.appendChild(options_title_li);
+
+		/* options */
+		var options_container_li = document.createElement('li');
+		_options_ul = document.createElement('ul');
+		if (_data && _data.data && _data.data.answers) {
+			var answers = _data.data.answers;
+			if (answers.length == undefined) answers = [answers];
+			for (var i = 0; i < answers.length; i++) {
+				var text    = (answers[i]);
+				_options_ul.appendChild(get_choice(text));
+			};
+		}
+		append_blank_option(_options_ul);
+		options_container_li.appendChild(_options_ul);
+		ul.appendChild(options_container_li);
+
+
+		/* after prompt title */
+		var after_prompt_title_li = document.createElement('li');
+		var after_prompt_title = document.createElement('div');
+		after_prompt_title.classList.add('faint');
+		after_prompt_title.innerHTML = 'after prompt';
+		after_prompt_title_li.appendChild(after_prompt_title);
+		ul.appendChild(after_prompt_title_li);
+
+		/* after prompt */
+		var after_prompt_li = document.createElement('li');
+		_after_prompt = document.createElement('input');
+		_after_prompt.type = "text";
+		if (_data && _data.data && _data.data.second_prompt) {
+			_after_prompt.value = _data.data.second_prompt;
+		}
+		_after_prompt.classList.add('prompt-input');
+		_after_prompt.addEventListener('keyup',_parent.postData);
+		after_prompt_li.appendChild(_after_prompt);
+		ul.appendChild(after_prompt_li);
+
+		return ul;
+	}
 	this.ingestData = function (data) {
 		_data = data;
 	};
 	this.reap = function () {
-		return {};
+		var ansObj = get_correct();
+		return {
+			type:_type.json_name,
+			first_prompt:_before_prompt.value,
+			second_prompt:_after_prompt.value,
+			optional_prompt:_prompt.value,
+			correct:ansObj.correct,
+			score:_score_input.value
+		};
 	};
+	function append_blank_option (ul) {
+		var li = get_choice("");
+		li.ul = ul;
+		li.addEventListener('keyup', new_option_keyup_handler);
+		ul.appendChild(li);
+	}
+	function new_option_keyup_handler () {
+		this.removeEventListener('keyup',new_option_keyup_handler);
+		append_blank_option(this.ul);
+	}
+	function get_correct () {
+		var options_lis = document.getElementsByClassName('multiple-choice-li-'+_id);
+		var correct = [];
+		for (var i = 0; i < options_lis.length; i++) {
+			var children = options_lis[i].children;
+			if (options_lis[i].text.value != "") {
+				correct.push(options_lis[i].text.value);
+			}
+		};
+		return {correct:correct};
+	}
+	function get_choice (value) {
+		console.log(value);
+		value = value || "";
+		var li = document.createElement('li');
+		li.classList.add('multiple-choice-li-'+_id);
+
+		var text = document.createElement('input');
+		text.type = 'text';
+		text.name = 'multiple-choice-text-'+_id;
+		text.value = value;
+
+		li.text = text;
+
+		text.addEventListener('keyup', _parent.postData);
+
+		li.appendChild(text);
+		return li;
+	}
 }
 
 function SingleAnswerHandler (parent, type) {

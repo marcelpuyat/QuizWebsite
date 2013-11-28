@@ -12,11 +12,10 @@
  	var _wrapper = wrapper;
  	var _questions = [];
  	var _data;
- 	var _th = new TypeHandler(_wrapper, this);
+ 	var _th = new TypeHandler(_wrapper, this, _quiz_id);
  	th = _th;
 
  	(function init () {
- 		console.log(_quiz_id);
  		get_json_from_url(
  				'/QuizWebsite/QuizServlet?quiz_id='+quiz_id,
  				construct_ui
@@ -39,10 +38,10 @@
  			description:_data.description||"",
  			creator:_data.creator||"",
  			max_score:0,
- 			is_immediately_corrected: _data.is_immediately_corrected || 1,
- 			is_multiple_page:_data.is_multiple_page || 1,
- 			is_randomized:_data.is_randomized || 1,
- 			is_practicable:_data.is_practicable || 1,
+ 			is_immediately_corrected: _data.is_immediately_corrected || true,
+ 			is_multiple_page:_data.is_multiple_page || true,
+ 			is_randomized:_data.is_randomized || true,
+ 			is_practicable:_data.is_practicable || true,
  			tags:_data.tags || []
  		}
  	}
