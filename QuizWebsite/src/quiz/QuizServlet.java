@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import customObjects.SelfRefreshingConnection;
@@ -55,7 +56,21 @@ public class QuizServlet extends HttpServlet {
 		
 		JSONObject jSONquiz = JSONParser.parseQuizIntoJSON(quiz, null, emptyList);
 		
+		jSONquiz = addTagsToJSONQuizInfo(jSONquiz, id, databaseConnection);
+		
 		response.getWriter().println(jSONquiz.toString());
+	}
+	
+	private JSONObject addTagsToJSONQuizInfo(JSONObject jSONinfo, int quiz_id, SelfRefreshingConnection con) {
+		Tag tag = new Tag(con, quiz_id);
+		ArrayList<String> tags = tag.getAllTags();
+		
+		JSONArray tagStrings = new JSONArray();
+		for (int i = 0; i < tags.size(); i++) {
+			tagStrings.put(tags.get(i));
+		}
+		jSONinfo.put("tags", tagStrings);
+		return jSONinfo;
 	}
 
 	/**
@@ -63,17 +78,33 @@ public class QuizServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
 		String quiz_id_string = request.getParameter("quiz_id");
+		String action = request.getParameter("action");
+		
+		SelfRefreshingConnection con = (SelfRefreshingConnection)(getServletContext().getAttribute("database_connection"));
+		JSONObject newQuizData = JSONParser.getJSONfromRequest(request);
+
+		// DELETE QUIZ
+		if (action.equals("delete")) {
+			int quiz_id = Integer.parseInt(quiz_id_string);
+			Quiz.deleteQuiz(quiz_id, con);
+			return;
+		}
 		
 		boolean isCreating = quiz_id_string.equals("new");
-		
-		JSONObject newQuizData = JSONParser.getJSONfromRequest(request);
-		
+				
+		/* Quiz Creation */
 		if (isCreating) {
 			JSONObject newQuizResponse = new JSONObject();
 			try {
-				Quiz newQuiz = JSONParser.storeNewQuizWithJSON(newQuizData, (SelfRefreshingConnection)(getServletContext().getAttribute("database_connection")));
+				Quiz newQuiz = JSONParser.storeNewQuizWithJSON(newQuizData, con);
+				
+				ArrayList<String> tags = JSONParser.getTagsFromJSONArray(newQuizData.getJSONArray("tags"));
+				
+				createTags(tags, con, newQuiz.getID());
+				
 				newQuizResponse.accumulate("status", "success");
 				newQuizResponse.accumulate("id", newQuiz.getID());
+				
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 				newQuizResponse.accumulate("status", "failed");
@@ -84,14 +115,26 @@ public class QuizServlet extends HttpServlet {
 		/* Edit quiz */
 		else {
 			int quiz_id = Integer.parseInt(quiz_id_string);
-			ServletContext context = getServletContext(); 
-			SelfRefreshingConnection databaseConnection = (SelfRefreshingConnection)context.getAttribute("database_connection");
+
 			try {
-				JSONParser.editQuizWithJSON(newQuizData, databaseConnection, quiz_id);
+				JSONParser.editQuizWithJSON(newQuizData, con, quiz_id);
+				Tag oldTags = new Tag(con, quiz_id);
+				
+				ArrayList<String> newTags = JSONParser.getTagsFromJSONArray(newQuizData.getJSONArray("tags"));
+				
+				oldTags.deleteTags();
+				
+				createTags(newTags, con, quiz_id);
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	private void createTags(ArrayList<String> tags, SelfRefreshingConnection con, long quiz_id) {
+		@SuppressWarnings("unused")
+		Tag tag = new Tag(con, quiz_id, tags);
 	}
 
 }

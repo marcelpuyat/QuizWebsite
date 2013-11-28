@@ -79,6 +79,16 @@ public class JSONParser {
 		return;
 	}
 	
+	public static ArrayList<String> getTagsFromJSONArray(JSONArray json) {
+		ArrayList<String> tags = new ArrayList<String>();
+		
+		for (int i = 0; i < json.length(); i++) {
+			tags.add(json.getString(i));
+		}
+		
+		return tags;
+	}
+	
 	private static ArrayList<Question> getQuestionsFromJSONArray(JSONArray jSONquestions) {
 		ArrayList<Question> questions = new ArrayList<Question>(jSONquestions.length());
 		for (int i = 0; i < jSONquestions.length(); i++) {
@@ -107,7 +117,7 @@ public class JSONParser {
 		// Means type was wrongly formatted
 		else return null;
 	}
-	
+		
 	private static Question parseJSONIntoSingleAnswerQuestion(
 			JSONObject question) {
 		String prompt = question.getString("prompt");

@@ -60,6 +60,14 @@ public class Quiz {
 		}
 	}
 	
+	public static void deleteQuiz(long quiz_id, SelfRefreshingConnection con) {
+		try {
+			Statement stmt = con.createStatement();
+			String deleteUpdateString = "DELETE FROM Quizzes WHERE id = " + quiz_id;
+			stmt.executeUpdate(deleteUpdateString);
+		} catch (Exception e) { e.printStackTrace(); }
+	}
+	
 	/**
 	 * Use this to edit quiz
 	 * @param con

@@ -2,6 +2,7 @@ package quiz;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
@@ -18,10 +19,12 @@ public class Tag {
 	 * @param quizID
 	 * @param tag
 	 */
-	public Tag(SelfRefreshingConnection con, long quizID, String tag) {
+	public Tag(SelfRefreshingConnection con, long quizID, ArrayList<String> tags) {
 		this.con = con;
 		this.quizID = quizID;
-		createNewTag(con, quizID, tag);
+		for (int i = 0; i < tags.size(); i++) {
+			createNewTag(con, quizID, tags.get(i));
+		}
 	}
 	
 	/**
@@ -59,4 +62,17 @@ public class Tag {
 		return null;
 	}
 	
+	public void deleteTags() {
+		try {
+			Statement stmt = con.createStatement();
+			String deleteTagsUpdate = "DELETE from Tags WHERE quiz_id = " + this.quizID;
+			stmt.executeUpdate(deleteTagsUpdate);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+	}
 }
