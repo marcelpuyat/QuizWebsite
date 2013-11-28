@@ -21,7 +21,10 @@
 <body onload="init_js('<%= getQuizID(request) %>')">
 	<div id="content-wrapper">
 		<%= HTMLTemplater.getBlueBar(session)  %>
-		<div class="page-width wide"  id="questions-wrapper"></div>
+		<div class="page-width wide center-block"  id="questions-wrapper">
+			<ul id="questions-ul">
+			</ul>
+		</div>
 	</div>
 	<script src="/QuizWebsite/js/AJAXUtil.js" type="text/javascript"></script>
 	<script src="/QuizWebsite/js/Graph.js" type="text/javascript"></script>
