@@ -1,7 +1,7 @@
 @CHARSET "UTF-8";
 .line {
 	width: 48%;
-	border-bottom: 1px solid rgba(0,0,0,0.3);
+	border-bottom: 1px solid rgba(0,0,0,0.1);
 	position: relative;
 }
 .plus-circle {
@@ -14,8 +14,8 @@
 	margin-top: -10px;
 	position: absolute;
 	cursor: pointer;
-
-
+}
+.transition-medium {
 	-webkit-transition:0.5s;
 	-moz-transition:0.5s;
 	-o-transition:0.5s;

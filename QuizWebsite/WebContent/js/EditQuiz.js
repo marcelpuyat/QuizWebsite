@@ -10,6 +10,7 @@
  	var _quiz_id = quiz_id;
  	var _wrapper = wrapper;
  	var _questions = [];
+ 	var th = new TypeHandler(_wrapper);
 
  	(function init () {
  		
@@ -23,13 +24,15 @@
  	function construct_ui (data) {
  		var questions = data.questions;
  		_wrapper.appendChild(get_divider());
- 		for (var i = questions.length - 1; i >= 0; i--) {
- 			console.log(questions[i]);
+ 		for (var i = 0; i < questions.length; i++) {
+ 			_wrapper.appendChild(new_elem(questions[i]));
+ 			_wrapper.appendChild(get_divider());
  		};
  	}
 
  	function get_divider () {
  		var li = document.createElement('li');
+ 		li.classList.add('transition-medium');
  		var line_left  = document.createElement('span');
  		var line_right = document.createElement('span');
  		line_left.classList.add('line','left');
@@ -53,10 +56,15 @@
  		return li;
  	}
 
- 	function new_elem () {
+ 	function new_elem (data) {
  		var li = document.createElement('li');
  		li.classList.add('question-section');
- 		li.innerHTML = 'hi'+ (num++);
+ 		//var th = new TypeHandler(li);
+ 		if (data) {
+ 			li.appendChild(th.getWithData(data));
+ 		} else {
+ 			li.appendChild(th.getSelector());
+ 		}
  		return li;
  	}
  }
