@@ -11,7 +11,8 @@
  	var _quiz_id = quiz_id;
  	var _wrapper = wrapper;
  	var _questions = [];
- 	var _th = new TypeHandler(_wrapper);
+ 	var _data;
+ 	var _th = new TypeHandler(_wrapper, this);
  	th = _th;
 
  	(function init () {
@@ -23,12 +24,27 @@
  	})();
 
  	function construct_ui (data) {
+ 		_data = data;
  		var questions = data.questions;
  		_wrapper.appendChild(get_divider());
  		for (var i = 0; i < questions.length; i++) {
  			_wrapper.appendChild(new_elem(questions[i]));
  			_wrapper.appendChild(get_divider());
  		};
+ 	}
+
+ 	this.getMeta = function () {
+ 		return {
+ 			quiz_name:_data.quiz_name||"",
+ 			description:_data.description||"",
+ 			creator:_data.creator||"",
+ 			max_score:_data.max_score||1,
+ 			is_immediately_corrected: _data.is_immediately_corrected || 1,
+ 			is_multiple_page:_data.is_multiple_page || 1,
+ 			is_randomized:_data.is_randomized || 1,
+ 			is_practicable:_data.is_practicable || 1,
+ 			tags:_data.tags || []
+ 		}
  	}
 
  	function get_divider () {

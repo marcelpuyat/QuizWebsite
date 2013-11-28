@@ -2,7 +2,7 @@
  * 
  */
 var unique_id = 0;
-function TypeHandler (wrapper) {
+function TypeHandler (wrapper, parent) {
 	var types = [
 		{json_name:'multiple-choice',question_class:MultipleChoiceHandler,display_name:'Multiple Choice'},
 		{json_name:'multiple-answer',question_class:MultipleAnswerHandler,display_name:'Multiple Answer'},
@@ -14,6 +14,7 @@ function TypeHandler (wrapper) {
 	var _wrapper = wrapper;
 	var _questionHandler;
 	var _this = this;
+	var _parent = parent;
 
  	this.getSelector = function () {
  		var wrapper = document.createElement('div');
@@ -74,7 +75,9 @@ function TypeHandler (wrapper) {
 				questions.push(q_handler.reap());
 			}
 		};
-		console.log(questions);
+		var jsonResponse = _parent.getMeta();
+		jsonResponse.questions = questions;
+		console.log(jsonResponse);
 	}
 }
 
