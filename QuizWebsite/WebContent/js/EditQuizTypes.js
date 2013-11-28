@@ -31,7 +31,7 @@ function TypeHandler (wrapper) {
  			var selected_index = types_input.options[types_input.selectedIndex];
  			var type = types[selected_index.value];
  			wrapper.innerHTML = '';
- 			wrapper.q_handler = new type.question_class();
+ 			wrapper.q_handler = new type.question_class(_this);
  			wrapper.appendChild(wrapper.q_handler.getElem());
  		})
  		wrapper.appendChild(types_input);
@@ -44,13 +44,47 @@ function TypeHandler (wrapper) {
 	}
 
 	this.postData = function () {
-		var 
+		var questions = [];
+		var children = _wrapper.children;
+		for (var i = 0; i < children.length; i++) {
+			var q_handler = children[i].firstChild.q_handler;
+			if (q_handler) {
+				questions.push(q_handler.reap());
+			}
+		};
+		console.log(questions);
 	}
 }
 
 
-function MultipleChoiceHandler () {
+function MultipleChoiceHandler (parent) {
 	var _data;
+	var _parent = parent;
+	var _prompt;
+	this.getElem = function () {
+		var div = document.createElement('div');
+		_prompt = document.createElement('input');
+		_prompt.type = "text";
+		_prompt.addEventListener('keyup',_parent.postData);
+		div.appendChild(_prompt);
+		return div;
+	}
+	this.ingestData = function (data) {
+		_data = data;
+	}
+	this.reap = function () {
+		return {
+			type:'multiple-choice',
+			prompt:_prompt.value,
+			options:[],
+			correct:0,
+			score:1
+		};
+	}
+}
+function MultipleAnswerHandler (parent) {
+	var _data;
+	var _parent = parent;
 	this.getElem = function () {
 		var div = document.createElement('div');
 		div.innerHTML = 'hi';
@@ -63,8 +97,9 @@ function MultipleChoiceHandler () {
 		return {};
 	}
 }
-function MultipleAnswerHandler () {
+function PictureResponseHandler (parent) {
 	var _data;
+	var _parent = parent;
 	this.getElem = function () {
 		var div = document.createElement('div');
 		div.innerHTML = 'hi';
@@ -77,8 +112,9 @@ function MultipleAnswerHandler () {
 		return {};
 	}
 }
-function PictureResponseHandler () {
+function MatchingHandler (parent) {
 	var _data;
+	var _parent = parent;
 	this.getElem = function () {
 		var div = document.createElement('div');
 		div.innerHTML = 'hi';
@@ -91,8 +127,9 @@ function PictureResponseHandler () {
 		return {};
 	}
 }
-function MatchingHandler () {
+function FillInBlankHandler (parent) {
 	var _data;
+	var _parent = parent;
 	this.getElem = function () {
 		var div = document.createElement('div');
 		div.innerHTML = 'hi';
@@ -105,22 +142,9 @@ function MatchingHandler () {
 		return {};
 	}
 }
-function FillInBlankHandler () {
+function SingleAnswerHandler (parent) {
 	var _data;
-	this.getElem = function () {
-		var div = document.createElement('div');
-		div.innerHTML = 'hi';
-		return div;
-	}
-	this.ingestData = function (data) {
-		_data = data;
-	}
-	this.reap = function () {
-		return {};
-	}
-}
-function SingleAnswerHandler () {
-	var _data;
+	var _parent = parent;
 	this.getElem = function () {
 		var div = document.createElement('div');
 		div.innerHTML = 'hi';

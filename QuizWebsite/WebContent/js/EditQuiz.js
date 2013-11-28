@@ -2,6 +2,7 @@
  * 
  */
  var num = 0;
+ var th;
  function init_js (quiz_id) {
  	new QuestionsHandler(document.getElementById('questions-ul'), quiz_id);
  }
@@ -10,10 +11,10 @@
  	var _quiz_id = quiz_id;
  	var _wrapper = wrapper;
  	var _questions = [];
- 	var th = new TypeHandler(_wrapper);
+ 	var _th = new TypeHandler(_wrapper);
+ 	th = _th;
 
  	(function init () {
- 		
  		console.log(_quiz_id);
  		get_json_from_url(
  				'/QuizWebsite/QuizServlet?quiz_id='+quiz_id,
@@ -61,9 +62,9 @@
  		li.classList.add('question-section');
  		//var th = new TypeHandler(li);
  		if (data) {
- 			li.appendChild(th.getWithData(data));
+ 			li.appendChild(_th.getWithData(data));
  		} else {
- 			li.appendChild(th.getSelector());
+ 			li.appendChild(_th.getSelector());
  		}
  		return li;
  	}
