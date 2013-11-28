@@ -1,1 +1,37 @@
 @CHARSET "UTF-8";
+.line {
+	width: 48%;
+	border-bottom: 1px solid rgba(0,0,0,0.3);
+	position: relative;
+}
+.plus-circle {
+	width: 20px;
+	height: 20px;
+	border: 1px solid rgba(0,0,0,0.3);
+	border-radius: 50%;
+	left: 50%;
+	margin-left: 9px;
+	margin-top: -10px;
+	position: absolute;
+	cursor: pointer;
+
+
+	-webkit-transition:0.5s;
+	-moz-transition:0.5s;
+	-o-transition:0.5s;
+	-ms-transition:0.5s;
+	transition:0.5s;
+}
+.plus-circle:hover {
+	background-color: rgba(124, 187, 149, 0.5);
+}
+.plus {
+	position: absolute;
+	left: 4px;
+	font-size: 16px;
+	color: rgba(0,0,0,0.3);
+}
+
+.question-section {
+	padding: 10px 0px;
+}
