@@ -69,14 +69,18 @@ function TypeHandler (wrapper, parent) {
 	this.postData = function () {
 		var questions = [];
 		var children = _wrapper.children;
+		var total_score;
 		for (var i = 0; i < children.length; i++) {
 			var q_handler = children[i].firstChild.q_handler;
 			if (q_handler) {
-				questions.push(q_handler.reap());//add score to max score
+				var q_reap = q_handler.reap();
+				questions.push(q_reap);//add score to max score
+				total_score+=q_reap.score
 			}
 		};
 		var jsonResponse = _parent.getMeta();
 		jsonResponse.questions = questions;
+		jsonResponse.score = total_score;
 		console.log(jsonResponse);
 	};
 }
@@ -89,6 +93,7 @@ function MultipleChoiceHandler (parent, type) {
 	var _parent = parent;
 	var _prompt;
 	var _options_ul;
+	var _score_input;
 	this.getElem = function () {
 		var ul = document.createElement('ul');
 		ul.classList.add('login-ul','center');
@@ -100,6 +105,27 @@ function MultipleChoiceHandler (parent, type) {
 		title.classList.add('lighter');
 		title_li.appendChild(title);
 		ul.appendChild(title_li);
+
+		/* score title */
+		var prompt_title_li = document.createElement('li');
+		var prompt_title = document.createElement('div');
+		prompt_title.classList.add('faint');
+		prompt_title.innerHTML = 'score possible';
+		prompt_title_li.appendChild(prompt_title);
+		ul.appendChild(prompt_title_li);
+
+
+		/* score */
+		var score = 1;
+		if (_data && _data.data && _data.data.score) score = _data.data.score;
+		var score_li = document.createElement('li');
+		_score_input = document.createElement('input');
+		_score_input.type = 'number';
+		_score_input.min = 0;
+		_score_input.addEventListener('change',_parent.postData);
+		_score_input.value = score;
+		score_li.appendChild(_score_input);
+		ul.appendChild(score_li);
 
 		/* prompt title */
 		var prompt_title_li = document.createElement('li');
@@ -153,7 +179,7 @@ function MultipleChoiceHandler (parent, type) {
 			prompt:_prompt.value,
 			options:opsObj.options,
 			correct:opsObj.checked,
-			score:1
+			score:_score_input.value
 		};
 	};
 	function get_options () {
