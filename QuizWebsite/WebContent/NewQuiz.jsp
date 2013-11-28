@@ -30,7 +30,7 @@
 			<li><h2 class="lighter">New Quiz</h2></li>
 			<li><div class="faint">quiz name</div></li>
 			<li><input type="text" name="quiz-name" id="quiz-name-input"></li>
-			<li><input type="button" value="create" onclick="post_new_quiz(<%= getUsername(session) %>)"></li>
+			<li><input type="button" value="create" onclick="post_new_quiz('<%= getUsername(session) %>')"></li>
 		</ul>
 	</div>
 	<script src="/QuizWebsite/js/AJAXUtil.js" type="text/javascript"></script>
