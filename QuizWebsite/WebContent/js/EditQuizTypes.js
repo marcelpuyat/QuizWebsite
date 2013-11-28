@@ -72,7 +72,7 @@ function TypeHandler (wrapper, parent) {
 		for (var i = 0; i < children.length; i++) {
 			var q_handler = children[i].firstChild.q_handler;
 			if (q_handler) {
-				questions.push(q_handler.reap());
+				questions.push(q_handler.reap());//add score to max score
 			}
 		};
 		var jsonResponse = _parent.getMeta();

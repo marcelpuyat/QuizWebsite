@@ -65,7 +65,8 @@ public class Quiz {
 			Statement stmt = con.createStatement();
 			String deleteUpdateString = "DELETE FROM Quizzes WHERE id = " + quiz_id;
 			stmt.executeUpdate(deleteUpdateString);
-		} catch (Exception e) { e.printStackTrace(); }
+		}
+		catch (Exception e) { e.printStackTrace(); }
 	}
 	
 	/**

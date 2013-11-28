@@ -38,7 +38,7 @@
  			quiz_name:_data.quiz_name||"",
  			description:_data.description||"",
  			creator:_data.creator||"",
- 			max_score:_data.max_score||1,
+ 			max_score:0,
  			is_immediately_corrected: _data.is_immediately_corrected || 1,
  			is_multiple_page:_data.is_multiple_page || 1,
  			is_randomized:_data.is_randomized || 1,
@@ -49,7 +49,7 @@
 
  	function get_divider () {
  		var li = document.createElement('li');
- 		li.classList.add('transition-medium');
+ 		li.classList.add('transition-medium','divider-li');
  		var line_left  = document.createElement('span');
  		var line_right = document.createElement('span');
  		line_left.classList.add('line','left');

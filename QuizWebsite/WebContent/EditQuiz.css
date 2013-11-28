@@ -10,7 +10,7 @@
 	border: 1px solid rgba(0,0,0,0.3);
 	border-radius: 50%;
 	left: 50%;
-	margin-left: 9px;
+	margin-left: -11px;
 	margin-top: -10px;
 	position: absolute;
 	cursor: pointer;
@@ -21,6 +21,9 @@
 	-o-transition:0.5s;
 	-ms-transition:0.5s;
 	transition:0.5s;
+}
+.divider-li {
+	position: relative;
 }
 .plus-circle:hover {
 	background-color: rgba(124, 187, 149, 0.5);
