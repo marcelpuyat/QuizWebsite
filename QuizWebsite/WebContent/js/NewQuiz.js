@@ -19,8 +19,7 @@
  				questions:[]
  			},
  			function (data) {
- 				console.log(data);
- 				// window.location.replace('/QuizWebsite/EditQuiz.jsp');
+ 				window.location.replace('/QuizWebsite/EditQuiz.jsp?quiz_id='+data.id);
  			}
  		)
  }
