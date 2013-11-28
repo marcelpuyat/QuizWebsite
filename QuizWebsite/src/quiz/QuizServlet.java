@@ -84,10 +84,12 @@ public class QuizServlet extends HttpServlet {
 		JSONObject newQuizData = JSONParser.getJSONfromRequest(request);
 
 		// DELETE QUIZ
-		if (action != null && action.equals("delete")) {
-			int quiz_id = Integer.parseInt(quiz_id_string);
-			Quiz.deleteQuiz(quiz_id, con);
-			return;
+		if (action != null) {
+			if (action.equals("delete")) {
+				int quiz_id = Integer.parseInt(quiz_id_string);
+				Quiz.deleteQuiz(quiz_id, con);
+				return;
+			}
 		}
 		
 		boolean isCreating = quiz_id_string.equals("new");
