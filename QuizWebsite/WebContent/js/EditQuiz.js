@@ -18,6 +18,26 @@
 
  	function get_divider () {
  		var li = document.createElement('li');
+ 		//li.style.borderBottom = '1px solid rgba(0,0,0,0.3)';
+ 		var line_left  = document.createElement('span');
+ 		var line_right = document.createElement('span');
+ 		line_left.style.width = '48%';
+ 		line_right.style.width = '48%';
+ 		line_left.style.borderBottom = '1px solid rgba(0,0,0,0.3)';
+ 		line_right.style.borderBottom = '1px solid rgba(0,0,0,0.3)';
+ 		line_left.style.float = 'left';
+ 		line_right.style.float = 'right';
+ 		li.style.position = 'relative';
+ 		li.appendChild(line_left);
+ 		li.appendChild(line_right);
+
+ 		var add = document.createElement('span');
+ 		add.style.width = '4%';
+ 		add.style.height = add.style.width;
+ 		add.innerHTML = '+';
+ 		add.style.border = '1px solid rgba(0,0,0,0.3)';
+ 		add.style.borderRadius = '50%';
+ 		li.appendChild(add);
  		return li;
  	}
  }
