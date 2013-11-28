@@ -19,7 +19,7 @@
  				questions:[]
  			},
  			function (data) {
- 				window.location.replace('/QuizWebsite/EditQuiz.jsp?quiz_id='+data.id);
+ 				window.location.assign('/QuizWebsite/EditQuiz.jsp?quiz_id='+data.id);
  			}
  		)
  }
