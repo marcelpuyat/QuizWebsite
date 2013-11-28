@@ -41,7 +41,23 @@ function TypeHandler (wrapper) {
  	}
 
 	this.getWithData = function (data) {
-		
+		var type = data.type;
+		var index = -1;
+		for (var i = 0; i < types.length; i++) {
+			if (types[i].json_name == type) {
+				i = index;
+				break;
+			}
+		};
+		if (index != -1) {
+			var qh = new types[index].question_class(_this, types[index]);
+			qh.ingestData(data);
+			return qh.getElem();
+		} else {
+			console.log('type not found');
+			console.log(data);
+			return this.getSelector();
+		}
 	}
 
 	this.postData = function () {
@@ -91,6 +107,13 @@ function MultipleChoiceHandler (parent, type) {
 		_prompt.addEventListener('keyup',_parent.postData);
 		prompt_li.appendChild(_prompt);
 		ul.appendChild(prompt_li);
+
+		if (_data && _data.data && _data.data.options) {
+			var options = _data.data.options;
+			for (var i = 0; i < options.length; i++) {
+				
+			};
+		}
 		return ul;
 	}
 	this.ingestData = function (data) {
