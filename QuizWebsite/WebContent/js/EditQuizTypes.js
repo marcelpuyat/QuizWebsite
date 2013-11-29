@@ -70,19 +70,19 @@ function TypeHandler (wrapper, parent, quiz_id) {
 	this.postData = function () {
 		var questions = [];
 		var children = _wrapper.children;
-		var total_score;
+		var total_score = 0;
 		for (var i = 0; i < children.length; i++) {
 			var q_handler = children[i].firstChild.q_handler;
 			if (q_handler) {
 				var q_reap = q_handler.reap();
 				questions.push(q_reap);//add score to max score
-				total_score+=q_reap.score
+				total_score+=parseInt(q_reap.score);
 			}
 		};
 		var jsonResponse = _parent.getMeta();
 		jsonResponse.questions = questions;
-		jsonResponse.score = total_score;
-		console.log('sending to +''/QuizWebsite/QuizServlet?quiz_id='+_quiz_id);
+		jsonResponse.max_score = total_score;
+		console.log('sending to :'+'/QuizWebsite/QuizServlet?quiz_id='+_quiz_id);
 		console.log(jsonResponse);
 		post_json_to_url(
 			'/QuizWebsite/QuizServlet?quiz_id='+_quiz_id,

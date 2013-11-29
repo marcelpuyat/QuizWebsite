@@ -85,7 +85,7 @@ public class Quiz {
 	 */
 	public static void editQuiz(long quiz_id, SelfRefreshingConnection con, String name, String creator, String description, ArrayList<Question> questions, int maxScore, 
 			boolean isRandomizable, boolean isMultiplePage, boolean isPracticable, boolean isImmediatelyCorrected) {
-		String editUpdate = "UPDATE Quizzes SET name = ?, creator = ?, description = ?, questions = ?, maxScore = ?, is_randomizable = ?, is_multiple_page = ?, is_practicable = ?, is_immediately_corrected = ? " +
+		String editUpdate = "UPDATE Quizzes SET name = ?, creator = ?, description = ?, questions = ?, max_score = ?, is_randomizable = ?, is_multiple_page = ?, is_practicable = ?, is_immediately_corrected = ? " +
 		"WHERE id = " + quiz_id;
 		try {
 			PreparedStatement stmt = con.prepareStatement(editUpdate);
