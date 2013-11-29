@@ -51,7 +51,7 @@ public class QuizServlet extends HttpServlet {
 		
 		// Get quiz info from quiz info db handler
 		
-		JSONObject jSONquiz = JSONParser.parseQuizIntoJSON(quiz, null, emptyList);
+		JSONObject jSONquiz = JSONParser.parseQuizIntoJSON(quiz, emptyList);
 		
 		jSONquiz = addTagsToJSONQuizInfo(jSONquiz, id, databaseConnection);
 		

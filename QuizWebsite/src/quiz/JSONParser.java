@@ -122,7 +122,7 @@ public class JSONParser {
 			JSONObject question) {
 		String prompt = question.getString("prompt");
 		int score = question.getInt("score");
-		JSONArray answers = question.getJSONArray("answers");
+		JSONArray answers = question.getJSONArray("correct");
 		HashSet<String> possibleAnswers = new HashSet<String>();
 		for (int i = 0; i < answers.length(); i++) {
 			possibleAnswers.add(answers.getString(i));
@@ -135,7 +135,7 @@ public class JSONParser {
 		String firstPrompt = question.getString("first_prompt");
 		String secondPrompt = question.getString("second_prompt");
 		int score = question.getInt("score");
-		JSONArray answers = question.getJSONArray("answers");
+		JSONArray answers = question.getJSONArray("correct");
 		HashSet<String> possibleAnswers = new HashSet<String>();
 		for (int i = 0; i < answers.length(); i++) {
 			possibleAnswers.add(answers.getString(i));
@@ -145,7 +145,7 @@ public class JSONParser {
 
 	private static Question parseJSONIntoMatchingQuestion(JSONObject question) {
 		String prompt = question.getString("prompt");
-		JSONArray arrayOfStringPairs = question.getJSONArray("answers");
+		JSONArray arrayOfStringPairs = question.getJSONArray("correct");
 		int score = question.getInt("score");
 		ArrayList<StringPair> pairs = new ArrayList<StringPair>();
 		for (int i = 0; i < arrayOfStringPairs.length(); i++) {
@@ -162,7 +162,7 @@ public class JSONParser {
 		String prompt = question.getString("prompt");
 		String imgUrl = question.getString("img_url");
 		int score = question.getInt("score");
-		JSONArray answers = question.getJSONArray("answers");
+		JSONArray answers = question.getJSONArray("correct");
 		HashSet<String> possibleAnswers = new HashSet<String>();
 		for (int i = 0; i < answers.length(); i++) {
 			possibleAnswers.add(answers.getString(i));
@@ -172,7 +172,7 @@ public class JSONParser {
 
 	private static Question parseJSONIntoMultAnswerQuestion(JSONObject question) {
 		String prompt = question.getString("prompt");
-		JSONArray arrayOfStringPairs = question.getJSONArray("answers");
+		JSONArray arrayOfStringPairs = question.getJSONArray("correct");
 		int score = question.getInt("score");
 		boolean partialCredit = question.getBoolean("partial_credit");
 		ArrayList<StringBooleanPair> pairs = new ArrayList<StringBooleanPair>();
@@ -207,7 +207,7 @@ public class JSONParser {
 	 * @param userHistory List of user's results on this quiz
 	 * @return Quiz object formatted as JSON
 	 */
-	public static JSONObject parseQuizIntoJSON(Quiz quiz, QuizInfo quizInfo, ArrayList<QuizResults> userHistory) {
+	public static JSONObject parseQuizIntoJSON(Quiz quiz, ArrayList<QuizResults> userHistory) {
 		
 		JSONObject jSONquiz = new JSONObject();
 				
@@ -358,7 +358,7 @@ public class JSONParser {
 		q_data.accumulate("second_prompt", question.getSecondPrompt());
 				
 		for (String answer : question.getPossibleAnswers()) {
-			q_data.accumulate("answers", answer);
+			q_data.accumulate("correct", answer);
 		}
 		
 		q_data.accumulate("score", question.getScore());
@@ -464,7 +464,7 @@ public class JSONParser {
 			JSONArray newPair = new JSONArray();
 			newPair.put(pair.getStr());
 			newPair.put(pair.getBool());
-			q_data.accumulate("answers", newPair);
+			q_data.accumulate("correct", newPair);
 		}
 		
 		q_data.accumulate("score", question.getScore());
@@ -501,7 +501,7 @@ public class JSONParser {
 			newPair.put(pair.getFirst());
 			newPair.put(pair.getSecond());
 //			pairsArray.put(newPair);
-			q_data.accumulate("answers", newPair);
+			q_data.accumulate("correct", newPair);
 		}
 		
 //		q_data.accumulate("answers", pairsArray);
