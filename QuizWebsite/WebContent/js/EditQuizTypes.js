@@ -82,6 +82,8 @@ function TypeHandler (wrapper, parent, quiz_id) {
 		var jsonResponse = _parent.getMeta();
 		jsonResponse.questions = questions;
 		jsonResponse.score = total_score;
+		console.log('sending to +''/QuizWebsite/QuizServlet?quiz_id='+_quiz_id);
+		console.log(jsonResponse);
 		post_json_to_url(
 			'/QuizWebsite/QuizServlet?quiz_id='+_quiz_id,
 			jsonResponse,
