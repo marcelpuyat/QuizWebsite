@@ -101,17 +101,17 @@ public class JSONParser {
 		String type = question.getString("type");
 		
 		if (type.equals("multiple-choice")) {
-			return parseJSONIntoMultipleChoiceQuestion(question);
+			return parseJSONIntoMultipleChoiceQuestion(question.getJSONObject("data"));
 		} else if (type.equals("multiple-answer")) {
-			return parseJSONIntoMultAnswerQuestion(question);
+			return parseJSONIntoMultAnswerQuestion(question.getJSONObject("data"));
 		} else if (type.equals("picture-response")) {
-			return parseJSONIntoPictureQuestion(question);
+			return parseJSONIntoPictureQuestion(question.getJSONObject("data"));
 		} else if (type.equals("matching")) {
-			return parseJSONIntoMatchingQuestion(question);
+			return parseJSONIntoMatchingQuestion(question.getJSONObject("data"));
 		} else if (type.equals("fill-blank")) {
-			return parseJSONIntoFillBlankQuestion(question);
+			return parseJSONIntoFillBlankQuestion(question.getJSONObject("data"));
 		} else if (type.equals("single-answer")) {
-			return parseJSONIntoSingleAnswerQuestion(question);
+			return parseJSONIntoSingleAnswerQuestion(question.getJSONObject("data"));
 		}
 		
 		// Means type was wrongly formatted
