@@ -22,11 +22,12 @@ public class MultipleChoiceQuestion extends Question {
 	 * @param options List of strings
 	 * @param answer Index (as an integer)
 	 */
-	public MultipleChoiceQuestion(String questionString, ArrayList<String> options, int answer) {
+	public MultipleChoiceQuestion(String questionString, ArrayList<String> options, int answer, int score) {
 		possibleAnswers.add(String.valueOf(answer));
 		this.answer = answer;
 		this.options = options;
 		this.prompt = questionString;
+		this.score = score;
 	}
 	
 	@Override
@@ -50,7 +51,7 @@ public class MultipleChoiceQuestion extends Question {
 	 * Returns score worth
 	 */
 	public int getScore() {
-		return 1;
+		return score;
 	}
 	
 	/**

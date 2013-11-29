@@ -19,10 +19,11 @@ public class PictureQuestion extends Question {
 	 * @param answers
 	 * @param pictureURL
 	 */
-	public PictureQuestion(String questionString, HashSet<String> answers, String pictureURL) {
+	public PictureQuestion(String questionString, HashSet<String> answers, String pictureURL, int score) {
 		this.prompt = questionString;
 		this.possibleAnswers = answers;
 		this.pictureURL = pictureURL;
+		this.score = score;
 	}
 	
 	@Override
@@ -42,7 +43,7 @@ public class PictureQuestion extends Question {
 
 	@Override
 	public int getScore() {
-		return 1;
+		return score;
 	}
 
 	@Override

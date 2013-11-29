@@ -14,7 +14,7 @@ import java.util.HashSet;
 @SuppressWarnings("serial")
 public class SingleAnswerQuestion extends Question {
 
-	public SingleAnswerQuestion(String questionString, HashSet<String> answers) {
+	public SingleAnswerQuestion(String questionString, HashSet<String> answers, int score) {
 		this.prompt = questionString;
 		this.possibleAnswers = answers;
 	}
@@ -36,7 +36,7 @@ public class SingleAnswerQuestion extends Question {
 
 	@Override
 	public int getScore() {
-		return 1; // CAN BE EXTENDED TO SUPPORT DIFFERENT SCORES
+		return score;
 	}
 
 	@Override

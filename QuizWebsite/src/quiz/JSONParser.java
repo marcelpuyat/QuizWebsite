@@ -121,12 +121,13 @@ public class JSONParser {
 	private static Question parseJSONIntoSingleAnswerQuestion(
 			JSONObject question) {
 		String prompt = question.getString("prompt");
+		int score = question.getInt("score");
 		JSONArray answers = question.getJSONArray("answers");
 		HashSet<String> possibleAnswers = new HashSet<String>();
 		for (int i = 0; i < answers.length(); i++) {
 			possibleAnswers.add(answers.getString(i));
 		}
-		return new SingleAnswerQuestion(prompt, possibleAnswers);
+		return new SingleAnswerQuestion(prompt, possibleAnswers, score);
 	}
 
 	private static Question parseJSONIntoFillBlankQuestion(JSONObject question) {
@@ -160,12 +161,13 @@ public class JSONParser {
 	private static Question parseJSONIntoPictureQuestion(JSONObject question) {
 		String prompt = question.getString("prompt");
 		String imgUrl = question.getString("img_url");
+		int score = question.getInt("score");
 		JSONArray answers = question.getJSONArray("answers");
 		HashSet<String> possibleAnswers = new HashSet<String>();
 		for (int i = 0; i < answers.length(); i++) {
 			possibleAnswers.add(answers.getString(i));
 		}
-		return new PictureQuestion(prompt, possibleAnswers, imgUrl);
+		return new PictureQuestion(prompt, possibleAnswers, imgUrl, score);
 	}
 
 	private static Question parseJSONIntoMultAnswerQuestion(JSONObject question) {
@@ -188,12 +190,13 @@ public class JSONParser {
 			JSONObject question) {
 		String prompt = question.getString("prompt");
 		int answerIndex = question.getInt("correct");
+		int score = question.getInt("score");
 		ArrayList<String> options = new ArrayList<String>();
 		JSONArray jSONoptions = question.getJSONArray("options");
 		for (int i = 0; i < jSONoptions.length(); i++) {
 			options.add(jSONoptions.getString(i));
 		}
-		return new MultipleChoiceQuestion(prompt, options, answerIndex);
+		return new MultipleChoiceQuestion(prompt, options, answerIndex, score);
 	}
 
 	/**
