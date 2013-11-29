@@ -48,7 +48,7 @@ function MatchingHandler (data, q_id) {
 		prompt_div.innerHTML = _data.prompt;
 		wrapper.appendChild(prompt_div);
 		
-		var options = _data.answers;
+		var options = _data.correct; // MODIFIED by Marcel (answers -> correct)
 		var options_ul = document.createElement('ul');
 		options_ul.classList.add('options','cluster','no-highlight');
 
@@ -186,8 +186,8 @@ function MatchingHandler (data, q_id) {
 			return a.sorting_index - b.sorting_index;
 		});
 		for (var i = 0; i < _capture_lis.length; i++) {
-			if (_capture_lis[i].captive && _capture_lis[i].captive.label_text == _data.answers[i][1]) score.score += per_match_score;
-			else perfect_score = false;
+			if (_capture_lis[i].captive && _capture_lis[i].captive.label_text == _data.correct[i][1]) score.score += per_match_score;
+			else perfect_score = false;												// MODIFIED by Marcel (answers -> correct)
 		};
 		if (!_data.partial_credit) score.score = perfect_score ? score.possible:0;
 		return score;
@@ -212,7 +212,7 @@ function MultipleAnswerHandler(data, q_id) {
 		prompt_div.innerHTML = _data.prompt;
 		wrapper.appendChild(prompt_div);
 		
-		var options = _data.answers;
+		var options = _data.correct; // MODIFIED by Marcel (answers -> correct)
 		var options_ul = document.createElement('ul');
 		options_ul.classList.add('options');
 		for (var i = 0; i < options.length; i++) {
@@ -255,8 +255,8 @@ function MultipleAnswerHandler(data, q_id) {
 			return a.sorting_index - b.sorting_index;
 		});
 		for (var i = 0; i < _lis.length; i++) {
-			if (_lis[i].truth_eval == _data.answers[i][1]) score.score += per_match_score;
-			else perfect_score = false;
+			if (_lis[i].truth_eval == _data.correct[i][1]) score.score += per_match_score;
+			else perfect_score = false;		// MODIFIED by Marcel (answers -> correct)
 		};
 		if (!_data.partial_credit) score.score = perfect_score ? score.possible:0;
 		return score;
@@ -331,7 +331,7 @@ function FillInBlankHandler (data, q_id) {
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
 		var user_answer = _user_input_elem.value;
-		if (_data.answers.indexOf(user_answer) != -1) {
+		if (_data.correct.indexOf(user_answer) != -1) { // MODIFIED by Marcel (answers -> correct)
 			score.score = _data.score;
 		} else {
 			score.score = 0;

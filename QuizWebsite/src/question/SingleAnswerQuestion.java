@@ -17,6 +17,7 @@ public class SingleAnswerQuestion extends Question {
 	public SingleAnswerQuestion(String questionString, HashSet<String> answers, int score) {
 		this.prompt = questionString;
 		this.possibleAnswers = answers;
+		this.score = score;
 	}
 	
 	@Override
