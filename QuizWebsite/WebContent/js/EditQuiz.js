@@ -35,20 +35,6 @@
  		};
  	}
 
- 	this.getMeta = function () {
- 		return {
- 			quiz_name:_data.quiz_name||"",
- 			description:_data.description||"",
- 			creator:_data.creator||"",
- 			max_score:0,
- 			is_immediately_corrected: _data.is_immediately_corrected || true,
- 			is_multiple_page:_data.is_multiple_page || true,
- 			is_randomized:_data.is_randomized || true,
- 			is_practicable:_data.is_practicable || true,
- 			tags:_data.tags || []
- 		}
- 	}
-
  	function get_divider () {
  		var li = document.createElement('li');
  		li.classList.add('transition-medium','divider-li');
