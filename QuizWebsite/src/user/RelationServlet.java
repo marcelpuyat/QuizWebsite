@@ -31,23 +31,16 @@ public class RelationServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// THIS IS ONLY A TEST. DOES NOT SERVE ANY PURPOSE
 		ServletContext context = getServletContext(); 
 		SelfRefreshingConnection databaseConnection = (SelfRefreshingConnection)context.getAttribute("database_connection");
 		
-		User marcel = new User(49, databaseConnection);
-		User joe = new User(53, databaseConnection);
-		
-		Relation.unblockOrDelete(marcel, joe, databaseConnection, true);
-		
-		ArrayList<User> friends = Relation.getAllFriends(marcel, databaseConnection);
-		for (User friend : friends) {
-			try {
-				System.out.println(friend.getUserName());
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		if (request.getParameter("user_id") != null) {
+			User user = new User(request.getParameter("user_id"), databaseConnection);
+			// TODO process GET request 2 from spec
+		} else {
+			User userA = new User(request.getParameter("user_a_id"), databaseConnection);
+			User userB = new User(request.getParameter("user_b_id"), databaseConnection);
+			// TODO process GET request 1 from spec
 		}
 	}
 
@@ -55,10 +48,27 @@ public class RelationServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// NOT YET IMPLEMENTED
 		ServletContext context = getServletContext(); 
 		SelfRefreshingConnection databaseConnection = (SelfRefreshingConnection)context.getAttribute("database_connection");
 		
+		User userA = new User(request.getParameter("user_a_id"), databaseConnection);
+		User userB = new User(request.getParameter("user_b_id"), databaseConnection);
+		String status = request.getParameter("status");
+		if (status.equals(RelationConstants.FRIEND_REQUESTED)) {
+			// TODO Process POST 1 from spec
+		} 
+		else if (status.equals(RelationConstants.IS_FRIEND)) {
+			// TODO Process POST 2 from spec
+		} 
+		else if (status.equals(RelationConstants.BLOCKED)) {
+			// TODO Process POST 3 from spec
+		}
+		else if (status.equals("UNBLK")) {
+			// TODO Process POST 4 from spec
+		} 
+		else/* if (status.equals("DELETE"))*/ {
+			// TODO Process POST 5 from speec
+		}
 		
 	}
 
