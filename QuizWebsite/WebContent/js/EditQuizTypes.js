@@ -125,7 +125,7 @@ function MetaHandler (parent) {
 		_title.contentEditable = true;
 		_title.addEventListener('keydown',no_enter);
 		_title.addEventListener('keyup',_parent.postData);
-		_title.classList.add('lighter');
+		_title.classList.add('lighter','editable');
 		title_li.appendChild(_title);
 		ul.appendChild(title_li);
 
@@ -140,7 +140,7 @@ function MetaHandler (parent) {
 		_description.contentEditable = true;
 		_description.addEventListener('keydown',no_enter);
 		_description.addEventListener('keyup',_parent.postData);
-		_description.classList.add('faint');
+		_description.classList.add('faint','editable');
 		description_li.appendChild(_description);
 		ul.appendChild(description_li);
 

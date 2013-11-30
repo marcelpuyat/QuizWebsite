@@ -40,6 +40,11 @@
 	border-radius: 10px;
 }
 
+.editable:hover {
+	opacity:0.60;
+	filter:Alpha(opacity=060); /* IE8 and earlier */
+}
+
 .gap {
 	padding: 10px 0px;
 }

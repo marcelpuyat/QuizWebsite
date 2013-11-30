@@ -256,7 +256,7 @@ public class JSONParser {
 		
 		try {
 			if (user != null) {
-				isEditable = user.getUserName().equals(quizInfo.getUsernameOfCreator());
+				isEditable = (user.getUserName().equals(quizInfo.getUsernameOfCreator()) || user.isAdmin());
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
