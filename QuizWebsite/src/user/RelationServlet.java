@@ -63,10 +63,10 @@ public class RelationServlet extends HttpServlet {
 		else if (status.equals(RelationConstants.BLOCKED)) {
 			// TODO Process POST 3 from spec
 		}
-		else if (status.equals("UNBLK")) {
+		else if (status.equals(RelationConstants.UNBLOCK)) {
 			// TODO Process POST 4 from spec
 		} 
-		else/* if (status.equals("DELETE"))*/ {
+		else/* if (status.equals(RelationConstants.DELETE_FRIEND))*/ {
 			// TODO Process POST 5 from speec
 		}
 		
