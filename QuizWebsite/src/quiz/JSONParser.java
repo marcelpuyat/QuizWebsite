@@ -462,7 +462,7 @@ public class JSONParser {
 			JSONArray newPair = new JSONArray();
 			newPair.put(pair.getStr());
 			newPair.put(pair.getBool());
-			q_data.accumulate("correct", newPair);
+			q_data.append("correct", newPair);
 		}
 		
 		q_data.accumulate("score", question.getScore());
@@ -499,7 +499,7 @@ public class JSONParser {
 			newPair.put(pair.getFirst());
 			newPair.put(pair.getSecond());
 //			pairsArray.put(newPair);
-			q_data.accumulate("correct", newPair);
+			q_data.append("correct", newPair);
 		}
 		
 //		q_data.accumulate("answers", pairsArray);
