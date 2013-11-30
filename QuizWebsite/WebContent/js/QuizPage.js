@@ -116,6 +116,12 @@ function init_js (quiz_id) {
 function delete_quiz (quiz_id) {
 	var should_delete = window.confirm('Are you sure you want to delete this?');
 	if (should_delete) {
-		console.log('delete');
+		post_json_to_url(
+			'/QuizWebsite/QuizServlet?quiz_id='+quiz_id+'&action=delete',
+			{},
+			function () {
+				
+			}
+		);
 	}
 }

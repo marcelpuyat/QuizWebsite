@@ -1,6 +1,7 @@
 package quiz;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
@@ -83,8 +84,20 @@ public class QuizServlet extends HttpServlet {
 		// DELETE QUIZ
 		if (action != null) {
 			if (action.equals("delete")) {
+				JSONObject deleteResponse = new JSONObject();
 				int quiz_id = Integer.parseInt(quiz_id_string);
-				Quiz.deleteQuiz(quiz_id, con);
+				try {
+					Quiz.deleteQuiz(quiz_id, con);
+					deleteResponse.accumulate("status", "success");
+					response.getWriter().println(deleteResponse.toString());
+					return;
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+				deleteResponse.accumulate("status", "failed");
+				response.getWriter().println(deleteResponse.toString());
 				return;
 			}
 		}
