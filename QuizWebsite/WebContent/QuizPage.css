@@ -1,18 +1,16 @@
 @CHARSET "UTF-8";
-.game-button {
+.game-button > a {
 	border:2px solid rgb(109, 153, 172);
 	border-radius: 5px;
 	padding: 10px;
 	background-color: rgba(109, 153, 172,0.8);
-}
 
-.game-button:hover {
-	background-color: rgba(109, 153, 172,0.6);
-}
-
-.game-button > a {
 	color: white;
 	text-decoration: none;
+}
+
+.game-button > a:hover {
+	background-color: rgba(109, 153, 172,0.6);
 }
 
 ul {
