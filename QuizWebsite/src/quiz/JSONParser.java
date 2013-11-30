@@ -356,7 +356,7 @@ public class JSONParser {
 		q_data.accumulate("second_prompt", question.getSecondPrompt());
 				
 		for (String answer : question.getPossibleAnswers()) {
-			q_data.accumulate("correct", answer);
+			q_data.append("correct", answer);
 		}
 		
 		q_data.accumulate("score", question.getScore());
