@@ -224,7 +224,6 @@ function MultipleChoiceHandler (parent, type) {
 		return {answers:answers, checked:checked};
 	}
 	function get_choice (value, checked, disabled) {
-		console.log(value);
 		value = value || "";
 		var li = document.createElement('li');
 		li.classList.add('multiple-choice-li-'+_id);
@@ -384,7 +383,6 @@ function MultipleAnswerHandler (parent, type) {
 		return {answers:answers};
 	}
 	function get_choice (value, checked, disabled) {
-		console.log(value);
 		value = value || "";
 		var li = document.createElement('li');
 		li.classList.add('multiple-choice-li-'+_id);
@@ -563,7 +561,6 @@ function PictureResponseHandler (parent, type) {
 		return {correct:correct};
 	}
 	function get_choice (value) {
-		console.log(value);
 		value = value || "";
 		var li = document.createElement('li');
 		li.classList.add('multiple-choice-li-'+_id);
@@ -901,7 +898,6 @@ function FillInBlankHandler (parent, type) {
 		return {correct:correct};
 	}
 	function get_choice (value) {
-		console.log(value);
 		value = value || "";
 		var li = document.createElement('li');
 		li.classList.add('multiple-choice-li-'+_id);
@@ -1014,9 +1010,11 @@ function SingleAnswerHandler (parent, type) {
 		var ansObj = get_correct();
 		return {
 			type:_type.json_name,
-			prompt:_prompt.value,
-			correct:ansObj.correct,
-			score:parseInt(_score_input.value)
+			data: {
+				prompt:_prompt.value,
+				correct:ansObj.correct,
+				score:parseInt(_score_input.value)
+			}
 		};
 	};
 	function append_blank_option (ul) {
@@ -1041,7 +1039,6 @@ function SingleAnswerHandler (parent, type) {
 		return {correct:correct};
 	}
 	function get_choice (value) {
-		console.log(value);
 		value = value || "";
 		var li = document.createElement('li');
 		li.classList.add('multiple-choice-li-'+_id);
