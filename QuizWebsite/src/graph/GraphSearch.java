@@ -28,7 +28,7 @@ public class GraphSearch {
 				int id = rs.getInt("id");
 				entry.accumulate("id", id);
 				entry.accumulate("type", "QUIZ");
-				entry.accumulate("url", "/QuizWebsite/Quiz.jsp?quiz_id="+id);
+				entry.accumulate("url", "/QuizWebsite/QuizPage.jsp?quiz_id="+id);
 				results.append("results", entry);
 				reapedQuizzes.add(id);
 				quizes_reaped++;
@@ -43,7 +43,7 @@ public class GraphSearch {
 						entry.accumulate("id", id);
 						entry.accumulate("name", rs.getString("name"));
 						entry.accumulate("type", "QUIZ");
-						entry.accumulate("url", "/QuizWebsite/Quiz.jsp?quiz_id="+id);
+						entry.accumulate("url", "/QuizWebsite/QuizPage.jsp?quiz_id="+id);
 						results.append("results", entry);
 						reapedQuizzes.add(id);
 					}
@@ -63,7 +63,7 @@ public class GraphSearch {
 						entry.accumulate("id", id);
 						entry.accumulate("name", rs2.getString("name"));
 						entry.accumulate("type", "QUIZ");
-						entry.accumulate("url", "/QuizWebsite/Quiz.jsp?quiz_id="+id);
+						entry.accumulate("url", "/QuizWebsite/QuizPage.jsp?quiz_id="+id);
 						results.append("results", entry);
 						reapedQuizzes.add(id);
 					}

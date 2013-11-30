@@ -3,10 +3,10 @@
  */
 var wrapper_elem = document.getElementById('quiz-prompt-content');
 var ui_handler;
-function init_js(quiz_id) {
+function init_js(quiz_id, is_practice) {
 	resize_app();
 	window.onresize = resize_app;
-	ui_handler = new UIHandler(new QuizHandler(quiz_id, "/QuizWebsite/QuizServlet","/QuizWebsite/QuizResultsServlet"),
+	ui_handler = new UIHandler(new QuizHandler(quiz_id, "/QuizWebsite/QuizServlet","/QuizWebsite/QuizResultsServlet", is_practice),
 						document.getElementById('quiz-cards-wrapper'));
 	ui_handler.run();
 }

@@ -9,7 +9,7 @@
  *     
  */
 
-function QuizHandler(quiz_id, load_url, post_url) {
+function QuizHandler(quiz_id, load_url, post_url, is_practice) {
 	/* init vars */
 	var _questions = [];
 	var _data;
@@ -24,6 +24,7 @@ function QuizHandler(quiz_id, load_url, post_url) {
 	var _next_callbacks_live  = true;
 	var _quiz_timer = new Timer(10);
 	var _is_practice_quiz = false;
+	var _is_practice = is_practice;
 	
 	
 	/* public methods */
