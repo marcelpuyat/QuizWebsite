@@ -253,16 +253,19 @@ public class JSONParser {
 		jSONinfo.put("is_practicable", quizInfo.isPracticable());
 		
 		boolean isEditable = false;
+		boolean isDeletable = false;
 		
 		try {
 			if (user != null) {
-				isEditable = (user.getUserName().equals(quizInfo.getUsernameOfCreator()) || user.isAdmin());
+				isEditable = user.getUserName().equals(quizInfo.getUsernameOfCreator());
+				isDeletable = isEditable || user.isAdmin();
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	
 		jSONinfo.put("is_editable", isEditable);
+		jSONinfo.put("is_deletable", isDeletable);
 		
 		return jSONinfo;
 	}

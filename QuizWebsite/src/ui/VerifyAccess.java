@@ -41,9 +41,8 @@ public class VerifyAccess {
 			Quiz quiz = new Quiz(id, databaseConnection);
 			
 			User u = (User)session.getAttribute("user");
-			if (u == null) return;
-			if (u.isAdmin()) {
-				return;
+			if (u == null) {
+				response.sendRedirect("/QuizWebsite/Login.jsp");
 			}
 			if(quiz.getCreator().equals(u.getUserName())){
 				return;
