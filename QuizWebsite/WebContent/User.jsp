@@ -39,7 +39,6 @@
 	<div id="content-wrapper">
 		<%= HTMLTemplater.getBlueBar(session)  %>
 	</div>
-	<script src="/QuizWebsite/js/AJAXUtil.js" type="text/javascript"></script>
-	<script src="/QuizWebsite/js/Graph.js" type="text/javascript"></script>
+	<%= HTMLTemplater.getGeneralJS() %>
 </body>
 </html>

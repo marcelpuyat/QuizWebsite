@@ -24,7 +24,6 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice) {
 	var _next_callbacks_live  = true;
 	var _quiz_timer = new Timer(10);
 	var _is_practice_quiz = is_practice;
-	console.log('is_practice: '+_is_practice_quiz);
 	
 	
 	/* public methods */
@@ -82,7 +81,6 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice) {
 			} else {
 				_iterator++;
 			}
-			console.log('next:: '+_iterator);
 			var next_elem = _questions[_iterator].getDOMSubStructure();
 			return next_elem;
 		}

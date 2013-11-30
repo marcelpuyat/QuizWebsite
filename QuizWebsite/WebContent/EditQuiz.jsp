@@ -27,8 +27,7 @@
 			</ul>
 		</div>
 	</div>
-	<script src="/QuizWebsite/js/AJAXUtil.js" type="text/javascript"></script>
-	<script src="/QuizWebsite/js/Graph.js" type="text/javascript"></script>
+	<%= HTMLTemplater.getGeneralJS() %>
 	<script src="/QuizWebsite/js/EditQuiz.js" type="text/javascript"></script>
 	<script src="/QuizWebsite/js/EditQuizTypes.js" type="text/javascript"></script>
 </body>

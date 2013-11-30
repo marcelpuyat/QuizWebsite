@@ -39,8 +39,7 @@
 			</ul>
 		</div>
 	</div>
-	<script src="/QuizWebsite/js/AJAXUtil.js" type="text/javascript"></script>
-	<script src="/QuizWebsite/js/Graph.js" type="text/javascript"></script>
+	<%= HTMLTemplater.getGeneralJS() %>
 	<script src="/QuizWebsite/js/Login.js" type="text/javascript"></script>
 </body>
 </html>

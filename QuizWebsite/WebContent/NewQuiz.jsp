@@ -33,8 +33,7 @@
 			<li><input type="button" value="create" onclick="post_new_quiz('<%= getUsername(session) %>')"></li>
 		</ul>
 	</div>
-	<script src="/QuizWebsite/js/AJAXUtil.js" type="text/javascript"></script>
-	<script src="/QuizWebsite/js/Graph.js" type="text/javascript"></script>
+	<%= HTMLTemplater.getGeneralJS() %>
 	<script src="/QuizWebsite/js/NewQuiz.js" type="text/javascript"></script>
 </body>
 </html>

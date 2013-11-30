@@ -26,7 +26,6 @@
 			<div class="right side-panel panel" id="right-content-panel"></div>
 		</div>
 	</div>
-	<script src="/QuizWebsite/js/AJAXUtil.js" type="text/javascript"></script>
-	<script src="/QuizWebsite/js/Graph.js" type="text/javascript"></script>
+	<%= HTMLTemplater.getGeneralJS() %>
 </body>
 </html>

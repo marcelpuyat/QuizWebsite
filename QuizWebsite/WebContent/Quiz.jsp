@@ -32,8 +32,7 @@
 			</div>
 		</div>
 	</div>
-	<script src="/QuizWebsite/js/AJAXUtil.js" type="text/javascript"></script>
-	<script src="/QuizWebsite/js/Graph.js" type="text/javascript"></script>
+	<%= HTMLTemplater.getGeneralJS() %>
 	<script src="/QuizWebsite/js/QuestionTypes.js" type="text/javascript"></script>
 	<script src="/QuizWebsite/js/QuizHandler.js" type="text/javascript"></script>
 	<script src="/QuizWebsite/js/Quiz.js" type="text/javascript"></script>

@@ -5,6 +5,12 @@ import javax.servlet.http.HttpSession;
 import user.User;
 
 public class HTMLTemplater {
+	public static String getGeneralJS() {
+		return 
+		"<script src=\"/QuizWebsite/js/AJAXUtil.js\" type=\"text/javascript\"></script>"+
+		"<script src=\"/QuizWebsite/js/Graph.js\" type=\"text/javascript\"></script>";
+	}
+	
 	public static String getBlueBar (HttpSession session) throws ClassNotFoundException {
 		User curr_user = (User)session.getAttribute("user");
 		String username = "Login";

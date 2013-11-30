@@ -25,8 +25,7 @@
 			<li><input type="button" value="update" id="last-name-button"></li>
 		</ul>
 	</div>
-	<script src="/QuizWebsite/js/AJAXUtil.js" type="text/javascript"></script>
-	<script src="/QuizWebsite/js/Graph.js" type="text/javascript"></script>
+	<%= HTMLTemplater.getGeneralJS() %>
 	<script src="/QuizWebsite/js/Settings.js" type="text/javascript"></script>
 </body>
 </html>
