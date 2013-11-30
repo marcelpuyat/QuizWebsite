@@ -219,6 +219,7 @@ function MetaHandler (parent) {
 
 		/* tags */
 		var tags_container_li = document.createElement('li');
+		tags_container_li.classList.add('gap');
 		_tags_ul = document.createElement('ul');
 		if (_data && _data.tags) {
 			var tags = _data.tags;
