@@ -19,6 +19,7 @@ function init_js (quiz_id) {
 
 		if (data.is_editable) show_edit();
 		if (data.is_practicable) show_practice();
+		if (data.is_deletable) show_delete();
 
 		append_results(data);
 
@@ -50,6 +51,11 @@ function init_js (quiz_id) {
 	function show_edit () {
 		var edit_li = document.getElementById('edit-li');
 		edit_li.classList.remove('hide');
+	}
+
+	function show_delete () {
+		var delete_li = document.getElementById('delete-li');
+		delete_li.classList.remove('hide');
 	}
 
 	function append_results (data) {
@@ -105,4 +111,11 @@ function init_js (quiz_id) {
 		return li;
 	}
 
+}
+
+function delete_quiz (quiz_id) {
+	var should_delete = window.confirm('Are you sure you want to delete this?');
+	if (should_delete) {
+		console.log('delete');
+	}
 }
