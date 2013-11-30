@@ -112,6 +112,7 @@ function MetaHandler (parent) {
 		is_randomized_elem:undefined,
 		is_practicable_elem:undefined
 	};
+	var _tags_ul;
 	this.getElem = function (data) {
 		_data = data;
 		var ul = document.createElement('ul');
@@ -148,7 +149,7 @@ function MetaHandler (parent) {
 		var settings_ul = document.createElement('ul');
 		settings_ul.classList.add('flowing','settings-ul','gap');
 
-
+		/* randomized */
 		var is_randomized_elem_li = document.createElement('li');
 		is_randomized_elem_li.classList.add('flowing');
 		var is_randomized_elem_prompt = document.createElement('span');
@@ -163,7 +164,7 @@ function MetaHandler (parent) {
 		is_randomized_elem_li.appendChild(is_randomized_elem_prompt);
 		settings_ul.appendChild(is_randomized_elem_li);
 
-
+		/* practicable */
 		var is_practicable_elem_li = document.createElement('li');
 		is_practicable_elem_li.classList.add('flowing');
 		var is_practicable_elem_prompt = document.createElement('span');
@@ -178,7 +179,7 @@ function MetaHandler (parent) {
 		is_practicable_elem_li.appendChild(is_practicable_elem_prompt);
 		settings_ul.appendChild(is_practicable_elem_li);
 
-		
+		/* correct immediately */
 		var is_immediately_corrected_elem_li = document.createElement('li');
 		is_immediately_corrected_elem_li.classList.add('flowing');
 		var is_immediately_corrected_elem_prompt = document.createElement('span');
@@ -193,7 +194,7 @@ function MetaHandler (parent) {
 		is_immediately_corrected_elem_li.appendChild(is_immediately_corrected_elem_prompt);
 		settings_ul.appendChild(is_immediately_corrected_elem_li);
 
-
+		/* multiple pages */
 		var is_multiple_page_elem_li = document.createElement('li');
 		is_multiple_page_elem_li.classList.add('flowing');
 		var is_multiple_page_elem_prompt = document.createElement('span');
@@ -208,7 +209,6 @@ function MetaHandler (parent) {
 		is_multiple_page_elem_li.appendChild(is_multiple_page_elem_prompt);
 		settings_ul.appendChild(is_multiple_page_elem_li);
 
-
 		_settings.is_immediately_corrected_elem.addEventListener('change',_parent.postData);
 		_settings.is_multiple_page_elem.addEventListener('change',_parent.postData);
 		_settings.is_randomized_elem.addEventListener('change',_parent.postData);
@@ -216,6 +216,19 @@ function MetaHandler (parent) {
 
 		settings_li.appendChild(settings_ul);
 		ul.appendChild(settings_li);
+
+		/* tags */
+		var tags_container_li = document.createElement('li');
+		_tags_ul = document.createElement('ul');
+		if (_data && _data.tags) {
+			var tags = _data.tags;
+			for (var i = 0; i < tags.length; i++) {
+				_tags_ul.appendChild(get_tag(tags[i]));
+			};
+		}
+		append_blank_tag(_tags_ul);
+		tags_container_li.appendChild(_tags_ul);
+		ul.appendChild(tags_container_li);
 
 		return ul;
 	}
@@ -229,7 +242,7 @@ function MetaHandler (parent) {
  			is_multiple_page:_settings.is_multiple_page_elem.checked,
  			is_randomized:_settings.is_randomized_elem.checked,
  			is_practicable:_settings.is_practicable_elem.checked,
- 			tags:_data.tags || []
+ 			tags:get_tags()
  		}
 	}
 
@@ -239,6 +252,42 @@ function MetaHandler (parent) {
 			if (e.preventDefault) { e.preventDefault(); } // stops the browser from redirecting off to the image.
 			return false;
 		}
+	}
+
+	function append_blank_tag (ul) {
+		var li = get_tag("");
+		li.ul = ul;
+		li.addEventListener('keyup', new_tag_keyup_handler);
+		ul.appendChild(li);
+	}
+	function new_tag_keyup_handler () {
+		this.removeEventListener('keyup',new_tag_keyup_handler);
+		append_blank_tag(this.ul);
+	}
+
+	function get_tag (value) {
+		value = value || "";
+		var li = document.createElement('li');
+		li.classList.add('flowing');
+
+		var text = document.createElement('input');
+		text.type = 'text';
+		text.value = value;
+
+		li.text = text;
+
+		text.addEventListener('keyup',_parent.postData);
+
+		li.appendChild(text);
+		return li;
+	}
+	function get_tags () {
+		var children = _tags_ul.children;
+		var tags = [];
+		for (var i = 0; i < children.length; i++) {
+			if (children[i].text && children[i].text.value && children[i].text.value != "") tags.push(children[i].text.value);
+		};
+		return tags;
 	}
 }
 
