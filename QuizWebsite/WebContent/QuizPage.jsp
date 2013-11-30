@@ -31,7 +31,7 @@
 				</li>
 				<li class="center">
 					<ul>
-						<li id="delete-li" class="flowing hide game-button">
+						<li id="delete-li" class="flowing hide game-button red">
 							<a href="javascript:delete_quiz(<%= getQuizID(request) %>)">Delete</a>
 						</li>
 						<li id="practice-li" class="flowing hide game-button">

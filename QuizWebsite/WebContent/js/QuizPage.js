@@ -107,7 +107,13 @@ function init_js (quiz_id) {
 
 	function create_score_display (data) {
 		var li = document.createElement('li');
-		li.innerHTML = (100* data.score).toFixed(2) + ' ' + data.name;
+		var score = document.createElement('span');
+		score.innerHTML = (100* data.score).toFixed(2) + ' ';
+		var username = document.createElement('a');
+		username.innerHTML = data.name;
+		username.href = '/QuizWebsite/User.jsp?username='+data.name;
+		li.appendChild(score);
+		li.appendChild(username);
 		return li;
 	}
 
