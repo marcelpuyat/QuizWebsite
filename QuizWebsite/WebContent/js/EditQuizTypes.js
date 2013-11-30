@@ -148,41 +148,11 @@ function MetaHandler (parent) {
 		var settings_ul = document.createElement('ul');
 		settings_ul.classList.add('flowing','settings-ul','gap');
 
-		
-		var is_immediately_corrected_elem_li = document.createElement('li');
-		is_immediately_corrected_elem_li.classList.add('flowing');
-		var is_immediately_corrected_elem_prompt = document.createElement('span');
-		is_immediately_corrected_elem_prompt.innerHTML = 'is immediately corrected';
-		_settings.is_immediately_corrected_elem = document.createElement('input');
-		_settings.is_immediately_corrected_elem.classList.add('flowing');
-		_settings.is_immediately_corrected_elem.type = 'checkbox';
-		var imediate = true;
-		if (data && data.is_immediately_corrected != undefined) imediate = data.is_immediately_corrected;
-		_settings.is_immediately_corrected_elem.checked = imediate;
-		is_immediately_corrected_elem_li.appendChild(_settings.is_immediately_corrected_elem);
-		is_immediately_corrected_elem_li.appendChild(is_immediately_corrected_elem_prompt);
-		settings_ul.appendChild(is_immediately_corrected_elem_li);
-
-
-		var is_multiple_page_elem_li = document.createElement('li');
-		is_multiple_page_elem_li.classList.add('flowing');
-		var is_multiple_page_elem_prompt = document.createElement('span');
-		is_multiple_page_elem_prompt.innerHTML = 'is multiple page';
-		_settings.is_multiple_page_elem = document.createElement('input');
-		_settings.is_multiple_page_elem.classList.add('flowing');
-		_settings.is_multiple_page_elem.type = 'checkbox';
-		var multi = true;
-		if (data && data.is_multiple_page != undefined) multi = data.is_multiple_page;
-		_settings.is_multiple_page_elem.checked = multi;
-		is_multiple_page_elem_li.appendChild(_settings.is_multiple_page_elem);
-		is_multiple_page_elem_li.appendChild(is_multiple_page_elem_prompt);
-		settings_ul.appendChild(is_multiple_page_elem_li);
-
 
 		var is_randomized_elem_li = document.createElement('li');
 		is_randomized_elem_li.classList.add('flowing');
 		var is_randomized_elem_prompt = document.createElement('span');
-		is_randomized_elem_prompt.innerHTML = 'is randomized';
+		is_randomized_elem_prompt.innerHTML = 'randomize';
 		_settings.is_randomized_elem = document.createElement('input');
 		_settings.is_randomized_elem.classList.add('flowing');
 		_settings.is_randomized_elem.type = 'checkbox';
@@ -197,7 +167,7 @@ function MetaHandler (parent) {
 		var is_practicable_elem_li = document.createElement('li');
 		is_practicable_elem_li.classList.add('flowing');
 		var is_practicable_elem_prompt = document.createElement('span');
-		is_practicable_elem_prompt.innerHTML = 'is practicable';
+		is_practicable_elem_prompt.innerHTML = 'allow practicing';
 		_settings.is_practicable_elem = document.createElement('input');
 		_settings.is_practicable_elem.classList.add('flowing');
 		_settings.is_practicable_elem.type = 'checkbox';
@@ -207,6 +177,36 @@ function MetaHandler (parent) {
 		is_practicable_elem_li.appendChild(_settings.is_practicable_elem);
 		is_practicable_elem_li.appendChild(is_practicable_elem_prompt);
 		settings_ul.appendChild(is_practicable_elem_li);
+
+		
+		var is_immediately_corrected_elem_li = document.createElement('li');
+		is_immediately_corrected_elem_li.classList.add('flowing');
+		var is_immediately_corrected_elem_prompt = document.createElement('span');
+		is_immediately_corrected_elem_prompt.innerHTML = 'correct immediately';
+		_settings.is_immediately_corrected_elem = document.createElement('input');
+		_settings.is_immediately_corrected_elem.classList.add('flowing');
+		_settings.is_immediately_corrected_elem.type = 'checkbox';
+		var imediate = true;
+		if (data && data.is_immediately_corrected != undefined) imediate = data.is_immediately_corrected;
+		_settings.is_immediately_corrected_elem.checked = imediate;
+		is_immediately_corrected_elem_li.appendChild(_settings.is_immediately_corrected_elem);
+		is_immediately_corrected_elem_li.appendChild(is_immediately_corrected_elem_prompt);
+		settings_ul.appendChild(is_immediately_corrected_elem_li);
+
+
+		var is_multiple_page_elem_li = document.createElement('li');
+		is_multiple_page_elem_li.classList.add('flowing');
+		var is_multiple_page_elem_prompt = document.createElement('span');
+		is_multiple_page_elem_prompt.innerHTML = 'show on multiple pages';
+		_settings.is_multiple_page_elem = document.createElement('input');
+		_settings.is_multiple_page_elem.classList.add('flowing');
+		_settings.is_multiple_page_elem.type = 'checkbox';
+		var multi = true;
+		if (data && data.is_multiple_page != undefined) multi = data.is_multiple_page;
+		_settings.is_multiple_page_elem.checked = multi;
+		is_multiple_page_elem_li.appendChild(_settings.is_multiple_page_elem);
+		is_multiple_page_elem_li.appendChild(is_multiple_page_elem_prompt);
+		settings_ul.appendChild(is_multiple_page_elem_li);
 
 
 		_settings.is_immediately_corrected_elem.addEventListener('change',_parent.postData);
