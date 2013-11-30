@@ -34,10 +34,6 @@
 	font-size: 16px;
 	color: rgba(0,0,0,0.3);
 }
-
-.flowing {
-	display: inline-block;
-}
 .settings-ul {
 	width: 400px;
 	border: 1px solid rgba(0,0,0,0.1);

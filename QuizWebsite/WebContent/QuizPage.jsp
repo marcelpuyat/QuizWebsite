@@ -21,19 +21,45 @@
 <body onload="init_js('<%= getQuizID(request) %>')">
 	<div id="content-wrapper">
 		<%= HTMLTemplater.getBlueBar(session)  %>
-		<div id="QuizPage-wrapper" class="page-width wide center-block">
+		<div id="QuizPage-wrapper" class="page-width wide center-block hide">
 			<ul>
-				<li>
-					<h1 id="quiz-name"></h1><span class="faint">by<span id="quiz-creator"></span></span>
+				<li class="center">
+					<h1 id="quiz-name" class="center flowing"></h1><span class="faint">by <span id="quiz-creator"></span></span>
+				</li>
+				<li class="center">
+					<h3 id="quiz-description" class="lighter faint"></h3>
+				</li>
+				<li class="center">
+					<ul>
+						<li id="practice-li" class="flowing hide game-button">
+							<a href="/QuizWebsite/Quiz.jsp?quiz_id=<%= getQuizID(request) %>&practice=true">Practice</a>
+						</li>
+						<li id="play-li" class="flowing game-button">
+							<a href="/QuizWebsite/Quiz.jsp?quiz_id=<%= getQuizID(request) %>&practice=false">Play</a>
+						</li>
+						<li id="edit-li" class="flowing hide game-button">
+							<a href="/QuizWebsite/EditQuiz.jsp?quiz_id=<%= getQuizID(request) %>">Edit</a>
+						</li>
+					</ul>
 				</li>
 				<li>
-					<h3 id="quiz-description" class="lighter faint"></h3>
+					<ul id="score-holder">
+						<li class="flowing score-container">
+							<ul id="user-history"></ul>
+						</li>
+						<li class="flowing score-container">
+							<ul id="best-alltime"></ul>
+						</li>
+						<li class="flowing score-container">
+							<ul id="best-today"></ul>
+						</li>
+						<li class="flowing score-container">
+							<ul id="recent-scores"></ul>
+						</li>
+					</ul>
 				</li>
 			</ul>
 		</div>
-		<a href="/QuizWebsite/Quiz.jsp?quiz_id=<%= getQuizID(request) %>&practice=false">Take the quiz</a>
-		<a href="/QuizWebsite/Quiz.jsp?quiz_id=<%= getQuizID(request) %>&practice=true">Practice</a>
-		<a href="/QuizWebsite/EditQuiz.jsp?quiz_id=<%= getQuizID(request) %>">Edit</a>
 	</div>
 	<script src="/QuizWebsite/js/AJAXUtil.js" type="text/javascript"></script>
 	<script src="/QuizWebsite/js/Graph.js" type="text/javascript"></script>

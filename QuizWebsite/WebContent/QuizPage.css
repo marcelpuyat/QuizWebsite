@@ -1,1 +1,32 @@
 @CHARSET "UTF-8";
+.game-button {
+	border:2px solid rgb(109, 153, 172);
+	border-radius: 5px;
+	padding: 10px;
+	background-color: rgba(109, 153, 172,0.8);
+}
+
+.game-button:hover {
+	background-color: rgba(109, 153, 172,0.6);
+}
+
+.game-button > a {
+	color: white;
+	text-decoration: none;
+}
+
+ul {
+	padding: 0;
+}
+
+.score-container {
+	width: 24%;
+	display: inline-block;
+	background-color: lightblue;
+	vertical-align: top;
+}
+
+
+	#score-holder {
+		padding: 20px 0px;
+	}
