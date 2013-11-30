@@ -39,6 +39,7 @@ function init_js (quiz_id) {
 	function set_creator (creator) {
 		var creator_elem = document.getElementById('quiz-creator');
 		creator_elem.innerHTML = creator;
+		creator_elem.href = '/QuizWebsite/User.jsp?username='+creator;
 	}
 
 	function show_practice () {

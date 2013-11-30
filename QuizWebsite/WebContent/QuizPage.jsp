@@ -24,7 +24,7 @@
 		<div id="QuizPage-wrapper" class="page-width wide center-block hide">
 			<ul>
 				<li class="center">
-					<h1 id="quiz-name" class="center flowing"></h1><span class="faint">by <span id="quiz-creator"></span></span>
+					<h1 id="quiz-name" class="center flowing"></h1><span class="faint">by <a id="quiz-creator" href="#"></a></span>
 				</li>
 				<li class="center">
 					<h3 id="quiz-description" class="lighter faint"></h3>
