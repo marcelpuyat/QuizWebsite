@@ -35,6 +35,10 @@
 	color: rgba(0,0,0,0.3);
 }
 
+ul.flowing {
+	display: inline-block;
+}
+
 .question-section {
 	padding: 20px 0px;
 }

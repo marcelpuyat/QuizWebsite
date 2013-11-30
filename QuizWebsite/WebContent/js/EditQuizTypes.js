@@ -16,6 +16,12 @@ function TypeHandler (wrapper, parent, quiz_id) {
 	var _this = this;
 	var _parent = parent;
 	var _quiz_id = quiz_id;
+	var _header;
+
+	this.getHeader = function (data) {
+		_header = new MetaHandler(this);
+		return _header.getElem(data);
+	}
 
  	this.getSelector = function () {
  		var wrapper = document.createElement('div');
@@ -79,7 +85,7 @@ function TypeHandler (wrapper, parent, quiz_id) {
 				total_score+=parseInt(q_reap.data.score);
 			}
 		};
-		var jsonResponse = _parent.getMeta();
+		var jsonResponse = _header.reap();
 		jsonResponse.questions = questions;
 		jsonResponse.max_score = total_score;
 		jsonResponse.quiz_id = parseInt(_quiz_id);
@@ -96,7 +102,120 @@ function TypeHandler (wrapper, parent, quiz_id) {
 }
 
 function MetaHandler (parent) {
-	
+	var _title;
+	var _description;
+	var _parent = parent;
+	var _data;
+	var settings = {
+		is_immediately_corrected_elem:undefined,
+		is_multiple_page_elem:undefined,
+		is_randomized_elem:undefined,
+		is_practicable_elem:undefined
+	};
+	this.getElem = function (data) {
+		_data = data;
+		var ul = document.createElement('ul');
+		ul.classList.add('login-ul','center');
+
+		/* title */
+		var title_li = document.createElement('li');
+		_title = document.createElement('h1');
+		_title.innerHTML = data.quiz_name;
+		_title.contentEditable = true;
+		_title.addEventListener('keydown',no_enter);
+		_title.addEventListener('keyup',_parent.postData);
+		_title.classList.add('lighter');
+		title_li.appendChild(_title);
+		ul.appendChild(title_li);
+
+		/* description */
+		var description_li = document.createElement('li');
+		_description = document.createElement('h4');
+		var description = data.description;
+		if (data.description == undefined || data.description == "") {
+			description = "description";
+		}
+		_description.innerHTML = description;
+		_description.contentEditable = true;
+		_description.addEventListener('keydown',no_enter);
+		_description.addEventListener('keyup',_parent.postData);
+		_description.classList.add('faint');
+		description_li.appendChild(_description);
+		ul.appendChild(description_li);
+
+		/* settings */
+		var settings_li = document.createElement('li');
+		var settings_ul = document.createElement('ul');
+		settings_ul.classList.add('flowing');
+
+		//
+		// var is_immediately_corrected_elem_li = document.createElement('li');
+		// var is_immediately_corrected_elem_prompt = document.createElement('span');
+		// is_immediately_corrected_elem_prompt.innerHTML = 'is_immediately_corrected';
+		// settings.is_immediately_corrected_elem = document.createElement('input');
+		// settings.is_immediately_corrected_elem.type = 'checkbox';
+		// is_immediately_corrected_elem_li.appendChild(is_immediately_corrected_elem_prompt);
+		// is_immediately_corrected_elem_li.appendChild(settings.is_immediately_corrected_elem);
+		// settings_ul.appendChild(is_immediately_corrected_elem_li);
+
+
+		// var is_multiple_page_elem_li = document.createElement('li');
+		// var is_multiple_page_elem_prompt = document.createElement('span');
+		// is_multiple_page_elem_prompt.innerHTML = 'is_multiple_page';
+		// settings.is_multiple_page_elem = document.createElement('input');
+		// settings.is_multiple_page_elem.type = 'checkbox';
+		// is_multiple_page_elem_li.appendChild(is_multiple_page_elem_prompt);
+		// is_multiple_page_elem_li.appendChild(settings.is_multiple_page_elem);
+		// settings_ul.appendChild(is_multiple_page_elem_li);
+
+
+		// var is_randomized_elem_li = document.createElement('li');
+		// var is_randomized_elem_prompt = document.createElement('span');
+		// is_randomized_elem_prompt.innerHTML = 'is_randomized';
+		// settings.is_randomized_elem = document.createElement('input');
+		// settings.is_randomized_elem.type = 'checkbox';
+		// is_randomized_elem_li.appendChild(is_randomized_elem_prompt);
+		// is_randomized_elem_li.appendChild(settings.is_randomized_elem);
+		// settings_ul.appendChild(is_randomized_elem_li);
+
+
+		var is_practicable_elem_li = document.createElement('li');
+		// var is_practicable_elem_prompt = document.createElement('span');
+		// is_practicable_elem.innerHTML = 'is_practicable';
+		// settings.is_practicable_elem = document.createElement('input');
+		// settings.is_practicable_elem.type = 'checkbox';
+		// is_practicable_elem_li.appendChild(is_practicable_elem_prompt);
+		// is_practicable_elem_li.appendChild(settings.is_practicable_elem);
+		settings_ul.appendChild(is_practicable_elem_li);
+
+
+
+		settings_li.appendChild(settings_ul);
+		ul.appendChild(settings_li);
+
+		return ul;
+	}
+	this.reap = function () {
+		return {
+ 			quiz_name:_title.innerHTML||"",
+ 			description:_description.innerHTML||"",
+ 			creator:_data.creator||"",
+ 			max_score:0,
+ 			is_immediately_corrected: _data.is_immediately_corrected || true,
+ 			is_multiple_page:_data.is_multiple_page || true,
+ 			is_randomized:_data.is_randomized || true,
+ 			is_practicable:_data.is_practicable || true,
+ 			tags:_data.tags || []
+ 		}
+	}
+
+	function no_enter (e) {
+		if (e.keyCode == 13) {//stop enter
+			e = e || window.event; // get window.event if e argument missing (in IE)
+			if (e.preventDefault) { e.preventDefault(); } // stops the browser from redirecting off to the image.
+			return false;
+		}
+	}
 }
 
 function MultipleChoiceHandler (parent, type) {

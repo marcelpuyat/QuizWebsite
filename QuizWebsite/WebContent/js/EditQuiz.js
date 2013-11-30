@@ -27,6 +27,7 @@
  		console.log('data::');
  		console.log(data);
  		var questions = data.questions;
+ 		_wrapper.appendChild(_th.getHeader(data));
  		_wrapper.appendChild(get_divider());
  		for (var i = 0; i < questions.length; i++) {
  			_wrapper.appendChild(new_elem(questions[i]));
