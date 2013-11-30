@@ -38,7 +38,7 @@ function GraphHandler (graph_search_bar, graph_search_ul, graph_url) {
 				_graph_search_ul.appendChild(
 					get_display_li(
 						{href:results[i].url,
-						text:format_result(query, results[i].name),
+						text:format_result(query, results[i].name, results[i].category),
 						type:results[i].type}
 					)
 				);
@@ -46,8 +46,9 @@ function GraphHandler (graph_search_bar, graph_search_ul, graph_url) {
 		}
 	}
 
-	function format_result (query_text, result) {
+	function format_result (query_text, result, category) {
 		if (!query_text || query_text == '') return result;
+		if (category == 'tag') return result;
 		var result_lwr = result.toLowerCase();
 		var query_lwr  = query_text.toLowerCase();
 
