@@ -119,8 +119,8 @@ function delete_quiz (quiz_id) {
 		post_json_to_url(
 			'/QuizWebsite/QuizServlet?quiz_id='+quiz_id+'&action=delete',
 			{},
-			function () {
-				
+			function (data) {
+				window.location = '/QuizWebsite/Home.jsp';
 			}
 		);
 	}
