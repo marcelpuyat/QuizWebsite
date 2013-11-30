@@ -23,8 +23,8 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice) {
 	var _start_callbacks_live = true;
 	var _next_callbacks_live  = true;
 	var _quiz_timer = new Timer(10);
-	var _is_practice_quiz = false;
-	var _is_practice = is_practice;
+	var _is_practice_quiz = is_practice;
+	console.log('is_practice: '+_is_practice_quiz);
 	
 	
 	/* public methods */
