@@ -95,6 +95,9 @@ function TypeHandler (wrapper, parent, quiz_id) {
 	};
 }
 
+function MetaHandler (parent) {
+	
+}
 
 function MultipleChoiceHandler (parent, type) {
 	var _id = unique_id++;
@@ -265,6 +268,7 @@ function MultipleAnswerHandler (parent, type) {
 	var _prompt;
 	var _answers_ul;
 	var _score_input;
+	var _partial_credit_check;
 	this.getElem = function () {
 		var ul = document.createElement('ul');
 		ul.classList.add('login-ul','center');
@@ -298,6 +302,27 @@ function MultipleAnswerHandler (parent, type) {
 		_score_input.value = score;
 		score_li.appendChild(_score_input);
 		ul.appendChild(score_li);
+
+		/* partial credit check title */
+		var partial_credit_check_title_li = document.createElement('li');
+		var partial_credit_check_title = document.createElement('div');
+		partial_credit_check_title.classList.add('faint');
+		partial_credit_check_title.innerHTML = 'give partial credit';
+		partial_credit_check_title_li.appendChild(partial_credit_check_title);
+		ul.appendChild(partial_credit_check_title_li);
+
+		/* partial credit check */
+		var partial_credit_check_li = document.createElement('li');
+		_partial_credit_check = document.createElement('input');
+		_partial_credit_check.type = 'checkbox';
+		var partial_credit = true;
+		if (_data && _data.data && _data.data.partial_credit != undefined) {
+			partial_credit = _data.data.partial_credit;
+		}
+		_partial_credit_check.checked = partial_credit;
+		_partial_credit_check.addEventListener('change',_parent.postData);
+		partial_credit_check_li.appendChild(_partial_credit_check);
+		ul.appendChild(partial_credit_check_li);
 
 		/* prompt title */
 		var prompt_title_li = document.createElement('li');
@@ -354,7 +379,7 @@ function MultipleAnswerHandler (parent, type) {
 			type:_type.json_name,
 			data:{
 				prompt:_prompt.value,
-				partial_credit:true,
+				partial_credit:_partial_credit_check.checked,
 				correct:ansObj.answers,
 				score:parseInt(_score_input.value)
 			}
