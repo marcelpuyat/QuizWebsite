@@ -106,7 +106,7 @@ function MetaHandler (parent) {
 	var _description;
 	var _parent = parent;
 	var _data;
-	var settings = {
+	var _settings = {
 		is_immediately_corrected_elem:undefined,
 		is_multiple_page_elem:undefined,
 		is_randomized_elem:undefined,
@@ -115,7 +115,7 @@ function MetaHandler (parent) {
 	this.getElem = function (data) {
 		_data = data;
 		var ul = document.createElement('ul');
-		ul.classList.add('login-ul','center');
+		ul.classList.add('login-ul','center','gap-large');
 
 		/* title */
 		var title_li = document.createElement('li');
@@ -146,49 +146,73 @@ function MetaHandler (parent) {
 		/* settings */
 		var settings_li = document.createElement('li');
 		var settings_ul = document.createElement('ul');
-		settings_ul.classList.add('flowing');
+		settings_ul.classList.add('flowing','settings-ul','gap');
 
-		//
-		// var is_immediately_corrected_elem_li = document.createElement('li');
-		// var is_immediately_corrected_elem_prompt = document.createElement('span');
-		// is_immediately_corrected_elem_prompt.innerHTML = 'is_immediately_corrected';
-		// settings.is_immediately_corrected_elem = document.createElement('input');
-		// settings.is_immediately_corrected_elem.type = 'checkbox';
-		// is_immediately_corrected_elem_li.appendChild(is_immediately_corrected_elem_prompt);
-		// is_immediately_corrected_elem_li.appendChild(settings.is_immediately_corrected_elem);
-		// settings_ul.appendChild(is_immediately_corrected_elem_li);
-
-
-		// var is_multiple_page_elem_li = document.createElement('li');
-		// var is_multiple_page_elem_prompt = document.createElement('span');
-		// is_multiple_page_elem_prompt.innerHTML = 'is_multiple_page';
-		// settings.is_multiple_page_elem = document.createElement('input');
-		// settings.is_multiple_page_elem.type = 'checkbox';
-		// is_multiple_page_elem_li.appendChild(is_multiple_page_elem_prompt);
-		// is_multiple_page_elem_li.appendChild(settings.is_multiple_page_elem);
-		// settings_ul.appendChild(is_multiple_page_elem_li);
+		
+		var is_immediately_corrected_elem_li = document.createElement('li');
+		is_immediately_corrected_elem_li.classList.add('flowing');
+		var is_immediately_corrected_elem_prompt = document.createElement('span');
+		is_immediately_corrected_elem_prompt.innerHTML = 'is immediately corrected';
+		_settings.is_immediately_corrected_elem = document.createElement('input');
+		_settings.is_immediately_corrected_elem.classList.add('flowing');
+		_settings.is_immediately_corrected_elem.type = 'checkbox';
+		var imediate = true;
+		if (data && data.is_immediately_corrected != undefined) imediate = data.is_immediately_corrected;
+		_settings.is_immediately_corrected_elem.checked = imediate;
+		is_immediately_corrected_elem_li.appendChild(_settings.is_immediately_corrected_elem);
+		is_immediately_corrected_elem_li.appendChild(is_immediately_corrected_elem_prompt);
+		settings_ul.appendChild(is_immediately_corrected_elem_li);
 
 
-		// var is_randomized_elem_li = document.createElement('li');
-		// var is_randomized_elem_prompt = document.createElement('span');
-		// is_randomized_elem_prompt.innerHTML = 'is_randomized';
-		// settings.is_randomized_elem = document.createElement('input');
-		// settings.is_randomized_elem.type = 'checkbox';
-		// is_randomized_elem_li.appendChild(is_randomized_elem_prompt);
-		// is_randomized_elem_li.appendChild(settings.is_randomized_elem);
-		// settings_ul.appendChild(is_randomized_elem_li);
+		var is_multiple_page_elem_li = document.createElement('li');
+		is_multiple_page_elem_li.classList.add('flowing');
+		var is_multiple_page_elem_prompt = document.createElement('span');
+		is_multiple_page_elem_prompt.innerHTML = 'is multiple page';
+		_settings.is_multiple_page_elem = document.createElement('input');
+		_settings.is_multiple_page_elem.classList.add('flowing');
+		_settings.is_multiple_page_elem.type = 'checkbox';
+		var multi = true;
+		if (data && data.is_multiple_page != undefined) multi = data.is_multiple_page;
+		_settings.is_multiple_page_elem.checked = multi;
+		is_multiple_page_elem_li.appendChild(_settings.is_multiple_page_elem);
+		is_multiple_page_elem_li.appendChild(is_multiple_page_elem_prompt);
+		settings_ul.appendChild(is_multiple_page_elem_li);
+
+
+		var is_randomized_elem_li = document.createElement('li');
+		is_randomized_elem_li.classList.add('flowing');
+		var is_randomized_elem_prompt = document.createElement('span');
+		is_randomized_elem_prompt.innerHTML = 'is randomized';
+		_settings.is_randomized_elem = document.createElement('input');
+		_settings.is_randomized_elem.classList.add('flowing');
+		_settings.is_randomized_elem.type = 'checkbox';
+		var randomized = true;
+		if (data && data.is_randomized != undefined) randomized = data.is_randomized;
+		_settings.is_randomized_elem.checked = randomized;
+		is_randomized_elem_li.appendChild(_settings.is_randomized_elem);
+		is_randomized_elem_li.appendChild(is_randomized_elem_prompt);
+		settings_ul.appendChild(is_randomized_elem_li);
 
 
 		var is_practicable_elem_li = document.createElement('li');
-		// var is_practicable_elem_prompt = document.createElement('span');
-		// is_practicable_elem.innerHTML = 'is_practicable';
-		// settings.is_practicable_elem = document.createElement('input');
-		// settings.is_practicable_elem.type = 'checkbox';
-		// is_practicable_elem_li.appendChild(is_practicable_elem_prompt);
-		// is_practicable_elem_li.appendChild(settings.is_practicable_elem);
+		is_practicable_elem_li.classList.add('flowing');
+		var is_practicable_elem_prompt = document.createElement('span');
+		is_practicable_elem_prompt.innerHTML = 'is practicable';
+		_settings.is_practicable_elem = document.createElement('input');
+		_settings.is_practicable_elem.classList.add('flowing');
+		_settings.is_practicable_elem.type = 'checkbox';
+		var practicable = true;
+		if (data && data.is_practicable != undefined) practicable = data.is_practicable;
+		_settings.is_practicable_elem.checked = practicable;
+		is_practicable_elem_li.appendChild(_settings.is_practicable_elem);
+		is_practicable_elem_li.appendChild(is_practicable_elem_prompt);
 		settings_ul.appendChild(is_practicable_elem_li);
 
 
+		_settings.is_immediately_corrected_elem.addEventListener('change',_parent.postData);
+		_settings.is_multiple_page_elem.addEventListener('change',_parent.postData);
+		_settings.is_randomized_elem.addEventListener('change',_parent.postData);
+		_settings.is_practicable_elem.addEventListener('change',_parent.postData);
 
 		settings_li.appendChild(settings_ul);
 		ul.appendChild(settings_li);
@@ -201,10 +225,10 @@ function MetaHandler (parent) {
  			description:_description.innerHTML||"",
  			creator:_data.creator||"",
  			max_score:0,
- 			is_immediately_corrected: _data.is_immediately_corrected || true,
- 			is_multiple_page:_data.is_multiple_page || true,
- 			is_randomized:_data.is_randomized || true,
- 			is_practicable:_data.is_practicable || true,
+ 			is_immediately_corrected: _settings.is_immediately_corrected_elem.checked,
+ 			is_multiple_page:_settings.is_multiple_page_elem.checked,
+ 			is_randomized:_settings.is_randomized_elem.checked,
+ 			is_practicable:_settings.is_practicable_elem.checked,
  			tags:_data.tags || []
  		}
 	}
