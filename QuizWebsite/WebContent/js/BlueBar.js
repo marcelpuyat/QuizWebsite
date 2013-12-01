@@ -27,7 +27,7 @@ function BlueBarRadioMenu (className) {
 		};
 	}
 
-	this.refresh = function (handler) {
+	this.update = function (handler) {
 		var ul = handler.menu.ul;
 		ul.innerHTML = '';
 		var i = 0;
@@ -62,7 +62,7 @@ function RadioGroup (blue_bar) {
 			function () {
 				if (handler.menu.classList.contains('hide')) {
 					_this.closeOthers(handler);
-					_blue_bar.refresh(handler);
+					handler.refresh();
 				} else {
 					_this.closeOthers();
 				}
@@ -86,15 +86,16 @@ function RequestsHandler (blue_bar) {
 	var _data;
 	var _this = this;
 
-	// (function init () {
-	// 	get_json_from_url(
-	// 		'/QuizWebsite/',
-	// 		function (data) {
-	// 			_data = data;
-	// 			_blue_bar.refresh(_this);
-	// 		}
-	// 	);
-	// })();
+	this.refresh = function () {
+		get_json_from_url(
+			'',
+			function (data) {
+				_data = data;
+				_blue_bar.update(_this);
+			}
+		);
+		
+	}
 
 	this.liAtIndex = function (index) {
 		var li = document.createElement('li');
@@ -116,15 +117,16 @@ function MessagesHandler (blue_bar) {
 	var _data;
 	var _this = this;
 
-	// (function init () {
-	// 	get_json_from_url(
-	// 		'/QuizWebsite/',
-	// 		function (data) {
-	// 			_data = data;
-	// 			_blue_bar.refresh(_this);
-	// 		}
-	// 	);
-	// })();
+	this.refresh = function () {
+		get_json_from_url(
+			'',
+			function (data) {
+				_data = data;
+				_blue_bar.update(_this);
+			}
+		);
+		
+	}
 
 	this.liAtIndex = function (index) {
 		var li = document.createElement('li');
@@ -146,15 +148,16 @@ function NotificationsHandler (blue_bar) {
 	var _data;
 	var _this = this;
 
-	// (function init () {
-	// 	get_json_from_url(
-	// 		'/QuizWebsite/',
-	// 		function (data) {
-	// 			_data = data;
-	// 			_blue_bar.refresh(_this);
-	// 		}
-	// 	);
-	// })();
+	this.refresh = function () {
+		get_json_from_url(
+			'',
+			function (data) {
+				_data = data;
+				_blue_bar.update(_this);
+			}
+		);
+		
+	}
 
 	this.liAtIndex = function (index) {
 		var li = document.createElement('li');
@@ -176,15 +179,16 @@ function SettingsHandler (blue_bar) {
 	var _data;
 	var _this = this;
 
-	// (function init () {
-	// 	get_json_from_url(
-	// 		'/QuizWebsite/',
-	// 		function (data) {
-	// 			_data = data;
-	// 			_blue_bar.refresh(_this);
-	// 		}
-	// 	);
-	// })();
+	this.refresh = function () {
+		get_json_from_url(
+			'',
+			function (data) {
+				_data = data;
+				_blue_bar.update(_this);
+			}
+		);
+		
+	}
 
 	this.liAtIndex = function (index) {
 		
