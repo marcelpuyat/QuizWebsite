@@ -1,4 +1,4 @@
-package user;
+package user.Message;
 
 import org.json.JSONObject;
 

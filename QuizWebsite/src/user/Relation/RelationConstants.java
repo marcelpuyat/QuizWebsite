@@ -1,4 +1,4 @@
-package user;
+package user.Relation;
 
 public class RelationConstants {
 

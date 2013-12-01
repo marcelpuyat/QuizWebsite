@@ -1,10 +1,12 @@
-package user;
+package user.Message;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import user.User;
 
 import customObjects.SelfRefreshingConnection;
 

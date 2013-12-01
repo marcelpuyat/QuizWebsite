@@ -1,9 +1,11 @@
-package user;
+package user.Relation;
 
 import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import user.User;
 
 public class RelationJSONParser {
 	

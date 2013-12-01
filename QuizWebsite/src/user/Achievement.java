@@ -1,5 +1,6 @@
 package user;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,23 +16,6 @@ public class Achievement {
 	public static final int AUTO_INCREMENT_OFFSET = 1;
 	
 	/**
-	 * Use this to add a new achievement to a user
-	 * @param title
-	 * @param description
-	 * @param user_id
-	 * @param con
-	 */
-	public Achievement(String title, String description, long user_id, SelfRefreshingConnection con) {
-		this.user_id = user_id;
-		this.con = con;
-		try {
-			this.id = Achievement.getNextAvailableID(con);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
 	 * Use this to access fields of an achievement with ORM
 	 * @param id
 	 * @param user_id
@@ -41,6 +25,26 @@ public class Achievement {
 		this.id = id;
 		this.user_id = user_id;
 		this.con = con;
+	}
+	
+	/**
+	 * Use this to add a new achievement to a user
+	 * @param title
+	 * @param description
+	 * @param user_id
+	 * @param con
+	 */
+	public static void addAchievement(String title, String description, long user_id, SelfRefreshingConnection con) {
+		try {
+			PreparedStatement stmt = con.prepareStatement("INSERT INTO Achievements VALUES(id, ?, ?, ?)");
+			stmt.setLong(2, user_id);
+			stmt.setString(3, title);
+			stmt.setString(4, description);
+			stmt.executeUpdate();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -153,11 +157,26 @@ public class Achievement {
 			ResultSet rs = stmt.executeQuery(getNextIDQuery);
 			rs.next();
 			int nextID = rs.getInt(1);
-			System.out.println(nextID);
 			return nextID + AUTO_INCREMENT_OFFSET;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return -1;
+		}
+	}
+	
+	public static ArrayList<Achievement> getUserAchievements(SelfRefreshingConnection con, long user_id) {
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT id FROM Achievements WHERE user_id = " + user_id);
+			ResultSet rs = stmt.executeQuery();
+			
+			ArrayList<Achievement> achievements = new ArrayList<Achievement>();
+			while (rs.next()) {
+				achievements.add(new Achievement(rs.getLong(1), user_id, con));
+			}
+			return achievements;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 }

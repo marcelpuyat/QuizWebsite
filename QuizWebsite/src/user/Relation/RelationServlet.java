@@ -1,4 +1,4 @@
-package user;
+package user.Relation;
 
 import java.io.IOException;
 
@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
+
+import user.User;
 
 import customObjects.SelfRefreshingConnection;
 
