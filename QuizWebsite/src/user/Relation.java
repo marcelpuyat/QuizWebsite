@@ -103,12 +103,32 @@ public class Relation {
 	}
 	
 	/**
+	 * Unblock user b
+	 * @param userA
+	 * @param userB
+	 * @param con
+	 */
+	public static void unblockUser(User userA, User userB, SelfRefreshingConnection con) {
+		unblockOrDelete(userA, userB, con, false);
+	}
+	
+	/**
+	 * Delete user b as friend of user a
+	 * @param userA
+	 * @param userB
+	 * @param con
+	 */
+	public static void deleteFriend(User userA, User userB, SelfRefreshingConnection con) {
+		unblockOrDelete(userA, userB, con, true);
+	}
+	
+	/**
 	 * Use this to unblock or delete friend. Set deleteFriend to true if deleting, false if unblocking
 	 * @param userA
 	 * @param userB
 	 * @param con
 	 */
-	public static void unblockOrDelete(User userA, User userB, SelfRefreshingConnection con, boolean deleteFriend) {
+	private static void unblockOrDelete(User userA, User userB, SelfRefreshingConnection con, boolean deleteFriend) {
 		try {
 			long user_a_id = userA.getUserId();
 			long user_b_id = userB.getUserId();
