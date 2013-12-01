@@ -340,4 +340,17 @@ ul#graph-search-results {
 		border-top: 1px solid #F0F0F0;
 	}
 
+.blue-dropdown-radio {
+	position: relative;
+}
+
+.blue-bar-menu {
+	position: absolute;
+	top:31px;
+	background-color: white;
+	border-radius: 6px;
+	border: 3px solid rgba(0,0,0,0.2);
+	width: 200px;
+	right: -20px;
+}
 
