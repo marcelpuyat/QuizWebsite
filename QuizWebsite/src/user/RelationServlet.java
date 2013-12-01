@@ -35,9 +35,11 @@ public class RelationServlet extends HttpServlet {
 		ServletContext context = getServletContext(); 
 		SelfRefreshingConnection databaseConnection = (SelfRefreshingConnection)context.getAttribute("database_connection");
 		
+		/* Second type of GET request in spec */
 		if (request.getParameter("user_id") != null) {
 			User user = new User(Long.parseLong(request.getParameter("user_id")), databaseConnection);
-			JSONObject userInfo = RelationJSONParser.parseAllUserRelationInfo(Relation.getAllRequestsOutward(user, databaseConnection), 
+			JSONObject userInfo = RelationJSONParser.parseAllUserRelationInfo(user,
+																			  Relation.getAllRequestsOutward(user, databaseConnection), 
 																			  Relation.getAllRequestsInward(user, databaseConnection),
 																			  Relation.getAllFriends(user, databaseConnection),
 																			  Relation.getAllBlockedOutward(user, databaseConnection),
@@ -46,7 +48,10 @@ public class RelationServlet extends HttpServlet {
 			response.getWriter().println(userInfo);
 			return;
 			
-		} else {
+		} 
+		
+		/* First type of GET request in spec */
+		else {
 			User userA = new User(request.getParameter("user_a_id"), databaseConnection);
 			User userB = new User(request.getParameter("user_b_id"), databaseConnection);
 			JSONObject userInfo = RelationJSONParser.parseUserComparisonStatus(userA, userB, getServletInfo());
@@ -79,8 +84,11 @@ public class RelationServlet extends HttpServlet {
 		else if (status.equals(RelationConstants.UNBLOCK)) {
 			Relation.unblockUser(userA, userB, databaseConnection);
 		} 
-		else/* if (status.equals(RelationConstants.DELETE_FRIEND))*/ {
+		else if (status.equals(RelationConstants.DELETE_FRIEND)) {
 			Relation.deleteFriend(userA, userB, databaseConnection);
+		}
+		else/*if (status.equals(RelationConstants.REJECT_REQUEST))*/ {
+			Relation.rejectRequest(userA, userB, databaseConnection);
 		}
 		
 	}

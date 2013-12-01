@@ -102,6 +102,10 @@ public class Relation {
 		}
 	}
 	
+	public static void rejectRequest(User userA, User userB, SelfRefreshingConnection con) {
+		deleteFriend(userA, userB, con);
+	}
+	
 	/**
 	 * Unblock user b
 	 * @param userA
@@ -134,6 +138,12 @@ public class Relation {
 			long user_b_id = userB.getUserId();
 			PreparedStatement stmt = con.prepareStatement("DELETE FROM Relations WHERE user_a_id = " + user_a_id + " AND user_b_id = " + user_b_id); 
 
+			// Remove request from opposite direction
+			if (!deleteFriend) {
+				PreparedStatement stmt2 = con.prepareStatement("DELETE FROM Relations WHERE user_a_id = " + user_b_id + " AND user_b_id = " + user_a_id + " AND status = \"" + RelationConstants.FRIEND_REQUESTED + "\""); 
+				stmt2.executeUpdate();
+			}
+			
 			stmt.executeUpdate();
 			
 			// Update other direction

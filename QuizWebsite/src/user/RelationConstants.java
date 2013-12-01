@@ -8,4 +8,5 @@ public class RelationConstants {
 	public static final String UNBLOCK = "UNBLK";
 	public static final String DELETE_FRIEND = "DELETE";
 	public static final String NOTHING = "NTH";
+	public static final String REJECT_REQUEST = "NO";
 }

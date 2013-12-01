@@ -63,11 +63,11 @@ public class RelationJSONParser {
 	 * @param blockedInward
 	 * @return
 	 */
-	public static JSONObject parseAllUserRelationInfo(ArrayList<User> requestOutward, ArrayList<User> requestInward,
+	public static JSONObject parseAllUserRelationInfo(User user, ArrayList<User> requestOutward, ArrayList<User> requestInward,
 			ArrayList<User> friends, ArrayList<User> blockedOutward, ArrayList<User> blockedInward) {
 		
 		JSONObject relationsInfo = new JSONObject();
-		
+		relationsInfo.put("user", parseUserIntoJSON(user));
 		relationsInfo.put("request_to", getListOfUsersInJSONArray(requestOutward));
 		relationsInfo.put("request_from", getListOfUsersInJSONArray(requestInward));
 		relationsInfo.put("friends", getListOfUsersInJSONArray(friends));
