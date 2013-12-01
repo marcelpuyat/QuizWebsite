@@ -1,4 +1,4 @@
-package user.Message;
+package user.message;
 
 import java.io.IOException;
 

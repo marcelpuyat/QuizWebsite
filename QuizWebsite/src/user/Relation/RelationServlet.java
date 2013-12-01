@@ -1,4 +1,4 @@
-package user.Relation;
+package user.relation;
 
 import java.io.IOException;
 
