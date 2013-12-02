@@ -4,12 +4,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import user.achievement.Achievement;
-
 import customObjects.SelfRefreshingConnection;
 
 public class User {
@@ -166,6 +168,60 @@ public class User {
 		return false;
 	}
 	
+	public JSONArray getRecentQuizResultsInJSONArray() {
+		try {
+			String get5MostRecentQuizTakingInstances = "SELECT Quizzes.name, Quizzes.id, QuizResults.date_taken, QuizResults.time_duration, QuizResults.user_percentage_score " +
+					"FROM Quizzes INNER JOIN QuizResults ON QuizResults.quiz_id = Quizzes.id WHERE QuizResults.user_id = " + this.user_id + " ORDER BY QuizResults.date_taken DESC LIMIT 5";
+			PreparedStatement stmt = con.prepareStatement(get5MostRecentQuizTakingInstances);
+			ResultSet rs = stmt.executeQuery();
+			
+			JSONArray resultsArray = new JSONArray();
+			while (rs.next()) {
+				JSONObject result = new JSONObject();
+				result.put("quiz_name", rs.getString(1));
+				result.put("quiz_id", rs.getLong(2));
+				
+				JSONObject date = new JSONObject();
+					Timestamp ts = rs.getTimestamp(3);
+					Calendar dateTaken = Calendar.getInstance();
+					dateTaken.setTimeInMillis(ts.getTime());
+					int year = dateTaken.get(Calendar.YEAR);
+					int month = dateTaken.get(Calendar.MONTH) + 1; // MONTHS ARE INDEXED FROM 0!
+					int day = dateTaken.get(Calendar.DATE);
+					date.put("year", year);
+					date.put("month", month);
+					date.put("date", day);
+				
+				result.put("date", date);
+				result.put("time_taken", rs.getDouble(4));
+				result.put("user_percentage_score", rs.getDouble(5));
+				resultsArray.put(result);
+			}
+			
+			return resultsArray;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public JSONArray getCreatedQuizzes() {
+		JSONArray createdQuizzes = new JSONArray();
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT name, id FROM Quizzes WHERE creator = \"" + this.getUserName() + "\"");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				JSONObject quiz = new JSONObject();
+				quiz.put("quiz_name", rs.getString(1));
+				quiz.put("quiz_id", rs.getLong(2));
+				createdQuizzes.put(quiz);
+			}
+			return createdQuizzes;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 	public JSONObject getPublicJSONSummary() throws ClassNotFoundException {
 		JSONObject resultJSON = new JSONObject();
