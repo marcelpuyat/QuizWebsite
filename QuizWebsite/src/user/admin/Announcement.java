@@ -108,7 +108,7 @@ public class Announcement {
 	
 	public static ArrayList<Announcement> getAllAnnouncements(SelfRefreshingConnection con) {
 		try {
-			PreparedStatement stmt = con.prepareStatement("SELECT id FROM Announcements");
+			PreparedStatement stmt = con.prepareStatement("SELECT id FROM Announcements ORDER BY date DESC");
 			ResultSet rs = stmt.executeQuery();
 			
 			ArrayList<Announcement> announcements = new ArrayList<Announcement>();
