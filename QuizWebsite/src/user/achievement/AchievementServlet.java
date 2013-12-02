@@ -1,4 +1,4 @@
-package user;
+package user.achievement;
 
 import java.io.IOException;
 import java.util.ArrayList;
