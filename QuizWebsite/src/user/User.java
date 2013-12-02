@@ -415,7 +415,7 @@ public class User {
 	public static boolean hasAchievement(String title, User user, SelfRefreshingConnection con) {
 		try {
 			Statement stmt = con.createStatement();
-			String query = "SELECT Achievements.id FROM Achievements INNER JOIN Users ON Achievements.title = \"" + title + "\" AND Achievements.user_id = Users.id";
+			String query = "SELECT Achievements.id FROM Achievements INNER JOIN Users ON Achievements.title = \"" + title + "\" AND Achievements.user_id = " + user.getUserId();
 			ResultSet rs = stmt.executeQuery(query);
 			boolean searchEmpty = true;
 			

@@ -18,6 +18,22 @@ public class Achievement {
 	private long user_id;
 	private SelfRefreshingConnection con;
 	public static final int AUTO_INCREMENT_OFFSET = 1;
+	public static final int TITLE = 0;
+	public static final int ACHIEVEMENT = 1;
+	
+	public static final String ONE_QUIZ_ACHV = AchievementConstants.achievements[0][TITLE];
+	public static final String ONE_QUIZ_ACHV_DESC = AchievementConstants.achievements[0][ACHIEVEMENT];
+
+	public static final String FIVE_QUIZ_ACHV = AchievementConstants.achievements[1][TITLE];
+	public static final String FIVE_QUIZ_ACHV_DESC = AchievementConstants.achievements[1][ACHIEVEMENT];
+
+	public static final String TEN_QUIZ_ACHV = AchievementConstants.achievements[2][TITLE];
+	public static final String TEN_QUIZ_ACHV_DESC = AchievementConstants.achievements[2][ACHIEVEMENT];
+
+	public static final String TEN_QUIZ_TAKEN_ACHV = AchievementConstants.achievements[3][TITLE];
+	public static final String TEN_QUIZ_TAKEN_ACHV_DESC = AchievementConstants.achievements[3][ACHIEVEMENT];
+
+
 	
 	/**
 	 * Use this to access fields of an achievement with ORM
@@ -41,9 +57,9 @@ public class Achievement {
 	public static void addAchievement(String title, String description, long user_id, SelfRefreshingConnection con) {
 		try {
 			PreparedStatement stmt = con.prepareStatement("INSERT INTO Achievements VALUES(id, ?, ?, ?)");
-			stmt.setLong(2, user_id);
-			stmt.setString(3, title);
-			stmt.setString(4, description);
+			stmt.setLong(1, user_id);
+			stmt.setString(2, title);
+			stmt.setString(3, description);
 			stmt.executeUpdate();
 		}
 		catch (Exception e) {
@@ -201,5 +217,40 @@ public class Achievement {
 			notEarned.put(achv);
 		}
 		return notEarned;
+	}
+	
+	public static void updateQuizCreatedAchievements(SelfRefreshingConnection con, long user_id) {
+		User user = new User(user_id, con);
+		int quizzesCreated = user.getNumQuizzesCreated();
+		
+		if (!User.hasAchievement(ONE_QUIZ_ACHV, user, con)) {
+			if (quizzesCreated >= 1) {
+				Achievement.addAchievement(ONE_QUIZ_ACHV, ONE_QUIZ_ACHV_DESC, user_id, con);
+			}
+		}
+		
+		if (!User.hasAchievement(FIVE_QUIZ_ACHV, user, con)) {
+			if (quizzesCreated >= 5) {
+				Achievement.addAchievement(FIVE_QUIZ_ACHV, FIVE_QUIZ_ACHV_DESC, user_id, con);
+			}
+		}
+		
+		if (!User.hasAchievement(TEN_QUIZ_ACHV, user, con)) {
+			if (quizzesCreated >= 10) {
+				Achievement.addAchievement(TEN_QUIZ_ACHV, TEN_QUIZ_ACHV_DESC, user_id, con);
+			}
+		}
+		
+	}
+	
+	public static void updateQuizzesTakenAchievement(SelfRefreshingConnection con, long user_id) {
+		User user = new User(user_id, con);
+		int quizzesTaken = user.getNumQuizzesTaken();
+		
+		if (!User.hasAchievement(TEN_QUIZ_TAKEN_ACHV, user, con)) {
+			if (quizzesTaken >= 10) {
+				Achievement.addAchievement(TEN_QUIZ_TAKEN_ACHV, TEN_QUIZ_TAKEN_ACHV_DESC, user_id, con);
+			}
+		}
 	}
 }

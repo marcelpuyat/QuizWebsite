@@ -1,7 +1,5 @@
 package user.achievement;
 
-import customObjects.StringPair;
-
 public class AchievementConstants {
 
 	public static final String[][] achievements = {

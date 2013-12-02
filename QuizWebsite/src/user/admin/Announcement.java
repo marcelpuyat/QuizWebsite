@@ -79,9 +79,9 @@ public class Announcement {
 	public static void makeAnnouncement(long admin_id, String subject, String body, SelfRefreshingConnection con) {
 		try {
 			PreparedStatement stmt = con.prepareStatement("INSERT INTO Announcements VALUES(id, ?, ?, ?, NULL)");
-			stmt.setLong(2, admin_id);
-			stmt.setString(3, subject);
-			stmt.setString(4, body);
+			stmt.setLong(1, admin_id);
+			stmt.setString(2, subject);
+			stmt.setString(3, body);
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();

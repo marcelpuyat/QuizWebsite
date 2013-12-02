@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import user.User;
+import user.achievement.Achievement;
 import customObjects.SelfRefreshingConnection;
 
 
@@ -114,10 +115,15 @@ public class QuizServlet extends HttpServlet {
 				
 				String creator = newQuizData.getString("creator");
 
-				ArrayList<String> tags = JSONParser.getTagsFromJSONArray(newQuizData.getJSONArray("tags"));
+				// Add achv for quiz creating depending on num quizzes created of user
+				User user = new User(creator, con);
+				Achievement.updateQuizCreatedAchievements(con, user.getUserId());
 				
+				// Add tags
+				ArrayList<String> tags = JSONParser.getTagsFromJSONArray(newQuizData.getJSONArray("tags"));
 				createTags(tags, con, newQuiz.getID());
 				
+				// Add id and status
 				newQuizResponse.accumulate("status", "success");
 				newQuizResponse.accumulate("id", newQuiz.getID());
 				

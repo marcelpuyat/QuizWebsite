@@ -125,11 +125,11 @@ public class Message {
 	
 	public static void sendMessage(SelfRefreshingConnection con, String subject, String body, long user_from_id, long user_to_id) {
 		try {
-			PreparedStatement stmt = con.prepareStatement("INSERT INTO Messages VALUES (id, ?, ?, ?, ?, ?, NULL, FALSE)");
-			stmt.setLong(2, user_from_id);
-			stmt.setLong(3, user_to_id);
-			stmt.setString(4, subject);
-			stmt.setString(5, body);
+			PreparedStatement stmt = con.prepareStatement("INSERT INTO Messages VALUES (id, ?, ?, ?, ?, NULL, FALSE)");
+			stmt.setLong(1, user_from_id);
+			stmt.setLong(2, user_to_id);
+			stmt.setString(3, subject);
+			stmt.setString(4, body);
 			
 			stmt.executeUpdate();
 		} catch (Exception e) {

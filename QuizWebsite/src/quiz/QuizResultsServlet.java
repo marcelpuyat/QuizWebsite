@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 
 import user.User;
+import user.achievement.Achievement;
 import customObjects.SelfRefreshingConnection;
 
 /**
@@ -53,6 +54,9 @@ public class QuizResultsServlet extends HttpServlet {
 		// Increment quiz taken frequency
 		Quiz quizTaken = new Quiz(quiz_id, con);
 		quizTaken.incrementFrequency();
+		
+		// Update achievement for taking 10 quizzes if so
+		Achievement.updateQuizzesTakenAchievement(con, user.getUserId());
 	}
 
 }
