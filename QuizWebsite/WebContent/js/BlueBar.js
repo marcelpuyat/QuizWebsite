@@ -1,9 +1,9 @@
 (function init_blue_bar () {
-	new BlueBarRadioMenu('blue-dropdown-radio');
+	new BlueBarRadioMenu(document.getElementById('user_id_stash').getAttribute('user_id'));
 })();
 
-function BlueBarRadioMenu (className) {
-	var _className = className;
+function BlueBarRadioMenu (user_id) {
+	var _user_id = user_id;
 	var _this = this;
 	var _radio_menu_types = [
 		{id:'requests-button',handler:RequestsHandler},
@@ -12,14 +12,16 @@ function BlueBarRadioMenu (className) {
 		{id:'settings-button',handler:SettingsHandler}
 	];
 	(function init () {
-		init_radio_menus();
+		if (_user_id != -1) {
+			init_radio_menus();
+		}
 	})();
 
 	function init_radio_menus () {
 		var rg = new RadioGroup(_this);
 		for (var i = 0; i < _radio_menu_types.length; i++) {
 			var type = _radio_menu_types[i];
-			var handler = new type.handler(_this);
+			var handler = new type.handler(_this, _user_id);
 			handler.button = document.getElementById(type.id);
 			handler.menu = get_menu();
 			handler.button.appendChild(handler.menu);
@@ -51,7 +53,8 @@ function BlueBarRadioMenu (className) {
 	}
 }
 
-function RadioGroup (blue_bar) {
+function RadioGroup (blue_bar, user_id) {
+	var _user_id = user_id;
 	var _group = [];
 	var _this = this;
 	var _blue_bar = blue_bar;
@@ -81,7 +84,8 @@ function RadioGroup (blue_bar) {
 	}
 }
 
-function RequestsHandler (blue_bar) {
+function RequestsHandler (blue_bar, user_id) {
+	var _user_id = user_id;
 	var _blue_bar = blue_bar;
 	var _data;
 	var _this = this;
@@ -112,16 +116,21 @@ function RequestsHandler (blue_bar) {
 	}
 }
 
-function MessagesHandler (blue_bar) {
+function MessagesHandler (blue_bar, user_id) {
+	var _user_id = user_id;
 	var _blue_bar = blue_bar;
 	var _data;
 	var _this = this;
 
 	this.refresh = function () {
 		get_json_from_url(
-			'/QuizWebsite/',
+			'/QuizWebsite/MessageServlet?user_id='+_user_id,
 			function (data) {
+				console.log('here');
+				console.log(data);
 				_data = data;
+				_data.user_list = create_user_list(data);
+				console.log(_data);
 				_blue_bar.update(_this);
 			}
 		);
@@ -129,9 +138,17 @@ function MessagesHandler (blue_bar) {
 	}
 
 	this.liAtIndex = function (index) {
-		var li = document.createElement('li');
-		li.innerHTML = index;
-		return li;
+		/* compose message */
+		if (index == 0) {
+			var li = document.createElement('li');
+			li.innerHTML = 'New Message';
+			return li;
+		} else {
+			var li = document.createElement('li');
+			var user = _data.user_list[index + 1];
+			li.innerHTML = user.first_name + ' ' + user.last_name;
+			return li;
+		}
 	}
 
 	this.modalAtIndex = function (index) {
@@ -139,11 +156,38 @@ function MessagesHandler (blue_bar) {
 	}
 
 	this.indexExists = function (index) {
-		return (index < 5);
+		return (index <= _data.user_list.length);
+	}
+
+	function create_user_list (data) {
+		var received = data.received;
+		var sent = data.sent;
+		var all = received.concat(sent);
+		var sorted = all.sort(function (a,b) {
+			if (a.date.year != b.date.year) return a.date.year - b.date.year;
+			if (a.date.month != b.date.month) return a.date.month - b.date.month;
+			if (a.date.date != b.date.date) return a.date.date - b.date.date;
+			if (a.date.hours != b.date.hours) return a.date.hours - b.date.hours;
+			if (a.date.minutes != b.date.minutes) return a.date.minutes - b.date.minutes;
+			if (a.date.seconds != b.date.seconds) return a.date.seconds - b.date.seconds;
+		});
+		var users_set = {}; //set
+		var mapped = sorted.map(function (element) {
+			if (element.to_user != undefined) return element.to_user;
+			if (element.from_user != undefined) return element.from_user;
+			return -1;
+		})
+		var filtered = mapped.filter(function (element) {
+			if (element.username in users_set) return false;
+			users[element.username] = true;
+			return true;
+		});
+		return filtered;
 	}
 }
 
-function NotificationsHandler (blue_bar) {
+function NotificationsHandler (blue_bar, user_id) {
+	var _user_id = user_id;
 	var _blue_bar = blue_bar;
 	var _data;
 	var _this = this;
@@ -174,7 +218,8 @@ function NotificationsHandler (blue_bar) {
 	}
 }
 
-function SettingsHandler (blue_bar) {
+function SettingsHandler (blue_bar, user_id) {
+	var _user_id = user_id;
 	var _blue_bar = blue_bar;
 	var _data;
 	var _this = this;
