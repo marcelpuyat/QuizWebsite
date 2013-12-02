@@ -32,13 +32,17 @@ public class HTMLTemplater {
 						"<div id=\"user_id_stash\" user_id=\""+user_id+"\" style=\"display:none;\"></div>"+
 						"<ul class=\"nav\">"+
 							"<li class=\"sprite requests blue-dropdown-radio\" id=\"requests-button\"></li>"+
+							"<li class=\"menu-holder requests blue-dropdown-radio\" id=\"requests-button-holder\"></li>"+
 							"<li class=\"sprite messages blue-dropdown-radio\" id=\"messages-button\"></li>"+
+							"<li class=\"menu-holder messages blue-dropdown-radio\" id=\"messages-button-holder\"></li>"+
 							"<li class=\"sprite notifications blue-dropdown-radio\" id=\"notifications-button\"></li>"+
+							"<li class=\"menu-holder notifications blue-dropdown-radio\" id=\"notifications-button-holder\"></li>"+
 						"</ul>"+
 						"<a class=\"header-text\" href=\"/QuizWebsite/\">Home</a>"+
 						"<a class=\"header-text\" href=\""+user_url+"\">"+username+"</a>"+
 						"<a class=\"sprite2 admin admin-button\" href=\"/QuizWebsite/Admin.jsp\"></a>"+
 						"<div class=\"sprite settings admin-button blue-dropdown-radio\" id=\"settings-button\"></div>"+
+						"<div class=\"menu-holder settings admin-button blue-dropdown-radio\" id=\"settings-button-holder\"></div>"+
 					"</div>"+
 					"<div class=\"search-bar\">"+
 						"<input type=\"text\" id=\"graph-search-bar\" placeholder=\"Search for People, Quizzes, and Topics\" value=\"\">"+

@@ -341,7 +341,9 @@ ul#graph-search-results {
 		border-top: 1px solid #F0F0F0;
 	}
 
-.blue-dropdown-radio {
+.menu-holder {
+	width: 0!important;
+	height: 0!important;
 	position: relative;
 }
 

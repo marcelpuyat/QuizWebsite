@@ -6,10 +6,10 @@ function BlueBarRadioMenu (user_id) {
 	var _user_id = user_id;
 	var _this = this;
 	var _radio_menu_types = [
-		{id:'requests-button',handler:RequestsHandler},
-		{id:'messages-button',handler:MessagesHandler},
-		{id:'notifications-button',handler:NotificationsHandler},
-		{id:'settings-button',handler:SettingsHandler}
+		{id:'requests-button',holder_id:'requests-button-holder',handler:RequestsHandler},
+		{id:'messages-button',holder_id:'messages-button-holder',handler:MessagesHandler},
+		{id:'notifications-button',holder_id:'notifications-button-holder',handler:NotificationsHandler},
+		{id:'settings-button',holder_id:'settings-button-holder',handler:SettingsHandler}
 	];
 	(function init () {
 		if (_user_id != -1) {
@@ -23,8 +23,9 @@ function BlueBarRadioMenu (user_id) {
 			var type = _radio_menu_types[i];
 			var handler = new type.handler(_this, _user_id);
 			handler.button = document.getElementById(type.id);
+			handler.holder = document.getElementById(type.holder_id);
 			handler.menu = get_menu();
-			handler.button.appendChild(handler.menu);
+			handler.holder.appendChild(handler.menu);
 			rg.push(handler);
 		};
 	}
@@ -152,7 +153,19 @@ function MessagesHandler (blue_bar, user_id) {
 	}
 
 	this.modalAtIndex = function (index) {
-		
+		/* compose message */
+		if (index == 0) {
+			var div = document.createElement('div');
+			var subject_input = document.createElement('input');
+			subject_input.type = 'text';
+			subject_input.placeholder = 'Subject';
+			
+			var body_input = document.createElement('input');
+		}
+	}
+
+	this.modalAtIndexExists = function (index) {
+		return this.indexExists(index);
 	}
 
 	this.indexExists = function (index) {
@@ -173,13 +186,20 @@ function MessagesHandler (blue_bar, user_id) {
 		});
 		var users_set = {}; //set
 		var mapped = sorted.map(function (element) {
-			if (element.to_user != undefined) return element.to_user;
-			if (element.from_user != undefined) return element.from_user;
-			return -1;
-		})
+			var obj = {};
+			if (element.to_user != undefined) {
+				obj.usr = element.to_user;
+			}
+			if (element.from_user != undefined) {
+				obj.usr = element.from_user;
+			}
+			obj.subject = element.subject;
+			obj.was_read = element.was_read;
+			return obj;
+		});
 		var filtered = mapped.filter(function (element) {
-			if (element.username in users_set) return false;
-			users[element.username] = true;
+			if (element.usr.username in users_set) return false;
+			users[element.usr.username] = true;
 			return true;
 		});
 		return filtered;
