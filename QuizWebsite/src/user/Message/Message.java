@@ -14,6 +14,7 @@ public class Message {
 
 	private SelfRefreshingConnection con;
 	private long id;
+	private static final String orderByDate = " ORDER BY date DESC";
 	
 	public Message(SelfRefreshingConnection con, long id) {
 		this.con = con;
@@ -139,7 +140,7 @@ public class Message {
 	public static ArrayList<Message> getAllSentMessages(long user_id, SelfRefreshingConnection con) {
 		
 		try {
-			PreparedStatement stmt = con.prepareStatement("SELECT id FROM Messages WHERE user_from_id = " + user_id);
+			PreparedStatement stmt = con.prepareStatement("SELECT id FROM Messages WHERE user_from_id = " + user_id + orderByDate);
 			ResultSet rs = stmt.executeQuery();
 			
 			ArrayList<Message> messages = new ArrayList<Message>();
@@ -157,7 +158,7 @@ public class Message {
 	
 	public static ArrayList<Message> getAllReceivedMessages(long user_id, SelfRefreshingConnection con) {
 		try {
-			PreparedStatement stmt = con.prepareStatement("SELECT id FROM Messages WHERE user_to_id = " + user_id);
+			PreparedStatement stmt = con.prepareStatement("SELECT id FROM Messages WHERE user_to_id = " + user_id + orderByDate);
 			ResultSet rs = stmt.executeQuery();
 			
 			ArrayList<Message> messages = new ArrayList<Message>();
@@ -175,7 +176,7 @@ public class Message {
 	
 	public static ArrayList<Message> getAllMessagesFromUser(long receiver_user_id, long sender_user_id, SelfRefreshingConnection con) {
 		try {
-			PreparedStatement stmt = con.prepareStatement("SELECT id FROM Messages WHERE user_from_id = " + sender_user_id + " AND user_to_id = " + receiver_user_id);
+			PreparedStatement stmt = con.prepareStatement("SELECT id FROM Messages WHERE user_from_id = " + sender_user_id + " AND user_to_id = " + receiver_user_id + orderByDate);
 			ResultSet rs = stmt.executeQuery();
 			
 			ArrayList<Message> messages = new ArrayList<Message>();
