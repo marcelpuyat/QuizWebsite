@@ -1,8 +1,11 @@
-(function init_blue_bar () {
-	new BlueBarRadioMenu(document.getElementById('user_id_stash').getAttribute('user_id'));
-})();
-
 var open_message_pane;
+
+(function init_blue_bar () {
+	var bbrm = new BlueBarRadioMenu(document.getElementById('user_id_stash').getAttribute('user_id'));
+	open_message_pane = function (user_id) {
+		bbrm.toUserModal(user_id);
+	}
+})();
 
 function BlueBarRadioMenu (user_id) {
 	var _user_id = user_id;
@@ -26,14 +29,14 @@ function BlueBarRadioMenu (user_id) {
 			var handler = new type.handler(_this, _user_id);
 			handler.button = document.getElementById(type.id);
 			handler.holder = document.getElementById(type.holder_id);
-			handler.menu = get_menu();
-			handler.holder.appendChild(handler.menu);
+			handler.disp = get_display();
+			handler.holder.appendChild(handler.disp);
 			rg.push(handler);
 		};
 	}
 
 	this.update = function (handler) {
-		var ul = handler.menu.ul;
+		var ul = handler.disp.menu.ul;
 		ul.innerHTML = '';
 		var i = 0;
 		while (true) {
@@ -46,12 +49,34 @@ function BlueBarRadioMenu (user_id) {
 		}
 	}
 
+	this.toUserModal = function (user_id) {
+		
+	}
+
+	function get_display () {
+		var menu = get_menu();
+		var modal = get_modal();
+		var div = new_elem({
+			type:'div',
+			classList:['blue-bar-display','hide'],
+			children:[menu,modal]
+		});
+		div.menu = menu;
+		div.modal = modal;
+		return div;
+	}
+
 	function get_menu () {
 		var div = document.createElement('div');
-		div.classList.add('hide','blue-bar-menu');
+		div.classList.add('blue-bar-menu');
 		var ul = document.createElement('ul');
 		div.ul = ul;
 		div.appendChild(ul);
+		return div;
+	}
+
+	function get_modal () {
+		var div = new_elem({type:'div'});
 		return div;
 	}
 }
@@ -66,7 +91,7 @@ function RadioGroup (blue_bar, user_id) {
 		_group.push(handler);
 		handler.button.addEventListener('click',
 			function () {
-				if (handler.menu.classList.contains('hide')) {
+				if (handler.disp.classList.contains('hide')) {
 					_this.closeOthers(handler);
 					handler.refresh();
 				} else {
@@ -81,8 +106,8 @@ function RadioGroup (blue_bar, user_id) {
 		console.log('close others');
 		console.log(handler);
 		for (var i = 0; i < _group.length; i++) {
-			if (_group[i] !== handler) _group[i].menu.classList.add('hide');
-			else _group[i].menu.classList.remove('hide');
+			if (_group[i] !== handler) _group[i].disp.classList.add('hide');
+			else _group[i].disp.classList.remove('hide');
 		};
 	}
 }

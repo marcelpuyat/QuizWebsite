@@ -135,6 +135,12 @@ function new_elem (aux) {
 			ret_elem.setAttribute(attributes[i].name,attributes[i].value);
 		};
 	}
+	if (aux.classList) {
+		var classList = aux.classList;
+		for (var i = 0; i < classList.length; i++) {
+			ret_elem.classList.add(classList[i]);
+		};
+	}
 	if (aux.innerHTML) ret_elem.innerHTML = aux.innerHTML;
 	if (aux.children) {
 		var children = aux.children;

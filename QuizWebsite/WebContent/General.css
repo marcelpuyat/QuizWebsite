@@ -347,13 +347,22 @@ ul#graph-search-results {
 	position: relative;
 }
 
-.blue-bar-menu {
+.blue-bar-display {
 	position: absolute;
-	top:31px;
+	top:5px;
 	background-color: white;
 	border-radius: 6px;
 	border: 3px solid rgba(0,0,0,0.2);
 	width: 200px;
+	min-height: 100px;
 	right: -20px;
+	-webkit-transition:0.3s;
+	-moz-transition:0.3s;
+	-o-transition:0.3s;
+	-ms-transition:0.3s;
+	transition:0.3s;
+}
+
+.blue-bar-menu {
 }
 
