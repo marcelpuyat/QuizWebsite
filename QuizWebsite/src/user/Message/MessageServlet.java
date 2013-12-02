@@ -20,6 +20,7 @@ import customObjects.SelfRefreshingConnection;
 @WebServlet("/MessageServlet")
 public class MessageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final String DELETE_MESSAGE = "delete";
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -70,7 +71,7 @@ public class MessageServlet extends HttpServlet {
 			long messageID = Long.parseLong(message_id_string);
 			String action = request.getParameter("action");
 			
-			if (action.equals("delete")) {
+			if (action.equals(DELETE_MESSAGE)) {
 				Message.deleteMessage(messageID, con);
 			} 
 			else/*if(action.equals("read"))*/{

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import user.User;
-
+import customObjects.CustomDate;
 import customObjects.SelfRefreshingConnection;
 
 public class Message {
@@ -92,7 +92,7 @@ public class Message {
 		}
 	}
 	
-	public Calendar getDate() {
+	public CustomDate getDate() {
 		try {
 			PreparedStatement stmt = con.prepareStatement("SELECT date FROM Messages WHERE id = " + this.id);
 			ResultSet rs = stmt.executeQuery();
@@ -100,7 +100,7 @@ public class Message {
 			Timestamp ts = rs.getTimestamp(1);
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTimeInMillis(ts.getTime());
-			return calendar;
+			return new CustomDate(calendar);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

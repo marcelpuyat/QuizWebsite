@@ -46,7 +46,6 @@ public class QuizInfoServlet extends HttpServlet {
 		
 		HttpSession session = (HttpSession) request.getSession();
 		User user = (User) session.getAttribute("user");
-		if (user == null) user = new User(43, databaseConnection);
 		
 		QuizInfo quizInfo = new QuizInfo(quiz_id, databaseConnection);
 		

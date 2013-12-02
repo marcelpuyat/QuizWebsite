@@ -2,7 +2,9 @@ package customObjects;
 
 import java.util.Calendar;
 
-public class MessageDate {
+import org.json.JSONObject;
+
+public class CustomDate {
 	
 	private int year;
 	private int month;
@@ -11,7 +13,7 @@ public class MessageDate {
 	private int minutes;
 	private int seconds;
 	
-	public MessageDate(Calendar calendar) {
+	public CustomDate(Calendar calendar) {
 		this.setYear(calendar.get(Calendar.YEAR));
 		this.setMonth(calendar.get(Calendar.MONTH) + 1); // MONTHS ARE INDEXED FROM 0!
 		this.setDate(calendar.get(Calendar.DATE));
@@ -102,5 +104,17 @@ public class MessageDate {
 	 */
 	public int getSeconds() {
 		return seconds;
+	}
+	
+	public JSONObject toJSON() {
+		JSONObject dateInfo = new JSONObject();
+
+		dateInfo.put("year", this.getYear());
+		dateInfo.put("month", this.getMonth());
+		dateInfo.put("date", this.getDate());
+		dateInfo.put("hours", this.getHours());
+		dateInfo.put("minutes", this.getMinutes());
+		dateInfo.put("seconds", this.getSeconds());
+		return dateInfo;
 	}
 }

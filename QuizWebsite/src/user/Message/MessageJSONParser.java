@@ -1,13 +1,11 @@
 package user.message;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import user.UserJSONParser;
-import customObjects.MessageDate;
 import customObjects.SelfRefreshingConnection;
 
 public class MessageJSONParser {
@@ -69,7 +67,7 @@ public class MessageJSONParser {
 		JSONObject msgInfo = new JSONObject();
 		msgInfo.put("subject", msg.getSubject());
 		msgInfo.put("body", msg.getBody());
-		msgInfo.put("date", parseDate(msg.getDate()));
+		msgInfo.put("date", msg.getDate().toJSON());
 		msgInfo.put("message_id", msg.getMessageID());
 		msgInfo.put("was_read", msg.hasBeenRead());
 		
@@ -82,23 +80,6 @@ public class MessageJSONParser {
 		}
 		
 		return msgInfo;
-	}
-	
-	/**
-	 * Returns JSON of date (specified in MessageServlet spec) given a Calendar object (using Message.getDate())
-	 * @param calendar
-	 * @return
-	 */
-	private static JSONObject parseDate(Calendar calendar) {
-		JSONObject dateInfo = new JSONObject();
-		MessageDate msgDate = new MessageDate(calendar);
-		
-		dateInfo.put("year", msgDate.getYear());
-		dateInfo.put("month", msgDate.getMonth());
-		dateInfo.put("day", msgDate.getDate());
-		dateInfo.put("hours", msgDate.getHours());
-		dateInfo.put("minutes", msgDate.getMinutes());
-		return null;
 	}
 	
 	/**
