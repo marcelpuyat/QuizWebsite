@@ -125,3 +125,55 @@ function Timer (fps) {
 		return elapsed / seconds;
 	};
 }
+
+
+function new_elem (aux) {
+	var ret_elem = document.createElement(aux.type);
+	if (aux.attributes) {
+		var attributes = aux.attributes;
+		for (var i = 0; i < attributes.length; i++) {
+			ret_elem.setAttribute(attributes[i].name,attributes[i].value);
+		};
+	}
+	if (aux.innerHTML) ret_elem.innerHTML = aux.innerHTML;
+	if (aux.children) {
+		var children = aux.children;
+		for (var i = 0; i < children.length; i++) {
+			ret_elem.appendChild(children[i]);
+		};
+	}
+	return ret_elem;
+}
+
+function create_user_list (data) {
+	var received = data.received;
+	var sent = data.sent;
+	var all = received.concat(sent);
+	var sorted = all.sort(function (a,b) {
+		if (a.date.year != b.date.year) return a.date.year - b.date.year;
+		if (a.date.month != b.date.month) return a.date.month - b.date.month;
+		if (a.date.date != b.date.date) return a.date.date - b.date.date;
+		if (a.date.hours != b.date.hours) return a.date.hours - b.date.hours;
+		if (a.date.minutes != b.date.minutes) return a.date.minutes - b.date.minutes;
+		if (a.date.seconds != b.date.seconds) return a.date.seconds - b.date.seconds;
+	});
+	var users_set = {}; //set
+	var mapped = sorted.map(function (element) {
+		var obj = {};
+		if (element.to_user != undefined) {
+			obj.usr = element.to_user;
+		}
+		if (element.from_user != undefined) {
+			obj.usr = element.from_user;
+		}
+		obj.subject = element.subject;
+		obj.was_read = element.was_read;
+		return obj;
+	});
+	var filtered = mapped.filter(function (element) {
+		if (element.usr.username in users_set) return false;
+		users_set[element.usr.username] = true;
+		return true;
+	});
+	return filtered;
+}

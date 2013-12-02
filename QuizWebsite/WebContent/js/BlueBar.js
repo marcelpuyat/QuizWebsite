@@ -139,29 +139,20 @@ function MessagesHandler (blue_bar, user_id) {
 	}
 
 	this.liAtIndex = function (index) {
-		/* compose message */
-		if (index == 0) {
-			var li = document.createElement('li');
-			li.innerHTML = 'New Message';
-			return li;
-		} else {
-			var li = document.createElement('li');
-			var user = _data.user_list[index + 1];
-			li.innerHTML = user.first_name + ' ' + user.last_name;
-			return li;
-		}
+		var usr - _data.user_list[index].usr;
+		var div = new_elem({
+			type:'div',
+			innerHTML:usr.first_name + ' ' + usr.last_name
+		});
+		var li = new_elem({
+			type:'li',
+			children:[div]
+		});
+		return li;
 	}
 
 	this.modalAtIndex = function (index) {
-		/* compose message */
-		if (index == 0) {
-			var div = document.createElement('div');
-			var subject_input = document.createElement('input');
-			subject_input.type = 'text';
-			subject_input.placeholder = 'Subject';
-			
-			var body_input = document.createElement('input');
-		}
+		
 	}
 
 	this.modalAtIndexExists = function (index) {
@@ -169,40 +160,7 @@ function MessagesHandler (blue_bar, user_id) {
 	}
 
 	this.indexExists = function (index) {
-		return (index <= _data.user_list.length);
-	}
-
-	function create_user_list (data) {
-		var received = data.received;
-		var sent = data.sent;
-		var all = received.concat(sent);
-		var sorted = all.sort(function (a,b) {
-			if (a.date.year != b.date.year) return a.date.year - b.date.year;
-			if (a.date.month != b.date.month) return a.date.month - b.date.month;
-			if (a.date.date != b.date.date) return a.date.date - b.date.date;
-			if (a.date.hours != b.date.hours) return a.date.hours - b.date.hours;
-			if (a.date.minutes != b.date.minutes) return a.date.minutes - b.date.minutes;
-			if (a.date.seconds != b.date.seconds) return a.date.seconds - b.date.seconds;
-		});
-		var users_set = {}; //set
-		var mapped = sorted.map(function (element) {
-			var obj = {};
-			if (element.to_user != undefined) {
-				obj.usr = element.to_user;
-			}
-			if (element.from_user != undefined) {
-				obj.usr = element.from_user;
-			}
-			obj.subject = element.subject;
-			obj.was_read = element.was_read;
-			return obj;
-		});
-		var filtered = mapped.filter(function (element) {
-			if (element.usr.username in users_set) return false;
-			users[element.usr.username] = true;
-			return true;
-		});
-		return filtered;
+		return (index < _data.user_list.length);
 	}
 }
 
