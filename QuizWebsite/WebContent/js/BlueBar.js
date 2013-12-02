@@ -10,11 +10,12 @@ var open_message_pane;
 function BlueBarRadioMenu (user_id) {
 	var _user_id = user_id;
 	var _this = this;
+	var _handlers = {};
 	var _radio_menu_types = [
-		{id:'requests-button',holder_id:'requests-button-holder',handler:RequestsHandler},
-		{id:'messages-button',holder_id:'messages-button-holder',handler:MessagesHandler},
-		{id:'notifications-button',holder_id:'notifications-button-holder',handler:NotificationsHandler},
-		{id:'settings-button',holder_id:'settings-button-holder',handler:SettingsHandler}
+		{name:'requests',id:'requests-button',holder_id:'requests-button-holder',handler:RequestsHandler},
+		{name:'messages',id:'messages-button',holder_id:'messages-button-holder',handler:MessagesHandler},
+		{name:'notifications',id:'notifications-button',holder_id:'notifications-button-holder',handler:NotificationsHandler},
+		{name:'settings',id:'settings-button',holder_id:'settings-button-holder',handler:SettingsHandler}
 	];
 	(function init () {
 		if (_user_id != -1) {
@@ -29,9 +30,10 @@ function BlueBarRadioMenu (user_id) {
 			var handler = new type.handler(_this, _user_id);
 			handler.button = document.getElementById(type.id);
 			handler.holder = document.getElementById(type.holder_id);
-			handler.disp = get_display();
+			handler.disp = get_display(handler);
 			handler.holder.appendChild(handler.disp);
 			rg.push(handler);
+			_handlers[type.name] = handler;
 		};
 	}
 
@@ -41,7 +43,14 @@ function BlueBarRadioMenu (user_id) {
 		var i = 0;
 		while (true) {
 			if (handler.indexExists(i)) {
-				ul.appendChild(handler.liAtIndex(i));
+				var new_li = handler.liAtIndex(i);
+				ul.appendChild(new_li);
+				new_li.classList.add('pointable');
+				if (handler.modalAtIndexExists(i)) {
+					new_li.addEventListener('click',function () {
+						_this.toModalAtIndex(i,handler);
+					});
+				}
 				i++;
 			} else {
 				break;
@@ -50,12 +59,26 @@ function BlueBarRadioMenu (user_id) {
 	}
 
 	this.toUserModal = function (user_id) {
-		
+		var handler = _handlers.messages;
+		show_modal(handler.modalAtUser(user_id));
 	}
 
-	function get_display () {
+	this.toModalAtIndex = function (index,handler) {
+		show_modal(handler.modalAtIndex(index), handler);
+	}
+
+	function show_modal (elem, handler) {
+		handler.disp.modal.m_body.innerHTML = '';
+		handler.disp.modal.m_body.appendChild(elem);
+		handler.disp.modal.classList.add('open');
+	}
+	function hide_modal (handler) {
+		handler.disp.modal.classList.remove('open');
+	}
+
+	function get_display (handler) {
 		var menu = get_menu();
-		var modal = get_modal();
+		var modal = get_modal(handler);
 		var div = new_elem({
 			type:'div',
 			classList:['blue-bar-display','hide'],
@@ -75,9 +98,29 @@ function BlueBarRadioMenu (user_id) {
 		return div;
 	}
 
-	function get_modal () {
-		var div = new_elem({type:'div'});
-		return div;
+	function get_modal (handler) {
+		var modal_header = new_elem({
+			type:'li',
+			classList:['modal-header','pointable'],
+			innerHTML:'<'
+		});
+		var modal_body = new_elem({
+			type:'li',
+			classList:['modal-body']
+		});
+		var ul = new_elem({
+			type:'ul',
+			classList:['blue-bar-modal'],
+			children:[modal_header,modal_body]
+		});
+		ul.header = modal_header;
+		ul.m_body = modal_body;
+
+		modal_header.addEventListener('click',function () {
+			hide_modal(handler);
+		});
+
+		return ul;
 	}
 }
 
@@ -179,7 +222,11 @@ function MessagesHandler (blue_bar, user_id) {
 	}
 
 	this.modalAtIndex = function (index) {
-		
+		var div = new_elem({
+			type:'div',
+			innerHTML:'hi'
+		});
+		return div;
 	}
 
 	/* messages specific */
