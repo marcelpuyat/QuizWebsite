@@ -159,20 +159,18 @@ function create_user_list (data) {
 	});
 	var users_set = {}; //set
 	var mapped = sorted.map(function (element) {
-		var obj = {};
 		if (element.to_user != undefined) {
-			obj.usr = element.to_user;
+			return element.to_user;
 		}
 		if (element.from_user != undefined) {
-			obj.usr = element.from_user;
+			return element.from_user;
 		}
-		obj.subject = element.subject;
-		obj.was_read = element.was_read;
-		return obj;
+		return {};
 	});
 	var filtered = mapped.filter(function (element) {
-		if (element.usr.username in users_set) return false;
-		users_set[element.usr.username] = true;
+		if (element == {}) return false;
+		if (element.username in users_set) return false;
+		users_set[element.username] = true;
 		return true;
 	});
 	return filtered;

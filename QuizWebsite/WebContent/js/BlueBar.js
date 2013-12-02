@@ -2,6 +2,8 @@
 	new BlueBarRadioMenu(document.getElementById('user_id_stash').getAttribute('user_id'));
 })();
 
+var open_message_pane;
+
 function BlueBarRadioMenu (user_id) {
 	var _user_id = user_id;
 	var _this = this;
@@ -139,7 +141,7 @@ function MessagesHandler (blue_bar, user_id) {
 	}
 
 	this.liAtIndex = function (index) {
-		var usr - _data.user_list[index].usr;
+		var usr = _data.user_list[index];
 		var div = new_elem({
 			type:'div',
 			innerHTML:usr.first_name + ' ' + usr.last_name
@@ -153,6 +155,22 @@ function MessagesHandler (blue_bar, user_id) {
 
 	this.modalAtIndex = function (index) {
 		
+	}
+
+	/* messages specific */
+	this.modalAtUser = function (user_id) {
+		var found = -1;
+		for (var i = 0; i < _data.user_list.length; i++) {
+			if (user_id == _data.user_list[i].id) {
+				found = i;
+				break;
+			}
+		};
+		if (found === -1) {
+			_data.user_list.splice(0,0,{id:user_id});
+			found = 0;
+		}
+		return modalAtIndex(found);
 	}
 
 	this.modalAtIndexExists = function (index) {
