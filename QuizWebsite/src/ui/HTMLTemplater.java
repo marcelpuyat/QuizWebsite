@@ -16,7 +16,7 @@ public class HTMLTemplater {
 		User curr_user = (User)session.getAttribute("user");
 		String username = "Login";
 		String user_url = "/QuizWebsite/Login.jsp";
-		int user_id = -1;
+		long user_id = -1;
 		if (curr_user != null) {
 			username = curr_user.getDisplayName();
 			user_url = curr_user.getUserURL();
