@@ -38,6 +38,8 @@ public class UserJSONParser {
 			userInfo.put("username", user_username);
 			userInfo.put("first_name", user_firstname);
 			userInfo.put("last_name", user_lastname);
+			userInfo.put("quizzes_created", user.getNumQuizzesCreated());
+			userInfo.put("quizzes_taken", user.getNumQuizzesTaken());
 			userInfo.put("id", user_id);
 			
 			return userInfo;

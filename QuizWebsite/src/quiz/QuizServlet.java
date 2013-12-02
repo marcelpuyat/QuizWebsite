@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import user.User;
 import customObjects.SelfRefreshingConnection;
 
 
@@ -105,11 +106,14 @@ public class QuizServlet extends HttpServlet {
 		boolean isCreating = quiz_id_string.equals("new");
 				
 		JSONObject newQuizResponse = new JSONObject();
+		
 		/* Quiz Creation */
 		if (isCreating) {
 			try {
 				Quiz newQuiz = JSONParser.storeNewQuizWithJSON(newQuizData, con);
 				
+				String creator = newQuizData.getString("creator");
+
 				ArrayList<String> tags = JSONParser.getTagsFromJSONArray(newQuizData.getJSONArray("tags"));
 				
 				createTags(tags, con, newQuiz.getID());

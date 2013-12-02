@@ -39,6 +39,26 @@ public class User {
 		catch (Exception e) { e.printStackTrace();}
 	}
 	
+	public int getNumQuizzesCreated() {
+		int count = 0;
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT id FROM Quizzes WHERE creator = \"" + this.getUserName() + "\"");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) count++;
+			return count;
+		} catch (Exception e) { e.printStackTrace(); return -1;}
+	}
+	
+	public int getNumQuizzesTaken() {
+		int count = 0;
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT id FROM QuizResults WHERE user_id = " + this.user_id);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) count++;
+			return count;
+		} catch (Exception e) { e.printStackTrace(); return -1;}
+	}
+	
 	public boolean existsInDB() throws ClassNotFoundException {
 		if (this.user_id == -1) return false;
 		try {
@@ -239,6 +259,8 @@ public class User {
 				resultJSON.accumulate("first_name",first_name);
 				resultJSON.accumulate("last_name", last_name);
 				resultJSON.accumulate("display_name", first_name + " " + last_name);
+				resultJSON.accumulate("quizzes_created", this.getNumQuizzesCreated());
+				resultJSON.accumulate("quizzes_taken", this.getNumQuizzesTaken());
 				resultJSON.accumulate("status", "success");
 			} else {
 				resultJSON.accumulate("status", "missing data");
@@ -265,7 +287,7 @@ public class User {
 	}
 	
 	public JSONArray getFriendsLatestResults() {		
-		String get5MostRecentFriendResults = "SELECT QuizResults.date_taken, Quizzes.name AS quiz_name, Quizzes.id AS quiz_id, QuizResults.user_percentage_score," +
+		String get5MostRecentFriendResults = "SELECT Users.id AS user_id, QuizResults.date_taken, Quizzes.name AS quiz_name, Quizzes.id AS quiz_id, QuizResults.user_percentage_score," +
 				" Users.username FROM QuizResults INNER JOIN Users INNER JOIN Quizzes INNER JOIN Relations WHERE" +
 				" Relations.user_a_id = " + this.user_id + " AND Relations.status = \"FRD\" AND Relations.user_b_id = Users.id AND Quizzes.id" +
 				" = QuizResults.quiz_id AND QuizResults.user_id = Users.id ORDER BY date_taken DESC LIMIT 5";
@@ -277,6 +299,7 @@ public class User {
 			
 			while (rs.next()) {
 				JSONObject result = new JSONObject();
+				User user = new User(rs.getLong("user_id"), con);
 				result.put("quiz_name", rs.getString("quiz_name"));
 				result.put("quiz_id", rs.getLong("quiz_id"));
 				result.put("user_percentage_score", rs.getDouble("user_percentage_score"));
@@ -286,6 +309,7 @@ public class User {
 					CustomDate dateTaken = new CustomDate(dateTakenCalendar);
 					JSONObject date = dateTaken.toJSON();
 				result.put("date", date);
+				result.put("user", user.getPublicJSONSummary());
 				results.put(result);
 			}
 			

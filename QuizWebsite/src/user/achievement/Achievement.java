@@ -6,8 +6,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import user.User;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import user.User;
 import customObjects.SelfRefreshingConnection;
 
 public class Achievement {
@@ -180,5 +182,24 @@ public class Achievement {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public static JSONArray getUserAchievementsNotEarned(SelfRefreshingConnection con, long user_id) {
+		ArrayList<Achievement> earned = getUserAchievements(con, user_id);
+		
+		JSONArray notEarned = new JSONArray();
+		
+		for (int i = 0; i < AchievementConstants.achievements.length; i++) {
+			boolean found = false;
+			for (int j = 0; j < earned.size(); j++) {
+				if (earned.get(j).getTitle().equals(AchievementConstants.achievements[i][0])) found = true;
+			}
+			if (found) continue;
+			JSONObject achv = new JSONObject();
+			achv.put("title", AchievementConstants.achievements[i][0]);
+			achv.put("description", AchievementConstants.achievements[i][1]);
+			notEarned.put(achv);
+		}
+		return notEarned;
 	}
 }

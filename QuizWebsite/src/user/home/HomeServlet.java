@@ -10,10 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import quiz.Quiz;
-
 import user.User;
+import user.achievement.Achievement;
+import user.achievement.AchievementJSONParser;
 import customObjects.SelfRefreshingConnection;
 
 /**
@@ -44,8 +46,18 @@ public class HomeServlet extends HttpServlet {
 		JSONArray createdQuizzes = user.getCreatedQuizzes();
 		JSONArray friendsResults = user.getFriendsLatestResults();
 		JSONArray popularQuizzes = Quiz.getMostPopularQuizzes(con);
+		JSONArray achievements = AchievementJSONParser.getAchievementsInJSONGivenUser(user_id, con);
+		JSONArray achvNotEarned = Achievement.getUserAchievementsNotEarned(con, user_id);
 		
-		// TODO implement spec
+		JSONObject responseJSON = new JSONObject();
+		responseJSON.put("recent_results", recentResults);
+		responseJSON.put("created_quizzes", createdQuizzes);
+		responseJSON.put("friend_results", friendsResults);
+		responseJSON.put("popular_quizzes", popularQuizzes);
+		responseJSON.put("achievements_earned", achievements);
+		responseJSON.put("achievements_not_earned", achvNotEarned);
+
+		response.getWriter().println(responseJSON.toString());
 	}
 
 	/**
