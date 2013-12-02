@@ -16,9 +16,11 @@ public class HTMLTemplater {
 		User curr_user = (User)session.getAttribute("user");
 		String username = "Login";
 		String user_url = "/QuizWebsite/Login.jsp";
+		int user_id = -1;
 		if (curr_user != null) {
 			username = curr_user.getDisplayName();
 			user_url = curr_user.getUserURL();
+			user_id  = curr_user.getUserId();
 		}
 		
 		return 
@@ -27,6 +29,7 @@ public class HTMLTemplater {
 				"<a href=\"/QuizWebsite/\" id=\"masthead-logo\" class=\"sprite logo\"></a>"+
 				"<div class=\"header-wrapper\">"+
 					"<div class=\"navbar right\">"+
+						"<div id=\"user_id_stash\" user_id=\""+user_id+"\" style=\"display:none;\"></div>"+
 						"<ul class=\"nav\">"+
 							"<li class=\"sprite requests blue-dropdown-radio\" id=\"requests-button\"></li>"+
 							"<li class=\"sprite messages blue-dropdown-radio\" id=\"messages-button\"></li>"+

@@ -119,7 +119,7 @@ function MessagesHandler (blue_bar) {
 
 	this.refresh = function () {
 		get_json_from_url(
-			'',
+			'/QuizWebsite/',
 			function (data) {
 				_data = data;
 				_blue_bar.update(_this);
