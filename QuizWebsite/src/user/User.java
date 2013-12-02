@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 import org.json.JSONObject;
 
+import user.achievement.Achievement;
+
 import customObjects.SelfRefreshingConnection;
 
 public class User {
