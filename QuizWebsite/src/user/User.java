@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import user.achievement.Achievement;
+import customObjects.CustomDate;
 import customObjects.SelfRefreshingConnection;
 
 public class User {
@@ -263,8 +264,38 @@ public class User {
 		return false;
 	}
 	
-	
-	
+	public JSONArray getFriendsLatestResults() {		
+		String get5MostRecentFriendResults = "SELECT QuizResults.date_taken, Quizzes.name AS quiz_name, Quizzes.id AS quiz_id, QuizResults.user_percentage_score," +
+				" Users.username FROM QuizResults INNER JOIN Users INNER JOIN Quizzes INNER JOIN Relations WHERE" +
+				" Relations.user_a_id = " + this.user_id + " AND Relations.status = \"FRD\" AND Relations.user_b_id = Users.id AND Quizzes.id" +
+				" = QuizResults.quiz_id AND QuizResults.user_id = Users.id ORDER BY date_taken DESC LIMIT 5";
+		
+		try {
+			PreparedStatement stmt = con.prepareStatement(get5MostRecentFriendResults);
+			ResultSet rs = stmt.executeQuery();
+			JSONArray results = new JSONArray();
+			
+			while (rs.next()) {
+				JSONObject result = new JSONObject();
+				result.put("quiz_name", rs.getString("quiz_name"));
+				result.put("quiz_id", rs.getLong("quiz_id"));
+				result.put("user_percentage_score", rs.getDouble("user_percentage_score"));
+					Calendar dateTakenCalendar = Calendar.getInstance();
+					Timestamp ts = rs.getTimestamp("date_taken");
+					dateTakenCalendar.setTimeInMillis(ts.getTime());
+					CustomDate dateTaken = new CustomDate(dateTakenCalendar);
+					JSONObject date = dateTaken.toJSON();
+				result.put("date", date);
+				results.put(result);
+			}
+			
+			return results;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 	/* SETTERS */
 	public void setFirstName(String first_name) {

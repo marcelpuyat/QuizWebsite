@@ -47,7 +47,12 @@ public class QuizResultsServlet extends HttpServlet {
 		User user = (User) session.getAttribute("user");
 		
 		// Adds to database automatically
-		JSONParser.parseJSONIntoQuizResults(jSONresults, con, user);
+		QuizResults results = JSONParser.parseJSONIntoQuizResults(jSONresults, con, user);
+		long quiz_id = results.getQuizID();
+		
+		// Increment quiz taken frequency
+		Quiz quizTaken = new Quiz(quiz_id, con);
+		quizTaken.incrementFrequency();
 	}
 
 }

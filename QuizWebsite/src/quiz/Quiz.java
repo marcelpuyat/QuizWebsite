@@ -13,6 +13,9 @@ import java.util.ArrayList;
 
 import javax.sql.rowset.serial.SerialBlob;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import question.Question;
 import customObjects.SelfRefreshingConnection;
 
@@ -101,6 +104,36 @@ public class Quiz {
 		} catch (Exception e) { e.printStackTrace(); }
 	}
 	
+	public void incrementFrequency() {
+		try {
+			PreparedStatement stmt = con.prepareStatement("UPDATE Quizzes SET frequency = frequency + 1 WHERE id = " + this.quiz_id);
+			stmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static JSONArray getMostPopularQuizzes(SelfRefreshingConnection con) {
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT creator, name, id, frequency FROM Quizzes ORDER BY frequency DESC LIMIT 5");
+			ResultSet rs = stmt.executeQuery();
+			JSONArray quizzes = new JSONArray();
+			
+			while (rs.next()) {
+				JSONObject quiz = new JSONObject();
+				quiz.put("quiz_name", rs.getString("name"));
+				quiz.put("creator", rs.getString("creator"));
+				quiz.put("quiz_id", rs.getLong("id"));
+				quiz.put("frequency", rs.getLong("frequency"));
+				quizzes.put(quiz);
+			}
+			return quizzes;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	/**
 	 * Returns next available ID
 	 * @param con
@@ -142,7 +175,7 @@ public class Quiz {
 	{
 		PreparedStatement stmt;
 		try {
-			stmt = con.prepareStatement("INSERT INTO Quizzes (name, creator, description, questions, max_score, is_randomizable, is_multiple_page, is_practicable, is_immediately_corrected) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			stmt = con.prepareStatement("INSERT INTO Quizzes (name, creator, description, questions, max_score, is_randomizable, is_multiple_page, is_practicable, is_immediately_corrected, frequency) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, 0)");
 			stmt.setString(1, name);
 			stmt.setString(2, creator);
 			stmt.setString(3, description);			
