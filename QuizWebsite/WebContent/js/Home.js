@@ -77,7 +77,7 @@ function update_newsfeed(friend_results, newsfeed_bar) {
 		
 		ul.appendChild(li);
 	}
-	
+
 	newsfeed_bar.appendChild(ul);
 }
 
@@ -173,8 +173,25 @@ function update_created_quizzes(created_quizzes, panel) {
 	for (var i = 0; i < created_quizzes.length; i++) {
 		var li = document.createElement('li');
 		
+		var quiz_name = created_quizzes[i].quiz_name;
+		var quiz_id = created_quizzes[i].quiz_id;
+		
+		var quiz_link = document.createElement('a');
+		quiz_link.href = "/QuizWebsite/QuizPage.jsp?quiz_id=" + quiz_id;
+		quiz_link.innerHTML = quiz_name;
+		
+		li.appendChild(quiz_link);
+		
 		ul.appendChild(li);
 	}
+	
+	var title = document.createElement('span');
+	title.innerHTML = "My Quizzes";
+	var br = document.createElement('br');
+	
+	panel.appendChild(title);
+	panel.appendChild(br);
+	panel.appendChild(ul);
 }
 
 function update_my_results(my_results, panel) {
