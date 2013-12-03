@@ -76,13 +76,15 @@ function BlueBarRadioMenu (user_id) {
 	}
 
 	this.toModalAtIndex = function (index,handler) {
-		show_modal(handler.modalAtIndex(index), handler);
+		var header_title = (handler.modalAtTitleIndex) ? handler.modalAtTitleIndex(index) : "";
+		show_modal(handler.modalAtIndex(index), handler, header_title);
 	}
 
-	function show_modal (elem, handler) {
+	function show_modal (elem, handler, header_title) {
 		handler.disp.modal.m_body.innerHTML = '';
 		handler.disp.modal.m_body.appendChild(elem);
 		handler.disp.modal.classList.add('open');
+		handler.disp.modal.header.title_disp.innerHTML = header_title;
 		if (elem.afterLoad) setTimeout(elem.afterLoad,200);
 	}
 	function hide_modal (handler) {
@@ -112,10 +114,19 @@ function BlueBarRadioMenu (user_id) {
 	}
 
 	function get_modal (handler) {
+		var modal_header_back = new_elem({
+			type:'span',
+			classList:['left'],
+			innerHTML:'<'
+		});
+		var modal_header_disp = new_elem({
+			type:'span',
+			classList:['modal-header-title']
+		});
 		var modal_header = new_elem({
 			type:'li',
 			classList:['modal-header','pointable'],
-			innerHTML:'<'
+			children:[modal_header_back,modal_header_disp]
 		});
 		var modal_body = new_elem({
 			type:'li',
@@ -128,6 +139,7 @@ function BlueBarRadioMenu (user_id) {
 		});
 		ul.header = modal_header;
 		ul.m_body = modal_body;
+		ul.header.title_disp = modal_header_disp;
 
 		modal_header.addEventListener('click',function () {
 			hide_modal(handler);
@@ -243,6 +255,10 @@ function MessagesHandler (blue_bar, user_id) {
 			children:[div]
 		});
 		return li;
+	}
+
+	this.modalAtTitleIndex = function (index) {
+		return _data.user_list[index].first_name + ' ' + _data.user_list[index].last_name;
 	}
 
 	this.modalAtIndex = function (index) {
