@@ -200,6 +200,32 @@ function update_my_results(my_results, panel) {
 	for (var i = 0; i < my_results.length; i++) {
 		var li = document.createElement('li');
 		
+		var quiz_name = my_results[i].quiz_name;
+		var quiz_id = my_results[i].quiz_id;
+		var date = my_results[i].date;
+		var year = date.year;
+		var month = date.month;
+		var date = date.date;
+		var time_taken = my_results[i].time_taken;
+		var user_percentage_score = my_results[i].user_percentage_score;
+		
+		var quiz_link = document.createElement('a');
+		quiz_link.href = "/QuizWebsite/QuizPage.jsp?quiz_id=" + quiz_id;
+		quiz_link.innerHTML = quiz_name;
+		
+		var text = document.createElement('span');
+		text.innerHTML = ": score of " + (user_percentage_score * 100).toFixed(0) + " in " + (time_taken).toFixed(1) + " seconds"; 
+		
+		li.appendChild(quiz_link);
+		li.appendChild(text);
 		ul.appendChild(li);
 	}
+	
+	var title = document.createElement('span');
+	title.innerHTML = "My Recent Results";
+	var br = document.createElement('br');
+	
+	panel.appendChild(title);
+	panel.appendChild(br);
+	panel.appendChild(ul);
 }
