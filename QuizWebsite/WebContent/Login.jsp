@@ -30,11 +30,13 @@
 			<ul class="login-ul" id="create-account-ul">
 				<li><h2 class="lighter">Create a new Account</h2></li>
 				<li><div class="faint">username</div></li>
-				<li><input type="text" name="new-username" id="new-username"><span class="error-message smaller hide" id="new-username-taken-error-message">username taken</span><span class="error-message smaller hide" id="new-username-malformed-error-message">username must only consist of a-z, A-Z, 0-9, -, or _</span></li>
+				<li><span class="error-message smaller hide" id="new-username-taken-error-message">username taken</span><span class="error-message smaller hide" id="new-username-malformed-error-message">username must only consist of a-z, A-Z, 0-9, -, or _</span></li>
+				<li><input type="text" name="new-username" id="new-username"></li>
 				<li><div class="faint">password</div></li>
 				<li><input type="password" name="new-password" id="new-password1"></li>
 				<li><div class="faint smaller">password again</div></li>
-				<li><input type="password" name="new-password-redundant" id="new-password2"><span class="error-message smaller hide" id="new-password-error-message">passwords don't match</span></li>
+				<li><span class="error-message smaller hide" id="new-password-error-message">passwords don't match</span></li>
+				<li><input type="password" name="new-password-redundant" id="new-password2"></li>
 				<li><input type="button" onclick="submit_new_user()" value="Submit"><span class="error-message smaller hide" id="creation-error-message">account creation error</span></li>
 			</ul>
 		</div>

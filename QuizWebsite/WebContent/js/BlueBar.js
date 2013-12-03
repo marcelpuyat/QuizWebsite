@@ -33,6 +33,7 @@ function BlueBarRadioMenu (user_id) {
 			handler.holder = document.getElementById(type.holder_id);
 			handler.disp = get_display(handler);
 			handler.holder.appendChild(handler.disp);
+			handler.holder.appendChild(getNib());
 			_rg.push(handler);
 			_handlers[type.name] = handler;
 		};
@@ -87,6 +88,13 @@ function BlueBarRadioMenu (user_id) {
 
 	function hide_modal (handler) {
 		handler.disp.modal.classList.remove('open');
+	}
+
+	function getNib () {
+		return new_elem({
+			type:'span',
+			classList:['menu-nib']
+		});
 	}
 
 	function get_display (handler) {
@@ -420,7 +428,7 @@ function NotificationsHandler (blue_bar, user_id) {
 
 	this.refresh = function () {
 		get_json_from_url(
-			'',
+			'/QuizWebsite/RelationServlet',
 			function (data) {
 				_data = data;
 				_blue_bar.update(_this);

@@ -354,10 +354,10 @@ ul#graph-search-results {
 
 .blue-bar-display {
 	position: absolute;
-	top:5px;
+	top:7px;
 	background-color: white;
 	border-radius: 6px;
-	border: 3px solid rgba(0,0,0,0.2);
+	border: 3px solid rgb(200,200,200);
 	width: 200px;
 	height: 180px;
 	right: -20px;
@@ -368,6 +368,20 @@ ul#graph-search-results {
 	-o-transition:0.3s;
 	-ms-transition:0.3s;
 	transition:0.3s;
+}
+
+.menu-nib {
+	border-left:10px solid transparent;
+	border-right:10px solid transparent;
+	border-bottom: 7px solid rgb(200,200,200);
+	top: 0px;
+	right: 4px;
+	display: none;
+}
+
+.blue-bar-display:not(.hide) + .menu-nib {
+	display: block;
+	position: absolute;
 }
 
 .blue-bar-menu {
@@ -449,10 +463,12 @@ ul#graph-search-results {
 }
 
 .chat-message > .message-body {
-	padding: 1px 4px;
-	border-radius: 5px;
-	max-width: 90%;
+	padding: 3px 6px;
+	border-radius: 9px;
+	max-width: 70%;
 	display: inline-block;
+	font-size: 11px;
+	margin: 2px 0px;
 }
 
 .chat-message.sent > .message-body {
