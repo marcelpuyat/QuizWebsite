@@ -57,6 +57,7 @@
 				<ul id="masthead-friends-ul"></ul>
 				<div id="user-photo-pad"><div id="user-photo"></div></div>
 			</div>
+			<span class="right faint" id="relation-status"></span>
 			<div id="buttons" class="page-width thin center-block center">
 				<div class="hide button" id="message-button" onclick="open_message_pane(<%= getUserIdOfPage(request, application) %>)">Message <%= getUserName(request, application) %></div>
 				<div class="hide button" id="accept-request-button" onclick="acceptRequest()">Accept Friend Request</div>
@@ -66,9 +67,7 @@
 				<div class="hide button red" id="delete-friend-button" onclick="removeFriend()">Delete Friend</div>
 				<div class="hide button" id="request-button" onclick="sendRequest()">Send Friend Request</div>
 			</div>
-			<div class="" id="user-info"></div><br>
-			<div class="" id="relation-status"></div><br>
-			<br>
+			<div class="" id="user-info"></div>
 			<div class="" id ="relation-controls">
 			</div><br>
 			<div class="" id="recent-results"></div><br>
