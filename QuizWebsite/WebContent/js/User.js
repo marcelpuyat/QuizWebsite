@@ -171,7 +171,20 @@ function display_achievements(achievements) {
 }
 
 function display_created_quizzes(created_quizzes) {
+	var ul = document.createElement('ul');
+	for (var i = 0; i < created_quizzes.length; i++) {
+		var li = document.createElement('li');
+		var quiz_name = created_quizzes[i].quiz_name;
+		var quiz_id = created_quizzes[i].quiz_id;
 
+		var quiz_link = document.createElement('a');
+		quiz_link.href = "/QuizWebsite/QuizPage.jsp?quiz_id=" + quiz_id;
+		quiz_link.innerHTML = quiz_name;
+
+		li.appendChild(quiz_link);
+		ul.appendChild(li);
+	}
+	created_quizzes_div.appendChild(ul);
 }
 
 function display_recent_results(recent_results) {
