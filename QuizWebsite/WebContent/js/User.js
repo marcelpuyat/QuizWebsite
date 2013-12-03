@@ -20,7 +20,7 @@ var request_button = document.getElementById("request-button");
 var profileServletURL = "/QuizWebsite/ProfileServlet";
 
 /* Servlet URL for getting relation details */
-var relationServletURL = "/QuizWebsite/RelationServlet"
+var relationServletURL = "/QuizWebsite/RelationServlet";
 
 /* Relation details */
 var is_friend = false;
@@ -28,6 +28,7 @@ var is_blocked = false;
 var has_blocked = false;
 var pending_request = false;
 var has_requested = false;
+var is_self = false;
 
 /* viewer id and viewee id */
 var _curr_user_id;
@@ -37,6 +38,7 @@ var _target_user_id;
 function init_js(curr_user_id, target_user_id) {
 	_curr_user_id = curr_user_id;
 	_target_user_id = target_user_id;
+	if (curr_user_id == target_user_id) is_self = true;
 
 	set_relations();
 	get_json_from_url(profileServletURL + '?user_id=' + target_user_id, function (data) {
@@ -155,6 +157,8 @@ function display_relation_controls(user_info) {
 	} else if (pending_request) {
 		status_div.innerHTML = "friendship pending";
 		showButton(block_button);
+	} else if (is_self) {
+		message_button.classList.add('hide');
 	} else {
 		showButton(request_button);
 		showButton(block_button);
