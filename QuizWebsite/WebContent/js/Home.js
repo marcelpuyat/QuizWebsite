@@ -64,7 +64,7 @@ function update_my_friends(friends_panel) {
 		}
 		
 		var title = document.createElement('span');
-		title.innerHTML = "My Friends";
+		title.innerHTML = "<u><b>My Friends</b></u>";
 		
 		var br = document.createElement('br');
 		friends_panel.appendChild(title);
@@ -128,7 +128,7 @@ function update_achievements(achvs_earned, achvs_not_earned, achvs_earned_div, a
 	}
 	var br = document.createElement('br');
 	var title = document.createElement('span');
-	title.innerHTML = "Achievements Unlocked:";
+	title.innerHTML = "<u><b>Achievements Unlocked:</b></u>";
 	
 	achvs_earned_div.appendChild(title);
 	achvs_earned_div.appendChild(br);
@@ -145,7 +145,7 @@ function update_achievements(achvs_earned, achvs_not_earned, achvs_earned_div, a
 	}
 	
 	var title2 = document.createElement('span');
-	title2.innerHTML = "Achievements Not Unlocked:";
+	title2.innerHTML = "<u><b>Achievements Not Unlocked:</b></u>";
 	
 	achvs_not_earned_div.appendChild(title2);
 	achvs_not_earned_div.appendChild(br);
@@ -193,7 +193,7 @@ function update_popular_quizzes(popular_quizzes, panel) {
 	}
 	
 	var title = document.createElement('span');
-	title.innerHTML = "Popular Quizzes";
+	title.innerHTML = "<u><b>Popular Quizzes</b></u>";
 	var br = document.createElement('br');
 	
 	panel.appendChild(title);
@@ -220,7 +220,7 @@ function update_created_quizzes(created_quizzes, panel) {
 	}
 	
 	var title = document.createElement('span');
-	title.innerHTML = "My Quizzes";
+	title.innerHTML = "<u><b>My Quizzes</b></u>";
 	var br = document.createElement('br');
 	
 	panel.appendChild(title);
@@ -256,7 +256,7 @@ function update_my_results(my_results, panel) {
 	}
 	
 	var title = document.createElement('span');
-	title.innerHTML = "My Recent Results";
+	title.innerHTML = "<u><b>My Recent Results</b></u>";
 	var br = document.createElement('br');
 	
 	panel.appendChild(title);
