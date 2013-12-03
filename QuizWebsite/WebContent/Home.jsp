@@ -9,7 +9,15 @@
 <%!
 long getUserID(HttpSession session) {
 	User user = (User) session.getAttribute("user");
-	return user.getUserId();
+	if (user != null) return user.getUserId();
+	else return -1;
+}
+String getUsername(HttpSession session) {
+	User user = (User) session.getAttribute("user");
+	try {
+		if (user != null) return user.getUserName();	
+	} catch (ClassNotFoundException e) {}
+	return "";
 }
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -21,11 +29,11 @@ long getUserID(HttpSession session) {
 <link rel="stylesheet" type="text/css" href="/QuizWebsite/Home.css">
 
 </head>
-<body onload="init_js(<%= getUserID(request.getSession()) %>)">
+<body onload="init_js(<%= getUserID(session) %>)">
 	<div id="content-wrapper">
 		<%= HTMLTemplater.getBlueBar(session)  %>
 		<div class="page-width wide" id="center-wrapper">
-			<h1 style="text-align:center;">Welcome <%User user = (User) session.getAttribute("user"); out.println(user.getUserName()); %>!</h1>
+			<h1 style="text-align:center;">Welcome <%= getUsername(session) %>!</h1>
 			<div class="left side-panel panel" id="left-content-panel">
 						<a href="/QuizWebsite/NewQuiz.jsp"><button>Create New Quiz</button></a>
 
