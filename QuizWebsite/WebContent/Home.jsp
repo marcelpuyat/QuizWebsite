@@ -30,7 +30,7 @@ long getUserID(HttpSession session) {
 					</li>
 				</ul>
 			</div>
-			<div class="page-width thin center-block panel" style="height:300px;background-color:black;" id="inner-center-wrapper"></div>
+			<div class="page-width thin center-block panel" id="inner-center-wrapper"></div>
 			<div class="right side-panel panel" id="right-content-panel"></div>
 		</div>
 	</div>
