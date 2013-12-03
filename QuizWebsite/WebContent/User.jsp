@@ -27,13 +27,17 @@
 		catch (ClassNotFoundException e) {}
 		return "FaceQuiz";
 	}
-	long getUserId(HttpServletRequest req, ServletContext context) {
+	long getUserIdOfPage(HttpServletRequest req, ServletContext context) {
 		SelfRefreshingConnection con = (SelfRefreshingConnection)context.getAttribute("database_connection");
 		String user_id_str = req.getParameter("user_id");
 		String username    = req.getParameter("username");
 		if (user_id_str != null) return Integer.parseInt(user_id_str);
 		else if (username!= null) return (new User(username, con)).getUserId();
 		return -1;
+	}
+	long getCurrUserId(HttpServletRequest req) {
+		User user = (User)req.getSession().getAttribute("user");
+		return user.getUserId();
 	}
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -43,11 +47,20 @@
 <title><%= getUserName(request, application) %></title>
 <link rel="stylesheet" type="text/css" href="/QuizWebsite/General.css">
 </head>
-<body>
+<body onload="init_js(<%= getCurrUserId(request) %>, <%=getUserIdOfPage(request, application)%>)">
 	<div id="content-wrapper">
 		<%= HTMLTemplater.getBlueBar(session)  %>
-		<div class="pointable messag-user" onclick="open_message_pane(<%= getUserId(request, application) %>)">Message <%= getUserName(request, application) %></div>
+		<div class="" id ="user-info"></div>
+		<br>
+		<div class="" id ="relation-controls">
+			<div class="pointable messag-user" id="message-button" onclick="open_message_pane(<%= getUserIdOfPage(request, application) %>)">Message <%= getUserName(request, application) %></div>
+		</div>
+		<div class="" id="recent-results"></div>
+		<div class="" id ="created-quizzes"></div>
+		<div class="" id ="achievements"></div>
 	</div>
 	<%= HTMLTemplater.getGeneralJS() %>
+	<script src="/QuizWebsite/js/User.js" type="text/javascript"></script>
+
 </body>
 </html>
