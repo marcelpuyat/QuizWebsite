@@ -32,7 +32,7 @@
 		String user_id_str = req.getParameter("user_id");
 		String username    = req.getParameter("username");
 		if (user_id_str != null) return Integer.parseInt(user_id_str);
-		else if (username!= null) return (new User(usernamem con)).getUserId();
+		else if (username!= null) return (new User(username, con)).getUserId();
 		return -1;
 	}
 %>
