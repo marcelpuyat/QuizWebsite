@@ -18,11 +18,11 @@ function BlueBarRadioMenu (user_id) {
 		{name:'notifications',id:'notifications-button',holder_id:'notifications-button-holder',handler:NotificationsHandler},
 		{name:'settings',id:'settings-button',holder_id:'settings-button-holder',handler:SettingsHandler}
 	];
-	(function init () {
+	function init () {
 		if (_user_id != -1) {
 			init_radio_menus();
 		}
-	})();
+	}
 
 	function init_radio_menus () {
 		_rg = new RadioGroup(_this);
@@ -34,6 +34,7 @@ function BlueBarRadioMenu (user_id) {
 			handler.disp = get_display(handler);
 			handler.holder.appendChild(handler.disp);
 			handler.holder.appendChild(getNib());
+			handler.refresh();
 			_rg.push(handler);
 			_handlers[type.name] = handler;
 		};
@@ -163,6 +164,8 @@ function BlueBarRadioMenu (user_id) {
 
 		return ul;
 	}
+
+	init();
 }
 
 function RadioGroup (blue_bar, user_id) {
@@ -260,7 +263,7 @@ function MessagesHandler (blue_bar, user_id) {
 
 	this.modalTopPressed = function () {
 		if (_modal_messages_ul && _modal_messages_ul.firstChild) {
-			_modal_messages_ul.firstChild.scrollIntoView();
+			_modal_messages_ul.firstChild.scrollIntoView(false);
 		}
 	}
 

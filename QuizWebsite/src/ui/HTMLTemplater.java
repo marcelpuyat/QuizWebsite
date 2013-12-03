@@ -31,11 +31,11 @@ public class HTMLTemplater {
 					"<div class=\"navbar right\">"+
 						"<div id=\"user_id_stash\" user_id=\""+user_id+"\" style=\"display:none;\"></div>"+
 						"<ul class=\"nav\">"+
-							"<li class=\"sprite requests blue-dropdown-radio\" id=\"requests-button\"></li>"+
+							"<li class=\"pointable sprite requests blue-dropdown-radio\" id=\"requests-button\"></li>"+
 							"<li class=\"menu-holder requests blue-dropdown-radio\" id=\"requests-button-holder\"></li>"+
-							"<li class=\"sprite messages blue-dropdown-radio\" id=\"messages-button\"></li>"+
+							"<li class=\"pointable sprite messages blue-dropdown-radio\" id=\"messages-button\"></li>"+
 							"<li class=\"menu-holder messages blue-dropdown-radio\" id=\"messages-button-holder\"></li>"+
-							"<li class=\"sprite notifications blue-dropdown-radio\" id=\"notifications-button\"></li>"+
+							"<li class=\"pointable sprite notifications blue-dropdown-radio\" id=\"notifications-button\"></li>"+
 							"<li class=\"menu-holder notifications blue-dropdown-radio\" id=\"notifications-button-holder\"></li>"+
 						"</ul>"+
 						"<a class=\"header-text\" href=\"/QuizWebsite/\">Home</a>"+
