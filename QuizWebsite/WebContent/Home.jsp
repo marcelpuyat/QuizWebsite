@@ -25,12 +25,10 @@ long getUserID(HttpSession session) {
 	<div id="content-wrapper">
 		<%= HTMLTemplater.getBlueBar(session)  %>
 		<div class="page-width wide" id="center-wrapper">
+			<h1 style="text-align:center;">Welcome <%User user = (User) session.getAttribute("user"); out.println(user.getUserName()); %>!</h1>
 			<div class="left side-panel panel" id="left-content-panel">
-				<ul>
-					<li>
 						<a href="/QuizWebsite/NewQuiz.jsp"><button>Create New Quiz</button></a>
-					</li>
-				</ul>
+
 			</div>
 			<div class="page-width thin center-block panel" id="inner-center-wrapper"></div>
 			<div class="right side-panel panel" id="right-content-panel"></div>

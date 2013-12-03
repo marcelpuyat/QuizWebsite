@@ -43,4 +43,30 @@ public class Users {
 		return true;
 	}
 	
+	public static boolean changePassword(String username, String currentPassword, String newPassword, SelfRefreshingConnection con) throws ClassNotFoundException{
+		try {
+			if(usernameExists(username, con)){
+				User user = new User(username, con);
+				if(user.matchesPassword(currentPassword)){
+					String getSalt = "SELECT salt FROM Users WHERE id = (?)";
+					PreparedStatement pstmt = con.prepareStatement(getSalt);
+					pstmt.setLong(1, user.getUserId());
+					ResultSet rs = pstmt.executeQuery();
+					if (rs.next()){ //just like in usernameExists, uses this to make sure that it found the salt
+						byte[] salt = rs.getBytes("salt");
+						byte[] updatedPassword = Hasher.hashPassword(newPassword, salt);
+						String changePassword = "UPDATE Users SET password = '"+updatedPassword+"' WHERE id = (?)";
+						PreparedStatement pstmt2 = con.prepareStatement(changePassword);
+						pstmt2.setLong(1, user.getUserId());
+						pstmt2.execute();
+						return true;
+					}
+				}
+			}
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 }
