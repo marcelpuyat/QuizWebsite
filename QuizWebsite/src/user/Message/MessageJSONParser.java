@@ -16,27 +16,22 @@ public class MessageJSONParser {
 	 * @param con
 	 * @return
 	 */
-	/*package*/static JSONObject getMessageInfoGivenUser(long user_id, SelfRefreshingConnection con) {
-		JSONObject info = new JSONObject();
+	/*package*/static JSONArray getMessageInfoGivenUser(long user_id, SelfRefreshingConnection con) {
 		
-		ArrayList<Message> receivedMsgs = Message.getAllReceivedMessages(user_id, con);
-		ArrayList<Message> sentMsgs = Message.getAllSentMessages(user_id, con);
+		ArrayList<Message> msgs = Message.getAllMessages(user_id, con);
 		
-		JSONArray receivedMsgsJSON = new JSONArray();
-		JSONArray sentMsgsJSON = new JSONArray();
+		JSONArray messages = new JSONArray();
 		
-		for (int i = 0; i < receivedMsgs.size(); i++) {
-			receivedMsgsJSON.put(getJSONForReceivedMessage(receivedMsgs.get(i)));
+		for (int i = 0; i < msgs.size(); i++) {
+			Message msg = msgs.get(i);
+			if (msg.getSender().getUserId() == user_id) {
+				messages.put(getJSONForSentMessage(msg));
+			} else {
+				messages.put(getJSONForReceivedMessage(msg));
+			}
 		}
 		
-		for (int i = 0; i < sentMsgs.size(); i++) {
-			sentMsgsJSON.put(getJSONForSentMessage(sentMsgs.get(i)));
-		}
-		
-		info.put("received", receivedMsgsJSON);
-		info.put("sent", sentMsgsJSON);
-		
-		return info;
+		return messages;
 	}
 	
 	/**
@@ -72,11 +67,13 @@ public class MessageJSONParser {
 		msgInfo.put("was_read", msg.hasBeenRead());
 		
 		if (sentMsg) {
-			msgInfo.put("to_user", UserJSONParser.parseUserIntoJSON(msg.getReceiver()));
+			msgInfo.put("type", "sent");
+			msgInfo.put("user", UserJSONParser.parseUserIntoJSON(msg.getReceiver()));
 		}
 		
 		else /*if(receivedMsg)*/ {
-			msgInfo.put("from_user", UserJSONParser.parseUserIntoJSON(msg.getSender()));
+			msgInfo.put("type", "received");
+			msgInfo.put("user", UserJSONParser.parseUserIntoJSON(msg.getSender()));
 		}
 		
 		return msgInfo;
@@ -89,27 +86,22 @@ public class MessageJSONParser {
 	 * @param con
 	 * @return
 	 */
-	/*package*/static JSONObject getMessageInfoBetweenUsers(long curr_user_id, long target_user_id, SelfRefreshingConnection con) {
-		JSONObject info = new JSONObject();
+	/*package*/static JSONArray getMessageInfoBetweenUsers(long curr_user_id, long target_user_id, SelfRefreshingConnection con) {
 		
-		ArrayList<Message> receivedMsgs = Message.getAllMessagesFromUser(curr_user_id, target_user_id, con);
-		ArrayList<Message> sentMsgs = Message.getAllMessagesFromUser(target_user_id, curr_user_id, con);
+		ArrayList<Message> msgs = Message.getAllMessagesFromAndToUser(curr_user_id, target_user_id, con);
 		
-		JSONArray receivedMsgsJSON = new JSONArray();
-		JSONArray sentMsgsJSON = new JSONArray();
+		JSONArray messages = new JSONArray();
 		
-		for (int i = 0; i < receivedMsgs.size(); i++) {
-			receivedMsgsJSON.put(getJSONForReceivedMessage(receivedMsgs.get(i)));
+		for (int i = 0; i < msgs.size(); i++) {
+			Message msg = msgs.get(i);
+			if (msg.getSender().getUserId() == curr_user_id) {
+				messages.put(getJSONForSentMessage(msg));
+			} else {
+				messages.put(getJSONForReceivedMessage(msg));
+			}
 		}
-		
-		for (int i = 0; i < sentMsgs.size(); i++) {
-			sentMsgsJSON.put(getJSONForSentMessage(sentMsgs.get(i)));
-		}
-		
-		info.put("received", receivedMsgsJSON);
-		info.put("sent", sentMsgsJSON);
-		
-		return info;
+			
+		return messages;
 	}
 	
 	/**

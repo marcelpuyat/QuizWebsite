@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import quiz.JSONParser;
@@ -40,11 +41,13 @@ public class MessageServlet extends HttpServlet {
 		/* Respond to query on single user */ // Explained by 1.) in https://github.com/djoeman84/QuizWebsite/wiki/MessageServlet
 		String user_id_string = request.getParameter("user_id");
 		
+		JSONObject msgs = new JSONObject();
+		
 		if (user_id_string != null) {
 			long user_id = Long.parseLong(user_id_string);
 			
-			JSONObject messageInfo = MessageJSONParser.getMessageInfoGivenUser(user_id, con);
-			response.getWriter().println(messageInfo.toString());
+			JSONArray messageInfo = MessageJSONParser.getMessageInfoGivenUser(user_id, con);
+			msgs.put("messages", messageInfo);
 		}
 		
 		/* Respond to query on two users */ // Explained by 2.) in https://github.com/djoeman84/QuizWebsite/wiki/MessageServlet
@@ -52,9 +55,11 @@ public class MessageServlet extends HttpServlet {
 			long curr_user_id = Long.parseLong(request.getParameter("curr_user_id"));
 			long target_user_id = Long.parseLong(request.getParameter("target_user_id"));
 			
-			JSONObject conversationInfo = MessageJSONParser.getMessageInfoBetweenUsers(curr_user_id, target_user_id, con);
-			response.getWriter().println(conversationInfo.toString());
+			JSONArray conversationInfo = MessageJSONParser.getMessageInfoBetweenUsers(curr_user_id, target_user_id, con);
+			msgs.put("messages", conversationInfo);
 		}
+		response.getWriter().println(msgs.toString());
+
 	}
 
 	/**

@@ -33,7 +33,32 @@ function update_display(data, newsfeed_bar) {
 		var user = friend_results[i].user;
 		console.log(quiz_name);
 		var li = document.createElement('li');
-		li.innerHTML = user.display_name + " took " + quiz_name + " and got a score of " + (user_percentage_score * 100).toFixed(0) + "%!";
+		
+		var quiz_link = document.createElement('a');
+		quiz_link.href = "/QuizWebsite/QuizPage.jsp?quiz_id=" + quiz_id;
+		quiz_link.innerHTML = quiz_name;
+		
+		var user_link = document.createElement('a');
+		user_link.href = "/QuizWebsite/User.jsp?username=" + user.username;
+		user_link.innerHTML = user.display_name;
+		
+		var quiz_span = document.createElement('span');
+		quiz_span.appendChild(quiz_link);
+		
+		var user_span = document.createElement('span');
+		user_span.appendChild(user_link);
+		
+		var textSpan = document.createElement('span');
+		textSpan.innerHTML = " took ";
+		
+		var textSpan2 = document.createElement('span');
+		textSpan2.innerHTML = " and got a score of " + (user_percentage_score * 100).toFixed(0) + "%!";
+		
+		li.appendChild(user_link);
+		li.appendChild(textSpan);
+		li.appendChild(quiz_link);
+		li.appendChild(textSpan2);
+		
 		ul.appendChild(li);
 	}
 	

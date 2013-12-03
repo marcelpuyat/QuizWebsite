@@ -137,10 +137,10 @@ public class Message {
 		}
 	}
 	
-	public static ArrayList<Message> getAllSentMessages(long user_id, SelfRefreshingConnection con) {
+	public static ArrayList<Message> getAllMessages(long user_id, SelfRefreshingConnection con) {
 		
 		try {
-			PreparedStatement stmt = con.prepareStatement("SELECT id FROM Messages WHERE user_from_id = " + user_id + orderByDate);
+			PreparedStatement stmt = con.prepareStatement("SELECT id FROM Messages WHERE user_from_id = " + user_id + " OR user_to_id = " + user_id + orderByDate);
 			ResultSet rs = stmt.executeQuery();
 			
 			ArrayList<Message> messages = new ArrayList<Message>();
@@ -156,27 +156,9 @@ public class Message {
 		return null;
 	}
 	
-	public static ArrayList<Message> getAllReceivedMessages(long user_id, SelfRefreshingConnection con) {
+	public static ArrayList<Message> getAllMessagesFromAndToUser(long receiver_user_id, long sender_user_id, SelfRefreshingConnection con) {
 		try {
-			PreparedStatement stmt = con.prepareStatement("SELECT id FROM Messages WHERE user_to_id = " + user_id + orderByDate);
-			ResultSet rs = stmt.executeQuery();
-			
-			ArrayList<Message> messages = new ArrayList<Message>();
-			
-			while (rs.next()) {
-				messages.add(new Message(con, rs.getLong(1)));
-			}
-			
-			return messages;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public static ArrayList<Message> getAllMessagesFromUser(long receiver_user_id, long sender_user_id, SelfRefreshingConnection con) {
-		try {
-			PreparedStatement stmt = con.prepareStatement("SELECT id FROM Messages WHERE user_from_id = " + sender_user_id + " AND user_to_id = " + receiver_user_id + orderByDate);
+			PreparedStatement stmt = con.prepareStatement("SELECT id FROM Messages WHERE (user_from_id = " + sender_user_id + " AND user_to_id = " + receiver_user_id + ") OR (user_from_id = " + receiver_user_id + " AND user_to_id = " + sender_user_id + orderByDate);
 			ResultSet rs = stmt.executeQuery();
 			
 			ArrayList<Message> messages = new ArrayList<Message>();
