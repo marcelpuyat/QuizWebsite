@@ -235,7 +235,7 @@ function MessagesHandler (blue_bar, user_id) {
 	}
 
 	this.modalAtIndex = function (index) {
-		var ul = new_elem({
+		var messages_ul = new_elem({
 			type:'ul',
 			classList:['chat-ul']
 		});
@@ -246,13 +246,27 @@ function MessagesHandler (blue_bar, user_id) {
 				classList:['message-body'],
 				innerHTML:user_messages[i].body
 			});
-			ul.prependChild(new_elem({
+			messages_ul.prependChild(new_elem({
 				type:'li',
 				classList:['chat-message',user_messages[i].type],
 				children:[body]
 			}));
 		};
-		return ul;
+
+		var messages_li = new_elem({
+			type:'li',
+			children:[messages_ul]
+		})
+		var compose_li = new_elem({
+			type:'li',
+			children:[get_compose_elem()]
+		})
+		var modal_ul = new_elem({
+			type:'ul',
+			classList:['messages-modal-ul'],
+			children:[messages_li,compose_li]
+		});
+		return modal_ul;
 	}
 
 	/* messages specific */
@@ -282,6 +296,29 @@ function MessagesHandler (blue_bar, user_id) {
 	function messages_by_uid (user_id, messages) {
 		return messages.filter(function (message) {
 			return (message.user.id == user_id);
+		});
+	}
+
+	function get_compose_elem () {
+		var composition_input = new_elem({
+			type:'input',
+			attributes:[
+				{name:'type',value:'text'}
+			],
+			classList:['chat-composition-input']
+		});
+		var send_button = new_elem({
+			type:'div',
+			innerHTML:'Send',
+			classList:['chat-send-button','pointable']
+		});
+		send_button.addEventListener(function () {
+			
+		})
+		return new_elem({
+			type:'div',
+			classList:['chat-composition-wrapper'],
+			children:[composition_input,send_button]
 		});
 	}
 
