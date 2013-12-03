@@ -49,8 +49,9 @@ function BlueBarRadioMenu (user_id) {
 				ul.appendChild(new_li);
 				new_li.classList.add('pointable');
 				if (handler.modalAtIndexExists(i)) {
+					var index = i;
 					new_li.addEventListener('click',function () {
-						_this.toModalAtIndex(i,handler);
+						_this.toModalAtIndex(index,handler);
 					});
 				}
 				i++;
@@ -234,11 +235,24 @@ function MessagesHandler (blue_bar, user_id) {
 	}
 
 	this.modalAtIndex = function (index) {
-		var div = new_elem({
-			type:'div',
-			innerHTML:'hi'
+		var ul = new_elem({
+			type:'ul',
+			classList:['chat-ul']
 		});
-		return div;
+		var user_messages = messages_by_uid(_data.user_list[index].id, _data.messages);
+		for (var i = 0; i < user_messages.length; i++) {
+			var body = new_elem({
+				type:'div',
+				classList:['message-body'],
+				innerHTML:user_messages[i].body
+			});
+			ul.prependChild(new_elem({
+				type:'li',
+				classList:['chat-message',user_messages[i].type],
+				children:[body]
+			}));
+		};
+		return ul;
 	}
 
 	/* messages specific */
@@ -265,8 +279,10 @@ function MessagesHandler (blue_bar, user_id) {
 		return (index < _data.user_list.length);
 	}
 
-	function messages_by_uid (messages) {
-		
+	function messages_by_uid (user_id, messages) {
+		return messages.filter(function (message) {
+			return (message.user.id == user_id);
+		});
 	}
 
 	function create_user_list (messages) {
