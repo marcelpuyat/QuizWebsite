@@ -4,25 +4,29 @@
 
 
 function init_js(userID) {
-	new NewsFeedHandler(document.getElementById("right-content-panel"), '/QuizWebsite/HomeServlet', userID);
+	new HomeHandler(document.getElementById("right-content-panel"),
+					document.getElementById("achievements-earned-panel"),
+					document.getElementById("achievements-not-earned-panel"),'/QuizWebsite/HomeServlet', userID);
 }
 
-function NewsFeedHandler(newsfeed_bar, home_url, user_id) {
+function HomeHandler(newsfeed_bar, achievements_earned_panel, achievements_not_earned_panel, home_url, user_id) {
 	var _newsfeed_bar = newsfeed_bar;
+	var _achievements_earned_panel = achievements_earned_panel;
+	var _achievements_not_earned_panel = achievements_not_earned_panel;
 	var _home_url = home_url;
 	
 	(function init() {
 		get_json_from_url(_home_url + '?user_id='+user_id, function (data) {
 			console.log(data);
-			update_display(data, _newsfeed_bar);
+			update_newsfeed(data.friend_results, _newsfeed_bar);
+			update_achievements(data.achievements_earned, data.achievements_not_earned, _achievements_earned_panel, _achievements_not_earned_panel);
 		});
 		
 	})();
 }
 
-function update_display(data, newsfeed_bar) {
+function update_newsfeed(friend_results, newsfeed_bar) {
 	console.log(newsfeed_bar);
-	var friend_results = data.friend_results;
 	var ul = document.createElement('ul');
 	
 	for (var i = 0; i < friend_results.length; i++) {
@@ -63,4 +67,29 @@ function update_display(data, newsfeed_bar) {
 	}
 	
 	newsfeed_bar.appendChild(ul);
+}
+
+function update_achievements(achvs_earned, achvs_not_earned, achvs_earned_div, achvs_not_earned_div) {
+	var achvs_earned_ul = document.createElement('ul');
+	
+	for (var i = 0; i < achvs_earned.length; i++) {
+		var title = achvs_earned[i].title;
+		var desc = achvs_earned[i].description;
+		
+		var li = document.createElement('li');
+		li.innerHTML = title + " - " + desc;
+		achvs_earned_ul.appendChild(li);
+	}
+	achvs_earned_div.appendChild(achvs_earned_ul);
+	
+	var achvs_not_earned_ul = document.createElement('ul');
+	for (var i = 0; i < achvs_not_earned.length; i++) {
+		var title = achvs_not_earned[i].title;
+		var desc = achvs_not_earned[i].description;
+		
+		var li = document.createElement('li');
+		li.innerHTML = title + " - " + desc;
+		achvs_not_earned_ul.appendChild(li);
+	}
+	achvs_not_earned_div.appendChild(achvs_not_earned_ul);
 }

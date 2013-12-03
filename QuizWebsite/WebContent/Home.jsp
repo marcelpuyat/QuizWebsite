@@ -32,6 +32,9 @@ long getUserID(HttpSession session) {
 			</div>
 			<div class="page-width thin center-block panel" id="inner-center-wrapper"></div>
 			<div class="right side-panel panel" id="right-content-panel"></div>
+			<div class="home-center-panel" id="achievements-earned-panel"></div>
+			<div class="home-center-panel" id="achievements-not-earned-panel"></div>
+			
 		</div>
 	</div>
 	<%= HTMLTemplater.getGeneralJS() %>
