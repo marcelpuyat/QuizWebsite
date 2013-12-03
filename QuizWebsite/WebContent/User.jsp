@@ -27,6 +27,14 @@
 		catch (ClassNotFoundException e) {}
 		return "FaceQuiz";
 	}
+	long getUserId(HttpServletRequest req, ServletContext context) {
+		SelfRefreshingConnection con = (SelfRefreshingConnection)context.getAttribute("database_connection");
+		String user_id_str = req.getParameter("user_id");
+		String username    = req.getParameter("username");
+		if (user_id_str != null) return Integer.parseInt(user_id_str);
+		else if (username!= null) return (new User(usernamem con)).getUserId();
+		return -1;
+	}
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
