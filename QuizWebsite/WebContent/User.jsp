@@ -50,10 +50,17 @@
 <body onload="init_js(<%= getCurrUserId(request) %>, <%=getUserIdOfPage(request, application)%>)">
 	<div id="content-wrapper">
 		<%= HTMLTemplater.getBlueBar(session)  %>
-		<div class="" id ="user-info"></div>
+		<div class="" id="user-info"></div>
+		<div class="" id="relation-status"></div>
 		<br>
 		<div class="" id ="relation-controls">
 			<div class="pointable messag-user" id="message-button" onclick="open_message_pane(<%= getUserIdOfPage(request, application) %>)">Message <%= getUserName(request, application) %></div>
+			<button class="button" id="accept-request-button" onclick="acceptRequest()">Accept Friend Request</button>
+			<button class="button" id="reject-request-button" onclick="rejectRequest()">Reject Friend Request</button>
+			<button class="button" id="block-user-button" onclick="blockUser()">Block User</button>
+			<button class="button" id="unblock-user-button" onclick="unblockUser()">Unblock User</button>
+			<button class="button" id="delete-friend-button" onclick="removeFriend()">Delete Friend</button>
+			<button class="button" id="request-button" onclick="sendRequest()">Send Friend Request</button>
 		</div>
 		<div class="" id="recent-results"></div>
 		<div class="" id ="created-quizzes"></div>

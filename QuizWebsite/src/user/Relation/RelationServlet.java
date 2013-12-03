@@ -54,9 +54,11 @@ public class RelationServlet extends HttpServlet {
 		
 		/* First type of GET request in spec */
 		else {
-			User userA = new User(request.getParameter("user_a_id"), databaseConnection);
-			User userB = new User(request.getParameter("user_b_id"), databaseConnection);
-			JSONObject userInfo = RelationJSONParser.parseUserComparisonStatus(userA, userB, getServletInfo());
+			User userA = new User(Long.parseLong(request.getParameter("user_a_id")), databaseConnection);
+			User userB = new User(Long.parseLong(request.getParameter("user_b_id")), databaseConnection);
+			JSONObject userInfo = new JSONObject();
+			
+			userInfo.put("status", Relation.getStatus(userA, userB, databaseConnection));
 			
 			response.getWriter().println(userInfo);
 		}
