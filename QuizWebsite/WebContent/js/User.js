@@ -65,7 +65,7 @@ function init_js(curr_user_id, target_user_id) {
 			display_created_quizzes(data.created_quizzes);
 
 			/* if friend, display more */
-			if (is_friend) {
+			if (is_friend || is_self) {
 				new FriendPageHandler(data);
 			}
 
