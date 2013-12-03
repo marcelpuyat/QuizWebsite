@@ -41,6 +41,8 @@ function BlueBarRadioMenu (user_id) {
 		var ul = handler.disp.menu.ul;
 		ul.innerHTML = '';
 		var i = 0;
+		var ul_name = handler.getUlName() || ">";
+		ul.appendChild(new_elem({type:'li',classList:['modal-header'],innerHTML:ul_name}));
 		while (true) {
 			if (handler.indexExists(i)) {
 				var new_li = handler.liAtIndex(i);
@@ -172,6 +174,10 @@ function RequestsHandler (blue_bar, user_id) {
 		
 	}
 
+	this.getUlName = function () {
+		return "";
+	}
+
 	this.liAtIndex = function (index) {
 		var li = document.createElement('li');
 		li.innerHTML = index;
@@ -206,6 +212,10 @@ function MessagesHandler (blue_bar, user_id) {
 			}
 		);
 		
+	}
+
+	this.getUlName = function () {
+		return "Messages";
 	}
 
 	this.liAtIndex = function (index) {
@@ -252,6 +262,47 @@ function MessagesHandler (blue_bar, user_id) {
 	this.indexExists = function (index) {
 		return (index < _data.user_list.length);
 	}
+
+	function messages_by_uid (user_id) {
+		
+	}
+
+	function sort_messages_by_date (data) {
+		return data.sort(function (a,b) {
+			if (a.date.year != b.date.year) return a.date.year - b.date.year;
+			if (a.date.month != b.date.month) return a.date.month - b.date.month;
+			if (a.date.date != b.date.date) return a.date.date - b.date.date;
+			if (a.date.hours != b.date.hours) return a.date.hours - b.date.hours;
+			if (a.date.minutes != b.date.minutes) return a.date.minutes - b.date.minutes;
+			if (a.date.seconds != b.date.seconds) return a.date.seconds - b.date.seconds;
+		});
+	}
+
+	function create_user_list (data) {
+		var received = data.received;
+		var sent = data.sent;
+		var all = received.concat(sent);
+		var sorted = sort_messages_by_date(all);
+		data.all_messages = sorted;
+		var users_set = {}; //set
+		var mapped = sorted.map(function (element) {
+			if (element.to_user != undefined) {
+				return element.to_user;
+			}
+			if (element.from_user != undefined) {
+				return element.from_user;
+			}
+			return {};
+		});
+		var filtered = mapped.filter(function (element) {
+			if (element == {}) return false;
+			if (element.username in users_set) return false;
+			users_set[element.username] = true;
+			return true;
+		});
+		return filtered;
+	}
+
 }
 
 function NotificationsHandler (blue_bar, user_id) {
@@ -269,6 +320,10 @@ function NotificationsHandler (blue_bar, user_id) {
 			}
 		);
 		
+	}
+
+	this.getUlName = function () {
+		return "";
 	}
 
 	this.liAtIndex = function (index) {
@@ -301,6 +356,10 @@ function SettingsHandler (blue_bar, user_id) {
 			}
 		);
 		
+	}
+
+	this.getUlName = function () {
+		return "";
 	}
 
 	this.liAtIndex = function (index) {

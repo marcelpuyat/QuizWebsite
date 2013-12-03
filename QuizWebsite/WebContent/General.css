@@ -376,6 +376,12 @@ ul#graph-search-results {
 
 }
 
+.modal-header {
+	background-color:rgba(82, 155, 198,0.7);
+	color: white;
+	box-shadow: 0px 0 19px rgba(0,0,0,0.3);
+}
+
 .blue-bar-modal {
 	position: absolute;
 	left: 110%;
