@@ -32,19 +32,18 @@ String getUsername(HttpSession session) {
 <body onload="init_js(<%= getUserID(session) %>)">
 	<div id="content-wrapper">
 		<%= HTMLTemplater.getBlueBar(session)  %>
-		<div class="page-width wide" id="center-wrapper">
-			<h1 style="text-align:center;">Welcome <%= getUsername(session) %>!</h1>
+		<div class="page-width wide" id="center-wrapper">	
 			<div class="left side-panel panel" id="left-content-panel">
 						<a href="/QuizWebsite/NewQuiz.jsp"><button>Create New Quiz</button></a>
 
 			</div>
 			<div class="page-width thin center-block panel" id="inner-center-wrapper"></div>
 			<div class="right side-panel panel" id="right-content-panel"></div>
-			<div class="home-center-panel" id="achievements-earned-panel"></div>
-			<div class="home-center-panel" id="achievements-not-earned-panel"></div>
-			<div class="home-center-panel" id="popular-quizzes-panel"></div>
-			<div class="home-center-panel" id="created-quizzes-panel"></div>
-			<div class="home-center-panel" id="my-results-panel"></div>
+			<div class="score-panel" id="achievements-earned-panel"></div>
+			<div class="score-panel" id="achievements-not-earned-panel"></div>
+			<div class="score-panel" id="popular-quizzes-panel"></div>
+			<div class="score-panel" id="created-quizzes-panel"></div>
+			<div class="score-panel" id="my-results-panel"></div>
 				
 		</div>
 	</div>
