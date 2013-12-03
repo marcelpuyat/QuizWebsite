@@ -33,11 +33,15 @@ public class UserJSONParser {
 			String user_username = user.getUserName() == null ? "" : user.getUserName();
 			String user_firstname = user.getFirstName() == null ? "" : user.getFirstName();
 			String user_lastname = user.getLastName() == null ? "" : user.getLastName();
+			String profile_pic = user.getProfilePicture() == null? "" : user.getProfilePicture();
+			String display_name = user.getDisplayName() == null ? "" : user.getDisplayName();
 			
 			JSONObject userInfo = new JSONObject();
 			userInfo.put("username", user_username);
 			userInfo.put("first_name", user_firstname);
 			userInfo.put("last_name", user_lastname);
+			userInfo.put("display_name", display_name);
+			userInfo.put("profile_picture", profile_pic);
 			userInfo.put("quizzes_created", user.getNumQuizzesCreated());
 			userInfo.put("quizzes_taken", user.getNumQuizzesTaken());
 			userInfo.put("id", user_id);

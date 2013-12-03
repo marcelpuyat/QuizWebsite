@@ -486,7 +486,7 @@ function NotificationsHandler (blue_bar, user_id) {
 
 	this.refresh = function () {
 		get_json_from_url(
-			'/QuizWebsite/RelationServlet',
+			'/QuizWebsite/RelationServlet?action=requests&user_id='+_user_id,
 			function (data) {
 				_data = data;
 				_blue_bar.update(_this);

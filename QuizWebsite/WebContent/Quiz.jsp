@@ -13,6 +13,9 @@
 		String practice = req.getParameter("practice");
 		return (practice != null && practice.equals("true"));
 	}
+	long getCurrentUserID(HttpServletRequest req) {
+		return ((User)req.getSession().getAttribute("user")).getUserId();
+	}
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -22,7 +25,7 @@
 <link rel="stylesheet" type="text/css" href="/QuizWebsite/Quiz.css">
 <link rel="stylesheet" type="text/css" href="/QuizWebsite/General.css">
 </head>
-<body onload="init_js('<%= getQuizID(request) %>',<%= isPractice(request) %>)">
+<body onload="init_js('<%= getQuizID(request) %>',<%= isPractice(request) %>, <%= getCurrentUserID(request) %>)">
 	<div id="content-wrapper">
 		<%= HTMLTemplater.getBlueBar(session)  %>
 		<div id="app-wrapper">

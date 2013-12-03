@@ -50,9 +50,12 @@ public class RelationServlet extends HttpServlet {
 																				  Relation.getAllFriends(user, databaseConnection),
 																				  Relation.getAllBlockedOutward(user, databaseConnection),
 																				  Relation.getAllBlockedInward(user, databaseConnection));
-			} else {
+			} else if (request.getParameter("action").equals("requests")) {
 				userInfo = new JSONObject();
 				userInfo.put("requests", UserJSONParser.getListOfUsersInJSONArray(Relation.getAllRequestsInward(user, databaseConnection)));
+			} else {
+				userInfo = new JSONObject();
+				userInfo.put("friends", UserJSONParser.getListOfUsersInJSONArray(Relation.getAllFriends(user, databaseConnection)));
 			}
 			response.getWriter().println(userInfo);
 			return;

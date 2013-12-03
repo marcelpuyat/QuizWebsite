@@ -9,8 +9,10 @@
  *     
  */
 
-function QuizHandler(quiz_id, load_url, post_url, is_practice) {
+function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 	/* init vars */
+	var _user_id = user_id;
+	var _this = this;
 	var _questions = [];
 	var _data;
 	var _iterator;
@@ -142,15 +144,68 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice) {
 		}, {client_aux:auxiliary_data, client_callback:callback});
 	};
 	
+	// GLOBALS
+	
+	var results_div;
+	var score;
+
 	this.waitForResults = function(callback, auxiliary_data) {
 		/* build and send answer data */
 		var answer = _build_results();
 		if(!_is_practice_quiz) _send_quiz_results(answer);
-		var elem = document.createElement('div');
-		elem.innerHTML = 'total correct: '+ answer.user_score+'\ntotal possible: '+answer.possible_score;
-		callback(elem, auxiliary_data);
+		results_div = document.createElement('div');
+		results_div.innerHTML = 'total correct: '+ answer.user_score+'\ntotal possible: '+answer.possible_score;
+		
+		// GLOBAL SCORE
+		score = answer.user_score / answer.possible_score;
+		
+		//STYLE PLEASE
+		var challenge_button = document.createElement('button');
+		challenge_button.innerHTML = "Challenge a friend!";
+		challenge_button.onclick = _this.challenge_click;
+		results_div.appendChild(challenge_button);
+		//
+		
+		callback(results_div, auxiliary_data);
 	};
 	
+	this.challenge_click = function() {
+		console.log(_user_id);
+		get_json_from_url("/QuizWebsite/RelationServlet?user_id=" + _user_id + "&action=friends", function (data) {
+			console.log(data);
+			_this.display_friends(data.friends);
+		});
+	};
+	
+	var friend_ul;
+	
+	this.display_friends = function (friends) {
+		friend_ul = document.createElement('ul');
+		for (var i = 0; i < friends.length; i++) {
+			var friend = document.createElement('li');
+			var friend_button = document.createElement('button');
+			var name = friends[i].display_name;
+			var friend_id = friends[i].id;
+			
+			friend_button.innerHTML = name;
+			friend_button.addEventListener("click", function() {_this.challenge_friend(friend_id);});
+			
+			friend.appendChild(friend_button);
+			friend_ul.appendChild(friend);
+		}
+		results_div.appendChild(friend_ul);
+	};
+	
+	this.challenge_friend = function(friend_id) {
+		var div = document.createElement('div');
+		div.innerHTML = "Challenge sent";
+		results_div.appendChild(div);
+		console.log(friend_id);
+		var challenge_message = "I challenge you to beat my score of " + (score * 100).toFixed(0) + "% on this quiz: <a href='/QuizWebsite/QuizPage.jsp?quiz_id=" + _quiz_id + "'>" + _data.quiz_name + "</a>";
+		post_json_to_url("/QuizWebsite/MessageServlet?action=send", {user_from_id: _user_id, user_to_id: friend_id, body: challenge_message, subject: ""}, function() {});
+		
+	};
+		
 	this.isMultiPage = function () {
 		return _data.is_multiple_page;
 	};
