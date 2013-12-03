@@ -28,7 +28,7 @@ long getUserID(HttpSession session) {
 			<div class="left side-panel panel" id="left-content-panel">
 				<ul>
 					<li>
-						<a href="/QuizWebsite/NewQuiz.jsp">Create New Quiz</a>
+						<a href="/QuizWebsite/NewQuiz.jsp"><button>Create New Quiz</button></a>
 					</li>
 				</ul>
 			</div>
