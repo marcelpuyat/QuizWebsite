@@ -74,6 +74,13 @@ public class UserServlet extends HttpServlet {
 		/* API SWITCH */
 		String api = request.getParameter("api");
 		
+		if (api.equals("logout")) {
+			request.getSession().setAttribute("user", null);
+			responseJSON.accumulate("status", "success");
+			response.getWriter().println(responseJSON.toString());
+			return;
+		}
+		
 		/* create new user */
 		if (api.equals("create_user")) {
 			JSONObject usrJSON = JSONParser.getJSONfromRequest(request);
