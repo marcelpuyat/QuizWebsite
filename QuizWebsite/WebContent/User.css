@@ -1,0 +1,31 @@
+.masthead {
+	height: 300px;
+	box-shadow: 0px 0px 10px inset;
+	position: relative;
+}
+
+#user-photo-pad {
+	position: absolute;
+	bottom: -65px;
+	left: 10px;
+	height: 150px;
+	width: 150px;
+	border-radius: 50%;
+	background-color: white;
+	padding: 6px;
+}
+
+	#user-photo {
+		position: absolute;
+		top: 3px;
+		left: 3px;
+		height: 150px;
+		width: 150px;
+		border-radius: 50%;
+		background-image: url('http://0.tqn.com/d/menshair/1/0/l/5/-/-/round-wood.jpg');
+		background-size: 150px;
+	}
+
+#buttons {
+	padding: 10px 0px;
+}

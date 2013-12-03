@@ -43,6 +43,9 @@ function init_js(curr_user_id, target_user_id) {
 
 		console.log(data);
 
+		/* display page */
+		document.getElementById('inner-content-container').classList.remove('hide');
+
 		if (is_blocked) {
 			BlockedPageHandler(data.user_info);
 		}
