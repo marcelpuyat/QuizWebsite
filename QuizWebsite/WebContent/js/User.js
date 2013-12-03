@@ -33,6 +33,7 @@ var has_requested = false;
 var _curr_user_id;
 var _target_user_id;
 
+/* I just store everything globally */
 function init_js(curr_user_id, target_user_id) {
 	_curr_user_id = curr_user_id;
 	_target_user_id = target_user_id;
@@ -53,6 +54,7 @@ function init_js(curr_user_id, target_user_id) {
 			display_relation_controls(data.user_info);
 			display_created_quizzes(data.created_quizzes);
 
+			/* if friend, display more */
 			if (is_friend) {
 				new FriendPageHandler(data);
 			}
@@ -85,6 +87,7 @@ function set_relations() {
 	});
 }
 
+/* Friends see achievements and recent results */
 function FriendPageHandler(data) {
 	(function init() {
 		display_achievements(data.achievements);
@@ -92,6 +95,7 @@ function FriendPageHandler(data) {
 	})();
 }
 
+/* Go ahead and style if you want... */
 function BlockedPageHandler(user_info) {
 	relation_controls_div.innerHTML = user_info.username + " has blocked you.";
 }
@@ -124,6 +128,7 @@ function display_user_info(user_info) {
 /* PLEASE STYLE THIS. FUNCTIONALITY OF BUTTONS SHOULD ALREADY BE CORRECT */
 function display_relation_controls(user_info) {
 
+	/* Hides options depending on what should show given current status */
 	if (is_friend) {
 		hideButton(accept_button);
 		hideButton(reject_button);
@@ -158,6 +163,7 @@ function display_relation_controls(user_info) {
 	}
 }
 
+/* Go ahead and style this */
 function display_achievements(achievements) {
 	var ul = document.createElement('ul');
 	for (var i = 0; i < achievements.length; i++) {
@@ -170,6 +176,7 @@ function display_achievements(achievements) {
 	achievements_div.appendChild(ul);
 }
 
+/* Same */
 function display_created_quizzes(created_quizzes) {
 	var ul = document.createElement('ul');
 	for (var i = 0; i < created_quizzes.length; i++) {
@@ -187,6 +194,7 @@ function display_created_quizzes(created_quizzes) {
 	created_quizzes_div.appendChild(ul);
 }
 
+/* have access to date */
 function display_recent_results(recent_results) {
 	var ul = document.createElement('ul');
 	for (var i = 0; i < recent_results.length; i++) {
@@ -215,6 +223,7 @@ function hideButton(button) {
 	button.className = button.className + " hide";
 }
 
+/* I just need a POST req but didnt know how to. So i used an empty post json */
 function removeFriend() {
 	relation_controls_div.innerHTML = "you are no longer friends";
 	post_json_to_url(
