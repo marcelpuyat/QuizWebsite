@@ -46,6 +46,11 @@ function init_js(curr_user_id, target_user_id) {
 		/* display page */
 		document.getElementById('inner-content-container').classList.remove('hide');
 
+		/* populate profile img */
+		if (data.user_info && data.user_info.profile_picture && data.user_info.profile_picture != '') {
+			document.getElementById('user-photo').style.backgroundImage = 'url(\''+data.user_info.profile_picture+'\')';
+		}
+
 		if (is_blocked) {
 			BlockedPageHandler(data.user_info);
 		}
@@ -67,6 +72,8 @@ function init_js(curr_user_id, target_user_id) {
 
 
 	});
+
+
 }
 
 /**

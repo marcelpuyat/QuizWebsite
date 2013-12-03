@@ -4,6 +4,16 @@
 	position: relative;
 }
 
+#masthead-friends-ul {
+
+}
+
+	#masthead-friends-ul > li {
+		width: 30px;
+		height: 30px;
+		background-size: 30px;
+	}
+
 #user-photo-pad {
 	position: absolute;
 	bottom: -65px;
@@ -23,7 +33,7 @@
 		width: 150px;
 		border-radius: 50%;
 		background-image: url('http://0.tqn.com/d/menshair/1/0/l/5/-/-/round-wood.jpg');
-		background-size: 150px;
+		background-size: cover;
 	}
 
 #buttons {

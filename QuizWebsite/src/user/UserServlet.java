@@ -159,6 +159,12 @@ public class UserServlet extends HttpServlet {
 					response.getWriter().println(responseJSON.toString());
 					return;
 				}
+				else if (field.equals("profile_picture")) {
+					update_user.setProfilePicture(usrJSON.getString("profile_picture"));
+					responseJSON.accumulate("status", "success");
+					response.getWriter().println(responseJSON.toString());
+					return;
+				}
 			}
 			catch (ClassNotFoundException e) {}
 			responseJSON.accumulate("status", "failure");

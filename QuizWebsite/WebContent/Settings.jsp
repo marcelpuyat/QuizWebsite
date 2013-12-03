@@ -23,6 +23,9 @@
 			<li><div id="last-name-update-label" class="faint">last name</div></li>
 			<li><input type="text" id="last-name-update"></li>
 			<li><input type="button" value="update" id="last-name-button"></li>
+			<li><div id="profile-picture-update-label" class="faint">profile picture</div></li>
+			<li><input type="text" id="profile-picture-update"></li>
+			<li><input type="button" value="update" id="profile-picture-button"></li>
 		</ul>
 	</div>
 	<%= HTMLTemplater.getGeneralJS() %>
