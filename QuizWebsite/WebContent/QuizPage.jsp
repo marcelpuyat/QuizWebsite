@@ -35,10 +35,10 @@
 							<a class="button red" href="javascript:delete_quiz(<%= getQuizID(request) %>)">Delete</a>
 						</li>
 						<li id="practice-li" class="flowing hide">
-							<a class="button" href="/QuizWebsite/Quiz.jsp?quiz_id=<%= getQuizID(request) %>&practice=true">Practice</a>
+							<a class="button green" href="/QuizWebsite/Quiz.jsp?quiz_id=<%= getQuizID(request) %>&practice=true">Practice</a>
 						</li>
 						<li id="play-li" class="flowing">
-							<a class="button" href="/QuizWebsite/Quiz.jsp?quiz_id=<%= getQuizID(request) %>&practice=false">Play</a>
+							<a class="button green" href="/QuizWebsite/Quiz.jsp?quiz_id=<%= getQuizID(request) %>&practice=false">Play</a>
 						</li>
 						<li id="edit-li" class="flowing hide">
 							<a class="button" href="/QuizWebsite/EditQuiz.jsp?quiz_id=<%= getQuizID(request) %>">Edit</a>
