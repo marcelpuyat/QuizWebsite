@@ -87,6 +87,7 @@ function BlueBarRadioMenu (user_id) {
 		handler.disp.modal.header.title_disp.innerHTML = header_title;
 		if (elem.afterLoad) setTimeout(elem.afterLoad,200);
 	}
+
 	function hide_modal (handler) {
 		handler.disp.modal.classList.remove('open');
 	}
