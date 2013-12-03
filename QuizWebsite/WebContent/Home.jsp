@@ -37,7 +37,6 @@ String getUsername(HttpSession session) {
 						<a href="/QuizWebsite/NewQuiz.jsp"><button>Create New Quiz</button></a>
 
 			</div>
-			<div class="page-width thin center-block panel" id="inner-center-wrapper"></div>
 			<div class="right side-panel panel" id="right-content-panel"></div>
 			<div class="score-panel" id="achievements-earned-panel"></div>
 			<div class="score-panel" id="achievements-not-earned-panel"></div>
