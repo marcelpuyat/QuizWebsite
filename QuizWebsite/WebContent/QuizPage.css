@@ -4,13 +4,22 @@ a {
 }
 
 .score-container {
-	width: 24%;
+	width: 22%;
+	padding: 1%;
 	display: inline-block;
 	background-color: lightblue;
 	vertical-align: top;
+	border-radius: 6px;
 }
 
 
 	#score-holder {
 		padding: 20px 0px;
 	}
+
+.best-of-header {
+	font-weight: lighter;
+	text-align: center;
+	padding: 3px;
+	margin: 0;
+}

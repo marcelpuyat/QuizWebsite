@@ -48,16 +48,32 @@
 				<li>
 					<ul id="score-holder">
 						<li class="flowing score-container">
-							<ul id="user-history"></ul>
+							<ul id="user-history">
+								<li>
+									<h4 class="best-of-header">User History</h4>
+								</li>
+							</ul>
 						</li>
 						<li class="flowing score-container">
-							<ul id="best-alltime"></ul>
+							<ul id="best-alltime">
+								<li>
+									<h4 class="best-of-header">Best All-Time</h4>
+								</li>
+							</ul>
 						</li>
 						<li class="flowing score-container">
-							<ul id="best-today"></ul>
+							<ul id="best-today">
+								<li>
+									<h4 class="best-of-header">Best Today</h4>
+								</li>
+							</ul>
 						</li>
 						<li class="flowing score-container">
-							<ul id="recent-scores"></ul>
+							<ul id="recent-scores">
+								<li>
+									<h4 class="best-of-header">Recent Scores</h4>
+								</li>
+							</ul>
 						</li>
 					</ul>
 				</li>
