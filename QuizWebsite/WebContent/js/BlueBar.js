@@ -206,7 +206,7 @@ function MessagesHandler (blue_bar, user_id) {
 				console.log('here');
 				console.log(data);
 				_data = data;
-				_data.user_list = create_user_list(data);
+				_data.user_list = create_user_list(data.messages);
 				console.log(_data);
 				_blue_bar.update(_this);
 			}
@@ -220,6 +220,8 @@ function MessagesHandler (blue_bar, user_id) {
 
 	this.liAtIndex = function (index) {
 		var usr = _data.user_list[index];
+		console.log('this');
+		console.log(usr);
 		var div = new_elem({
 			type:'div',
 			innerHTML:usr.first_name + ' ' + usr.last_name
@@ -263,44 +265,21 @@ function MessagesHandler (blue_bar, user_id) {
 		return (index < _data.user_list.length);
 	}
 
-	function messages_by_uid (user_id) {
+	function messages_by_uid (messages) {
 		
 	}
 
-	function sort_messages_by_date (data) {
-		return data.sort(function (a,b) {
-			if (a.date.year != b.date.year) return a.date.year - b.date.year;
-			if (a.date.month != b.date.month) return a.date.month - b.date.month;
-			if (a.date.date != b.date.date) return a.date.date - b.date.date;
-			if (a.date.hours != b.date.hours) return a.date.hours - b.date.hours;
-			if (a.date.minutes != b.date.minutes) return a.date.minutes - b.date.minutes;
-			if (a.date.seconds != b.date.seconds) return a.date.seconds - b.date.seconds;
-		});
-	}
-
-	function create_user_list (data) {
-		var received = data.received;
-		var sent = data.sent;
-		var all = received.concat(sent);
-		var sorted = sort_messages_by_date(all);
-		data.all_messages = sorted;
+	function create_user_list (messages) {
 		var users_set = {}; //set
-		var mapped = sorted.map(function (element) {
-			if (element.to_user != undefined) {
-				return element.to_user;
-			}
-			if (element.from_user != undefined) {
-				return element.from_user;
-			}
-			return {};
-		});
-		var filtered = mapped.filter(function (element) {
-			if (element == {}) return false;
-			if (element.username in users_set) return false;
-			users_set[element.username] = true;
+		var filtered = messages.filter(function (element) {
+			if (element.user.id in users_set) return false;
+			users_set[element.user.id] = true;
 			return true;
 		});
-		return filtered;
+		var mapped = filtered.map(function (element) {
+			return element.user;
+		});
+		return mapped;
 	}
 
 }
