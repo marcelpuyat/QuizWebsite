@@ -29,3 +29,11 @@
 #buttons {
 	padding: 10px 0px;
 }
+
+#user-summary {
+	padding: 20px 0px;
+}
+
+#user-summary > li {
+	display: block;
+}

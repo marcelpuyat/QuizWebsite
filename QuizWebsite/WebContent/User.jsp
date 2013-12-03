@@ -11,7 +11,7 @@
 	VerifyAccess.verify("Settings.jsp",session, request, response);
 %>
 <%!
-	String getUserName(HttpServletRequest req, ServletContext context) {
+	String getDisplayName(HttpServletRequest req, ServletContext context) {
 		try {
 			SelfRefreshingConnection con = (SelfRefreshingConnection)context.getAttribute("database_connection");
 			String user_id_str = req.getParameter("user_id");
@@ -22,6 +22,22 @@
 			} else if (username != null && !username.equals("")) {
 				User u = new User(username, con);
 				return u.getDisplayName();
+			}
+		}
+		catch (ClassNotFoundException e) {}
+		return "FaceQuiz";
+	}
+	String getUserName(HttpServletRequest req, ServletContext context) {
+		try {
+			SelfRefreshingConnection con = (SelfRefreshingConnection)context.getAttribute("database_connection");
+			String user_id_str = req.getParameter("user_id");
+			String username    = req.getParameter("username");
+			if (user_id_str != null && !user_id_str.equals("")) {
+				User u = new User(Integer.parseInt(user_id_str), con);
+				return u.getUserName();
+			} else if (username != null && !username.equals("")) {
+				User u = new User(username, con);
+				return u.getUserName();
 			}
 		}
 		catch (ClassNotFoundException e) {}
@@ -45,7 +61,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title><%= getUserName(request, application) %></title>
+<title><%= getDisplayName(request, application) %></title>
 <link rel="stylesheet" type="text/css" href="/QuizWebsite/General.css">
 <link rel="stylesheet" type="text/css" href="/QuizWebsite/User.css">
 </head>
@@ -59,7 +75,7 @@
 			</div>
 			<span class="right faint" id="relation-status"></span>
 			<div id="buttons" class="page-width thin center-block center">
-				<div class="hide button" id="message-button" onclick="open_message_pane(<%= getUserIdOfPage(request, application) %>)">Message <%= getUserName(request, application) %></div>
+				<div class="hide button" id="message-button" onclick="open_message_pane(<%= getUserIdOfPage(request, application) %>)">Message <%= getDisplayName(request, application) %></div>
 				<div class="hide button" id="accept-request-button" onclick="acceptRequest()">Accept Friend Request</div>
 				<div class="hide button" id="reject-request-button" onclick="rejectRequest()">Reject Friend Request</div>
 				<div class="hide button red" id="block-user-button" onclick="blockUser()">Block User</div>
@@ -67,11 +83,14 @@
 				<div class="hide button red" id="delete-friend-button" onclick="removeFriend()">Delete Friend</div>
 				<div class="hide button" id="request-button" onclick="sendRequest()">Send Friend Request</div>
 			</div>
+			<ul id="user-summary">
+				<li><div><%= getDisplayName(request, application) %></div></li>
+				<li><div class="faint"><%= getUserName(request, application) %></div></li>
+			</ul>
 			<div class="" id="user-info"></div>
-			<div class="" id ="relation-controls">
-			</div><br>
-			<div class="" id="recent-results"></div><br>
-			<div class="" id ="created-quizzes"></div><br>
+			<div class="" id ="relation-controls"></div>
+			<div class="" id="recent-results"></div>
+			<div class="" id ="created-quizzes"></div>
 			<div class="" id ="achievements"></div>
 		</div>
 	</div>
