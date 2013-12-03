@@ -51,13 +51,10 @@ function init_js(curr_user_id, target_user_id) {
 		else {
 			display_user_info(data.user_info);
 			display_relation_controls(data.user_info);
+			display_created_quizzes(data.created_quizzes);
 
 			if (is_friend) {
 				new FriendPageHandler(data);
-			}
-
-			else {
-				new AnonymousPageHandler(data, is_blocked, has_blocked, pending_request);
 			}
 
 		}
@@ -88,15 +85,10 @@ function set_relations() {
 	});
 }
 
-function FriendPageHandler(user_id) {
+function FriendPageHandler(data) {
 	(function init() {
-
-	})();
-}
-
-function AnonymousPageHandler(user_id, is_blocked, has_blocked, pending_request) {
-	(function init() {
-
+		display_achievements(data.achievements);
+		display_recent_results(data.recent_results);
 	})();
 }
 
@@ -164,6 +156,26 @@ function display_relation_controls(user_info) {
 		hideButton(unblock_button);
 		hideButton(delete_friend_button);
 	}
+}
+
+function display_achievements(achievements) {
+	var ul = document.createElement('ul');
+	for (var i = 0; i < achievements.length; i++) {
+		var li = document.createElement('li');
+		var title = achievements[i].title;
+		var desc = achievements[i].description;
+		li.innerHTML = title + " - " + desc;
+		ul.appendChild(li);
+	}
+	achievements_div.appendChild(ul);
+}
+
+function display_created_quizzes(created_quizzes) {
+
+}
+
+function display_recent_results(recent_results) {
+
 }
 
 function hideButton(button) {
