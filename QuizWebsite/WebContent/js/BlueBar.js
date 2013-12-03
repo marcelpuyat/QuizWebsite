@@ -453,7 +453,7 @@ function SettingsHandler (blue_bar, user_id) {
 	var _blue_bar = blue_bar;
 	var _this = this;
 
-	var _settings_items = [getLogoutItem];
+	var _settings_items = [getLogoutItem,getAccountSettings];
 
 	this.refresh = function () {
 		_blue_bar.update(_this);
@@ -479,6 +479,17 @@ function SettingsHandler (blue_bar, user_id) {
 	this.indexExists = function (index) {
 		console.log('here- index:'+index);
 		return index < _settings_items.length;
+	}
+
+	function getAccountSettings () {
+		var li = new_elem({
+			type:'li',
+			innerHTML:'Account Settings'
+		});
+		li.addEventListener('click', function () {
+			window.location = '/QuizWebsite/Settings.jsp';
+		});
+		return li;
 	}
 
 	function getLogoutItem () {
