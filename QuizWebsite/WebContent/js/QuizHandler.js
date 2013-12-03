@@ -176,11 +176,9 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 			_this.display_friends(data.friends);
 		});
 	};
-	
-	var friend_ul;
-	
+		
 	this.display_friends = function (friends) {
-		friend_ul = document.createElement('ul');
+		var friend_ul = document.createElement('ul');
 		for (var i = 0; i < friends.length; i++) {
 			var friend = document.createElement('li');
 			var friend_button = document.createElement('button');

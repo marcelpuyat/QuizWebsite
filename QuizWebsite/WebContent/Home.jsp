@@ -52,6 +52,7 @@ String getDisplayName(HttpSession session) {
 				<div class="score-panel" id="popular-quizzes-panel"></div>
 				<div class="score-panel" id="created-quizzes-panel"></div>
 				<div class="score-panel" id="my-results-panel"></div>
+				<div class="score-panel" id="my-friends-panel"></div>
 			</div>
 			<div class="right side-panel panel" id="right-content-panel"></div>
 				

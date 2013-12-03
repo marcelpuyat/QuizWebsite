@@ -10,18 +10,23 @@ function init_js(userID) {
 					document.getElementById("popular-quizzes-panel"),
 					document.getElementById("created-quizzes-panel"),
 					document.getElementById("my-results-panel"),
+					document.getElementById("my-friends-panel"),
 					'/QuizWebsite/HomeServlet', 
 					userID);
 }
 
+var _user_id;
+
 function HomeHandler(newsfeed_bar, achievements_earned_panel, achievements_not_earned_panel,
-		popular_quizzes_panel, created_quizzes_panel, my_results_panel, home_url, user_id) {
+		popular_quizzes_panel, created_quizzes_panel, my_results_panel, my_friends_panel, home_url, user_id) {
 	var _newsfeed_bar = newsfeed_bar;
 	var _achievements_earned_panel = achievements_earned_panel;
 	var _achievements_not_earned_panel = achievements_not_earned_panel;
 	var _popular_quizzes_panel = popular_quizzes_panel;
 	var _created_quizzes_panel = created_quizzes_panel;
 	var _my_results_panel = my_results_panel;
+	var _my_friends_panel = my_friends_panel;
+	_user_id = user_id;
 	
 	var _home_url = home_url;
 	
@@ -33,11 +38,40 @@ function HomeHandler(newsfeed_bar, achievements_earned_panel, achievements_not_e
 			update_popular_quizzes(data.popular_quizzes, _popular_quizzes_panel);
 			update_created_quizzes(data.created_quizzes, _created_quizzes_panel);
 			update_my_results(data.recent_results, _my_results_panel);
+			update_my_friends(_my_friends_panel);
 		});
 		
 	})();
 }
 
+function update_my_friends(friends_panel) {
+	get_json_from_url("/QuizWebsite/RelationServlet?action=friends&user_id=" + _user_id, function (data) {
+		console.log(data);
+		var friends = data.friends;
+		
+		var ul = document.createElement('ul');
+		for (var i = 0; i < friends.length; i++) {
+			var li = document.createElement('li');
+			
+			var user = friends[i];
+			
+			var user_link = document.createElement('a');
+			user_link.href = "/QuizWebsite/User.jsp?username=" + user.username;
+			user_link.innerHTML = user.display_name;
+			
+			li.appendChild(user_link);
+			ul.appendChild(li);
+		}
+		
+		var title = document.createElement('span');
+		title.innerHTML = "My Friends";
+		
+		var br = document.createElement('br');
+		friends_panel.appendChild(title);
+		friends_panel.appendChild(br);
+		friends_panel.appendChild(ul);
+	});
+}
 function update_newsfeed(friend_results, newsfeed_bar) {
 	var ul = document.createElement('ul');
 	
