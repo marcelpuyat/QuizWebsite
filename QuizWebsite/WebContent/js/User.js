@@ -44,7 +44,7 @@ function init_js(curr_user_id, target_user_id) {
 
 		if (is_blocked) {
 			message_button.className = message_button.className + " hide";
-			new BlockedPageHandler(data);
+			BlockedPageHandler(data.user_info);
 		}
 
 		/* If not blocked, display basic user details */
@@ -75,7 +75,7 @@ function set_relations() {
 	/* Get info about viewer to viewee */
 	get_json_from_url(relationServletURL + "?user_a_id=" + _curr_user_id + "&user_b_id=" + _target_user_id, function (data) {
 		console.log(data);
-		if (data.status == "REQ") has_requested = true;
+		if (data.status == "REQ") pending_request = true;
 		else if (data.status == "FRD") is_friend = true;
 		else if (data.status == "BLK") has_blocked = true;
 	});
@@ -83,7 +83,7 @@ function set_relations() {
 	/* Get info about viewee to viewer */
 	get_json_from_url(relationServletURL + "?user_a_id=" + _target_user_id + "&user_b_id=" + _curr_user_id, function (data) {
 		console.log(data);
-		if (data.status == "REQ") pending_request = true;
+		if (data.status == "REQ") has_requested = true;
 		else if (data.status == "BLK") is_blocked = true;
 	});
 }
@@ -101,7 +101,7 @@ function AnonymousPageHandler(user_id, is_blocked, has_blocked, pending_request)
 }
 
 function BlockedPageHandler(user_info) {
-	user_info_div.innerHTML = data.user_info.username + " has blocked you.";
+	relation_controls_div.innerHTML = user_info.username + " has blocked you.";
 }
 
 /* PLEASE STYLE THIS */
@@ -153,14 +153,16 @@ function display_relation_controls(user_info) {
 		status_div.innerHTML = "has sent you a friend request";
 	} else if (pending_request) {
 		hideButton(request_button);
+		hideButton(accept_button);
 		hideButton(reject_button);
 		hideButton(delete_friend_button);
 		hideButton(unblock_button);
-		status_div.innerHTML = "has been sent a friend request";
+		status_div.innerHTML = "friendship pending";
 	} else {
 		hideButton(accept_button);
 		hideButton(reject_button);
 		hideButton(unblock_button);
+		hideButton(delete_friend_button);
 	}
 }
 
@@ -169,17 +171,19 @@ function hideButton(button) {
 }
 
 function removeFriend() {
+	relation_controls_div.innerHTML = "you are no longer friends";
 	post_json_to_url(
 		relationServletURL + "?user_a_id=" + _curr_user_id + "&user_b_id=" + _target_user_id + "&status=DELETE",
 		{
 
 		}, 
 		function (data) {
-
+			
 		}
 	);
 }
 function sendRequest() {
+	relation_controls_div.innerHTML = "Friend Request sent";
 	post_json_to_url(
 		relationServletURL + "?user_a_id=" + _curr_user_id + "&user_b_id=" + _target_user_id + "&status=REQ",
 		{
@@ -191,6 +195,7 @@ function sendRequest() {
 	);
 }
 function blockUser() {
+	relation_controls_div.innerHTML = "User blocked";
 	post_json_to_url(
 		relationServletURL + "?user_a_id=" + _curr_user_id + "&user_b_id=" + _target_user_id + "&status=BLK",
 		{
@@ -202,6 +207,7 @@ function blockUser() {
 	);
 }
 function unblockUser() {
+	relation_controls_div.innerHTML = "User unblocked";
 	post_json_to_url(
 		relationServletURL + "?user_a_id=" + _curr_user_id + "&user_b_id=" + _target_user_id + "&status=UNBLK",
 		{
@@ -213,6 +219,7 @@ function unblockUser() {
 	);
 }
 function rejectRequest() {
+	relation_controls_div.innerHTML = "Request rejected";
 	post_json_to_url(
 		relationServletURL + "?user_a_id=" + _curr_user_id + "&user_b_id=" + _target_user_id + "&status=NO",
 		{
@@ -224,6 +231,7 @@ function rejectRequest() {
 	);
 }
 function acceptRequest() {
+	relation_controls_div.innerHTML = "Request accepted";
 	post_json_to_url(
 		relationServletURL + "?user_a_id=" + _curr_user_id + "&user_b_id=" + _target_user_id + "&status=FRD",
 		{
