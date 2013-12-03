@@ -205,7 +205,7 @@ function RequestsHandler (blue_bar, user_id) {
 
 	this.refresh = function () {
 		get_json_from_url(
-			'',
+			'/QuizWebsite/RelationServlet?action=requests&user_id='+_user_id,
 			function (data) {
 				_data = data;
 				_blue_bar.update(_this);
@@ -215,21 +215,65 @@ function RequestsHandler (blue_bar, user_id) {
 	}
 
 	this.getUlName = function () {
-		return "";
+		return "Friend Requests";
 	}
 
 	this.liAtIndex = function (index) {
-		var li = document.createElement('li');
-		li.innerHTML = index;
-		return li;
+		var target_user_id = _data.requests[index].id;
+		var name = new_elem({
+			type:'span',
+			innerHTML:_data.requests[index].first_name + ' ' + _data.requests[index].last_name,
+		});
+		var accept = new_elem({
+			type:'span',
+			innerHTML:'accept',
+			classList:['button','right','green','small','request-button']
+		});
+		var decline = new_elem({
+			type:'span',
+			innerHTML:'decline',
+			classList:['button','red','right','small','request-button']
+		});
+		decline.addEventListener('click',
+			function () {
+				post_json_to_url(
+					"/QuizWebsite/RelationServlet?user_a_id=" + _user_id + "&user_b_id=" + target_user_id + "&status=NO",
+					{},
+					function (data) {
+						if (data.status == 'success') {
+							accept.classList.add('hide');
+							decline.classList.add('hide');
+						}
+					}
+				);
+			}
+		);
+		accept.addEventListener('click',
+			function () {
+				post_json_to_url(
+					"/QuizWebsite/RelationServlet?user_a_id=" + _user_id + "&user_b_id=" + target_user_id + "&status=FRD",
+					{},
+					function (data) {
+						if (data.status == 'success') {
+							accept.classList.add('hide');
+							decline.classList.add('hide');
+						}
+					}
+				);
+			}
+		);
+		return new_elem({
+			type:'li',
+			children:[name, accept, decline]
+		});
 	}
 
 	this.modalAtIndex = function (index) {
-		
+		return false;
 	}
 
 	this.indexExists = function (index) {
-		return (index < 5);
+		return (index < _data.requests.length);
 	}
 }
 

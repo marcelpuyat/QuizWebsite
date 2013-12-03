@@ -83,24 +83,35 @@ public class RelationServlet extends HttpServlet {
 		
 		String status = request.getParameter("status");
 		
+		JSONObject responseJSON = new JSONObject();
+		
 		if (status.equals(RelationConstants.FRIEND_REQUESTED)) {
 			Relation.requestFriendship(userA, userB, databaseConnection);
+			responseJSON.accumulate("status", "success");
 		} 
 		else if (status.equals(RelationConstants.IS_FRIEND)) {
 			Relation.acceptFriendship(userA, userB, databaseConnection);
+			responseJSON.accumulate("status", "success");
 		} 
 		else if (status.equals(RelationConstants.BLOCKED)) {
 			Relation.blockUser(userA, userB, databaseConnection);
+			responseJSON.accumulate("status", "success");
 		}
 		else if (status.equals(RelationConstants.UNBLOCK)) {
 			Relation.unblockUser(userA, userB, databaseConnection);
+			responseJSON.accumulate("status", "success");
 		} 
 		else if (status.equals(RelationConstants.DELETE_FRIEND)) {
 			Relation.deleteFriend(userA, userB, databaseConnection);
+			responseJSON.accumulate("status", "success");
 		}
-		else/*if (status.equals(RelationConstants.REJECT_REQUEST))*/ {
+		else if (status.equals(RelationConstants.REJECT_REQUEST)) {
 			Relation.rejectRequest(userA, userB, databaseConnection);
+			responseJSON.accumulate("status", "success");
+		} else {
+			responseJSON.accumulate("status", "failed");
 		}
+		response.getWriter().println(responseJSON.toString());
 		
 	}
 
