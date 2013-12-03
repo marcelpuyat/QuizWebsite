@@ -315,11 +315,11 @@ function MessagesHandler (blue_bar, user_id) {
 			children:[messages_li,compose_li]
 		});
 		modal_ul.afterLoad = function () {
-			_modal_messages_ul.lastChild.scrollIntoView();
 			var modal_children = _modal_messages_ul.children;
 			for (var i = 0; i < modal_children.length; i++) {
 				modal_children[i].style.height = modal_children[i].firstChild.clientHeight + 'px';
 			};
+			_modal_messages_ul.lastChild.scrollIntoView(false);
 		}
 		return modal_ul;
 	}
