@@ -395,7 +395,18 @@ ul#graph-search-results {
 
 .blue-bar-menu > ul > li:not(:first-child) {
 	border-bottom: 1px solid rgba(0,0,0,0.1);
-	padding: 4px 0px;
+	padding: 6px 8px;
+	font-size: 12px;
+	-webkit-transition:0.3s;
+	-moz-transition:0.3s;
+	-o-transition:0.3s;
+	-ms-transition:0.3s;
+	transition:0.3s;
+}
+
+.blue-bar-menu > ul > li:not(:first-child):hover {
+	opacity:0.70;
+	filter:Alpha(opacity=070); /* IE8 and earlier */
 }
 
 .modal-header {
