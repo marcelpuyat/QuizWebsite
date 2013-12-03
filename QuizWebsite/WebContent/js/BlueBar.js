@@ -116,8 +116,8 @@ function BlueBarRadioMenu (user_id) {
 	function get_modal (handler) {
 		var modal_header_back = new_elem({
 			type:'span',
-			classList:['left'],
-			innerHTML:'<'
+			classList:['modal-go-back-button'],
+			innerHTML:'&lsaquo;'
 		});
 		var modal_header_disp = new_elem({
 			type:'span',
@@ -141,9 +141,12 @@ function BlueBarRadioMenu (user_id) {
 		ul.m_body = modal_body;
 		ul.header.title_disp = modal_header_disp;
 
-		modal_header.addEventListener('click',function () {
+		modal_header_back.addEventListener('click',function () {
 			hide_modal(handler);
 		});
+		modal_header.addEventListener('click', function () {
+			if (handler.modalTopPressed) handler.modalTopPressed();
+		})
 
 		return ul;
 	}
@@ -240,6 +243,12 @@ function MessagesHandler (blue_bar, user_id) {
 
 	this.getUlName = function () {
 		return "Messages";
+	}
+
+	this.modalTopPressed = function () {
+		if (_modal_messages_ul && _modal_messages_ul.firstChild) {
+			_modal_messages_ul.firstChild.scrollIntoView();
+		}
 	}
 
 	this.liAtIndex = function (index) {
