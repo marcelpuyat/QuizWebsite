@@ -11,6 +11,7 @@ function BlueBarRadioMenu (user_id) {
 	var _user_id = user_id;
 	var _this = this;
 	var _handlers = {};
+	var _rg;
 	var _radio_menu_types = [
 		{name:'requests',id:'requests-button',holder_id:'requests-button-holder',handler:RequestsHandler},
 		{name:'messages',id:'messages-button',holder_id:'messages-button-holder',handler:MessagesHandler},
@@ -24,7 +25,7 @@ function BlueBarRadioMenu (user_id) {
 	})();
 
 	function init_radio_menus () {
-		var rg = new RadioGroup(_this);
+		_rg = new RadioGroup(_this);
 		for (var i = 0; i < _radio_menu_types.length; i++) {
 			var type = _radio_menu_types[i];
 			var handler = new type.handler(_this, _user_id);
@@ -32,7 +33,7 @@ function BlueBarRadioMenu (user_id) {
 			handler.holder = document.getElementById(type.holder_id);
 			handler.disp = get_display(handler);
 			handler.holder.appendChild(handler.disp);
-			rg.push(handler);
+			_rg.push(handler);
 			_handlers[type.name] = handler;
 		};
 	}
@@ -63,7 +64,13 @@ function BlueBarRadioMenu (user_id) {
 
 	this.toUserModal = function (user_id) {
 		var handler = _handlers.messages;
-		show_modal(handler.modalAtUser(user_id));
+		console.log('a');
+		handler.refresh(function () {
+			console.log('b');
+			_rg.closeOthers(handler);
+			console.log('c');
+			show_modal(handler.modalAtUser(user_id), handler);
+		});
 	}
 
 	this.toModalAtIndex = function (index,handler) {
@@ -74,6 +81,7 @@ function BlueBarRadioMenu (user_id) {
 		handler.disp.modal.m_body.innerHTML = '';
 		handler.disp.modal.m_body.appendChild(elem);
 		handler.disp.modal.classList.add('open');
+		if (elem.afterLoad) elem.afterLoad();
 	}
 	function hide_modal (handler) {
 		handler.disp.modal.classList.remove('open');
@@ -149,8 +157,6 @@ function RadioGroup (blue_bar, user_id) {
 	}
 
 	this.closeOthers = function (handler) {
-		console.log('close others');
-		console.log(handler);
 		for (var i = 0; i < _group.length; i++) {
 			if (_group[i] !== handler) _group[i].disp.classList.add('hide');
 			else _group[i].disp.classList.remove('hide');
@@ -199,8 +205,10 @@ function MessagesHandler (blue_bar, user_id) {
 	var _blue_bar = blue_bar;
 	var _data;
 	var _this = this;
+	var _modal_user_id;
+	var _modal_messages_ul;
 
-	this.refresh = function () {
+	this.refresh = function (callback) {
 		get_json_from_url(
 			'/QuizWebsite/MessageServlet?user_id='+_user_id,
 			function (data) {
@@ -210,6 +218,7 @@ function MessagesHandler (blue_bar, user_id) {
 				_data.user_list = create_user_list(data.messages);
 				console.log(_data);
 				_blue_bar.update(_this);
+				if (callback) callback();
 			}
 		);
 		
@@ -235,27 +244,28 @@ function MessagesHandler (blue_bar, user_id) {
 	}
 
 	this.modalAtIndex = function (index) {
-		var messages_ul = new_elem({
+		_modal_messages_ul = new_elem({
 			type:'ul',
 			classList:['chat-ul']
 		});
+		_modal_user_id = _data.user_list[index].id;
 		var user_messages = messages_by_uid(_data.user_list[index].id, _data.messages);
+		inform_messages_read(user_messages);
 		for (var i = 0; i < user_messages.length; i++) {
 			var body = new_elem({
 				type:'div',
 				classList:['message-body'],
 				innerHTML:user_messages[i].body
 			});
-			messages_ul.prependChild(new_elem({
+			_modal_messages_ul.prependChild(new_elem({
 				type:'li',
 				classList:['chat-message',user_messages[i].type],
 				children:[body]
 			}));
 		};
-
 		var messages_li = new_elem({
 			type:'li',
-			children:[messages_ul]
+			children:[_modal_messages_ul]
 		})
 		var compose_li = new_elem({
 			type:'li',
@@ -266,6 +276,9 @@ function MessagesHandler (blue_bar, user_id) {
 			classList:['messages-modal-ul'],
 			children:[messages_li,compose_li]
 		});
+		modal_ul.afterLoad = function () {
+			_modal_messages_ul.lastChild.scrollIntoView();
+		}
 		return modal_ul;
 	}
 
@@ -282,7 +295,7 @@ function MessagesHandler (blue_bar, user_id) {
 			_data.user_list.splice(0,0,{id:user_id});
 			found = 0;
 		}
-		return modalAtIndex(found);
+		return _this.modalAtIndex(found);
 	}
 
 	this.modalAtIndexExists = function (index) {
@@ -293,10 +306,22 @@ function MessagesHandler (blue_bar, user_id) {
 		return (index < _data.user_list.length);
 	}
 
+
 	function messages_by_uid (user_id, messages) {
 		return messages.filter(function (message) {
 			return (message.user.id == user_id);
 		});
+	}
+
+	function inform_messages_read (messages) {
+		for (var i = 0; i < messages.length; i++) {
+			if (messages[i].type == 'received' && !messages[i].was_read) {
+				post_json_to_url(
+					'/QuizWebsite/MessageServlet?action=read&message_id='+messages[i].message_id,
+					{}
+				);
+			}
+		};
 	}
 
 	function get_compose_elem () {
@@ -312,9 +337,36 @@ function MessagesHandler (blue_bar, user_id) {
 			innerHTML:'Send',
 			classList:['chat-send-button','pointable']
 		});
-		send_button.addEventListener(function () {
-			
-		})
+		send_button.addEventListener('click',function () {
+			var message_body = composition_input.value;
+			var send_to = _modal_user_id;
+			post_json_to_url(
+				'/QuizWebsite/MessageServlet?action=send',
+				{
+					user_from_id:_user_id,
+					user_to_id:send_to,
+					subject:'',
+					body:message_body
+				},
+				function () {
+					var body = new_elem({
+						type:'div',
+						classList:['message-body'],
+						innerHTML:message_body
+					});
+					var new_li = new_elem({
+						type:'li',
+						classList:['chat-message','sent'],
+						children:[body]
+					});
+
+					_modal_messages_ul.appendChild(new_li);
+					new_li.scrollIntoView();
+
+					composition_input.value = '';
+				}
+			);
+		});
 		return new_elem({
 			type:'div',
 			classList:['chat-composition-wrapper'],

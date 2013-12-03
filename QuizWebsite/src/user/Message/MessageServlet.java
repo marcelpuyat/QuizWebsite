@@ -90,6 +90,9 @@ public class MessageServlet extends HttpServlet {
 			JSONObject newMessage = JSONParser.getJSONfromRequest(request);
 			
 			MessageJSONParser.createMessageFromJSON(newMessage, con);
+			JSONObject responseJSON = new JSONObject();
+			responseJSON.accumulate("status", "success");
+			response.getWriter().println(responseJSON.toString());
 		}
 	}
 
