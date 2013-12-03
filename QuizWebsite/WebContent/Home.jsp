@@ -12,10 +12,10 @@ long getUserID(HttpSession session) {
 	if (user != null) return user.getUserId();
 	else return -1;
 }
-String getUsername(HttpSession session) {
+String getDisplayName(HttpSession session) {
 	User user = (User) session.getAttribute("user");
 	try {
-		if (user != null) return user.getUserName();	
+		if (user != null) return user.getDisplayName();	
 	} catch (ClassNotFoundException e) {}
 	return "";
 }
@@ -34,15 +34,26 @@ String getUsername(HttpSession session) {
 		<%= HTMLTemplater.getBlueBar(session)  %>
 		<div class="page-width wide" id="center-wrapper">	
 			<div class="left side-panel panel" id="left-content-panel">
-						<a href="/QuizWebsite/NewQuiz.jsp"><button>Create New Quiz</button></a>
-
+				<ul>
+					<li>
+						<h2 class="faint">Welcome back <%= getDisplayName(session) %></h2>
+					</li>
+					<li>
+						<h3>Have some ideas?</h3>
+					</li>
+					<li>
+						<a class="button pointable" href="/QuizWebsite/NewQuiz.jsp">Create a new Quiz</a>	
+					</li>
+				</ul>
+			</div>
+			<div class="page-width thin center-block panel" id="inner-center-wrapper">
+				<div class="score-panel" id="achievements-earned-panel"></div>
+				<div class="score-panel" id="achievements-not-earned-panel"></div>
+				<div class="score-panel" id="popular-quizzes-panel"></div>
+				<div class="score-panel" id="created-quizzes-panel"></div>
+				<div class="score-panel" id="my-results-panel"></div>
 			</div>
 			<div class="right side-panel panel" id="right-content-panel"></div>
-			<div class="score-panel" id="achievements-earned-panel"></div>
-			<div class="score-panel" id="achievements-not-earned-panel"></div>
-			<div class="score-panel" id="popular-quizzes-panel"></div>
-			<div class="score-panel" id="created-quizzes-panel"></div>
-			<div class="score-panel" id="my-results-panel"></div>
 				
 		</div>
 	</div>
