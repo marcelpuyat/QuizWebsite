@@ -40,8 +40,8 @@ public class HTMLTemplater {
 						"</ul>"+
 						"<a class=\"header-text\" href=\"/QuizWebsite/\">Home</a>"+
 						"<a class=\"header-text\" href=\""+user_url+"\">"+username+"</a>"+
-						"<a class=\"sprite2 admin admin-button\" href=\"/QuizWebsite/Admin.jsp\"></a>"+
-						"<div class=\"sprite settings admin-button blue-dropdown-radio\" id=\"settings-button\"></div>"+
+						"<a class=\"pointable sprite2 admin admin-button\" href=\"/QuizWebsite/Admin.jsp\"></a>"+
+						"<div class=\"pointable sprite settings admin-button blue-dropdown-radio\" id=\"settings-button\"></div>"+
 						"<div class=\"menu-holder settings admin-button blue-dropdown-radio\" id=\"settings-button-holder\"></div>"+
 					"</div>"+
 					"<div class=\"search-bar\">"+
