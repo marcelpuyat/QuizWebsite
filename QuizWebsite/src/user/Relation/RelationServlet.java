@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 import user.User;
+import user.UserJSONParser;
 
 import customObjects.SelfRefreshingConnection;
 
@@ -40,13 +41,19 @@ public class RelationServlet extends HttpServlet {
 		/* Second type of GET request in spec */
 		if (request.getParameter("user_id") != null) {
 			User user = new User(Long.parseLong(request.getParameter("user_id")), databaseConnection);
-			JSONObject userInfo = RelationJSONParser.parseAllUserRelationInfo(user,
-																			  Relation.getAllRequestsOutward(user, databaseConnection), 
-																			  Relation.getAllRequestsInward(user, databaseConnection),
-																			  Relation.getAllFriends(user, databaseConnection),
-																			  Relation.getAllBlockedOutward(user, databaseConnection),
-																			  Relation.getAllBlockedInward(user, databaseConnection));
 			
+			JSONObject userInfo;
+			if (request.getParameter("action") == null) {
+				userInfo = RelationJSONParser.parseAllUserRelationInfo(user,
+																				  Relation.getAllRequestsOutward(user, databaseConnection), 
+																				  Relation.getAllRequestsInward(user, databaseConnection),
+																				  Relation.getAllFriends(user, databaseConnection),
+																				  Relation.getAllBlockedOutward(user, databaseConnection),
+																				  Relation.getAllBlockedInward(user, databaseConnection));
+			} else {
+				userInfo = new JSONObject();
+				userInfo.put("requests", UserJSONParser.getListOfUsersInJSONArray(Relation.getAllRequestsInward(user, databaseConnection)));
+			}
 			response.getWriter().println(userInfo);
 			return;
 			
