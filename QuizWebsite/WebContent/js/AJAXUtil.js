@@ -127,6 +127,10 @@ function Timer (fps) {
 }
 
 
+Node.prototype.prependChild = function(elem) {
+	this.insertBefore(elem, this.firstChild);
+};
+
 function new_elem (aux) {
 	var ret_elem = document.createElement(aux.type);
 	if (aux.attributes) {
