@@ -188,7 +188,27 @@ function display_created_quizzes(created_quizzes) {
 }
 
 function display_recent_results(recent_results) {
+	var ul = document.createElement('ul');
+	for (var i = 0; i < recent_results.length; i++) {
+		var li = document.createElement('li');
+		var quiz_name = recent_results[i].quiz_name;
+		var quiz_id = recent_results[i].quiz_id;
 
+		var quiz_link = document.createElement('a');
+		quiz_link.href = "/QuizWebsite/QuizPage.jsp?quiz_id=" + quiz_id;
+		quiz_link.innerHTML = quiz_name;
+
+		var user_percentage_score = recent_results[i].user_percentage_score;
+		var time_taken = recent_results[i].time_taken;
+
+		var span = document.createElement('span');
+		span.innerHTML = (user_percentage_score * 100).toFixed(0) + "% in " + (time_taken).toFixed(1) + " seconds - ";
+
+		li.appendChild(span);
+		li.appendChild(quiz_link);
+		ul.appendChild(li);
+	}
+	recent_results_div.appendChild(ul);
 }
 
 function hideButton(button) {
