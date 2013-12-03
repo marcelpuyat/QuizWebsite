@@ -43,15 +43,22 @@ function BlueBarRadioMenu (user_id) {
 		var ul = handler.disp.menu.ul;
 		ul.innerHTML = '';
 		var i = 0;
-		var ul_name = handler.getUlName() || ">";
+		var ul_name = handler.getUlName() || "";
 		ul.appendChild(new_elem({type:'li',classList:['modal-header'],innerHTML:ul_name}));
 		while (true) {
 			if (handler.indexExists(i)) {
 				var new_li = handler.liAtIndex(i);
+				new_li.classList.add('menu-li')
 				ul.appendChild(new_li);
-				new_li.classList.add('pointable');
 				new_li.i = i;
+				
 				if (handler.modalAtIndexExists(i)) {
+					new_li.classList.add('pointable');
+					new_li.appendChild(new_elem({
+						type:'span',
+						innerHTML:'&rsaquo;',
+						classList:['right-modal-indicator']
+					}));
 					new_li.addEventListener('click',function () {
 						var index = this.i;
 						console.log(index);
@@ -309,6 +316,10 @@ function MessagesHandler (blue_bar, user_id) {
 		});
 		modal_ul.afterLoad = function () {
 			_modal_messages_ul.lastChild.scrollIntoView();
+			var modal_children = _modal_messages_ul.children;
+			for (var i = 0; i < modal_children.length; i++) {
+				modal_children[i].style.height = modal_children[i].firstChild.clientHeight + 'px';
+			};
 		}
 		return modal_ul;
 	}
@@ -492,7 +503,8 @@ function SettingsHandler (blue_bar, user_id) {
 	function getAccountSettings () {
 		var li = new_elem({
 			type:'li',
-			innerHTML:'Account Settings'
+			innerHTML:'Account Settings',
+			classList:['pointable']
 		});
 		li.addEventListener('click', function () {
 			window.location = '/QuizWebsite/Settings.jsp';
@@ -503,7 +515,8 @@ function SettingsHandler (blue_bar, user_id) {
 	function getLogoutItem () {
 		var li = new_elem({
 			type:'li',
-			innerHTML:'logout'
+			innerHTML:'logout',
+			classList:['pointable']
 		});
 		li.addEventListener('click', function () {
 			var logout = window.confirm('Are you sure you\'d like to logout?');
