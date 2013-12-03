@@ -140,11 +140,14 @@ function display_relation_controls(user_info) {
 	} else if (has_requested) {
 		showButton(block_button);
 		showButton(accept_button);
+		showButton(reject_button);
 		status_div.innerHTML = "has sent you a friend request";
 	} else if (pending_request) {
 		status_div.innerHTML = "friendship pending";
+		showButton(block_button);
 	} else {
 		showButton(request_button);
+		showButton(block_button);
 	}
 }
 
