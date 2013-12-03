@@ -55,12 +55,12 @@
 		<br>
 		<div class="" id ="relation-controls">
 			<div class="pointable messag-user" id="message-button" onclick="open_message_pane(<%= getUserIdOfPage(request, application) %>)"><button>Message <%= getUserName(request, application) %></button></div><br>
-			<button class="button" id="accept-request-button" onclick="acceptRequest()">Accept Friend Request</button>
-			<button class="button" id="reject-request-button" onclick="rejectRequest()">Reject Friend Request</button>
-			<button class="button" id="block-user-button" onclick="blockUser()">Block User</button>
-			<button class="button" id="unblock-user-button" onclick="unblockUser()">Unblock User</button>
-			<button class="button" id="delete-friend-button" onclick="removeFriend()">Delete Friend</button>
-			<button class="button" id="request-button" onclick="sendRequest()">Send Friend Request</button>
+			<div class="hide button" id="accept-request-button" onclick="acceptRequest()">Accept Friend Request</div>
+			<div class="hide button" id="reject-request-button" onclick="rejectRequest()">Reject Friend Request</div>
+			<div class="hide button red" id="block-user-button" onclick="blockUser()">Block User</div>
+			<div class="hide button" id="unblock-user-button" onclick="unblockUser()">Unblock User</div>
+			<div class="hide button red" id="delete-friend-button" onclick="removeFriend()">Delete Friend</div>
+			<div class="hide button" id="request-button" onclick="sendRequest()">Send Friend Request</div>
 		</div><br>
 		<div class="" id="recent-results"></div><br>
 		<div class="" id ="created-quizzes"></div><br>

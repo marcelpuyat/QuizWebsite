@@ -44,12 +44,12 @@ function init_js(curr_user_id, target_user_id) {
 		console.log(data);
 
 		if (is_blocked) {
-			message_button.className = message_button.className + " hide";
 			BlockedPageHandler(data.user_info);
 		}
 
 		/* If not blocked, display basic user details */
 		else {
+			message_button.classList.remove('hide');
 			display_user_info(data.user_info);
 			display_relation_controls(data.user_info);
 			display_created_quizzes(data.created_quizzes);
@@ -130,36 +130,21 @@ function display_relation_controls(user_info) {
 
 	/* Hides options depending on what should show given current status */
 	if (is_friend) {
-		hideButton(accept_button);
-		hideButton(reject_button);
-		hideButton(unblock_button);
-		hideButton(request_button);
+		showButton(block_button);
+		showButton(delete_friend_button);
 		status_div.innerHTML = "is your friend";
 	}
 	else if (has_blocked) {
-		hideButton(accept_button);
-		hideButton(reject_button);
-		hideButton(request_button);
-		hideButton(block_button);
-		hideButton(delete_friend_button);
+		showButton(unblock_button);
 		status_div.innerHTML = "is blocked";
 	} else if (has_requested) {
-		hideButton(request_button);
-		hideButton(unblock_button);
-		hideButton(delete_friend_button);
+		showButton(block_button);
+		showButton(accept_button);
 		status_div.innerHTML = "has sent you a friend request";
 	} else if (pending_request) {
-		hideButton(request_button);
-		hideButton(accept_button);
-		hideButton(reject_button);
-		hideButton(delete_friend_button);
-		hideButton(unblock_button);
 		status_div.innerHTML = "friendship pending";
 	} else {
-		hideButton(accept_button);
-		hideButton(reject_button);
-		hideButton(unblock_button);
-		hideButton(delete_friend_button);
+		showButton(request_button);
 	}
 }
 
@@ -219,8 +204,8 @@ function display_recent_results(recent_results) {
 	recent_results_div.appendChild(ul);
 }
 
-function hideButton(button) {
-	button.className = button.className + " hide";
+function showButton(button) {
+	button.classList.remove('hide');
 }
 
 /* I just need a POST req but didnt know how to. So i used an empty post json */
