@@ -18,11 +18,13 @@ long getUserID(HttpSession session) {
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>FaceQuiz</title>
 <link rel="stylesheet" type="text/css" href="/QuizWebsite/General.css">
+<link rel="stylesheet" type="text/css" href="/QuizWebsite/Home.css">
+
 </head>
 <body onload="init_js(<%= getUserID(request.getSession()) %>)">
 	<div id="content-wrapper">
 		<%= HTMLTemplater.getBlueBar(session)  %>
-		<div class="page-width wide" id="center-wrapper" style="background-color:blue;">
+		<div class="page-width wide" id="center-wrapper">
 			<div class="left side-panel panel" id="left-content-panel">
 				<ul>
 					<li>
@@ -34,7 +36,10 @@ long getUserID(HttpSession session) {
 			<div class="right side-panel panel" id="right-content-panel"></div>
 			<div class="home-center-panel" id="achievements-earned-panel"></div>
 			<div class="home-center-panel" id="achievements-not-earned-panel"></div>
-			
+			<div class="home-center-panel" id="popular-quizzes-panel"></div>
+			<div class="home-center-panel" id="created-quizzes-panel"></div>
+			<div class="home-center-panel" id="my-results-panel"></div>
+				
 		</div>
 	</div>
 	<%= HTMLTemplater.getGeneralJS() %>

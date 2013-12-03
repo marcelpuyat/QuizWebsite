@@ -6,13 +6,23 @@
 function init_js(userID) {
 	new HomeHandler(document.getElementById("right-content-panel"),
 					document.getElementById("achievements-earned-panel"),
-					document.getElementById("achievements-not-earned-panel"),'/QuizWebsite/HomeServlet', userID);
+					document.getElementById("achievements-not-earned-panel"),
+					document.getElementById("popular-quizzes-panel"),
+					document.getElementById("created-quizzes-panel"),
+					document.getElementById("my-results-panel"),
+					'/QuizWebsite/HomeServlet', 
+					userID);
 }
 
-function HomeHandler(newsfeed_bar, achievements_earned_panel, achievements_not_earned_panel, home_url, user_id) {
+function HomeHandler(newsfeed_bar, achievements_earned_panel, achievements_not_earned_panel,
+		popular_quizzes_panel, created_quizzes_panel, my_results_panel, home_url, user_id) {
 	var _newsfeed_bar = newsfeed_bar;
 	var _achievements_earned_panel = achievements_earned_panel;
 	var _achievements_not_earned_panel = achievements_not_earned_panel;
+	var _popular_quizzes_panel = popular_quizzes_panel;
+	var _created_quizzes_panel = created_quizzes_panel;
+	var _my_results_panel = my_results_panel;
+	
 	var _home_url = home_url;
 	
 	(function init() {
@@ -20,13 +30,15 @@ function HomeHandler(newsfeed_bar, achievements_earned_panel, achievements_not_e
 			console.log(data);
 			update_newsfeed(data.friend_results, _newsfeed_bar);
 			update_achievements(data.achievements_earned, data.achievements_not_earned, _achievements_earned_panel, _achievements_not_earned_panel);
+			update_popular_quizzes(data.popular_quizzes, _popular_quizzes_panel);
+			update_created_quizzes(data.created_quizzes, _created_quizzes_panel);
+			update_my_results(data.recent_results, _my_results_panel);
 		});
 		
 	})();
 }
 
 function update_newsfeed(friend_results, newsfeed_bar) {
-	console.log(newsfeed_bar);
 	var ul = document.createElement('ul');
 	
 	for (var i = 0; i < friend_results.length; i++) {
@@ -80,6 +92,12 @@ function update_achievements(achvs_earned, achvs_not_earned, achvs_earned_div, a
 		li.innerHTML = title + " - " + desc;
 		achvs_earned_ul.appendChild(li);
 	}
+	var br = document.createElement('br');
+	var title = document.createElement('span');
+	title.innerHTML = "Achievements Unlocked:";
+	
+	achvs_earned_div.appendChild(title);
+	achvs_earned_div.appendChild(br);
 	achvs_earned_div.appendChild(achvs_earned_ul);
 	
 	var achvs_not_earned_ul = document.createElement('ul');
@@ -91,5 +109,80 @@ function update_achievements(achvs_earned, achvs_not_earned, achvs_earned_div, a
 		li.innerHTML = title + " - " + desc;
 		achvs_not_earned_ul.appendChild(li);
 	}
+	
+	var title2 = document.createElement('span');
+	title2.innerHTML = "Achievements Not Unlocked:";
+	
+	achvs_not_earned_div.appendChild(title2);
+	achvs_not_earned_div.appendChild(br);
 	achvs_not_earned_div.appendChild(achvs_not_earned_ul);
+}
+
+function update_popular_quizzes(popular_quizzes, panel) {
+	var ul = document.createElement('ul');
+
+	for (var i = 0; i < popular_quizzes.length; i++) {
+		var li = document.createElement('li');
+		
+		var quiz_name = popular_quizzes[i].quiz_name;
+		var creator = popular_quizzes[i].creator;
+		var quiz_id = popular_quizzes[i].quiz_id;
+		var frequency = popular_quizzes[i].frequency;
+		
+		var quiz_link = document.createElement('a');
+		quiz_link.href = "/QuizWebsite/QuizPage.jsp?quiz_id=" + quiz_id;
+		quiz_link.innerHTML = quiz_name;
+		
+		var user_link = document.createElement('a');
+		user_link.href = "/QuizWebsite/User.jsp?username=" + creator;
+		user_link.innerHTML = creator;
+		
+		var frequency_span = document.createElement('span');
+		frequency_span.innerHTML = frequency;
+		
+		var text = document.createElement('span');
+		text.innerHTML = " created by: ";
+		
+		var text2 = document.createElement('span');
+		text2.innerHTML = " taken by: ";
+		
+		var text3 = document.createElement('span');
+		text3.innerHTML = " users";
+		
+		li.appendChild(quiz_link);
+		li.appendChild(text);
+		li.appendChild(user_link);
+		li.appendChild(text2);
+		li.appendChild(frequency_span);
+		li.appendChild(text3);
+		ul.appendChild(li);
+	}
+	
+	var title = document.createElement('span');
+	title.innerHTML = "Popular Quizzes";
+	var br = document.createElement('br');
+	
+	panel.appendChild(title);
+	panel.appendChild(br);
+	panel.appendChild(ul);
+}
+
+function update_created_quizzes(created_quizzes, panel) {
+	var ul = document.createElement('ul');
+
+	for (var i = 0; i < created_quizzes.length; i++) {
+		var li = document.createElement('li');
+		
+		ul.appendChild(li);
+	}
+}
+
+function update_my_results(my_results, panel) {
+	var ul = document.createElement('ul');
+
+	for (var i = 0; i < my_results.length; i++) {
+		var li = document.createElement('li');
+		
+		ul.appendChild(li);
+	}
 }
