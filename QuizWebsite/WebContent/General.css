@@ -15,6 +15,7 @@ html,body {
 ul {
 	list-style-type: none;
 	padding: 0;
+	margin: 0;
 }
 
 input[type="text"],
@@ -361,6 +362,7 @@ ul#graph-search-results {
 	height: 180px;
 	right: -20px;
 	overflow:hidden;
+	z-index: 100;
 	-webkit-transition:0.3s;
 	-moz-transition:0.3s;
 	-o-transition:0.3s;

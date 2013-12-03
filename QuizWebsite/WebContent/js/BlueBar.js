@@ -66,11 +66,8 @@ function BlueBarRadioMenu (user_id) {
 
 	this.toUserModal = function (user_id) {
 		var handler = _handlers.messages;
-		console.log('a');
 		handler.refresh(function () {
-			console.log('b');
 			_rg.closeOthers(handler);
-			console.log('c');
 			show_modal(handler.modalAtUser(user_id), handler);
 		});
 	}
@@ -254,8 +251,6 @@ function MessagesHandler (blue_bar, user_id) {
 
 	this.liAtIndex = function (index) {
 		var usr = _data.user_list[index];
-		console.log('this');
-		console.log(usr);
 		var div = new_elem({
 			type:'div',
 			innerHTML:usr.first_name + ' ' + usr.last_name
@@ -456,33 +451,55 @@ function NotificationsHandler (blue_bar, user_id) {
 function SettingsHandler (blue_bar, user_id) {
 	var _user_id = user_id;
 	var _blue_bar = blue_bar;
-	var _data;
 	var _this = this;
 
+	var _settings_items = [getLogoutItem];
+
 	this.refresh = function () {
-		get_json_from_url(
-			'',
-			function (data) {
-				_data = data;
-				_blue_bar.update(_this);
-			}
-		);
-		
-	}
+		_blue_bar.update(_this);
+	}//static
 
 	this.getUlName = function () {
-		return "";
+		return "Settings";
 	}
 
 	this.liAtIndex = function (index) {
-		
+		console.log('here');
+		return _settings_items[index]();
 	}
 
 	this.modalAtIndex = function (index) {
-		
+		return false;
+	}
+
+	this.modalAtIndexExists = function (index) {
+		return false;
 	}
 
 	this.indexExists = function (index) {
-		return false;
+		console.log('here- index:'+index);
+		return index < _settings_items.length;
+	}
+
+	function getLogoutItem () {
+		var li = new_elem({
+			type:'li',
+			innerHTML:'logout'
+		});
+		li.addEventListener('click', function () {
+			var logout = window.confirm('Are you sure you\'d like to logout?');
+			if (logout){
+				post_json_to_url(
+					'/QuizWebsite/UserServlet?api=logout',
+					{},
+					function (data) {
+						if (data.status = 'success') {
+							window.location = '/QuizWebsite/Login.jsp';
+						}
+					}
+				);
+			}
+		});
+		return li;
 	}
 }
