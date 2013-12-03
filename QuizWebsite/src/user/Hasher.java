@@ -2,12 +2,12 @@ package user;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Random;
+import java.security.SecureRandom;;
 
 public class Hasher {
 	public static byte[] getSalt() {
 		byte[] salt = new byte[16];
-		new Random().nextBytes(salt);
+		new SecureRandom().nextBytes(salt);
 		return salt;
 	}
 	
