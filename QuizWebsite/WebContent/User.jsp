@@ -46,6 +46,7 @@
 <body>
 	<div id="content-wrapper">
 		<%= HTMLTemplater.getBlueBar(session)  %>
+		<div class="pointable messag-user" onclick="open_message_pane(<%= getUserId(request, application) %>)">Message <%= getUserName(request, application) %></div>
 	</div>
 	<%= HTMLTemplater.getGeneralJS() %>
 </body>
