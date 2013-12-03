@@ -49,9 +49,11 @@ function BlueBarRadioMenu (user_id) {
 				var new_li = handler.liAtIndex(i);
 				ul.appendChild(new_li);
 				new_li.classList.add('pointable');
+				new_li.i = i;
 				if (handler.modalAtIndexExists(i)) {
-					var index = i;
 					new_li.addEventListener('click',function () {
+						var index = this.i;
+						console.log(index);
 						_this.toModalAtIndex(index,handler);
 					});
 				}
@@ -81,7 +83,7 @@ function BlueBarRadioMenu (user_id) {
 		handler.disp.modal.m_body.innerHTML = '';
 		handler.disp.modal.m_body.appendChild(elem);
 		handler.disp.modal.classList.add('open');
-		if (elem.afterLoad) elem.afterLoad();
+		if (elem.afterLoad) setTimeout(elem.afterLoad,200);
 	}
 	function hide_modal (handler) {
 		handler.disp.modal.classList.remove('open');

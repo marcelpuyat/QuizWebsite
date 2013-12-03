@@ -356,7 +356,7 @@ ul#graph-search-results {
 	width: 200px;
 	height: 142px;
 	right: -20px;
-	overflow-x:hidden;
+	overflow:hidden;
 	-webkit-transition:0.3s;
 	-moz-transition:0.3s;
 	-o-transition:0.3s;
