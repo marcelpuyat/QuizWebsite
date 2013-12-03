@@ -188,7 +188,12 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 			var friend_id = friends[i].id;
 			
 			friend_button.innerHTML = name;
-			friend_button.addEventListener("click", function() {_this.challenge_friend(friend_id);});
+			friend_button.friend_id = friend_id;
+			friend_button.addEventListener("click", function() {
+
+					_this.challenge_friend(this.friend_id);
+				
+			});
 			
 			friend.appendChild(friend_button);
 			friend_ul.appendChild(friend);
