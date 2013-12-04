@@ -152,5 +152,17 @@ function new_elem (aux) {
 			ret_elem.appendChild(children[i]);
 		};
 	}
+	if (aux.eventListeners) {
+		var el = aux.eventListeners;
+		for (var i = el.length - 1; i >= 0; i--) {
+			ret_elem.addEventListener(el.type,el.fn);
+		};
+	}
+	if (aux.objectAttributes) {
+		var oa = aux.objectAttributes;
+		for (var i = 0; i < oa.length; i++) {
+			ret_elem[oa[i].name] = oa[i].value;
+		};
+	}
 	return ret_elem;
 }

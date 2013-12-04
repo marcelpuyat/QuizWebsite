@@ -145,8 +145,6 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 	};
 	
 	// GLOBALS
-	
-	var results_div;
 	var score;
 
 	this.waitForResults = function(callback, auxiliary_data) {
@@ -154,7 +152,7 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 		var answer = _build_results();
 		if(!_is_practice_quiz) _send_quiz_results(answer);
 		else _notify_quiz_practiced(_user_id);
-		results_div = document.createElement('div');
+		var results_div = document.createElement('div');
 		results_div.innerHTML = 'total correct: '+ answer.user_score+'\ntotal possible: '+answer.possible_score;
 		
 
@@ -167,57 +165,65 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 			innerHTML:'Nice Job!'
 		});
 		var score_display = new_elem({
-			type:'div',
-			innerHTML:Math.floor(answer.user_score/answer.possible_score) + '%'
+			type:'span',
+			innerHTML:'You got ' + Math.floor(answer.user_score/answer.possible_score) + '% correct'
 		});
 		var time_display = new_elem({
+			type:'span',
+			innerHTML:(Math.floor(answer.time) == 1) ? ' in '+(answer.time).toFixed(2) + ' seconds!':' in '+Math.floor(answer.time) + ' seconds!'
+		});
+
+		var score_wrapper = new_elem({
 			type:'div',
-			innerHTML:Math.floor(answer.time) + 'seconds'
+			children:[score_display,time_display]
 		});
 		
-		//STYLE PLEASE
+		var friends_selection = new_elem({
+			type:'ul',
+			classList:['drop-down']
+		});
 		var challenge_button = new_elem({
 			type:'span',
 			classList:['button'],
-			innerHTML:'Challenge a friend'
+			innerHTML:'Challenge a friend',
+			children:[friends_selection]
 		});
-		challenge_button.onclick = _this.challenge_click;
+		challenge_button.addEventListener('click',function (e) {
+			if (e.target.action) e.target.action();
+			else _this.challenge_click(friends_selection);	
+		});
 		
 		
-		callback(new_elem({
+		if (callback) callback(new_elem({
 			type:'div',
-			children:[header, challenge_button,score_display,time_display]
+			classList:['center','results-wrapper'],
+			children:[header, challenge_button,score_wrapper]
 		}), auxiliary_data);
 	};
 	
-	this.challenge_click = function() {
+	this.challenge_click = function(ul) {
 		console.log(_user_id);
 		get_json_from_url("/QuizWebsite/RelationServlet?user_id=" + _user_id + "&action=friends", function (data) {
 			console.log(data);
-			_this.display_friends(data.friends);
+			_this.display_friends(data.friends, ul);
 		});
 	};
 		
-	this.display_friends = function (friends) {
-		var friend_ul = document.createElement('ul');
+	this.display_friends = function (friends,ul) {
+		ul.innerHTML = '';
 		for (var i = 0; i < friends.length; i++) {
-			var friend = document.createElement('li');
-			var friend_button = document.createElement('button');
-			var name = friends[i].display_name;
-			var friend_id = friends[i].id;
-			
-			friend_button.innerHTML = name;
-			friend_button.friend_id = friend_id;
-			friend_button.addEventListener("click", function() {
-
-					_this.challenge_friend(this.friend_id);
-				
-			});
-			
-			friend.appendChild(friend_button);
-			friend_ul.appendChild(friend);
+			ul.appendChild(new_elem({
+				type:'li',
+				innerHTML:friends[i].display_name,
+				classList:['pointable'],
+				objectAttributes:[
+					{'name':'friend_id','value':friends[i].id},
+					{'name':'action','value':function () {
+						_this.challenge_friend(this.friend_id);
+					}}
+				]
+			}));
 		}
-		results_div.appendChild(friend_ul);
 	};
 	
 	this.challenge_friend = function(friend_id) {

@@ -590,6 +590,7 @@ ul#graph-search-results {
 	box-shadow: 0px 0px 3px rgba(0,0,0,0.9);
 	display: inline-block;
 	cursor: pointer;
+	position: relative;
 
 	-webkit-transition:0.3s;
 	-moz-transition:0.3s;
@@ -633,4 +634,34 @@ ul#graph-search-results {
 	margin: 0px 2px;
 }
 
+	.button > ul.drop-down {
+		position: absolute;
+		top: 108%;
+		left: 0;
+		width: 100%;
+		background-color: white;
+		box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+		border-radius: 3px;
+	}
+
+	.button > ul.drop-down > li {
+		color: rgb(100,100,100);
+		padding: 10px 0px;
+
+		-webkit-transition:0.3s;
+		-moz-transition:0.3s;
+		-o-transition:0.3s;
+		-ms-transition:0.3s;
+		transition:0.3s;
+	}
+
+	.button > ul.drop-down > li:hover {
+		opacity:0.80;
+		filter:Alpha(opacity=080); /* IE8 and earlier */
+	}
+
+
+	.button > ul.drop-down > li:not(:first-child) {
+		border-top: 1px solid rgb(230,230,230);
+	}
 

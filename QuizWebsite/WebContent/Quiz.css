@@ -192,3 +192,11 @@ ul.options.cluster {
 	margin:auto;
 	display:block;
 }
+
+.results-wrapper {
+	margin: 60px;
+}
+
+.results-wrapper > .button {
+	margin: 22px;
+}
