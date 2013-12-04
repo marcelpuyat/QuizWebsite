@@ -157,8 +157,23 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 		results_div = document.createElement('div');
 		results_div.innerHTML = 'total correct: '+ answer.user_score+'\ntotal possible: '+answer.possible_score;
 		
+
+
 		// GLOBAL SCORE
 		score = answer.user_score / answer.possible_score;
+
+		var header = new_elem({
+			type:'div',
+			innerHTML:'Nice Job!'
+		});
+		var score_display = new_elem({
+			type:'div',
+			innerHTML:Math.floor(answer.user_score/answer.possible_score) + '%'
+		});
+		var time_display = new_elem({
+			type:'div',
+			innerHTML:Math.floor(answer.time) + 'seconds'
+		});
 		
 		//STYLE PLEASE
 		var challenge_button = new_elem({
@@ -167,9 +182,12 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 			innerHTML:'Challenge a friend'
 		});
 		challenge_button.onclick = _this.challenge_click;
-		results_div.appendChild(challenge_button);
 		
-		callback(results_div, auxiliary_data);
+		
+		callback(new_elem({
+			type:'div',
+			children:[header, challenge_button,score_display,time_display]
+		}), auxiliary_data);
 	};
 	
 	this.challenge_click = function() {

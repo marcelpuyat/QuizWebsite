@@ -12,6 +12,12 @@ a {
 	border-radius: 6px;
 }
 
+	.score-container > ul > li:not(:first-child) {
+		font-size: 12px;
+		text-align: center;
+		padding: 3px 2px;
+	}
+
 
 	#score-holder {
 		padding: 20px 0px;

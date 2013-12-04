@@ -142,7 +142,13 @@ function init_js (quiz_id) {
 	function get_time_elapsed (date) {
 		var now = new Date();
 		var then = new Date(date.year, date.month, date.date, date.hours, date.minutes, date.seconds, 0);
-		var diff = then - now;
+
+		console.log('now');
+		console.log(now);
+		console.log('then');
+		console.log(then);
+
+		var diff = now - then;
 		if (diff > years)   return (Math.floor(diff/years) == 1)   ? 'a year ago'   : Math.floor(diff/years)   + ' years ago';
 		if (diff > months)  return (Math.floor(diff/months) == 1)  ? 'a month ago'  : Math.floor(diff/months)  + ' months ago';
 		if (diff > weeks)   return (Math.floor(diff/weeks) == 1)   ? 'a week ago'   : Math.floor(diff/weeks)   + ' weeks ago';
