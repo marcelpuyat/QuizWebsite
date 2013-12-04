@@ -17,6 +17,7 @@ public class GraphSearch {
 		int quiz_results = 5;
 		
 		JSONObject results = new JSONObject();
+		if (text.isEmpty()) return results;
 		try {
 			Set<Integer> reapedQuizzes = new HashSet<Integer>();
 			Set<Integer> reapedUsers = new HashSet<Integer>();
@@ -133,6 +134,16 @@ public class GraphSearch {
 			e.printStackTrace();
 		}
 		finally {}
+
+		if (results.length() == 1) {
+			JSONObject emptyEntry = new JSONObject();
+			emptyEntry.accumulate("id", 1);
+			emptyEntry.accumulate("name", "");
+			emptyEntry.accumulate("type", "No results found");
+			emptyEntry.accumulate("category", "quiz");
+			emptyEntry.accumulate("url", "");
+			results.append("results", emptyEntry);
+		}
 		return results;
 	}
 	
