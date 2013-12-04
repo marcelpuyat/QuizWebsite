@@ -19,7 +19,8 @@ public class GraphSearch {
 		JSONObject results = new JSONObject();
 		try {
 			Set<Integer> reapedQuizzes = new HashSet<Integer>();
-			
+			Set<Integer> reapedUsers = new HashSet<Integer>();
+
 			/* first search quizzes by name prefix */
 			String getNameQuery = "SELECT name,id FROM Quizzes WHERE UPPER(name) LIKE UPPER(?) LIMIT 0, ?";
 			PreparedStatement pstmt = db_connection.prepareStatement(getNameQuery);
@@ -65,6 +66,38 @@ public class GraphSearch {
 			}
 			
 			/* End of search by tag */
+			
+			/* Search by user */
+			
+			String userMatchString = "SELECT * FROM Users WHERE first_name LIKE UPPER(?) OR last_name LIKE UPPER(?) LIMIT ?";
+			pstmt = db_connection.prepareStatement(userMatchString);
+			pstmt.setString(1, text + "%");
+			pstmt.setString(2, text + "%");
+			pstmt.setInt(3, min(quiz_results,total_results));
+			
+			ResultSet rs3 = pstmt.executeQuery();
+			while (rs3.next()) {
+				int id = rs3.getInt("id");
+				String display_name = rs3.getString("first_name") + " " + rs3.getString("last_name");
+				if (!reapedUsers.contains(id)) {
+					JSONObject entry = new JSONObject();
+					entry.accumulate("id", id);
+					entry.accumulate("name", display_name);
+					entry.accumulate("category", "user");
+					if (rs3.getBoolean("is_admin")) {
+						entry.accumulate("type", "ADMIN");
+					} else
+					entry.accumulate("type", "USER");
+					entry.accumulate("url", "/QuizWebsite/User.jsp?user_id="+id);
+					results.append("results", entry);
+					reapedUsers.add(id);
+					total_results--;
+					quiz_results--;
+				}
+			}
+			
+			/* End of search by user */
+			
 			
 			/* then search quiz by name suffix */
 			String query = "SELECT name,id FROM Quizzes WHERE UPPER(name) LIKE UPPER(?) LIMIT 0, ?";
