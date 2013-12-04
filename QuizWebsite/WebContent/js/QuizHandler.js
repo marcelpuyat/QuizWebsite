@@ -146,6 +146,7 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 	
 	// GLOBALS
 	var score;
+	var time_taken;
 
 	this.waitForResults = function(callback, auxiliary_data) {
 		/* build and send answer data */
@@ -159,14 +160,15 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 
 		// GLOBAL SCORE
 		score = answer.user_score / answer.possible_score;
-
+		time_taken = answer.time;
+		
 		var header = new_elem({
 			type:'div',
 			innerHTML:'Nice Job!'
 		});
 		var score_display = new_elem({
 			type:'span',
-			innerHTML:'You got ' + Math.floor(answer.user_score/answer.possible_score) + '% correct'
+			innerHTML:'You got ' + (answer.user_score/answer.possible_score * 100).toFixed(2) + '% correct'
 		});
 		var time_display = new_elem({
 			type:'span',
@@ -228,7 +230,7 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 	
 	this.challenge_friend = function(friend_id) {
 		var challenge_message = "I challenge you to beat my score of " + (score * 100).toFixed(0) + "% on this quiz: <a href='/QuizWebsite/QuizPage.jsp?quiz_id=" + _quiz_id + "'>" + _data.quiz_name + "</a>";
-		post_json_to_url("/QuizWebsite/MessageServlet?action=send", {user_from_id: _user_id, user_to_id: friend_id, body: challenge_message, subject: ""}, function() {
+		post_json_to_url("/QuizWebsite/MessageServlet?action=send&challenge=yes&score=", {subject: "", user_from_id: _user_id, user_to_id: friend_id, body: challenge_message, quiz_id: _quiz_id, time_taken: time_taken, score: score*100}, function() {
 			window.location = "/QuizWebsite/Home.jsp";
 		});
 	};

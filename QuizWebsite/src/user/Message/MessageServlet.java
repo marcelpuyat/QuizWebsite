@@ -13,7 +13,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import quiz.JSONParser;
+import quiz.Quiz;
+import user.User;
 import customObjects.SelfRefreshingConnection;
+import email.Mailer;
 
 /**
  * Servlet implementation class MessageServlet
@@ -83,6 +86,7 @@ public class MessageServlet extends HttpServlet {
 				Message.markMessageRead(messageID, con);
 			}
 			
+			
 		}
 		
 		// Send msg
@@ -92,7 +96,23 @@ public class MessageServlet extends HttpServlet {
 			MessageJSONParser.createMessageFromJSON(newMessage, con);
 			JSONObject responseJSON = new JSONObject();
 			responseJSON.accumulate("status", "success");
+			
+			String challenge = request.getParameter("challenge");
+			if (challenge != null) {
+				
+				int percentage = newMessage.getInt("score");
+				double time_taken = newMessage.getDouble("time_taken");
+				int user_from_id = newMessage.getInt("user_from_id");
+				int user_to_id = newMessage.getInt("user_to_id");
+				int quiz_id = newMessage.getInt("quiz_id");
+				Quiz quiz = new Quiz(quiz_id, con);
+				
+				Mailer.emailChallenge(new User(user_to_id, con), new User(user_from_id, con), percentage, time_taken, quiz.getName());
+				System.out.println("EMAIL SENT!");
+			}
+			
 			response.getWriter().println(responseJSON.toString());
+			
 		}
 	}
 

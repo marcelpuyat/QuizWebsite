@@ -321,6 +321,18 @@ public class User {
 		}
 	}
 	
+	public String getEmailAddress() {
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT email_address FROM Users WHERE id = " + this.user_id);
+			ResultSet rs = stmt.executeQuery();
+			rs.next();
+			return rs.getString(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	/* SETTERS */
 	public void setFirstName(String first_name) {
 		try {
@@ -357,6 +369,16 @@ public class User {
 	}
 	public void setAdminStatus(boolean isAdmin) {
 		
+	}
+	
+	public void setEmailAddress(String emailAddress) {
+		try {
+			PreparedStatement stmt = con.prepareStatement("UPDATE Users SET email_address = ? WHERE id = " + this.user_id);
+			stmt.setString(1, emailAddress);
+			stmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/* Achievement Related */
