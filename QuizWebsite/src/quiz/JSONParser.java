@@ -284,7 +284,7 @@ public class JSONParser {
 			
 			Calendar dateTaken = list.get(i).getDateTaken();
 				int year = dateTaken.get(Calendar.YEAR);
-				int month = dateTaken.get(Calendar.MONTH) + 1; // MONTHS ARE INDEXED FROM 0!
+				int month = dateTaken.get(Calendar.MONTH); // MONTHS ARE INDEXED FROM 0!
 				int day = dateTaken.get(Calendar.DATE);
 				int hours = dateTaken.get(Calendar.HOUR_OF_DAY);
 				int minutes = dateTaken.get(Calendar.MINUTE);

@@ -15,7 +15,7 @@ public class CustomDate {
 	
 	public CustomDate(Calendar calendar) {
 		this.setYear(calendar.get(Calendar.YEAR));
-		this.setMonth(calendar.get(Calendar.MONTH) + 1); // MONTHS ARE INDEXED FROM 0!
+		this.setMonth(calendar.get(Calendar.MONTH)); // MONTHS ARE INDEXED FROM 0!
 		this.setDate(calendar.get(Calendar.DATE));
 		this.setHours(calendar.get(Calendar.HOUR_OF_DAY));
 		this.setMinutes(calendar.get(Calendar.MINUTE));
