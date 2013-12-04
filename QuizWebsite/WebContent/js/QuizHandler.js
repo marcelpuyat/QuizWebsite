@@ -255,7 +255,7 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 	
 	function _notify_quiz_practiced (user_id) {
 		post_json_to_url(
-			'/QuizWebsite/QuizResults?user_id='+user_id+'&practice=true',
+			'/QuizWebsite/QuizResultsServlet?user_id='+user_id+'&practice=true',
 			{}
 		);
 	}
