@@ -252,7 +252,7 @@ function RequestsHandler (blue_bar, user_id) {
 		var target_user_id = _data.requests[index].id;
 		var name = new_elem({
 			type:'span',
-			innerHTML:_data.requests[index].first_name + ' ' + _data.requests[index].last_name,
+			innerHTML:_data.requests[index].first_name + ' ' + _data.requests[index].last_name
 		});
 		var accept = new_elem({
 			type:'span',
@@ -414,7 +414,7 @@ function MessagesHandler (blue_bar, user_id) {
 				modal_children[i].style.height = modal_children[i].firstChild.clientHeight + 'px';
 			};
 			if (_modal_messages_ul.lastChild) _modal_messages_ul.lastChild.scrollIntoView(false);
-		}
+		};
 		return modal_ul;
 	}
 
