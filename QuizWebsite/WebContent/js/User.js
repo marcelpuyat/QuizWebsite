@@ -90,7 +90,7 @@ function init_js(curr_user_id, target_user_id) {
  */
 function set_background_photos () {
 	console.log('fetching relations');
-	get_json_from_url(relationServletURL + '?user_id='+_curr_user_id,
+	get_json_from_url(relationServletURL + '?user_id='+_target_user_id,
 		function (data) {
 			console.log('got relations');
 			console.log(data);
