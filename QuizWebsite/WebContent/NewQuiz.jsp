@@ -9,7 +9,8 @@
 	String getUsername(HttpSession session) {
 		try {
 			User u = (User)session.getAttribute("user");
-			return u.getUserName();	
+			if (u != null) return u.getUserName();	
+			return "";
 		}
 		catch(ClassNotFoundException e){}
 		return "";
