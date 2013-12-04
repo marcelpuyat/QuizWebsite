@@ -160,11 +160,13 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 		score = answer.user_score / answer.possible_score;
 		
 		//STYLE PLEASE
-		var challenge_button = document.createElement('button');
-		challenge_button.innerHTML = "Challenge a friend!";
+		var challenge_button = new_elem({
+			type:'span',
+			classList:['button'],
+			innerHTML:'Challenge a friend'
+		});
 		challenge_button.onclick = _this.challenge_click;
 		results_div.appendChild(challenge_button);
-		//
 		
 		callback(results_div, auxiliary_data);
 	};
