@@ -390,6 +390,7 @@ function MessagesHandler (blue_bar, user_id) {
 		if (found === -1) {
 			_data.user_list.splice(0,0,user);
 			found = 0;
+			console.log('creating element');
 		}
 		return _this.modalAtIndex(found);
 	}

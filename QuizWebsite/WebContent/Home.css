@@ -1,5 +1,18 @@
 #right-content-panel {
-	margin-top: 125px;
+	margin-top: 100px;
+	right: 0;
+	border:solid 2px rgb(200,200,200);
+	border-radius: 15px;
+	padding: 15px 10px 12px;
+	font-size: 12px;
+}
+
+#right-content-panel li:not(:first-child) {
+	border-top: 1px solid rgb(230,230,230);
+}
+
+#right-content-panel li {
+	padding: 2px 9px;
 }
 
 h1,h2,h3,h4,h5,h6 {
