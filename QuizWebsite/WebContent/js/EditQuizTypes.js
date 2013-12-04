@@ -19,7 +19,7 @@ function TypeHandler (wrapper, parent, quiz_id) {
 	var _header;
 
 	this.getHeader = function (data) {
-		_header = new MetaHandler(this);
+		_header = new MetaHandler(this,_quiz_id);
 		return _header.getElem(data);
 	}
 
@@ -101,11 +101,12 @@ function TypeHandler (wrapper, parent, quiz_id) {
 	};
 }
 
-function MetaHandler (parent) {
+function MetaHandler (parent, quiz_id) {
 	var _title;
 	var _description;
 	var _parent = parent;
 	var _data;
+	var _quiz_id = quiz_id;
 	var _settings = {
 		is_immediately_corrected_elem:undefined,
 		is_multiple_page_elem:undefined,
@@ -143,6 +144,18 @@ function MetaHandler (parent) {
 		_description.classList.add('faint','editable');
 		description_li.appendChild(_description);
 		ul.appendChild(description_li);
+
+		/* finished button */
+		var finished_button_li = document.createElement('li');
+		var finished_button    = document.createElement('div');
+		finished_button.classList.add('button');
+		finished_button.addEventListener('click',function () {
+			window.location = '/QuizWebsite/QuizPage.jsp?quiz_id='+_quiz_id;
+		})
+		finished_button.innerHTML = 'Finished';
+		finished_button_li.appendChild(finished_button);
+		ul.appendChild(finished_button_li);
+
 
 		/* settings */
 		var settings_li = document.createElement('li');
@@ -216,6 +229,14 @@ function MetaHandler (parent) {
 
 		settings_li.appendChild(settings_ul);
 		ul.appendChild(settings_li);
+
+		/* tags title */
+		var tags_title_li = document.createElement('li');
+		var tags_title = document.createElement('div');
+		tags_title.classList.add('faint');
+		tags_title.innerHTML = 'tags';
+		tags_title_li.appendChild(tags_title);
+		ul.appendChild(tags_title_li);
 
 		/* tags */
 		var tags_container_li = document.createElement('li');
