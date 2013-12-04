@@ -81,7 +81,6 @@ function update_newsfeed(friend_results, newsfeed_bar) {
 		var user_percentage_score = friend_results[i].user_percentage_score;
 		var date = friend_results[i].date;
 		var user = friend_results[i].user;
-		console.log(quiz_name);
 		var li = document.createElement('li');
 		
 		var quiz_link = document.createElement('a');

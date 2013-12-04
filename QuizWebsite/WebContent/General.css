@@ -665,3 +665,17 @@ ul#graph-search-results {
 		border-top: 1px solid rgb(230,230,230);
 	}
 
+
+.notifications-elem {
+	background-color: rgb(200, 138, 124);
+	color: white;
+	width: 13px;
+	height: 13px;
+	text-align: center;
+	top: -27px;
+	position: absolute;
+	right: -5px;
+	border-radius: 3px;
+	font-size: 10px;
+}
+

@@ -35,6 +35,8 @@ function BlueBarRadioMenu (user_id) {
 			handler.disp = get_display(handler);
 			handler.holder.appendChild(handler.disp);
 			handler.holder.appendChild(getNib());
+			handler.notifications = getNotificationElem();
+			handler.holder.appendChild(handler.notifications);
 			handler.refresh();
 			_rg.push(handler);
 			_handlers[type.name] = handler;
@@ -42,6 +44,9 @@ function BlueBarRadioMenu (user_id) {
 	}
 
 	this.update = function (handler) {
+		console.log('notifications');
+		console.log(handler.getNumNotifications());
+		if (handler.notifications && handler.notifications.update) handler.notifications.update(handler.getNumNotifications());
 		var ul = handler.disp.menu.ul;
 		ul.innerHTML = '';
 		var i = 0;
@@ -97,6 +102,22 @@ function BlueBarRadioMenu (user_id) {
 
 	function hide_modal (handler) {
 		handler.disp.modal.classList.remove('open');
+	}
+
+	function getNotificationElem () {
+		var elem = new_elem({
+			type:'div',
+			classList:['hide','notifications-elem']
+		});
+		elem.update = function (num_notifications) {
+			if (num_notifications) {
+				elem.classList.remove('hide');
+				elem.innerHTML = num_notifications;
+			} else {
+				elem.classList.add('hide');
+			}
+		}
+		return elem;
 	}
 
 	function getNib () {
@@ -204,6 +225,10 @@ function RequestsHandler (blue_bar, user_id) {
 	var _data;
 	var _this = this;
 
+	this.getNumNotifications = function () {
+		return (_data) ? _data.requests.length : 0;
+	}
+
 	this.refresh = function () {
 		get_json_from_url(
 			'/QuizWebsite/RelationServlet?action=requests&user_id='+_user_id,
@@ -286,6 +311,12 @@ function MessagesHandler (blue_bar, user_id) {
 	var _modal_user_id;
 	var _modal_messages_ul;
 
+	this.getNumNotifications = function () {
+		return (_data && _data.user_list) ? _data.user_list.reduce(function (previous,current,index,arr) {
+			return previous + (current.unread ? 1 : 0);
+		},0) : 0;
+	}
+
 	this.refresh = function (callback) {
 		var callbackcalled = false;
 		if (_data) {
@@ -301,6 +332,7 @@ function MessagesHandler (blue_bar, user_id) {
 				_data = data;
 				_data.user_list = create_user_list(data.messages);
 				console.log('messages processed');
+				console.log(_data);
 				_blue_bar.update(_this);
 				if (callback && !callbackcalled) callback();
 			}
@@ -482,7 +514,9 @@ function MessagesHandler (blue_bar, user_id) {
 			return true;
 		});
 		var mapped = filtered.map(function (element) {
-			return element.user;
+			var obj = element.user;
+			obj.unread = (element.type == 'received' && !element.was_read)
+			return obj;
 		});
 		return mapped;
 	}
@@ -494,6 +528,10 @@ function NotificationsHandler (blue_bar, user_id) {
 	var _blue_bar = blue_bar;
 	var _data;
 	var _this = this;
+
+	this.getNumNotifications = function () {
+		return 0;
+	}
 
 	this.refresh = function () {
 		get_json_from_url(
@@ -562,6 +600,10 @@ function SettingsHandler (blue_bar, user_id) {
 	var _this = this;
 
 	var _settings_items = [getLogoutItem,getAccountSettings];
+
+	this.getNumNotifications = function () {
+		return 0;
+	}
 
 	this.refresh = function () {
 		_blue_bar.update(_this);
