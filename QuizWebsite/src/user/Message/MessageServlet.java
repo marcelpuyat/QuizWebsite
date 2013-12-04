@@ -107,8 +107,9 @@ public class MessageServlet extends HttpServlet {
 				int quiz_id = newMessage.getInt("quiz_id");
 				Quiz quiz = new Quiz(quiz_id, con);
 				
-				Mailer.emailChallenge(new User(user_to_id, con), new User(user_from_id, con), percentage, time_taken, quiz.getName());
+				boolean emailSent = Mailer.emailChallenge(new User(user_to_id, con), new User(user_from_id, con), percentage, time_taken, quiz.getName());
 				System.out.println("EMAIL SENT!");
+				responseJSON.accumulate("email", emailSent);
 			}
 			
 			response.getWriter().println(responseJSON.toString());

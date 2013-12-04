@@ -12,7 +12,8 @@ import javax.mail.internet.MimeMessage;
 import user.User;
  
 public class Mailer {
-	public static void emailChallenge(User user_to, User user_from, int score, double time_taken, String quiz_name) {
+	public static boolean emailChallenge(User user_to, User user_from, int score, double time_taken, String quiz_name) {
+		if (user_from.getEmailAddress() == null) return false;
 		Properties props = new Properties();
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.socketFactory.port", "465");
@@ -41,7 +42,7 @@ public class Mailer {
 			Transport.send(message);
  
 			System.out.println("Done");
- 
+			return true;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
