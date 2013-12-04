@@ -62,59 +62,91 @@ function init_js (quiz_id) {
 		/* user history */
 		var user_history_ul = document.getElementById('user-history');
 		var user_history_data = data.user_history || [];
-		user_history_data.sort(function (a,b) {
-			if (a.score != b.score) return b.score - a.score;
-			return a.time - b.time;
-		});
+		user_history_data.sort(sort_by_score);
 		for (var i = 0; i < user_history_data.length; i++) {
-			user_history_ul.appendChild(create_score_display(user_history_data[i]));
+			user_history_ul.appendChild(create_score_display(user_history_data[i],get_time_stamp(user_history_data[i])));
 		};
 
 		/* best all time */
 		var best_alltime_ul = document.getElementById('best-alltime');
 		var best_alltime_data = data.best_alltime || [];
-		best_alltime_data.sort(function (a,b) {
-			if (a.score != b.score) return b.score - a.score;
-			return a.time - b.time;
-		});
+		best_alltime_data.sort(sort_by_score);
 		for (var i = 0; i < best_alltime_data.length; i++) {
-			best_alltime_ul.appendChild(create_score_display(best_alltime_data[i]));
+			best_alltime_ul.appendChild(create_score_display(best_alltime_data[i],get_time_stamp(best_alltime_data[i])));
 		};
 
 		/* best today */
 		var best_today_ul = document.getElementById('best-today');
 		var best_today_data = data.best_today || [];
-		best_today_data.sort(function (a,b) {
-			if (a.score != b.score) return b.score - a.score;
-			return a.time - b.time;
-		});
+		best_today_data.sort(sort_by_score);
 		for (var i = 0; i < best_today_data.length; i++) {
-			best_today_ul.appendChild(create_score_display(best_today_data[i]));
+			best_today_ul.appendChild(create_score_display(best_today_data[i],get_time_stamp(best_today_data[i])));
 		};
 
 		/* recent scores */
 		var recent_scores_ul = document.getElementById('recent-scores');
 		var recent_scores_data = data.recent_scores || [];
-		recent_scores_data.sort(function (a,b) {
-			if (a.score != b.score) return b.score - a.score;
-			return a.time - b.time;
-		});
+		recent_scores_data.sort(sort_by_date);
 		for (var i = 0; i < recent_scores_data.length; i++) {
-			recent_scores_ul.appendChild(create_score_display(recent_scores_data[i]));
+			recent_scores_ul.appendChild(create_score_display(recent_scores_data[i],get_time_elapsed(recent_scores_data[i].date)));
 		};
 
 	}
 
-	function create_score_display (data) {
+	function create_score_display (data,extra_disp) {
 		var li = document.createElement('li');
 		var score = document.createElement('span');
 		score.innerHTML = (100* data.score).toFixed(2) + ' ';
+
 		var username = document.createElement('a');
 		username.innerHTML = data.name;
 		username.href = '/QuizWebsite/User.jsp?username='+data.name;
+
+		var time_disp = document.createElement('span');
+		time_disp.innerHTML = extra_disp || '';
 		li.appendChild(score);
 		li.appendChild(username);
+		li.appendChild(time_disp);
 		return li;
+	}
+
+	function sort_by_date (a,b) {
+		var a = a.date;
+		var b = b.date;
+		if (a.year != b.year) return b.year - a.year;
+		if (a.month != b.month) return b.month - a.month;
+		if (a.date != b.date) return b.date - a.date;
+		return sort_by_score(a,b);
+	}
+
+	function sort_by_score (a,b) {
+		if (a.score != b.score) return b.score - a.score;
+		return a.time - b.time;
+	}
+
+	function get_time_stamp (data) {
+		return data.time + 'seconds';
+	}
+
+	var seconds = 1000;
+	var minutes = seconds * 60;
+	var hours   = minutes * 60;
+	var days    = hours * 24;
+	var weeks   = days * 7;
+	var months  = days * 30;
+	var years   = days * 365;
+
+	function get_time_elapsed (date) {
+		var now = new Date();
+		var then = new Date(date.year, date.month, date.date, date.minute, date.seconds, 0);
+		var diff = now - then;
+		if (diff > years)   return diff/years   + ' years ago';
+		if (diff > months)  return diff/months  + ' months ago';
+		if (diff > weeks)   return diff/weeks   + ' weeks ago';
+		if (diff > days)    return diff/days    + ' days ago';
+		if (diff > hours)   return diff/hours   + ' hours ago';
+		if (diff > minutes) return diff/minutes + ' minutes ago';
+		if (diff > seconds) return diff/seconds + ' seconds ago';
 	}
 
 }
