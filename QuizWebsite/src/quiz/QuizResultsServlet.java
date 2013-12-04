@@ -47,7 +47,7 @@ public class QuizResultsServlet extends HttpServlet {
 		
 		if (practice != null) {
 			long user_id = Long.parseLong(request.getParameter("user_id"));
-			Achievement.addAchievement(practice, practice, user_id, con);
+			Achievement.updatePracticeAchievement(con, user_id);
 			return;
 		}
 		
