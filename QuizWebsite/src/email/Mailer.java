@@ -13,7 +13,7 @@ import user.User;
  
 public class Mailer {
 	public static boolean emailChallenge(User user_to, User user_from, int score, double time_taken, String quiz_name) {
-		if (user_from.getEmailAddress() == null) return false;
+//		if (user_to.getEmailAddress() == null) return false;
 		Properties props = new Properties();
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.socketFactory.port", "465");
@@ -37,13 +37,15 @@ public class Mailer {
 					InternetAddress.parse("marcelp@stanford.edu")); // CHANGE TO user_to email
 			message.setSubject("Quiz Challenge from " +user_from.getDisplayName());
 			message.setText("Dear "+user_to.getDisplayName()+"," +
-					"\n\n "+user_from.getDisplayName()+" challenges you to beat his/her score of "+score+"% in "+time_taken+" seconds on "+quiz_name+" on QuizBook!");
+					"\n\n "+user_from.getDisplayName()+" challenges you to beat his/her score of "+score+"% in "+time_taken+" seconds on "+quiz_name+" on QuizBook!" +
+					"\n\n Login to accept the challenge: http://localhost:8080/QuizWebsite/Login.jsp");
  
 			Transport.send(message);
  
 			System.out.println("Done");
 			return true;
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 	}
