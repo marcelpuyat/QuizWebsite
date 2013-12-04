@@ -46,7 +46,7 @@ function BlueBarRadioMenu (user_id) {
 	this.update = function (handler) {
 		console.log('notifications');
 		console.log(handler.getNumNotifications());
-		if (handler.notifications && handler.notifications.update) handler.notifications.update(handler.getNumNotifications());
+		_this.updateNotifications(handler);
 		var ul = handler.disp.menu.ul;
 		ul.innerHTML = '';
 		var i = 0;
@@ -76,6 +76,10 @@ function BlueBarRadioMenu (user_id) {
 				break;
 			}
 		}
+	}
+
+	this.updateNotifications = function (handler) {
+		if (handler.notifications && handler.notifications.update) handler.notifications.update(handler.getNumNotifications());
 	}
 
 	this.toUserModal = function (user) {
@@ -375,7 +379,7 @@ function MessagesHandler (blue_bar, user_id) {
 		});
 		_modal_user_id = _data.user_list[index].id;
 		var user_messages = messages_by_uid(_data.user_list[index].id, _data.messages);
-		inform_messages_read(user_messages);
+		inform_messages_read(user_messages,_data.user_list[index]);
 		for (var i = 0; i < user_messages.length; i++) {
 			var body = new_elem({
 				type:'div',
@@ -445,7 +449,7 @@ function MessagesHandler (blue_bar, user_id) {
 		});
 	}
 
-	function inform_messages_read (messages) {
+	function inform_messages_read (messages,user_list_user) {
 		for (var i = 0; i < messages.length; i++) {
 			if (messages[i].type == 'received' && !messages[i].was_read) {
 				post_json_to_url(
@@ -454,6 +458,8 @@ function MessagesHandler (blue_bar, user_id) {
 				);
 			}
 		};
+		user_list_user.unread = false;
+		_blue_bar.updateNotifications(_this);
 	}
 
 	function get_compose_elem () {
