@@ -96,14 +96,14 @@ function init_js (quiz_id) {
 	function create_score_display (data,extra_disp) {
 		var li = document.createElement('li');
 		var score = document.createElement('span');
-		score.innerHTML = (100* data.score).toFixed(2) + ' ';
+		score.innerHTML = parseInt(100* data.score) + '% ';
 
 		var username = document.createElement('a');
 		username.innerHTML = data.name;
 		username.href = '/QuizWebsite/User.jsp?username='+data.name;
 
 		var time_disp = document.createElement('span');
-		time_disp.innerHTML = extra_disp || '';
+		time_disp.innerHTML = ' ' + (extra_disp || '');
 		li.appendChild(score);
 		li.appendChild(username);
 		li.appendChild(time_disp);
@@ -113,9 +113,12 @@ function init_js (quiz_id) {
 	function sort_by_date (a,b) {
 		var a = a.date;
 		var b = b.date;
-		if (a.year != b.year) return b.year - a.year;
-		if (a.month != b.month) return b.month - a.month;
-		if (a.date != b.date) return b.date - a.date;
+		if (a.year    != b.year)    return b.year - a.year;
+		if (a.month   != b.month)   return b.month - a.month;
+		if (a.date    != b.date)    return b.date - a.date;
+		if (a.hours   != b.hours)   return b.hours - a.hours;
+		if (a.minutes != b.minutes) return b.minutes - a.minutes;
+		if (a.seconds != b.seconds) return b.seconds - a.seconds;
 		return sort_by_score(a,b);
 	}
 
@@ -137,16 +140,17 @@ function init_js (quiz_id) {
 	var years   = days * 365;
 
 	function get_time_elapsed (date) {
-		var now = new Date();
-		var then = new Date(date.year, date.month, date.date, date.minute, date.seconds, 0);
-		var diff = now - then;
-		if (diff > years)   return diff/years   + ' years ago';
-		if (diff > months)  return diff/months  + ' months ago';
-		if (diff > weeks)   return diff/weeks   + ' weeks ago';
-		if (diff > days)    return diff/days    + ' days ago';
-		if (diff > hours)   return diff/hours   + ' hours ago';
-		if (diff > minutes) return diff/minutes + ' minutes ago';
-		if (diff > seconds) return diff/seconds + ' seconds ago';
+		var now = new Date(); /*                   v very strange setting in javascript: 0=jan,1=feb */
+		var then = new Date(date.year, date.month -1, date.date -1, date.hours, date.minutes, date.seconds, 0);
+		var diff = then - now;
+		if (diff > years)   return (Math.floor(diff/years) == 1)   ? 'a year ago'   : Math.floor(diff/years)   + ' years ago';
+		if (diff > months)  return (Math.floor(diff/months) == 1)  ? 'a month ago'  : Math.floor(diff/months)  + ' months ago';
+		if (diff > weeks)   return (Math.floor(diff/weeks) == 1)   ? 'a week ago'   : Math.floor(diff/weeks)   + ' weeks ago';
+		if (diff > days)    return (Math.floor(diff/days) == 1)    ? 'a day ago'    : Math.floor(diff/days)    + ' days ago';
+		if (diff > hours)   return (Math.floor(diff/hours) == 1)   ? 'a hour ago'   : Math.floor(diff/hours)   + ' hours ago';
+		if (diff > minutes) return (Math.floor(diff/minutes) == 1) ? 'a minute ago' : Math.floor(diff/minutes) + ' minutes ago';
+		if (diff > seconds) return (Math.floor(diff/seconds) == 1) ? 'a second ago' : Math.floor(diff/seconds) + ' seconds ago';
+		return 'just now';
 	}
 
 }
