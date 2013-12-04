@@ -220,17 +220,23 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 				classList:['pointable'],
 				objectAttributes:[
 					{'name':'friend_id','value':friends[i].id},
+					{'name':'friend_name','value':friends[i].display_name},
 					{'name':'action','value':function () {
-						_this.challenge_friend(this.friend_id);
+						_this.challenge_friend(this.friend_id, this.friend_name);
 					}}
 				]
 			}));
 		}
 	};
 	
-	this.challenge_friend = function(friend_id) {
+	this.challenge_friend = function(friend_id, name) {
 		var challenge_message = "I challenge you to beat my score of " + (score * 100).toFixed(0) + "% on this quiz: <a href='/QuizWebsite/QuizPage.jsp?quiz_id=" + _quiz_id + "'>" + _data.quiz_name + "</a>";
-		post_json_to_url("/QuizWebsite/MessageServlet?action=send&challenge=yes&score=", {subject: "", user_from_id: _user_id, user_to_id: friend_id, body: challenge_message, quiz_id: _quiz_id, time_taken: time_taken, score: score*100}, function() {
+		post_json_to_url("/QuizWebsite/MessageServlet?action=send&challenge=yes&score=", {subject: "", user_from_id: _user_id, user_to_id: friend_id, body: challenge_message, quiz_id: _quiz_id, time_taken: time_taken, score: score*100}, function(data) {
+			// True if email sent, false if not
+			var message;
+			if (data.email) message = "Challenge emailed and sent to "+name+".\n\n Return to Homepage";
+			else message = name+"'s email is not set up. Challenge sent as a message.\n\n Return to Homepage";
+			alert(message);
 			window.location = "/QuizWebsite/Home.jsp";
 		});
 	};
