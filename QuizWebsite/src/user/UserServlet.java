@@ -165,6 +165,12 @@ public class UserServlet extends HttpServlet {
 					response.getWriter().println(responseJSON.toString());
 					return;
 				}
+				else if (field.equals("email_address")) {
+					update_user.setEmailAddress(usrJSON.getString("email_address"));
+					responseJSON.accumulate("status", "success");
+					response.getWriter().println(responseJSON.toString());
+					return;
+				}
 			}
 			catch (ClassNotFoundException e) {}
 			responseJSON.accumulate("status", "failure");

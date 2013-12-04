@@ -26,6 +26,9 @@
 			<li><div id="profile-picture-update-label" class="faint">profile picture</div></li>
 			<li><input type="text" id="profile-picture-update"></li>
 			<li><input type="button" value="update" id="profile-picture-button"></li>
+			<li><div id="email-address-update-label" class="faint">email address</div></li>
+			<li><input type="text" id="email-address-update"></li>
+			<li><input type="button" value="update" id="email-address-button"></li>
 		</ul>
 	</div>
 	<%= HTMLTemplater.getGeneralJS() %>

@@ -6,6 +6,7 @@
  	document.getElementById('first-name-button').addEventListener('click',update_first_name);
  	document.getElementById('last-name-button').addEventListener('click',update_last_name);
  	document.getElementById('profile-picture-button').addEventListener('click',update_profile_picture);
+ 	document.getElementById('email-address-button').addEventListener('click', update_email_address);
  }
 
  function update_first_name () {
@@ -41,3 +42,12 @@
  		collapse, 
  		{collapse:[this, text_field, title]});
  }
+ 
+ function update_email_address () {
+	 	var text_field = document.getElementById('email-address-update');
+	 	var title      = document.getElementById('email-address-update-label');
+	 	post_json_to_url(update_url+'&field=email_address', 
+	 		{email_address:text_field.value}, 
+	 		collapse, 
+	 		{collapse:[this, text_field, title]});
+}

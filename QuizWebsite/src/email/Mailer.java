@@ -12,8 +12,15 @@ import javax.mail.internet.MimeMessage;
 import user.User;
  
 public class Mailer {
+	
+	/* Included mail.jar (in Tomcat server), which was downloaded from Oracle: http://www.oracle.com/technetwork/java/index-138643.html */
+	
+	// Code here adopted from mkyong.com (copied from an example shown by user: mkyong)
+	//
+	// http://www.mkyong.com/java/javamail-api-sending-email-via-gmail-smtp-example/
+	
 	public static boolean emailChallenge(User user_to, User user_from, int score, double time_taken, String quiz_name) {
-//		if (user_to.getEmailAddress() == null) return false;
+		if (user_to.getEmailAddress() == null) return false;
 		Properties props = new Properties();
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.socketFactory.port", "465");
@@ -34,7 +41,7 @@ public class Mailer {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("from@no-spam.com"));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("marcelp@stanford.edu")); // CHANGE TO user_to email
+					InternetAddress.parse(user_to.getEmailAddress()));
 			message.setSubject("Quiz Challenge from " +user_from.getDisplayName());
 			message.setText("Dear "+user_to.getDisplayName()+"," +
 					"\n\n "+user_from.getDisplayName()+" challenges you to beat his/her score of "+score+"% in "+time_taken+" seconds on "+quiz_name+" on QuizBook!" +
