@@ -128,7 +128,7 @@ function init_js (quiz_id) {
 	}
 
 	function get_time_stamp (data) {
-		return data.time + 'seconds';
+		return data.time + ' seconds';
 	}
 
 	var seconds = 1000;
@@ -140,8 +140,8 @@ function init_js (quiz_id) {
 	var years   = days * 365;
 
 	function get_time_elapsed (date) {
-		var now = new Date(); /*                   v very strange setting in javascript: 0=jan,1=feb */
-		var then = new Date(date.year, date.month -1, date.date -1, date.hours, date.minutes, date.seconds, 0);
+		var now = new Date();
+		var then = new Date(date.year, date.month, date.date, date.hours, date.minutes, date.seconds, 0);
 		var diff = then - now;
 		if (diff > years)   return (Math.floor(diff/years) == 1)   ? 'a year ago'   : Math.floor(diff/years)   + ' years ago';
 		if (diff > months)  return (Math.floor(diff/months) == 1)  ? 'a month ago'  : Math.floor(diff/months)  + ' months ago';
