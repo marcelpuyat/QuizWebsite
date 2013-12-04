@@ -75,7 +75,7 @@
 			</div>
 			<span class="right faint" id="relation-status"></span>
 			<div id="buttons" class="page-width thin center-block center">
-				<div class="hide button" id="message-button" onclick="open_message_pane(<%= getUserIdOfPage(request, application) %>)">Message <%= getDisplayName(request, application) %></div>
+				<div class="hide button" id="message-button" onclick="open_message_pane({id:<%= getUserIdOfPage(request, application) %>,display_name:'<%= getDisplayName(request, application) %>'})">Message <%= getDisplayName(request, application) %></div>
 				<div class="hide button" id="accept-request-button" onclick="acceptRequest()">Accept Friend Request</div>
 				<div class="hide button" id="reject-request-button" onclick="rejectRequest()">Reject Friend Request</div>
 				<div class="hide button red" id="block-user-button" onclick="blockUser()">Block User</div>

@@ -2,8 +2,9 @@ var open_message_pane;
 
 (function init_blue_bar () {
 	var bbrm = new BlueBarRadioMenu(document.getElementById('user_id_stash').getAttribute('user_id'));
-	open_message_pane = function (user_id) {
-		bbrm.toUserModal(user_id);
+	open_message_pane = function (user) {
+		console.log(user);
+		bbrm.toUserModal(user);
 	}
 })();
 
@@ -62,7 +63,6 @@ function BlueBarRadioMenu (user_id) {
 					}));
 					new_li.addEventListener('click',function () {
 						var index = this.i;
-						console.log(index);
 						_this.toModalAtIndex(index,handler);
 					});
 				}
@@ -73,11 +73,11 @@ function BlueBarRadioMenu (user_id) {
 		}
 	}
 
-	this.toUserModal = function (user_id) {
+	this.toUserModal = function (user) {
 		var handler = _handlers.messages;
 		handler.refresh(function () {
 			_rg.closeOthers(handler);
-			show_modal(handler.modalAtUser(user_id), handler);
+			show_modal(handler.modalAtUser(user), handler);
 		});
 	}
 
@@ -286,16 +286,22 @@ function MessagesHandler (blue_bar, user_id) {
 	var _modal_messages_ul;
 
 	this.refresh = function (callback) {
+		var callbackcalled = false;
+		if (_data) {
+			_blue_bar.update(_this);
+			if (callback) callback();
+			callbackcalled = true;
+		}
+		console.log('messages requested');
 		get_json_from_url(
 			'/QuizWebsite/MessageServlet?user_id='+_user_id,
 			function (data) {
-				console.log('here');
-				console.log(data);
+				console.log('messages loaded');
 				_data = data;
 				_data.user_list = create_user_list(data.messages);
-				console.log(_data);
+				console.log('messages processed');
 				_blue_bar.update(_this);
-				if (callback) callback();
+				if (callback && !callbackcalled) callback();
 			}
 		);
 		
@@ -325,6 +331,7 @@ function MessagesHandler (blue_bar, user_id) {
 	}
 
 	this.modalAtTitleIndex = function (index) {
+		if (_data.user_list[index].display_name && _data.user_list[index].display_name != "") return _data.user_list[index].display_name;
 		return _data.user_list[index].first_name + ' ' + _data.user_list[index].last_name;
 	}
 
@@ -372,16 +379,16 @@ function MessagesHandler (blue_bar, user_id) {
 	}
 
 	/* messages specific */
-	this.modalAtUser = function (user_id) {
+	this.modalAtUser = function (user) {
 		var found = -1;
 		for (var i = 0; i < _data.user_list.length; i++) {
-			if (user_id == _data.user_list[i].id) {
+			if (user.id == _data.user_list[i].id) {
 				found = i;
 				break;
 			}
 		};
 		if (found === -1) {
-			_data.user_list.splice(0,0,{id:user_id});
+			_data.user_list.splice(0,0,user);
 			found = 0;
 		}
 		return _this.modalAtIndex(found);
@@ -486,9 +493,11 @@ function NotificationsHandler (blue_bar, user_id) {
 
 	this.refresh = function () {
 		get_json_from_url(
-			'/QuizWebsite/RelationServlet?action=requests&user_id='+_user_id,
+			'/QuizWebsite/AnnouncementServlet',
 			function (data) {
 				_data = data;
+				console.log('Announcement');
+				console.log(data);
 				_blue_bar.update(_this);
 			}
 		);
@@ -496,21 +505,36 @@ function NotificationsHandler (blue_bar, user_id) {
 	}
 
 	this.getUlName = function () {
-		return "";
+		return "Announcements";
 	}
 
 	this.liAtIndex = function (index) {
-		var li = document.createElement('li');
-		li.innerHTML = index;
-		return li;
+		var admin = new_elem({
+			type:'span',
+			classList:['faint'],
+			innerHTML: _data.announcements[index].admin.display_name
+		});
+		var subject = new_elem({
+			type:'span',
+			classList:[],
+			innerHTML: _data.announcements[index].subject
+		});
+		return new_elem({
+			type:'li',
+			children:[admin, subject]
+		});
 	}
 
 	this.modalAtIndex = function (index) {
 		
 	}
 
+	this.modalAtIndexExists = function (index) {
+		return this.indexExists(index);
+	}
+
 	this.indexExists = function (index) {
-		return (index < 5);
+		return (index < _data.announcements.length);
 	}
 }
 
@@ -530,7 +554,6 @@ function SettingsHandler (blue_bar, user_id) {
 	}
 
 	this.liAtIndex = function (index) {
-		console.log('here');
 		return _settings_items[index]();
 	}
 
@@ -543,7 +566,6 @@ function SettingsHandler (blue_bar, user_id) {
 	}
 
 	this.indexExists = function (index) {
-		console.log('here- index:'+index);
 		return index < _settings_items.length;
 	}
 

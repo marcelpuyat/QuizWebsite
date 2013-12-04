@@ -153,6 +153,7 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 		/* build and send answer data */
 		var answer = _build_results();
 		if(!_is_practice_quiz) _send_quiz_results(answer);
+		else _notify_quiz_practiced(_user_id);
 		results_div = document.createElement('div');
 		results_div.innerHTML = 'total correct: '+ answer.user_score+'\ntotal possible: '+answer.possible_score;
 		
@@ -252,6 +253,13 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 		return _quiz_timer.getSecondsElapsed();
 	}
 	
+	function _notify_quiz_practiced (user_id) {
+		post_json_to_url(
+			'/QuizWebsite/QuizResults?user_id='+user_id+'&practice=true',
+			{}
+		);
+	}
+
 	function _send_quiz_results(data, callback, aux) {
 		console.log('sending data to:'+_servlet_post_url);
 		console.log(data);
