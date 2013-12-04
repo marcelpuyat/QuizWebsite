@@ -41,9 +41,18 @@ public class QuizResultsServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		SelfRefreshingConnection con = (SelfRefreshingConnection) getServletContext().getAttribute("database_connection");
+
+		String practice = request.getParameter("practice");
+		
+		if (practice != null) {
+			long user_id = Long.parseLong(request.getParameter("user_id"));
+			Achievement.addAchievement(practice, practice, user_id, con);
+			return;
+		}
+		
 		JSONObject jSONresults = JSONParser.getJSONfromRequest(request);
 		
-		SelfRefreshingConnection con = (SelfRefreshingConnection) getServletContext().getAttribute("database_connection");
 		HttpSession session = (HttpSession) request.getSession();
 		User user = (User) session.getAttribute("user");
 		

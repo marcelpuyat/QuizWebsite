@@ -274,6 +274,14 @@ public class Achievement {
 		}
 	}
 	
+	public static void updatePracticeAchievement(SelfRefreshingConnection con, long user_id) {
+		User user = new User(user_id, con);
+		
+		if (!User.hasAchievement(PRACTICE_ACHV, user, con)) {
+			Achievement.addAchievement(PRACTICE_ACHV, PRACTICE_ACHV_DESC, user_id, con);
+		}
+	}
+	
 	private static boolean hasHighScore(long user_id, SelfRefreshingConnection con, ArrayList<Integer> ids) {
 		
 		for (int i = 0; i < ids.size(); i++) {
