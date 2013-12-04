@@ -3,7 +3,7 @@ package user.achievement;
 public class AchievementConstants {
 
 	public static final String[][] achievements = {
-		{"Amateur Author", "The user created a quiz."},
+		{"Amateur Author", "The user created a quiz"},
 		{"Prolific Author", "The user created 5 quizzes"},
 		{"Prodigious Author", "The user created 10 quizzes"},
 		{"Quiz Machine", "The user took 10 quizzes"},
