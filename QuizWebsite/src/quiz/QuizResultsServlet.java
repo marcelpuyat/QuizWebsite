@@ -55,6 +55,8 @@ public class QuizResultsServlet extends HttpServlet {
 		Quiz quizTaken = new Quiz(quiz_id, con);
 		quizTaken.incrementFrequency();
 		
+		// Update achievement for high score
+		Achievement.updateHighScorerAchievement(con, user.getUserId());
 		// Update achievement for taking 10 quizzes if so
 		Achievement.updateQuizzesTakenAchievement(con, user.getUserId());
 	}

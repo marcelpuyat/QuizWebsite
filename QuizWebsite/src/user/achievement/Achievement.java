@@ -32,6 +32,13 @@ public class Achievement {
 
 	public static final String TEN_QUIZ_TAKEN_ACHV = AchievementConstants.achievements[3][TITLE];
 	public static final String TEN_QUIZ_TAKEN_ACHV_DESC = AchievementConstants.achievements[3][ACHIEVEMENT];
+	
+	public static final String HIGH_SCORE_ACHV = AchievementConstants.achievements[4][TITLE];
+	public static final String HIGH_SCORE_ACHV_DESC = AchievementConstants.achievements[4][ACHIEVEMENT];
+
+	public static final String PRACTICE_ACHV = AchievementConstants.achievements[5][TITLE];
+	public static final String PRACTICE_ACHV_DESC = AchievementConstants.achievements[5][ACHIEVEMENT];
+
 
 
 	
@@ -251,6 +258,54 @@ public class Achievement {
 			if (quizzesTaken >= 10) {
 				Achievement.addAchievement(TEN_QUIZ_TAKEN_ACHV, TEN_QUIZ_TAKEN_ACHV_DESC, user_id, con);
 			}
+		}
+	}
+	
+	public static void updateHighScorerAchievement(SelfRefreshingConnection con, long user_id) {
+		User user = new User(user_id, con);
+		ArrayList<Integer> quiz_ids = getIDsOfQuizzes(con);
+		boolean hasHighScore = hasHighScore(user_id, con, quiz_ids);
+		if (hasHighScore) {
+			
+			if (!User.hasAchievement(HIGH_SCORE_ACHV, user, con)) {
+				Achievement.addAchievement(HIGH_SCORE_ACHV, HIGH_SCORE_ACHV_DESC, user_id, con);
+			}
+			
+		}
+	}
+	
+	private static boolean hasHighScore(long user_id, SelfRefreshingConnection con, ArrayList<Integer> ids) {
+		
+		for (int i = 0; i < ids.size(); i++) {
+			
+			int quiz_id = ids.get(i);
+			
+			try {
+				PreparedStatement stmt = con.prepareStatement("SELECT user_id FROM QuizResults WHERE quiz_id = " + quiz_id + " ORDER BY user_percentage_score DESC, time_duration LIMIT 1");
+				ResultSet rs = stmt.executeQuery();
+				rs.next();
+				if (rs.getInt(1) == (int)user_id) return true;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return false;
+			}
+			
+		}
+		return false;
+	}
+	
+	private static ArrayList<Integer> getIDsOfQuizzes(SelfRefreshingConnection con) {
+		try {
+			ArrayList<Integer> ids = new ArrayList<Integer>();
+			PreparedStatement stmt = con.prepareStatement("SELECT id FROM Quizzes");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				ids.add(new Integer(rs.getInt(1)));
+			}
+			return ids;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 }
