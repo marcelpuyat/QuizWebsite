@@ -346,6 +346,12 @@ ul#graph-search-results {
 	width: inherit;
 	z-index: 1000000000000000;
 	box-shadow: 0px 0px 20px rgba(0,0,0,0.2);
+
+	-webkit-transition:0.5s;
+	-moz-transition:0.5s;
+	-o-transition:0.5s;
+	-ms-transition:0.5s;
+	transition:0.5s;
 }
 	.graph-search-result {
 		padding: 6px 3px;
