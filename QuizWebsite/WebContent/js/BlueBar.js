@@ -348,7 +348,10 @@ function MessagesHandler (blue_bar, user_id) {
 			var body = new_elem({
 				type:'div',
 				classList:['message-body'],
-				innerHTML:user_messages[i].body
+				innerHTML:user_messages[i].body,
+				attributes:[
+					{name:'title',value:get_time_ago(user_messages[i].date)}
+				]
 			});
 			_modal_messages_ul.prependChild(new_elem({
 				type:'li',

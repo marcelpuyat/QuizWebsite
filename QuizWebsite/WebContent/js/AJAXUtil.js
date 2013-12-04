@@ -131,6 +131,30 @@ Node.prototype.prependChild = function(elem) {
 	this.insertBefore(elem, this.firstChild);
 };
 
+var seconds = 1000;
+var minutes = seconds * 60;
+var hours   = minutes * 60;
+var days    = hours * 24;
+var weeks   = days * 7;
+var months  = days * 30;
+var years   = days * 365;
+
+function get_time_ago (date) {
+	var now = new Date();
+	var then = new Date(date.year, date.month, date.date, date.hours, date.minutes, date.seconds, 0);
+
+
+	var diff = now - then;
+	if (diff > years)   return (Math.floor(diff/years) == 1)   ? 'a year ago'   : Math.floor(diff/years)   + ' years ago';
+	if (diff > months)  return (Math.floor(diff/months) == 1)  ? 'a month ago'  : Math.floor(diff/months)  + ' months ago';
+	if (diff > weeks)   return (Math.floor(diff/weeks) == 1)   ? 'a week ago'   : Math.floor(diff/weeks)   + ' weeks ago';
+	if (diff > days)    return (Math.floor(diff/days) == 1)    ? 'a day ago'    : Math.floor(diff/days)    + ' days ago';
+	if (diff > hours)   return (Math.floor(diff/hours) == 1)   ? 'a hour ago'   : Math.floor(diff/hours)   + ' hours ago';
+	if (diff > minutes) return (Math.floor(diff/minutes) == 1) ? 'a minute ago' : Math.floor(diff/minutes) + ' minutes ago';
+	if (diff > seconds) return (Math.floor(diff/seconds) == 1) ? 'a second ago' : Math.floor(diff/seconds) + ' seconds ago';
+	return 'just now';
+}
+
 function new_elem (aux) {
 	var ret_elem = document.createElement(aux.type);
 	if (aux.attributes) {
