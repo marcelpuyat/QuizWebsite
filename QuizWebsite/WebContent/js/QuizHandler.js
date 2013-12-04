@@ -228,8 +228,9 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 	
 	this.challenge_friend = function(friend_id) {
 		var challenge_message = "I challenge you to beat my score of " + (score * 100).toFixed(0) + "% on this quiz: <a href='/QuizWebsite/QuizPage.jsp?quiz_id=" + _quiz_id + "'>" + _data.quiz_name + "</a>";
-		post_json_to_url("/QuizWebsite/MessageServlet?action=send", {user_from_id: _user_id, user_to_id: friend_id, body: challenge_message, subject: ""}, function() {});
-		window.location = "/QuizWebsite/Home.jsp";
+		post_json_to_url("/QuizWebsite/MessageServlet?action=send", {user_from_id: _user_id, user_to_id: friend_id, body: challenge_message, subject: ""}, function() {
+			window.location = "/QuizWebsite/Home.jsp";
+		});
 	};
 		
 	this.isMultiPage = function () {
