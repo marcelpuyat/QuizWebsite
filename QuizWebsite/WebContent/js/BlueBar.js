@@ -77,7 +77,8 @@ function BlueBarRadioMenu (user_id) {
 		var handler = _handlers.messages;
 		handler.refresh(function () {
 			_rg.closeOthers(handler);
-			show_modal(handler.modalAtUser(user), handler);
+			var index = handler.userIndex(user);
+			_this.toModalAtIndex(index,handler);
 		});
 	}
 
@@ -379,7 +380,7 @@ function MessagesHandler (blue_bar, user_id) {
 	}
 
 	/* messages specific */
-	this.modalAtUser = function (user) {
+	this.userIndex = function (user) {
 		var found = -1;
 		for (var i = 0; i < _data.user_list.length; i++) {
 			if (user.id == _data.user_list[i].id) {
@@ -390,9 +391,8 @@ function MessagesHandler (blue_bar, user_id) {
 		if (found === -1) {
 			_data.user_list.splice(0,0,user);
 			found = 0;
-			console.log('creating element');
 		}
-		return _this.modalAtIndex(found);
+		return found;
 	}
 
 	this.modalAtIndexExists = function (index) {
