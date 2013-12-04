@@ -15,12 +15,16 @@ var unblock_button = document.getElementById("unblock-user-button");
 var delete_friend_button = document.getElementById("delete-friend-button");
 var request_button = document.getElementById("request-button");
 
+/* masthead */
+var masthead_friends_ul = document.getElementById('masthead-friends-ul');
 
 /* Servlet URL for getting JSON */
 var profileServletURL = "/QuizWebsite/ProfileServlet";
 
 /* Servlet URL for getting relation details */
 var relationServletURL = "/QuizWebsite/RelationServlet";
+
+var default_profile_picture = 'http://0.tqn.com/d/menshair/1/0/l/5/-/-/round-wood.jpg';
 
 /* Relation details */
 var is_friend = false;
@@ -41,6 +45,7 @@ function init_js(curr_user_id, target_user_id) {
 	if (curr_user_id == target_user_id) is_self = true;
 
 	set_relations();
+	set_background_photos();
 	get_json_from_url(profileServletURL + '?user_id=' + target_user_id, function (data) {
 
 		console.log(data);
@@ -51,6 +56,8 @@ function init_js(curr_user_id, target_user_id) {
 		/* populate profile img */
 		if (data.user_info && data.user_info.profile_picture && data.user_info.profile_picture != '') {
 			document.getElementById('user-photo').style.backgroundImage = 'url(\''+data.user_info.profile_picture+'\')';
+		} else {
+			document.getElementById('user-photo').style.backgroundImage = 'url(\''+default_profile_picture+'\')';
 		}
 
 		if (is_blocked) {
@@ -76,6 +83,35 @@ function init_js(curr_user_id, target_user_id) {
 	});
 
 
+}
+
+/**
+ * Gets all friends of user and displays them in the background
+ */
+function set_background_photos () {
+	console.log('fetching relations');
+	get_json_from_url(relationServletURL + '?user_id='+_curr_user_id,
+		function (data) {
+			console.log('got relations');
+			console.log(data);
+			for (var i = 0; i < data.friends.length; i++) {
+				var user = data.friends[i]
+				var profile_picture = (user.profile_picture && user.profile_picture != "") ? user.profile_picture : default_profile_picture;
+				var photo = new_elem({
+					type:'a',
+					attributes:[
+						{name:'href',value:'/QuizWebsite/User.jsp?user_id='+user.id},
+						{name:'style',value:'background-image:url('+profile_picture+');'},
+						{name:'title',value:user.display_name}
+					],
+					classList:['parent-height','parent-width']
+				});
+				masthead_friends_ul.appendChild(new_elem({
+					type:'li',
+					children:[photo]
+				}));
+			};
+		})
 }
 
 /**

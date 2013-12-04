@@ -9,10 +9,23 @@
 }
 
 	#masthead-friends-ul > li {
-		width: 30px;
-		height: 30px;
+		width: 98px;
+		height: 98px;
 		background-size: 30px;
+		display: inline-block;
 	}
+
+		#masthead-friends-ul > li > a {
+			display: inline-block;
+			background-size: cover;
+			opacity:0.40;
+			filter:Alpha(opacity=040); /* IE8 and earlier */
+			-webkit-filter: blur(1px);
+		    -moz-filter: blur(1px);
+		    -o-filter: blur(1px);
+		    -ms-filter: blur(1px);
+		    filter: blur(1px);
+		}
 
 #user-photo-pad {
 	position: absolute;

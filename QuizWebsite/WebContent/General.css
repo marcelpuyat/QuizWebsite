@@ -16,6 +16,21 @@ ul {
 	list-style-type: none;
 	padding: 0;
 	margin: 0;
+	-webkit-margin-before:0;
+	-moz-margin-before:0;
+	-o-margin-before:0;
+	-ms-margin-before:0;
+	margin-before:0;
+	-webkit-margin-after:0;
+	-moz-margin-after:0;
+	-o-margin-after:0;
+	-ms-margin-after:0;
+	margin-after:0;
+	-webkit-padding-start:0;
+	-moz-padding-start:0;
+	-o-padding-start:0;
+	-ms-padding-start:0;
+	padding-start:0;
 }
 
 input[type="text"],
@@ -40,6 +55,22 @@ input[type="password"] {
 .faint {
 	opacity:0.70;
 	filter:Alpha(opacity=070); /* IE8 and earlier */
+}
+
+.no-pad {
+	padding: 0;
+}
+
+.no-margin {
+	margin: 0;
+}
+
+.parent-height {
+	height: inherit;
+}
+
+.parent-width {
+	width: inherit;
 }
 
 .flowing {

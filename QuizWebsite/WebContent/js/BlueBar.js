@@ -374,7 +374,7 @@ function MessagesHandler (blue_bar, user_id) {
 			for (var i = 0; i < modal_children.length; i++) {
 				modal_children[i].style.height = modal_children[i].firstChild.clientHeight + 'px';
 			};
-			_modal_messages_ul.lastChild.scrollIntoView(false);
+			if (_modal_messages_ul.lastChild) _modal_messages_ul.lastChild.scrollIntoView(false);
 		}
 		return modal_ul;
 	}
@@ -527,7 +527,21 @@ function NotificationsHandler (blue_bar, user_id) {
 	}
 
 	this.modalAtIndex = function (index) {
-		
+		var title = new_elem({
+			type:'h3',
+			classList:['no-margin'],
+			innerHTML:_data.announcements[index].subject
+		});
+		var body = new_elem({
+			type:'p',
+			classList:['no-margin'],
+			innerHTML:_data.announcements[index].body
+		});
+
+		return new_elem({
+			type:'div',
+			children:[title, body]
+		});
 	}
 
 	this.modalAtIndexExists = function (index) {
