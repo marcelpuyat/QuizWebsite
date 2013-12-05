@@ -257,12 +257,12 @@ function RequestsHandler (blue_bar, user_id) {
 		var accept = new_elem({
 			type:'span',
 			innerHTML:'accept',
-			classList:['button','right','green','small','request-button']
+			classList:['button','green','small','request-button']
 		});
 		var decline = new_elem({
 			type:'span',
 			innerHTML:'decline',
-			classList:['button','red','right','small','request-button']
+			classList:['button','red','small','request-button']
 		});
 		decline.addEventListener('click',
 			function () {
