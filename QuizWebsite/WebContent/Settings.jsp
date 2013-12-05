@@ -1,8 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page import="ui.*" %>
+<%@ page import="user.*" %>
 <%
-	VerifyAccess.verify("Settings.jsp",session, request, response);
+	if (!VerifyAccess.verify("Settings.jsp",session, request, response))
+		return;
+%>
+<%!
+User getUser(HttpSession session) {
+	User user = (User) session.getAttribute("user");
+	return user;
+}
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -17,17 +25,21 @@
 		<%= HTMLTemplater.getBlueBar(session)  %>
 		<ul class="login-ul center">
 			<li><h2 class="lighter">Update Settings</h2></li>
-			<li><div id="first-name-update-label" class="faint">first name</div></li>
-			<li><input type="text" id="first-name-update"></li>
+
+      <li><div id="first-name-update-label" class="faint">first name</div></li>
+			<li><input type="text" id="first-name-update" value='<%=getUser(session).getFirstName()%>'></li>
 			<li><input type="button" value="update" id="first-name-button"></li>
+
 			<li><div id="last-name-update-label" class="faint">last name</div></li>
-			<li><input type="text" id="last-name-update"></li>
+			<li><input type="text" id="last-name-update" value='<%=getUser(session).getLastName()%>'></li>
 			<li><input type="button" value="update" id="last-name-button"></li>
+
 			<li><div id="profile-picture-update-label" class="faint">profile picture</div></li>
-			<li><input type="text" id="profile-picture-update"></li>
+			<li><input type="text" id="profile-picture-update" value='<%=getUser(session).getProfilePicture()%>'></li>
 			<li><input type="button" value="update" id="profile-picture-button"></li>
+
 			<li><div id="email-address-update-label" class="faint">email address</div></li>
-			<li><input type="text" id="email-address-update"></li>
+			<li><input type="text" id="email-address-update" value='<%=getUser(session).getEmailAddress()%>'></li>
 			<li><input type="button" value="update" id="email-address-button"></li>
 		</ul>
 	</div>
