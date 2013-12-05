@@ -6,6 +6,7 @@ function Loader () {
 	var SECOND = 1000;
 	var FPS = 30;
 
+	var _canvas;
 	var _container;
 	var _interval;
 	var _main_drawing;
@@ -13,7 +14,7 @@ function Loader () {
 	var _height = DEFAULT_HEIGHT;
 
 	this.setContainer = function (container) {
-		if (_container) _container.innerHTML = '';
+		if (_canvas) _canvas.classList.add('hide');
 		_container = container;
 	};
 	this.setWidth = function (width) {
@@ -26,20 +27,22 @@ function Loader () {
 		this.setWidth(width);
 		this.setHeight(height);
 	};
-	this.start = function () {
-		var canvas = new_elem({
-			type:'canvas'
+	this.start = function (prepend) {
+		_canvas = new_elem({
+			type:'canvas',
+			classList:['load-canvas']
 		});
 		var dim = min(_width,_height);
 		var d_dim = min(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		var scale = dim/d_dim;
-		_main_drawing = new Drawing(canvas,_width, _height,scale);
-		_container.appendChild(_main_drawing.canvas);
+		_main_drawing = new Drawing(_canvas,_width, _height,scale);
+		if (prepend) _container.prependChild(_main_drawing.canvas);
+		else _container.appendChild(_main_drawing.canvas);
 		this.resume();
 	};
 	this.stop = function () {
 		this.pause();
-		_container.innerHTML = '';
+		if (_canvas) _canvas.classList.add('hide');
 	};
 	this.resume = function () {
 		_interval = setInterval(function () {

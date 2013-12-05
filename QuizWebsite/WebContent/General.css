@@ -694,3 +694,9 @@ ul#graph-search-results {
 	margin-left: -200px;
 }
 
+.load-canvas {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+

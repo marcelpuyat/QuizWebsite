@@ -191,15 +191,24 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 			type:'ul',
 			classList:['drop-down']
 		});
+		var challenge_button_text = new_elem({
+			type:'span',
+			innerHTML:'Challenge a friend'
+		});
 		var challenge_button = new_elem({
 			type:'span',
 			classList:['button'],
-			innerHTML:'Challenge a friend',
-			children:[friends_selection]
+			children:[challenge_button_text,friends_selection]
 		});
 		challenge_button.addEventListener('click',function (e) {
 			if (e.target.action) e.target.action();
-			else _this.challenge_click(friends_selection);	
+			else {
+				loader.setContainer(challenge_button);
+				loader.setDimensions(challenge_button.clientWidth, challenge_button.clientHeight);
+				challenge_button_text.classList.add('opacity-hide');
+				loader.start(true);
+				_this.challenge_click(friends_selection,challenge_button_text);
+			}
 		});
 		
 		
@@ -210,10 +219,12 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 		}), auxiliary_data);
 	};
 	
-	this.challenge_click = function(ul) {
+	this.challenge_click = function(ul,text_elem) {
 		console.log(_user_id);
 		get_json_from_url("/QuizWebsite/RelationServlet?user_id=" + _user_id + "&action=friends", function (data) {
 			console.log(data);
+			loader.stop();
+			text_elem.classList.remove('opacity-hide');
 			_this.display_friends(data.friends, ul);
 		});
 	};
