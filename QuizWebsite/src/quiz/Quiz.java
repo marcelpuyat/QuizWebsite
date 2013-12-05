@@ -106,7 +106,7 @@ public class Quiz {
 			rateStatement = "UPDATE Ratings SET rating = " + rating + " WHERE quiz_id = " + this.quiz_id + " AND user_id = " + user_id;
 		}
 		else {
-			rateStatement = "INSERT INTO Ratings (ratings, quiz_id, user_id, id) VALUES("+rating+", "+quiz_id+", "+user_id+", id)";
+			rateStatement = "INSERT INTO Ratings (rating, quiz_id, user_id, id) VALUES("+rating+", "+quiz_id+", "+user_id+", id)";
 		}
 		try {
 			PreparedStatement stmt = con.prepareStatement(rateStatement);
