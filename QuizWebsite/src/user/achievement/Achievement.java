@@ -302,7 +302,7 @@ public class Achievement {
 		return false;
 	}
 	
-	private static ArrayList<Integer> getIDsOfQuizzes(SelfRefreshingConnection con) {
+	public static ArrayList<Integer> getIDsOfQuizzes(SelfRefreshingConnection con) {
 		try {
 			ArrayList<Integer> ids = new ArrayList<Integer>();
 			PreparedStatement stmt = con.prepareStatement("SELECT id FROM Quizzes");

@@ -63,6 +63,82 @@ public class Quiz {
 		}
 	}
 	
+	public double getAverageRating() {
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT rating FROM Ratings WHERE quiz_id = " + this.quiz_id);
+			ResultSet rs = stmt.executeQuery();
+			double total_rating = 0;
+			double count = 0;
+			while (rs.next()) {
+				count++;
+				double this_rating = rs.getDouble(1);
+				total_rating += this_rating;
+			}
+			if (count == 0) return -1;
+			
+			double average_rating = total_rating / count;
+			
+			return average_rating;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
+	
+	public int getNumberOfRatings() {
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT rating FROM Ratings WHERE quiz_id = " + this.quiz_id);
+			ResultSet rs = stmt.executeQuery();
+			int count = 0;
+			while (rs.next()) {
+				count++;
+			}
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
+	
+	public void rateQuiz(int rating, long user_id) {
+		String rateStatement;
+		if (hasRatedThisQuizAlready(user_id)) {
+			rateStatement = "UPDATE Ratings SET rating = " + rating + " WHERE quiz_id = " + this.quiz_id + " AND user_id = " + user_id;
+		}
+		else {
+			rateStatement = "INSERT INTO Ratings (ratings, quiz_id, user_id, id) VALUES("+rating+", "+quiz_id+", "+user_id+", id)";
+		}
+		try {
+			PreparedStatement stmt = con.prepareStatement(rateStatement);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void deleteRating(long user_id) {
+		PreparedStatement stmt;
+		try {
+			stmt = con.prepareStatement("DELETE FROM Ratings WHERE quiz_id = " + quiz_id + " AND user_id = " + user_id);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private boolean hasRatedThisQuizAlready(long user_id) {
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT id FROM Ratings WHERE user_id = " + user_id + " AND quiz_id = " + this.quiz_id);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) return true;
+			else return false;
+		} catch (Exception e) { e.printStackTrace(); return false; }
+	}
+	
 	public static void deleteQuiz(long quiz_id, SelfRefreshingConnection con) throws SQLException, ClassNotFoundException {
 		Statement stmt = con.createStatement();
 		String deleteUpdateString = "DELETE FROM Quizzes WHERE id = " + quiz_id;
