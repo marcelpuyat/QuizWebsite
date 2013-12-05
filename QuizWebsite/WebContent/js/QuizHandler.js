@@ -251,10 +251,12 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 	this.isMultiPage = function () {
 		return _data.is_multiple_page;
 	};
+	this.isImmediatelyCorrected = function () {
+		return _data.is_immediately_corrected;
+	};
 	this.informStart = function () {
 		_quiz_timer.start();
 	};
-	
 	
 	
 	/* private methods */
