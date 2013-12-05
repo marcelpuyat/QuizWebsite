@@ -20,6 +20,7 @@ public class Achievement {
 	public static final int AUTO_INCREMENT_OFFSET = 1;
 	public static final int TITLE = 0;
 	public static final int ACHIEVEMENT = 1;
+  public static final int GOAL = 2;
 	
 	public static final String ONE_QUIZ_ACHV = AchievementConstants.achievements[0][TITLE];
 	public static final String ONE_QUIZ_ACHV_DESC = AchievementConstants.achievements[0][ACHIEVEMENT];
@@ -212,15 +213,15 @@ public class Achievement {
 		
 		JSONArray notEarned = new JSONArray();
 		
-		for (int i = 0; i < AchievementConstants.achievements.length; i++) {
+    for (String[] achievement : AchievementConstants.achievements) {
 			boolean found = false;
-			for (int j = 0; j < earned.size(); j++) {
-				if (earned.get(j).getTitle().equals(AchievementConstants.achievements[i][0])) found = true;
+      for (Achievement a : earned) {
+				if (a.getTitle().equals(achievement[TITLE])) 
+          continue;
 			}
-			if (found) continue;
 			JSONObject achv = new JSONObject();
-			achv.put("title", AchievementConstants.achievements[i][0]);
-			achv.put("description", AchievementConstants.achievements[i][1]);
+			achv.put("title", achievement[TITLE]);
+			achv.put("description", achievement[GOAL]);
 			notEarned.put(achv);
 		}
 		return notEarned;
