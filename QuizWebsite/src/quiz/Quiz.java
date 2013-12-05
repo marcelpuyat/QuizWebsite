@@ -134,6 +134,28 @@ public class Quiz {
 		}
 	}
 	
+	public static JSONArray getMostRecentQuizzes(SelfRefreshingConnection con){
+		try{
+			PreparedStatement stmt = con.prepareStatement("SELECT creator, name, id FROM Quizzes");
+			ResultSet rs = stmt.executeQuery();
+			JSONArray quizzes = new JSONArray();
+			rs.afterLast();
+			int count = 0;
+			while(rs.previous() && count < 5){
+				count++;
+				JSONObject quiz = new JSONObject();
+				quiz.put("quiz_name", rs.getString("name"));
+				quiz.put("creator", rs.getString("creator"));
+				quiz.put("quiz_id", rs.getLong("id"));
+				quizzes.put(quiz);
+			}
+			return quizzes;
+		} catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	/**
 	 * Returns next available ID
 	 * @param con

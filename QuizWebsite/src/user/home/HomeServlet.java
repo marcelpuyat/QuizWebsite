@@ -46,6 +46,7 @@ public class HomeServlet extends HttpServlet {
 		JSONArray createdQuizzes = user.getCreatedQuizzes();
 		JSONArray friendsResults = user.getFriendsLatestResults();
 		JSONArray popularQuizzes = Quiz.getMostPopularQuizzes(con);
+		JSONArray newestQuizzes = Quiz.getMostRecentQuizzes(con);
 		JSONArray achievements = AchievementJSONParser.getAchievementsInJSONGivenUser(user_id, con);
 		JSONArray achvNotEarned = Achievement.getUserAchievementsNotEarned(con, user_id);
 		
@@ -54,6 +55,7 @@ public class HomeServlet extends HttpServlet {
 		responseJSON.put("created_quizzes", createdQuizzes);
 		responseJSON.put("friend_results", friendsResults);
 		responseJSON.put("popular_quizzes", popularQuizzes);
+		responseJSON.put("newest_quizzes", newestQuizzes);
 		responseJSON.put("achievements_earned", achievements);
 		responseJSON.put("achievements_not_earned", achvNotEarned);
 
