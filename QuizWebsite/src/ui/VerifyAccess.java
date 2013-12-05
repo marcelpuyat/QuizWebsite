@@ -29,6 +29,21 @@ public class VerifyAccess {
 		}
 	}
 	
+	public static void verifyAdmin(HttpSession session, HttpServletRequest request, HttpServletResponse response, ServletContext application) {
+		try {
+			User u = (User)session.getAttribute("user");
+			if (u == null) {
+				response.sendRedirect("/QuizWebsite/Login.jsp");
+			}
+			if(u.isAdmin()){
+				return;
+			}
+			response.sendRedirect("/QuizWebsite/Home.jsp");
+			return;
+		}
+		catch (IOException e) {e.printStackTrace();}
+	}
+	
 	public static void verifyQuizOwner(HttpSession session, HttpServletRequest request, HttpServletResponse response, ServletContext application) {
 		try {
 			String quiz_id = request.getParameter("quiz_id");
