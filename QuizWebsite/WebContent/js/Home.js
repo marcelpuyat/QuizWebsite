@@ -180,10 +180,10 @@ function update_popular_quizzes(popular_quizzes, panel) {
 		text.innerHTML = " created by: ";
 		
 		var text2 = document.createElement('span');
-		text2.innerHTML = " taken by: ";
+		text2.innerHTML = " taken: ";
 		
 		var text3 = document.createElement('span');
-		text3.innerHTML = " users";
+		text3.innerHTML = " times";
 		
 		li.appendChild(quiz_link);
 		li.appendChild(text);
