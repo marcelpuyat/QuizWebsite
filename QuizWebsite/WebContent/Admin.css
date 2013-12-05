@@ -1,0 +1,20 @@
+#stats-panel {
+	position: relative;
+	height: 150px;
+	width: 350px;
+	background-color: #F0F0F0;
+	border: 3px solid #2F4F4F;
+	border-radius: 15px;
+	padding: 0px 5px 0 5px;
+}
+
+.list-heading {
+	position: relative;
+	text-align: center;
+	top: -18px;	
+	margin-bottom: -8px;
+}
+
+li {
+	margin-bottom: 25px;
+}
