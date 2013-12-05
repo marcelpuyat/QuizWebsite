@@ -411,7 +411,13 @@ function MultipleChoiceHandler(data, q_id) {
 		};
 	};
 	this.displayAnswer = function () {
-		window.alert('answer!!');
+		var message = '';
+		if (this.grade().score) {
+			message += 'Correct!';
+		} else {
+			message += 'Too bad! The answer was \''+ (_data.options[_data.correct] || 'nothing lol') + '\'';
+		}
+		window.alert(message);
 	};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
@@ -467,7 +473,13 @@ function PictureResponseHandler(data, q_id) {
 		};
 	};
 	this.displayAnswer = function () {
-		window.alert('answer!!');
+		var message = '';
+		if (this.grade().score) {
+			message += 'Correct!';
+		} else {
+			message += 'Too bad! The answer was \''+ (_data.correct[0] || 'nothing lol') + '\'';
+		}
+		window.alert(message);
 	};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
@@ -518,7 +530,13 @@ function SingleAnswerHandler(data, q_id) {
 		};
 	};
 	this.displayAnswer = function () {
-		window.alert('answer!!');
+		var message = '';
+		if (this.grade().score) {
+			message += 'Correct!';
+		} else {
+			message += 'Too bad! The answer was \''+ (_data.correct[0] || 'nothing lol') + '\'';
+		}
+		window.alert(message);
 	};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
