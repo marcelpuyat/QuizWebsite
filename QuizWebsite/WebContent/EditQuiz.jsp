@@ -2,7 +2,8 @@
     pageEncoding="ISO-8859-1"%>
 <%@ page import="ui.*" %>
 <%
-	VerifyAccess.verify("Settings.jsp",session, request, response);
+	if (!VerifyAccess.verify("Settings.jsp", session, request, response))
+    return;
 	VerifyAccess.verifyQuizOwner(session, request, response, application);
 %>
 <%!

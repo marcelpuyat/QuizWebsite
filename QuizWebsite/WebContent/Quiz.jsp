@@ -3,7 +3,8 @@
 <%@ page import="user.*" %>
 <%@ page import="ui.*" %>
 <%
-	VerifyAccess.verify("Quiz.jsp",session, request, response);
+	if (!VerifyAccess.verify("Quiz.jsp",session, request, response))
+    return;
 %>
 <%!
 	String getQuizID(HttpServletRequest req) {

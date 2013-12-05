@@ -3,7 +3,8 @@
 <%@ page import="ui.*" %>
 <%@ page import="user.*" %>
 <%
-	VerifyAccess.verify("Home.jsp",session, request, response);
+	if (!VerifyAccess.verify("Home.jsp",session, request, response))
+    return;
 %>
 
 <%!

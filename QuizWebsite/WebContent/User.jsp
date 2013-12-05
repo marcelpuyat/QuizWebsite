@@ -8,7 +8,8 @@
 <%@ page import="customObjects.*" %>
 <%@ page import="ui.*" %>
 <%
-	VerifyAccess.verify("Settings.jsp",session, request, response);
+	if (!VerifyAccess.verify("Settings.jsp",session, request, response))
+    return;
 %>
 <%!
 	String getDisplayName(HttpServletRequest req, ServletContext context) {
