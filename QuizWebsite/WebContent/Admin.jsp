@@ -18,6 +18,7 @@
 	<div id="content-wrapper">
 		<%= HTMLTemplater.getBlueBar(session)  %>
 		<div class="page-width wide center-block"  id="questions-wrapper">
+			<span>Admin</span>
 		</div>
 	</div>
 	<%= HTMLTemplater.getGeneralJS() %>
