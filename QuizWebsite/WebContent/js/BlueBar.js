@@ -271,8 +271,10 @@ function RequestsHandler (blue_bar, user_id) {
 					{},
 					function (data) {
 						if (data.status == 'success') {
+							_data.requests.splice(index,1); //remove from array
 							accept.classList.add('hide');
 							decline.classList.add('hide');
+							_blue_bar.update(_this);
 						}
 					}
 				);
@@ -299,6 +301,11 @@ function RequestsHandler (blue_bar, user_id) {
 	}
 
 	this.modalAtIndex = function (index) {
+		return false;
+	}
+
+
+	this.modalAtIndexExists = function (index) {
 		return false;
 	}
 

@@ -70,7 +70,7 @@
 		<%= HTMLTemplater.getBlueBar(session)  %>
 		<div class="page-width wide center-block hide" id="inner-content-container">
 			<div class="masthead">
-				<ul id="masthead-friends-ul"></ul>
+				<div id="masthead-friends-div"></div>
 				<div id="user-photo-pad"><div id="user-photo"></div></div>
 			</div>
 			<span class="right faint" id="relation-status"></span>

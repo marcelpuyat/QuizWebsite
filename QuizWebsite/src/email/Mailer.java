@@ -44,7 +44,7 @@ public class Mailer {
 					InternetAddress.parse(user_to.getEmailAddress()));
 			message.setSubject("Quiz Challenge from " +user_from.getDisplayName());
 			message.setText("Dear "+user_to.getDisplayName()+"," +
-					"\n\n "+user_from.getDisplayName()+" challenges you to beat his/her score of "+score+"% in "+time_taken+" seconds on "+quiz_name+" on QuizBook!" +
+					"\n\n "+user_from.getDisplayName()+" challenged you to beat his/her score of "+score+"% in "+time_taken+" seconds on "+quiz_name+" on QuizBook!" +
 					"\n\n Login to accept the challenge: http://localhost:8080/QuizWebsite/Login.jsp");
  
 			Transport.send(message);

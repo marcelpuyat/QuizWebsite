@@ -4,18 +4,18 @@
 	position: relative;
 }
 
-#masthead-friends-ul {
+#masthead-friends-div {
 
 }
 
-	#masthead-friends-ul > li {
+	#masthead-friends-div > span {
 		width: 98px;
 		height: 98px;
 		background-size: 30px;
 		display: inline-block;
 	}
 
-		#masthead-friends-ul > li > a {
+		#masthead-friends-div > span > a {
 			display: inline-block;
 			background-size: cover;
 			opacity:0.40;
