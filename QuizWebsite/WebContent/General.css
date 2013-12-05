@@ -398,7 +398,7 @@ ul#graph-search-results {
 	width: 200px;
 	height: 180px;
 	right: -20px;
-	overflow:hidden;
+	overflow-x:hidden;
 	z-index: 100;
 	-webkit-transition:0.3s;
 	-moz-transition:0.3s;
@@ -421,6 +421,9 @@ ul#graph-search-results {
 	position: absolute;
 }
 
+div.blue-bar-menu {
+	overflow-y:scroll;
+}
 .blue-bar-menu {
 	position: absolute;
 	top: 0;
