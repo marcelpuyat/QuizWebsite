@@ -271,7 +271,7 @@ function removeFriend() {
 
 		}, 
 		function (data) {
-			
+			location.reload();
 		}
 	);
 }
@@ -283,7 +283,7 @@ function sendRequest() {
 			
 		}, 
 		function (data) {
-			
+			location.reload();
 		}
 	);
 }
@@ -295,7 +295,7 @@ function blockUser() {
 			
 		}, 
 		function (data) {
-			
+			location.reload();
 		}
 	);
 }
@@ -307,7 +307,7 @@ function unblockUser() {
 			
 		}, 
 		function (data) {
-			
+			location.reload();
 		}
 	);
 }
@@ -319,7 +319,7 @@ function rejectRequest() {
 			
 		}, 
 		function (data) {
-			
+			location.reload();
 		}
 	);
 }
@@ -331,7 +331,7 @@ function acceptRequest() {
 			
 		}, 
 		function (data) {
-			
+			location.reload();
 		}
 	);
 }
