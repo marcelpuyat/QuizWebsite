@@ -178,6 +178,9 @@ function MatchingHandler (data, q_id) {
 			lis_obj.elem.removeEventListener(lis_obj.action,lis_obj.callback,false);
 		};
 	};
+	this.displayAnswer = function () {
+		
+	};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
 		var per_match_score = _data.score / _capture_lis.length;
@@ -247,6 +250,9 @@ function MultipleAnswerHandler(data, q_id) {
 				lis_obj.elem.removeEventListener(lis_obj.action,lis_obj.callback,false);
 			};
 		};
+	this.displayAnswer = function () {
+		
+	};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
 		var per_match_score = _data.score / _lis.length;
@@ -328,6 +334,9 @@ function FillInBlankHandler (data, q_id) {
 				lis_obj.elem.removeEventListener(lis_obj.action,lis_obj.callback,false);
 			};
 		};
+	this.displayAnswer = function () {
+		
+	};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
 		var user_answer = _user_input_elem.value;
@@ -401,6 +410,9 @@ function MultipleChoiceHandler(data, q_id) {
 			lis_obj.elem.removeEventListener(lis_obj.action,lis_obj.callback,false);
 		};
 	};
+	this.displayAnswer = function () {
+		
+	};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
 		if (_last_clicked == _data.correct) score.score = _data.score;
@@ -454,6 +466,9 @@ function PictureResponseHandler(data, q_id) {
 			lis_obj.elem.removeEventListener(lis_obj.action,lis_obj.callback,false);
 		};
 	};
+	this.displayAnswer = function () {
+		
+	};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
 		var user_answer = _user_input_elem.value;
@@ -501,6 +516,9 @@ function SingleAnswerHandler(data, q_id) {
 			var lis_obj = _listeners[i];
 			lis_obj.elem.removeEventListener(lis_obj.action,lis_obj.callback,false);
 		};
+	};
+	this.displayAnswer = function () {
+		
 	};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};

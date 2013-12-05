@@ -5,7 +5,7 @@
 }
 
 #masthead-friends-div {
-
+	position: absolute;
 }
 
 	#masthead-friends-div > span {
