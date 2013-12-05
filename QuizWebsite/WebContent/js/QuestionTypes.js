@@ -179,7 +179,7 @@ function MatchingHandler (data, q_id) {
 		};
 	};
 	this.displayAnswer = function () {
-		
+		window.alert('answer!!');
 	};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
@@ -251,7 +251,7 @@ function MultipleAnswerHandler(data, q_id) {
 			};
 		};
 	this.displayAnswer = function () {
-		
+		window.alert('answer!!');
 	};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
@@ -335,7 +335,7 @@ function FillInBlankHandler (data, q_id) {
 			};
 		};
 	this.displayAnswer = function () {
-		
+		window.alert('answer!!');
 	};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
@@ -411,7 +411,7 @@ function MultipleChoiceHandler(data, q_id) {
 		};
 	};
 	this.displayAnswer = function () {
-		
+		window.alert('answer!!');
 	};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
@@ -467,7 +467,7 @@ function PictureResponseHandler(data, q_id) {
 		};
 	};
 	this.displayAnswer = function () {
-		
+		window.alert('answer!!');
 	};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
@@ -518,7 +518,7 @@ function SingleAnswerHandler(data, q_id) {
 		};
 	};
 	this.displayAnswer = function () {
-		
+		window.alert('answer!!');
 	};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};

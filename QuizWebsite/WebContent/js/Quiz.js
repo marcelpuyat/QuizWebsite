@@ -42,6 +42,7 @@ function UIHandler (quiz_handler, card_wrapper) {
 	
 	this.next = function () {
 		if (_q_handler.isMultiPage()) {
+			_q_handler.displayAnswerAtIndex(_iterator);
 			var prev_it = _iterator;
 			if (_q_handler.indexExists(++_iterator)) {
 				/* inform quiz data recieved if legitamate question index */
