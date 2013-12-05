@@ -15,6 +15,7 @@ public class GraphSearch {
 	public static JSONObject simple_search(SelfRefreshingConnection db_connection, String text, int limit) throws ClassNotFoundException {
 		int total_results = 10;
 		int quiz_results = 5;
+		int user_results = 5;
 		
 		JSONObject results = new JSONObject();
 		if (text.isEmpty()) return results;
@@ -74,7 +75,7 @@ public class GraphSearch {
 			pstmt = db_connection.prepareStatement(userMatchString);
 			pstmt.setString(1, text + "%");
 			pstmt.setString(2, text + "%");
-			pstmt.setInt(3, min(quiz_results,total_results));
+			pstmt.setInt(3, min(user_results,total_results));
 			
 			ResultSet rs3 = pstmt.executeQuery();
 			while (rs3.next()) {
@@ -93,7 +94,7 @@ public class GraphSearch {
 					results.append("results", entry);
 					reapedUsers.add(id);
 					total_results--;
-					quiz_results--;
+					user_results--;
 				}
 			}
 			
