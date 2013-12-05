@@ -9,7 +9,8 @@ public class HTMLTemplater {
 		return 
 		"<script src=\"/QuizWebsite/js/AJAXUtil.js\" type=\"text/javascript\"></script>"+
 		"<script src=\"/QuizWebsite/js/Graph.js\" type=\"text/javascript\"></script>"+
-		"<script src=\"/QuizWebsite/js/BlueBar.js\" type=\"text/javascript\"></script>";
+		"<script src=\"/QuizWebsite/js/BlueBar.js\" type=\"text/javascript\"></script>"+
+		"<script src=\"/QuizWebsite/js/Load.js\" type=\"text/javascript\"></script>";
 	}
 	
 	public static String getBlueBar (HttpSession session) throws ClassNotFoundException {
