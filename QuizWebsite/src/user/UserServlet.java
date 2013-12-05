@@ -139,41 +139,33 @@ public class UserServlet extends HttpServlet {
 		else if (api.equals("update")) {
 			try {
 				JSONObject usrJSON = JSONParser.getJSONfromRequest(request);
-				String field = request.getParameter("field");
 				User update_user = (User) request.getSession().getAttribute("user");
 				if (update_user == null || !update_user.existsInDB()) {
 					responseJSON.accumulate("status", "failure");
 					response.getWriter().println(responseJSON.toString());
 					return;
 				}
-				if (field.equals("first_name")) {
+				
+				boolean success = false;
+				if (usrJSON.has("first_name")) {
 					update_user.setFirstName(usrJSON.getString("first_name"));
-					responseJSON.accumulate("status", "success");
-					responseJSON.accumulate("message", "wrote "+usrJSON.getString("first_name"));
-					response.getWriter().println(responseJSON.toString());
-					return;
+					success = true;
 				}
-				else if (field.equals("last_name")) {
+				if (usrJSON.has("last_name")) {
 					update_user.setLastName(usrJSON.getString("last_name"));
-					responseJSON.accumulate("status", "success");
-					response.getWriter().println(responseJSON.toString());
-					return;
+					success = true;
 				}
-				else if (field.equals("profile_picture")) {
+				if (usrJSON.has("profile_picture")) {
 					update_user.setProfilePicture(usrJSON.getString("profile_picture"));
-					responseJSON.accumulate("status", "success");
-					response.getWriter().println(responseJSON.toString());
-					return;
+					success = true;
 				}
-				else if (field.equals("email_address")) {
+				if (usrJSON.has("email_address")) {
 					update_user.setEmailAddress(usrJSON.getString("email_address"));
-					responseJSON.accumulate("status", "success");
-					response.getWriter().println(responseJSON.toString());
-					return;
+					success = true;
 				}
+				responseJSON.accumulate("status", success ? "success" : "failure");
 			}
 			catch (ClassNotFoundException e) {}
-			responseJSON.accumulate("status", "failure");
 			response.getWriter().println(responseJSON.toString());
 		}
 		
