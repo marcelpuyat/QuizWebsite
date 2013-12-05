@@ -84,15 +84,17 @@
 				<div class="hide button red" id="delete-friend-button" onclick="removeFriend()">Delete Friend</div>
 				<div class="hide button" id="request-button" onclick="sendRequest()">Send Friend Request</div>
 			</div>
+			<div class="page-width thin center-block center">
+				<div id="user-info"></div>
+				<div id ="relation-controls"></div>
+				<div id="recent-results"></div>
+				<div id ="created-quizzes"></div>
+				<div id ="achievements"></div>
+			</div>
 			<ul id="user-summary">
 				<li><div><%= getDisplayName(request, application) %></div></li>
 				<li><div class="faint"><%= getUserName(request, application) %></div></li>
 			</ul>
-			<div class="" id="user-info"></div>
-			<div class="" id ="relation-controls"></div>
-			<div class="" id="recent-results"></div>
-			<div class="" id ="created-quizzes"></div>
-			<div class="" id ="achievements"></div>
 		</div>
 	</div>
 	<%= HTMLTemplater.getGeneralJS() %>
