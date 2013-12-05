@@ -1,22 +1,35 @@
 var loader;
 
 function Loader () {
+	var DEFAULT_WIDTH = 400;
+	var DEFAULT_HEIGHT = 200;
+	var SECOND = 1000;
+	var FPS = 30;
+
 	var _container;
 	var _interval;
 	var _main_drawing;
-
-	var SECOND = 1000;
-	var FPS = 30;
+	var _width = DEFAULT_WIDTH;
+	var _height = DEFAULT_HEIGHT;
 
 	this.setContainer = function (container) {
 		if (_container) _container.innerHTML = '';
 		_container = container;
+	};
+	this.setWidth = function (width) {
+		_width = width
+	};
+	this.setHeight = function (height) {
+		_height = height;
 	}
 	this.start = function () {
 		var canvas = new_elem({
 			type:'canvas'
 		});
-		_main_drawing = new Drawing(canvas,400, 200);
+		var dim = min(_width,_height);
+		var d_dim = min(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		var scale = dim/d_dim;
+		_main_drawing = new Drawing(canvas,_width, _height,scale);
 		_container.appendChild(_main_drawing.canvas);
 		this.resume();
 	}
@@ -35,14 +48,14 @@ function Loader () {
 
 }
 
-function Drawing (canvas, width, height) {
+function Drawing (canvas, width, height, scale) {
 	this.canvas  = canvas;
 	this.context = this.canvas.getContext('2d');
 	this.canvas.width = width;
 	this.canvas.height = height;
 	this.center = {'x':this.canvas.width/2, 'y':this.canvas.height/2};
 
-	this.swirl = new Swirl(this);
+	this.swirl = new Swirl(this, scale);
 
 	this.draw = function () {
 		if (this.context) {
@@ -54,7 +67,9 @@ function Drawing (canvas, width, height) {
 	}
 }
 
-function Swirl (drawing) {
+function Swirl (drawing, scale) {
+	var _scale = scale;
+
 	this.drawing = drawing;
 	this.leader = {'x':0, 'y':0};
 
@@ -65,9 +80,9 @@ function Swirl (drawing) {
 	this.deviation = {'x':this.drawing.center.x*0.7,'y':this.drawing.center.y*0.7};
 
 	this.tail_len = 10 + 1;
-	this.points = [new Point(this.tail_len, this.leader.x, this.leader.y, this.drawing)];
+	this.points = [new Point(get_size(this.tail_len), this.leader.x, this.leader.y, this.drawing)];
 	for (var i = this.tail_len - 1; i > 0; i--) {
-		this.points.push(new Point(i, this.leader.x, this.leader.y, this.drawing));
+		this.points.push(new Point(get_size(i), this.leader.x, this.leader.y, this.drawing));
 	};
 
 	this.update_rad = function () {
@@ -95,6 +110,11 @@ function Swirl (drawing) {
 		for (var i = 0; i < this.points.length; i++) {
 			this.points[i].draw();
 		};
+	}
+
+	function get_size (position) {
+		console.log(position * _scale);
+		return position * _scale;
 	}
 }
 
