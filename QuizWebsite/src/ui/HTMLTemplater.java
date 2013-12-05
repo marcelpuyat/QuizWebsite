@@ -53,7 +53,8 @@ public class HTMLTemplater {
 					"</div>"+
 				"</div>"+
 			"</div>"+
-		"</div>";
+		"</div>"+
+		"<div id=\"loader-container\"></div>";
 	}
 	
 }

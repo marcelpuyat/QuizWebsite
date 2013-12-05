@@ -5,9 +5,13 @@ function init_js (quiz_id) {
 	query_db();
 
 	function query_db () {
+		loader.start();
 		get_json_from_url(
 			'/QuizWebsite/QuizInfoServlet?quiz_id='+quiz_id,
-			build_ui
+			function (data) {
+				loader.stop();
+				build_ui(data);
+			}
 		);
 	}
 

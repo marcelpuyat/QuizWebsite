@@ -685,3 +685,12 @@ ul#graph-search-results {
 	font-size: 10px;
 }
 
+#loader-container {
+	text-align: center;
+	padding-top:20px;
+	position: absolute;
+	width: 0;
+	left: 50%;
+	margin-left: -200px;
+}
+

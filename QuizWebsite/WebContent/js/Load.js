@@ -21,7 +21,11 @@ function Loader () {
 	};
 	this.setHeight = function (height) {
 		_height = height;
-	}
+	};
+	this.setDimensions = function (width,height) {
+		this.setWidth(width);
+		this.setHeight(height);
+	};
 	this.start = function () {
 		var canvas = new_elem({
 			type:'canvas'
@@ -32,19 +36,19 @@ function Loader () {
 		_main_drawing = new Drawing(canvas,_width, _height,scale);
 		_container.appendChild(_main_drawing.canvas);
 		this.resume();
-	}
+	};
 	this.stop = function () {
 		this.pause();
 		_container.innerHTML = '';
-	}
+	};
 	this.resume = function () {
 		_interval = setInterval(function () {
 			_main_drawing.draw();
 		}, SECOND/FPS);
-	}
+	};
 	this.pause = function () {
 		if (_interval) window.clearInterval(_interval);
-	}
+	};
 
 }
 
@@ -113,7 +117,6 @@ function Swirl (drawing, scale) {
 	}
 
 	function get_size (position) {
-		console.log(position * _scale);
 		return position * _scale;
 	}
 }
