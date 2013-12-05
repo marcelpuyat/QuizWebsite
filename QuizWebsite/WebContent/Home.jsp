@@ -48,13 +48,20 @@ String getDisplayName(HttpSession session) {
 				</ul>
 			</div>
 			<div class="page-width thin center-block panel" id="inner-center-wrapper">
-				<div class="score-panel" id="achievements-earned-panel"></div>
-				<div class="score-panel" id="achievements-not-earned-panel"></div>
-				<div class="score-panel" id="popular-quizzes-panel"></div>
-				<div class="score-panel" id="newest-quizzes-panel"></div>
-				<div class="score-panel" id="created-quizzes-panel"></div>
-				<div class="score-panel" id="my-results-panel"></div>
-				<div class="score-panel" id="my-friends-panel"></div>
+        <div class="home-content-box">
+				  <div class="score-panel" id="achievements-earned-panel"></div>
+				  <div class="score-panel" id="achievements-not-earned-panel"></div>
+        </div>
+
+        <div class="home-content-box">
+				  <div class="score-panel" id="popular-quizzes-panel"></div>
+				  <div class="score-panel" id="newest-quizzes-panel"></div>
+        </div>
+        <div class="home-content-box">
+				  <div class="score-panel" id="created-quizzes-panel"></div>
+				  <div class="score-panel" id="my-results-panel"></div>
+				  <div class="score-panel" id="my-friends-panel"></div>
+        </div>
 			</div>
 			<div class="right side-panel panel" id="right-content-panel"></div>
 				
