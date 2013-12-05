@@ -1,6 +1,6 @@
 .masthead {
-	height: 300px;
-	box-shadow: 0px 0px 10px inset;
+	height: 294px;
+	box-shadow: 0px 0px 100px rgba(0,0,0,0.4) inset;
 	position: relative;
 }
 
@@ -21,8 +21,8 @@
 		#masthead-friends-div > span > a {
 			display: inline-block;
 			background-size: cover;
-			opacity:0.40;
-			filter:Alpha(opacity=040); /* IE8 and earlier */
+			opacity:0.50;
+			filter:Alpha(opacity=050); /* IE8 and earlier */
 			-webkit-filter: blur(1px);
 		    -moz-filter: blur(1px);
 		    -o-filter: blur(1px);
@@ -40,16 +40,16 @@
 		    -o-filter: blur(0px);
 		    -ms-filter: blur(0px);
 		    filter: blur(0px);
-		    opacity:0.70;
-		    filter:Alpha(opacity=070); /* IE8 and earlier */
+		    opacity:0.90;
+		    filter:Alpha(opacity=090); /* IE8 and earlier */
 		}
 
 		#masthead-friends-div > span > a:hover +
 		#masthead-friends-div > span > a,
 		#masthead-friends-div > span > a +
 		#masthead-friends-div > span > a:hover {
-			opacity:0.60;
-			filter:Alpha(opacity=060); /* IE8 and earlier */
+			opacity:0.70;
+			filter:Alpha(opacity=070); /* IE8 and earlier */
 		}
 
 #user-photo-pad {
@@ -65,8 +65,8 @@
 
 	#user-photo {
 		position: absolute;
-		top: 3px;
-		left: 3px;
+		top: 6px;
+		left: 6px;
 		height: 150px;
 		width: 150px;
 		border-radius: 50%;

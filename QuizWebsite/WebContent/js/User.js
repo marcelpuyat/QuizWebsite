@@ -94,6 +94,7 @@ function set_background_photos () {
 		function (data) {
 			console.log('got relations');
 			console.log(data);
+			data.friends.shuffle();
 			for (var i = 0; i < data.friends.length; i++) {
 				var user = data.friends[i]
 				var profile_picture = (user.profile_picture && user.profile_picture != "") ? user.profile_picture : default_profile_picture;
