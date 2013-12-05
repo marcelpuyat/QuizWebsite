@@ -8,6 +8,10 @@
 	margin-bottom: 10px;
 }
 
+#subject-field {
+	width: 250px;	
+}
+
 #stats-panel {
 	height: 150px;
 	width: 350px;
@@ -34,4 +38,7 @@
 }
 .announcement-li {
 	padding-bottom: 5px;
+}
+.stats-li {
+	margin-bottom: 20px;	
 }

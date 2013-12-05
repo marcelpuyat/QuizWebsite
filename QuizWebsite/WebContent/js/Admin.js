@@ -57,6 +57,10 @@ function update_stats() {
 		var quizzes_taken_li = document.createElement('li');
 		quizzes_taken_li.innerHTML = "Number of quiz-taking instances: " + quizzes_taken;
 		
+		num_users_li.classList.add("stats-li");
+		quizzes_made_li.classList.add("stats-li");
+		quizzes_taken_li.classList.add("stats-li");
+		
 		stats_ul.appendChild(num_users_li);
 		stats_ul.appendChild(quizzes_made_li);
 		stats_ul.appendChild(quizzes_taken_li);
