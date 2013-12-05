@@ -365,7 +365,7 @@ function MessagesHandler (blue_bar, user_id) {
 		var usr = _data.user_list[index];
 		var div = new_elem({
 			type:'div',
-			innerHTML:usr.first_name + ' ' + usr.last_name
+			innerHTML:(usr.display_name && usr.display_name != '') ? usr.display_name : (usr.first_name + ' ' + usr.last_name)
 		});
 		var li = new_elem({
 			type:'li',
