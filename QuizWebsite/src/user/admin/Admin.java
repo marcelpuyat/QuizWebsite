@@ -40,6 +40,7 @@ public class Admin {
 	
 	public static boolean removeQuiz(long quiz_id, SelfRefreshingConnection con) {
 		try {
+			clearHistory(quiz_id, con);
 			Statement stmt = con.createStatement();
 			String deleteQuiz = "DELETE FROM Quizzes WHERE id = '"+quiz_id+"'";
 			stmt.execute(deleteQuiz);
