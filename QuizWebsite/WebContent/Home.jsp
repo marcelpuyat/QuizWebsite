@@ -66,6 +66,10 @@ String getDisplayName(HttpSession session) {
 			<div class="right side-panel panel" id="right-content-panel"></div>
 				
 		</div>
+		
+		<div class="left" id="history-link-div">
+			<a href='/QuizWebsite/History.jsp'>View Full Results History</a>
+		</div>
 	</div>
 	<%= HTMLTemplater.getGeneralJS() %>
 	<script src="/QuizWebsite/js/Home.js" type="text/javascript"></script>
