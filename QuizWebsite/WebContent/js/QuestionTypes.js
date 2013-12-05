@@ -178,6 +178,42 @@ function MatchingHandler (data, q_id) {
 			lis_obj.elem.removeEventListener(lis_obj.action,lis_obj.callback,false);
 		};
 	};
+	this.displayAnswer = function () {
+		var message = '';
+		var corrections = [];
+		_capture_lis.sort(function (a,b) {
+			return a.sorting_index - b.sorting_index;
+		});
+		for (var i = 0; i < _capture_lis.length; i++) {
+			if (!_capture_lis[i].captive || _capture_lis[i].captive.label_text != _data.correct[i][1]) {
+				corrections.push('\''+_data.correct[i][0] + '\' should match \'' + _data.correct[i][1]+'\'');
+			}
+		};
+		if (corrections.length === 0) {
+			message += 'Correct!';
+		} else {
+			message += 'Too Bad! '+corrections.reduce(function (p,c,i,a) {
+				if (i === a.length - 1) { //last elem
+					if (a.length > 2) {
+						return p + ', and ' + c;
+					}
+					else if (a.length > 1) {
+						return p + ' and ' + c;
+					}
+					else {
+						return p + c;
+					}
+				}
+				else if (i == 0) {
+					return p + c;
+				}
+				else {
+					return p + ', '+c;
+				}
+			},'');
+		}
+		window.alert(message);
+	};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
 		var per_match_score = _data.score / _capture_lis.length;
@@ -247,6 +283,42 @@ function MultipleAnswerHandler(data, q_id) {
 				lis_obj.elem.removeEventListener(lis_obj.action,lis_obj.callback,false);
 			};
 		};
+	this.displayAnswer = function () {
+		var message = '';
+		var corrections = [];
+		_lis.sort(function (a,b) {
+			return a.sorting_index - b.sorting_index;
+		});
+		for (var i = 0; i < _lis.length; i++) {
+			if (_lis[i].truth_eval != _data.correct[i][1]) {
+				corrections.push('\''+_data.correct[i][0] + '\' should be ' + _data.correct[i][1]);
+			}
+		};
+		if (corrections.length === 0) {
+			message += 'Correct!';
+		} else {
+			message += 'Too Bad! '+corrections.reduce(function (p,c,i,a) {
+				if (i === a.length - 1) { //last elem
+					if (a.length > 2) {
+						return p + ', and ' + c;
+					}
+					else if (a.length > 1) {
+						return p + ' and ' + c;
+					}
+					else {
+						return p + c;
+					}
+				}
+				else if (i == 0) {
+					return p + c;
+				}
+				else {
+					return p + ', '+c;
+				}
+			},'');
+		}
+		window.alert(message);
+	};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
 		var per_match_score = _data.score / _lis.length;
@@ -323,11 +395,20 @@ function FillInBlankHandler (data, q_id) {
 	
 
 	this.killListeners = function () {
-			for (var i = 0; i < _listeners.length; i++) {
-				var lis_obj = _listeners[i];
-				lis_obj.elem.removeEventListener(lis_obj.action,lis_obj.callback,false);
-			};
+		for (var i = 0; i < _listeners.length; i++) {
+			var lis_obj = _listeners[i];
+			lis_obj.elem.removeEventListener(lis_obj.action,lis_obj.callback,false);
 		};
+	};
+	this.displayAnswer = function () {
+		var message = '';
+		if (this.grade().score) {
+			message += 'Correct!';
+		} else {
+			message += 'Too bad! The answer was \''+ (_data.correct[0] || 'nothing lol') + '\'';
+		}
+		window.alert(message);
+	};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
 		var user_answer = _user_input_elem.value;
@@ -401,6 +482,15 @@ function MultipleChoiceHandler(data, q_id) {
 			lis_obj.elem.removeEventListener(lis_obj.action,lis_obj.callback,false);
 		};
 	};
+	this.displayAnswer = function () {
+		var message = '';
+		if (this.grade().score) {
+			message += 'Correct!';
+		} else {
+			message += 'Too bad! The answer was \''+ (_data.options[_data.correct] || 'nothing lol') + '\'';
+		}
+		window.alert(message);
+	};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
 		if (_last_clicked == _data.correct) score.score = _data.score;
@@ -454,6 +544,15 @@ function PictureResponseHandler(data, q_id) {
 			lis_obj.elem.removeEventListener(lis_obj.action,lis_obj.callback,false);
 		};
 	};
+	this.displayAnswer = function () {
+		var message = '';
+		if (this.grade().score) {
+			message += 'Correct!';
+		} else {
+			message += 'Too bad! The answer was \''+ (_data.correct[0] || 'nothing lol') + '\'';
+		}
+		window.alert(message);
+	};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};
 		var user_answer = _user_input_elem.value;
@@ -501,6 +600,15 @@ function SingleAnswerHandler(data, q_id) {
 			var lis_obj = _listeners[i];
 			lis_obj.elem.removeEventListener(lis_obj.action,lis_obj.callback,false);
 		};
+	};
+	this.displayAnswer = function () {
+		var message = '';
+		if (this.grade().score) {
+			message += 'Correct!';
+		} else {
+			message += 'Too bad! The answer was \''+ (_data.correct[0] || 'nothing lol') + '\'';
+		}
+		window.alert(message);
 	};
 	this.grade = function () {
 		var score = {score:0,possible:_data.score};

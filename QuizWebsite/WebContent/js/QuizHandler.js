@@ -92,7 +92,7 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 	this.indexExists = function (index) {
 		return (
 				this.isLoaded() && (
-					(index < _questions.length)
+					(index < _questions.length) && (index >= 0)
 				)
 			);
 	};
@@ -116,6 +116,13 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 			_questions[index].killListeners();
 		}
 	};
+
+	this.displayAnswerAtIndex = function (index) {
+		if (this.indexExists(index)) {
+			this.sleepCard(index);
+			_questions[index].displayAnswer();
+		}
+	}
 	
 	this.waitForLoad = function(callback, auxiliary_data) {
 		_load_quiz_json(_servlet_load_url, _quiz_id, function(aux){

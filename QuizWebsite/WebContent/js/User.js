@@ -16,7 +16,7 @@ var delete_friend_button = document.getElementById("delete-friend-button");
 var request_button = document.getElementById("request-button");
 
 /* masthead */
-var masthead_friends_ul = document.getElementById('masthead-friends-ul');
+var masthead_friends_div = document.getElementById('masthead-friends-div');
 
 /* Servlet URL for getting JSON */
 var profileServletURL = "/QuizWebsite/ProfileServlet";
@@ -106,9 +106,10 @@ function set_background_photos () {
 					],
 					classList:['parent-height','parent-width']
 				});
-				masthead_friends_ul.appendChild(new_elem({
-					type:'li',
-					children:[photo]
+				masthead_friends_div.appendChild(new_elem({
+					type:'span',
+					children:[photo],
+					classList:['friend-photo']
 				}));
 			};
 		})
@@ -270,7 +271,7 @@ function removeFriend() {
 
 		}, 
 		function (data) {
-			
+			location.reload();
 		}
 	);
 }
@@ -282,7 +283,7 @@ function sendRequest() {
 			
 		}, 
 		function (data) {
-			
+			location.reload();
 		}
 	);
 }
@@ -294,7 +295,7 @@ function blockUser() {
 			
 		}, 
 		function (data) {
-			
+			location.reload();
 		}
 	);
 }
@@ -306,7 +307,7 @@ function unblockUser() {
 			
 		}, 
 		function (data) {
-			
+			location.reload();
 		}
 	);
 }
@@ -318,7 +319,7 @@ function rejectRequest() {
 			
 		}, 
 		function (data) {
-			
+			location.reload();
 		}
 	);
 }
@@ -330,7 +331,7 @@ function acceptRequest() {
 			
 		}, 
 		function (data) {
-			
+			location.reload();
 		}
 	);
 }

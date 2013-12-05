@@ -212,13 +212,11 @@ public class Quiz {
 	
 	public static JSONArray getMostRecentQuizzes(SelfRefreshingConnection con){
 		try{
-			PreparedStatement stmt = con.prepareStatement("SELECT creator, name, id FROM Quizzes");
+			PreparedStatement stmt = con.prepareStatement("SELECT creator, name, id FROM Quizzes ORDER BY id DESC LIMIT 5");
 			ResultSet rs = stmt.executeQuery();
 			JSONArray quizzes = new JSONArray();
-			rs.afterLast();
-			int count = 0;
-			while(rs.previous() && count < 5){
-				count++;
+			
+			while(rs.next()){
 				JSONObject quiz = new JSONObject();
 				quiz.put("quiz_name", rs.getString("name"));
 				quiz.put("creator", rs.getString("creator"));
