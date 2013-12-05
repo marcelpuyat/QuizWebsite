@@ -62,7 +62,7 @@ public class AnnouncementServlet extends HttpServlet {
 		String action = request.getParameter("action");
 		
 		// Delete announcement
-		if (action == DELETE_ANNOUNCEMENT) {
+		if (action.equals(DELETE_ANNOUNCEMENT)) {
 			long announcement_id = Long.parseLong(request.getParameter("announcement_id"));
 			Announcement.deleteAnnouncement(announcement_id, con);
 		}
@@ -71,7 +71,7 @@ public class AnnouncementServlet extends HttpServlet {
 		else {
 			JSONObject announcementData = JSONParser.getJSONfromRequest(request);
 
-			if (action == MAKE_ANNOUNCEMENT) {
+			if (action.equals(MAKE_ANNOUNCEMENT)) {
 				AnnouncementJSONParser.makeAnnouncementWithJSON(announcementData, con);
 			}
 			else/*if(action == EDIT_ANNOUNCEMENT)*/{

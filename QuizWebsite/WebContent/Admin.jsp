@@ -38,11 +38,29 @@
 		<%= HTMLTemplater.getBlueBar(session)  %>
 		<div class="page-width wide center-block"  id="questions-wrapper">
 			<span>Admin</span>
-			<div id='stats-panel'>
+			<div id='stats-panel' class='info-panel hide'>
 				<h3 class='list-heading'>Site Statistics</h3>
 				<ul id='stats-list'>
 				
 				</ul>
+			</div>
+			<div id='announcements-panel' class='info-panel'>
+				<h3 class='list-heading'>Announcements</h3>
+				<ul id='announcements-list'>
+				
+				</ul>
+			</div>
+			<div id='announcement-post-panel' class='info-panel hide'>
+				<h3 class='list-heading'>Post New Announcement</h3>
+				<ul class='post-announcement'>
+				
+					<li><label for='subject-field'>Subject: </label><input type='text' id='subject-field'></li>
+					
+					<li><span id='body-area'><label id="body-label" for='body-field'>Body: </label><textarea id='body-field'></textarea></span></li>
+					
+				</ul>
+				<button id='post-announcement-button'>Post</button>
+				
 			</div>
 		</div>
 	</div>
