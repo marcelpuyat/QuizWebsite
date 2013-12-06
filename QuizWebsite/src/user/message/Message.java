@@ -169,33 +169,42 @@ public class Message {
 	public static JSONArray getAllMessages(long user_id, SelfRefreshingConnection con) {
 		
 		try {
-			PreparedStatement stmt = con.prepareStatement("SELECT * FROM Messages WHERE user_from_id = " + user_id + " OR user_to_id = " + user_id + orderByDate);
+			String getAllMessagesSQL = 
+				"SELECT Messages.body, Messages.subject, Messages.was_read, Messages.date, Messages.user_from_id, Messages.user_to_id, Messages.id, Users.first_name, Users.last_name, Users.username, Users.profile_picture, Users.id FROM Messages, Users  WHERE (Messages.user_from_id = ? AND Users.id=Messages.user_to_id)  OR (Messages.user_to_id = ?  AND Users.id = Messages.user_from_id) ORDER BY Messages.date DESC";
+			PreparedStatement stmt = con.prepareStatement(getAllMessagesSQL);
+			stmt.setLong(1, user_id);
+			stmt.setLong(2, user_id);
 			ResultSet rs = stmt.executeQuery();
 			
 			JSONArray messages = new JSONArray();
 			while (rs.next()) {
 				JSONObject info = new JSONObject();
-				info.put("subject", rs.getString("subject"));
-				info.put("body", rs.getString("body"));
+				info.put("subject", rs.getString("Messages.subject"));
+				info.put("body", rs.getString("Messages.body"));
 				
 				Calendar calendar = Calendar.getInstance();
-				calendar.setTimeInMillis(rs.getTimestamp("date").getTime());
+				calendar.setTimeInMillis(rs.getTimestamp("Messages.date").getTime());
 				
 				info.put("date", (new CustomDate(calendar)).toJSON());
-				info.put("message_id", rs.getLong("id"));
-				info.put("was_read", rs.getBoolean("was_read"));
+				info.put("message_id", rs.getLong("Messages.id"));
+				info.put("was_read", rs.getBoolean("Messages.was_read"));
 				
-				long user_to_id = rs.getLong("user_to_id");
-				long user_from_id = rs.getLong("user_from_id");
-				if (user_id == user_from_id) {
+				if (user_id == rs.getLong("Messages.user_from_id")) {
 					info.put("type", "sent");
-					info.put("user", UserJSONParser.parseUserIntoJSON(new User(user_to_id, con)));
 				}
 				else {
 					info.put("type", "received");
-					info.put("user", UserJSONParser.parseUserIntoJSON(new User(user_from_id, con)));
 				}
-				
+				JSONObject userJSON = new JSONObject();
+
+
+				userJSON.accumulate("username",rs.getString("Users.username"));
+				userJSON.accumulate("first_name",rs.getString("Users.first_name"));
+				userJSON.accumulate("last_name",rs.getString("Users.last_name"));
+				userJSON.accumulate("profile_picture",rs.getString("Users.profile_picture"));
+				userJSON.accumulate("id",rs.getLong("Users.id"));
+
+				info.put("user", userJSON);
 				messages.put(info);
 			}
 			
