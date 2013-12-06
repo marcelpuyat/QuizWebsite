@@ -26,9 +26,15 @@
   margin-right: 40px;
   margin-top: 10px;
   padding: 10px 25px; 
+  width: 490px;
   border-bottom: 1px solid #EFEFEF;
 }
 
+.time {
+	margin-left: 2px;
+	font-size: 10px;
+	color: #25383C	
+}
 h1,h2,h3,h4,h5,h6 {
 	font-weight: lighter;
 }
@@ -55,4 +61,13 @@ h1,h2,h3,h4,h5,h6 {
 	-o-transform:rotateY(60deg);
 	-ms-transform:rotateY(60deg);
 	transform:rotateY(60deg);
+}
+
+#my-results-panel li {
+	margin-bottom: 6px;
+	padding-top: 4px;
+}
+
+#my-results-panel li:not(:first-child)  {
+	border-top: 1px solid rgb(230,230,230); 	
 }

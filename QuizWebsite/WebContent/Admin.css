@@ -44,10 +44,10 @@
 }
 
 .bottom-line {
-	border-bottom: 1px solid black;	
+	border-bottom: 1px solid #25383C;	
 }
 .announcement-li {
-	padding-bottom: 5px;
+	padding-bottom: 15px;
 	width: 600px;
 	margin-left: auto;
 	margin-right: auto;

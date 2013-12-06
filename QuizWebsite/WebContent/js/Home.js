@@ -110,6 +110,7 @@ function update_newsfeed(friend_results, newsfeed_bar) {
 		
 		var textSpan2 = document.createElement('span');
 		var time_ago = document.createElement('span');
+		time_ago.classList.add('time');
 		time_ago.innerHTML = " " + get_time_ago(date);
 		textSpan2.innerHTML = " and got a score of " + (user_percentage_score * 100).toFixed(0) + "%!";
 		
