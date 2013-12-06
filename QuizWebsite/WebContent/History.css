@@ -35,3 +35,32 @@ th.sort-by {
 	background-color: #3B5999;
 }
 
+th.sort-by.up:after,
+th.sort-by.down:after
+ {
+	content: "\2039";;
+	position: absolute;
+	margin-left: 6px;
+	opacity: 0.3;
+
+	-webkit-transition:0.2s;
+	-moz-transition:0.2s;
+	-o-transition:0.2s;
+	-ms-transition:0.2s;
+	transition:0.2s;
+}
+th.sort-by.up:after {
+	-webkit-transform:rotate(90deg);
+	-moz-transform:rotate(90deg);
+	-o-transform:rotate(90deg);
+	-ms-transform:rotate(90deg);
+	transform:rotate(90deg);
+}
+th.sort-by.down:after {
+	-webkit-transform:rotate(270deg);
+	-moz-transform:rotate(270deg);
+	-o-transform:rotate(270deg);
+	-ms-transform:rotate(270deg);
+	transform:rotate(270deg);
+}
+

@@ -69,9 +69,19 @@ function set_click_events() {
 }
 
 function style_headers (category) {
+	var reversed =  (category.match('reverse-') !== null);
+	var category = category.replace('reverse-','');
+
 	for (var i in headers){
 		if (i == category) {
 			headers[i].classList.add('sort-by');
+			if (reversed) {
+				headers[i].classList.add('down');
+				headers[i].classList.remove('up');
+			} else {
+				headers[i].classList.remove('down');
+				headers[i].classList.add('up');
+			}
 		} else {
 			headers[i].classList.remove('sort-by');
 		}
@@ -81,8 +91,6 @@ function style_headers (category) {
 function sortBy(category) {
 	
 	cleanTable();
-
-	style_headers(category);
 	
 	if (category == "quiz") {
 
@@ -210,6 +218,7 @@ function cleanTable() {
 }
 
 function setSortedBy(category) {
+	style_headers(category);
 	if (category == "quiz") {
 		setReverseFalse();
 		sorted_by_date = false;
