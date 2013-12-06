@@ -1,14 +1,17 @@
 #history-table {
 	margin-top: 20px;
 	width: 600px;	
+	border-radius: 5px;
 }
 
 td {
 	padding: 3px 5px 0 5px;	
+	border-radius: 2px;
+	margin-bottom: 10px;
 }
 
 tr:nth-child(odd)	{ 
-	background-color:#AAD4FF; 
+	background-color:#EEEFF4; 
 }
 
 tr:nth-child(even)	{
@@ -16,6 +19,7 @@ tr:nth-child(even)	{
 }
 
 th {
-	background-color: #3B5998;
+	border-radius: 2px;
+	background-color: #3B5999;
 	color: white;	
 }

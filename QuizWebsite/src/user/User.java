@@ -189,6 +189,18 @@ public class User {
 		return false;
 	}
 	
+	public int getRatingOnQuiz(long quiz_id) {
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT rating FROM Ratings WHERE user_id = "+this.user_id+" AND quiz_id = "+quiz_id);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) return rs.getInt("rating");
+			else return -1;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
+	
 	public JSONArray getRecentQuizResultsInJSONArray() {
 		try {
 			String get5MostRecentQuizTakingInstances = "SELECT Quizzes.name, Quizzes.id, QuizResults.date_taken, QuizResults.time_duration, QuizResults.user_percentage_score " +
@@ -206,13 +218,13 @@ public class User {
 					Timestamp ts = rs.getTimestamp(3);
 					Calendar dateTaken = Calendar.getInstance();
 					dateTaken.setTimeInMillis(ts.getTime());
-					int year = dateTaken.get(Calendar.YEAR);
-					int month = dateTaken.get(Calendar.MONTH) + 1; // MONTHS ARE INDEXED FROM 0!
-					int day = dateTaken.get(Calendar.DATE);
-					date.put("year", year);
-					date.put("month", month);
-					date.put("date", day);
-				
+					CustomDate dateCustom = new CustomDate(dateTaken);
+					date.put("year", dateCustom.getYear());
+					date.put("month", dateCustom.getMonth());
+					date.put("date", dateCustom.getDate());
+					date.put("hours", dateCustom.getHours());
+					date.put("minutes", dateCustom.getMinutes());
+					date.put("seconds", dateCustom.getSeconds());
 				result.put("date", date);
 				result.put("time_taken", rs.getDouble(4));
 				result.put("user_percentage_score", rs.getDouble(5));

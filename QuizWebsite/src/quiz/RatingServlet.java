@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import user.User;
 import customObjects.SelfRefreshingConnection;
 
 /**
@@ -46,13 +47,17 @@ public class RatingServlet extends HttpServlet {
 		
 		else {
 			long quiz_id = Long.parseLong(quiz_id_string);
+			long user_id = Long.parseLong(request.getParameter("user_id"));
 			Quiz thisQuiz = new Quiz(quiz_id, con);
-					
+				
+			User user = new User(user_id, con);
+			int userRating = user.getRatingOnQuiz(quiz_id);
 			double average_rating = thisQuiz.getAverageRating();
 			int num_ratings = thisQuiz.getNumberOfRatings();
 			JSONObject ratingInfo = new JSONObject();
-			ratingInfo.put("rating", average_rating);
+			ratingInfo.put("average_rating", average_rating);
 			ratingInfo.put("num_ratings", num_ratings);
+			ratingInfo.put("user_rating", userRating);
 			response.getWriter().println(ratingInfo.toString());
 		}
 	}
