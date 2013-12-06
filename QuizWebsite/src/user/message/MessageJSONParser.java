@@ -1,6 +1,7 @@
 package user.message;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -9,30 +10,6 @@ import user.UserJSONParser;
 import customObjects.SelfRefreshingConnection;
 
 public class MessageJSONParser {
-
-	/**
-	 * Return JSON with sent msgs and received msgs for argument user
-	 * @param user_id
-	 * @param con
-	 * @return
-	 */
-	/*package*/static JSONArray getMessageInfoGivenUser(long user_id, SelfRefreshingConnection con) {
-		
-		ArrayList<Message> msgs = Message.getAllMessages(user_id, con);
-		
-		JSONArray messages = new JSONArray();
-		
-		for (int i = 0; i < msgs.size(); i++) {
-			Message msg = msgs.get(i);
-			if (msg.getSender().getUserId() == user_id) {
-				messages.put(getJSONForSentMessage(msg));
-			} else {
-				messages.put(getJSONForReceivedMessage(msg));
-			}
-		}
-		
-		return messages;
-	}
 	
 	/**
 	 * Get JSON for sent msg as in spec (Github)
@@ -59,7 +36,15 @@ public class MessageJSONParser {
 	 * @return
 	 */
 	private static JSONObject getJSONForMessage(Message msg, boolean sentMsg) {
+		System.out.println("Fetching message");
+
+		/* Time this section */
+		long start_time = System.nanoTime();
 		JSONObject msgInfo = msg.toJSON();
+		long total_time = System.nanoTime() - start_time;
+		/* end of timed section */
+		
+		System.out.println(total_time);
 		
 		if (sentMsg) {
 			msgInfo.put("type", "sent");

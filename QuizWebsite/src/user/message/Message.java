@@ -6,9 +6,11 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import user.User;
+import user.UserJSONParser;
 import customObjects.CustomDate;
 import customObjects.SelfRefreshingConnection;
 
@@ -131,8 +133,10 @@ public class Message {
 			if (rs.next()) {
 				info.put("subject", rs.getString("subject"));
 				info.put("body", rs.getString("body"));
+				
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTimeInMillis(rs.getTimestamp("date").getTime());
+				
 				info.put("date", (new CustomDate(calendar)).toJSON());
 				info.put("message_id", this.id);
 				info.put("was_read", rs.getBoolean("was_read"));
@@ -162,16 +166,37 @@ public class Message {
 		}
 	}
 	
-	public static ArrayList<Message> getAllMessages(long user_id, SelfRefreshingConnection con) {
+	public static JSONArray getAllMessages(long user_id, SelfRefreshingConnection con) {
 		
 		try {
-			PreparedStatement stmt = con.prepareStatement("SELECT id FROM Messages WHERE user_from_id = " + user_id + " OR user_to_id = " + user_id + orderByDate);
+			PreparedStatement stmt = con.prepareStatement("SELECT * FROM Messages WHERE user_from_id = " + user_id + " OR user_to_id = " + user_id + orderByDate);
 			ResultSet rs = stmt.executeQuery();
 			
-			ArrayList<Message> messages = new ArrayList<Message>();
-			
+			JSONArray messages = new JSONArray();
 			while (rs.next()) {
-				messages.add(new Message(con, rs.getLong(1)));
+				JSONObject info = new JSONObject();
+				info.put("subject", rs.getString("subject"));
+				info.put("body", rs.getString("body"));
+				
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTimeInMillis(rs.getTimestamp("date").getTime());
+				
+				info.put("date", (new CustomDate(calendar)).toJSON());
+				info.put("message_id", rs.getLong("id"));
+				info.put("was_read", rs.getBoolean("was_read"));
+				
+				long user_to_id = rs.getLong("user_to_id");
+				long user_from_id = rs.getLong("user_from_id");
+				if (user_id == user_from_id) {
+					info.put("type", "sent");
+					info.put("user", UserJSONParser.parseUserIntoJSON(new User(user_to_id, con)));
+				}
+				else {
+					info.put("type", "received");
+					info.put("user", UserJSONParser.parseUserIntoJSON(new User(user_from_id, con)));
+				}
+				
+				messages.put(info);
 			}
 			
 			return messages;

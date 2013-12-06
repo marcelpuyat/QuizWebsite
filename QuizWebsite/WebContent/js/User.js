@@ -13,6 +13,8 @@ var block_button = document.getElementById("block-user-button");
 var unblock_button = document.getElementById("unblock-user-button");
 var delete_friend_button = document.getElementById("delete-friend-button");
 var request_button = document.getElementById("request-button");
+var delete_user_button = document.getElementById("remove-user-button");
+var promote_button = document.getElementById("promote-user-button");
 
 /* masthead */
 var masthead_friends_div = document.getElementById('masthead-friends-div');
@@ -33,14 +35,21 @@ var pending_request = false;
 var has_requested = false;
 var is_self = false;
 
+/* Admin */
+var _show_promote;
+var _show_delete;
+
 /* viewer id and viewee id */
 var _curr_user_id;
 var _target_user_id;
 
 /* I just store everything globally */
-function init_js(curr_user_id, target_user_id) {
+function init_js(curr_user_id, target_user_id, show_promote, show_delete) {
 	_curr_user_id = curr_user_id;
 	_target_user_id = target_user_id;
+	_show_delete = show_delete;
+	_show_promote = show_promote;
+	
 	if (curr_user_id == target_user_id) is_self = true;
 
 	set_relations();
@@ -175,6 +184,13 @@ function display_relation_controls(user_info) {
 		showButton(request_button);
 		showButton(block_button);
 	}
+	
+	if (_show_delete) {
+		showButton(delete_user_button);
+	}
+	if (_show_promote) {
+		showButton(promote_button);
+	}
 }
 
 /* Go ahead and style this */
@@ -235,6 +251,28 @@ function display_recent_results(recent_results) {
 
 function showButton(button) {
 	button.classList.remove('hide');
+}
+
+function removeUser() {
+	relation_controls_div.innerHTML = "User deleted";
+	post_json_to_url("/QuizWebsite/AdminServlet?action=remove_user&user_id=" + _target_user_id,
+			{
+		
+			},
+			function (data) {
+				location.reload();
+			});
+}
+
+function promoteUser() {
+	relation_controls_div.innerHTML = "User promoted";
+	post_json_to_url("/QuizWebsite/AdminServlet?action=promote_user&user_id=" + _target_user_id,
+			{
+		
+			},
+			function (data) {
+				location.reload();
+			});
 }
 
 /* I just need a POST req but didnt know how to. So i used an empty post json */

@@ -57,6 +57,19 @@
 		if (user != null) return user.getUserId();
 		return -1;
 	}
+	boolean showPromote(ServletContext context, HttpServletRequest req) {
+		SelfRefreshingConnection con = (SelfRefreshingConnection)context.getAttribute("database_connection");
+		User viewer = new User(getCurrUserId(req), con);
+		if (viewer.isAdmin() == false) return false;
+		User viewee = new User(getUserIdOfPage(req, context), con);
+		
+		if (viewee.isAdmin() == true) return false;
+		return true;
+	}
+	boolean showDelete(HttpSession session) {
+		User user = (User)session.getAttribute("user");
+		return user.isAdmin();
+	}
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -66,7 +79,7 @@
 <link rel="stylesheet" type="text/css" href="/QuizWebsite/General.css">
 <link rel="stylesheet" type="text/css" href="/QuizWebsite/User.css">
 </head>
-<body onload="init_js(<%= getCurrUserId(request) %>, <%=getUserIdOfPage(request, application)%>)">
+<body onload="init_js(<%= getCurrUserId(request) %>, <%=getUserIdOfPage(request, application)%>, <%= showPromote(application, request) %>, <%= showDelete(session) %>)">
 	<div id="content-wrapper">
 		<%= HTMLTemplater.getBlueBar(session)  %>
 		<div class="page-width wide center-block hide" id="inner-content-container">
@@ -83,6 +96,9 @@
 				<div class="hide button" id="unblock-user-button" onclick="unblockUser()">Unblock User</div>
 				<div class="hide button red" id="delete-friend-button" onclick="removeFriend()">Delete Friend</div>
 				<div class="hide button" id="request-button" onclick="sendRequest()">Send Friend Request</div>
+				<div class="hide button red" id="remove-user-button" onclick="removeUser()">Delete User</div>
+				<div class="hide button" id="promote-user-button" onclick="promoteUser()">Promote User</div>
+				
 			</div>
 			<div class="page-width thin center-block center">
 				<div id="user-info"></div>

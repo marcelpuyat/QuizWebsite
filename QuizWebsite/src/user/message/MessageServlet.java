@@ -1,6 +1,7 @@
 package user.message;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -49,7 +50,8 @@ public class MessageServlet extends HttpServlet {
 		if (user_id_string != null) {
 			long user_id = Long.parseLong(user_id_string);
 			
-			JSONArray messageInfo = MessageJSONParser.getMessageInfoGivenUser(user_id, con);
+			JSONArray messageInfo = Message.getAllMessages(user_id, con);
+			
 			msgs.put("messages", messageInfo);
 		}
 		
