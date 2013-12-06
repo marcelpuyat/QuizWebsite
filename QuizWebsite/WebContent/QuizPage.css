@@ -23,6 +23,14 @@ a {
 		padding: 20px 0px;
 	}
 
+#num-ratings {
+	margin-bottom: 5px;
+}
+#avg-rating {
+	width: 200px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #EFEFEF;	
+}
 .best-of-header {
 	font-weight: lighter;
 	text-align: center;
