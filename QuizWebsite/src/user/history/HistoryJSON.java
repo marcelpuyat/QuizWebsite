@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import quiz.Quiz;
 import quiz.QuizResults;
 import customObjects.CustomDate;
+import customObjects.RankAndTotal;
 import customObjects.SelfRefreshingConnection;
 
 public class HistoryJSON {
@@ -43,6 +44,9 @@ public class HistoryJSON {
 		long user_id = result.getUserID();
 		double time_taken = result.getTimeTaken();
 		double user_percentage_score = result.getUserPercentageScore();
+		RankAndTotal rt = result.getRankAndTotal();
+		int rank = rt.getRank();
+		int total = rt.getTotal();
 		
 		Calendar date_taken_calendar = result.getDateTaken();
 			CustomDate date_taken = new CustomDate(date_taken_calendar);
@@ -54,6 +58,8 @@ public class HistoryJSON {
 		info.put("user_id", user_id);
 		info.put("time_taken", time_taken);
 		info.put("user_percentage_score", user_percentage_score);
+		info.put("rank", rank);
+		info.put("total", total);
 		
 		JSONObject date = new JSONObject();
 		

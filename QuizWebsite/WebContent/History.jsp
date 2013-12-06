@@ -20,6 +20,8 @@ long getUserID(HttpSession session) {
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>History</title>
 <link rel="stylesheet" type="text/css" href="/QuizWebsite/General.css">
+<link rel="stylesheet" type="text/css" href="/QuizWebsite/History.css">
+
 </head>
 <body onload="init_js(<%= getUserID(session) %>)">
 	<div id="content-wrapper">
@@ -27,11 +29,12 @@ long getUserID(HttpSession session) {
 		
 		<div id='history-panel'>
 		
-			<table id='history-table' border='1'>
+			<table class='center' id='history-table' border='1'>
 			<tr>
 			<th id="quiz-header" style="cursor: pointer;">Quiz</th>
 			<th id="score-header" style="cursor: pointer;">Score</th>
 			<th id="time-header" style="cursor: pointer;">Time</th>
+			<th id="rank-header" style="cursor: pointer;">Rank</th>
 			<th id="date-header" style="cursor: pointer;">Date</th>
 			</tr>
 			

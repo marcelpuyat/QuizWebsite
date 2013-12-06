@@ -59,12 +59,7 @@ public class MessageJSONParser {
 	 * @return
 	 */
 	private static JSONObject getJSONForMessage(Message msg, boolean sentMsg) {
-		JSONObject msgInfo = new JSONObject();
-		msgInfo.put("subject", msg.getSubject());
-		msgInfo.put("body", msg.getBody());
-		msgInfo.put("date", msg.getDate().toJSON());
-		msgInfo.put("message_id", msg.getMessageID());
-		msgInfo.put("was_read", msg.hasBeenRead());
+		JSONObject msgInfo = msg.toJSON();
 		
 		if (sentMsg) {
 			msgInfo.put("type", "sent");

@@ -11,15 +11,18 @@ var _already_sorted_by_date;
 var _already_sorted_by_name;
 var _already_sorted_by_score;
 var _already_sorted_by_time;
+var _already_sorted_by_rank;
 
 var sorted_by_date = true;
 var sorted_by_score = false
 var sorted_by_time = false;
 var sorted_by_name = false;
+var sorted_by_rank = false;
 var reverse_date = false;
 var reverse_score = false;
 var reverse_time = false;
 var reverse_name = false;
+var reverse_rank = false;
 
 var _results_table = document.getElementById("history-table");
 
@@ -52,7 +55,8 @@ function set_click_events() {
 	document.getElementById("score-header").addEventListener("click", function() {sortBy("score")});
 	document.getElementById("time-header").addEventListener("click", function() {sortBy("time")});
 	document.getElementById("date-header").addEventListener("click", function() {sortBy("date")});
-	
+	document.getElementById("rank-header").addEventListener("click", function() {sortBy("rank")});
+
 }
 
 function sortBy(category) {
@@ -84,6 +88,31 @@ function sortBy(category) {
 		fill_table(_already_sorted_by_name);
 	}
 	
+	if (category == "rank") {
+		/* Check if has already been sorted before */
+		if (!_already_sorted_by_rank) {
+			_results.sort(function(result_one, result_two) {
+				if (result_one.rank < result_two.rank) return -1;
+				if (result_one.rank > result_two.rank) return 1;
+				else return 0;
+			})
+			
+			_already_sorted_by_rank = _results.slice(0); // SAVE COPY
+		}
+		
+		/* If currently sorted by this already, reverse. */
+		if (sorted_by_rank) {
+			_already_sorted_by_rank.reverse();
+			setSortedBy("reverse-rank");
+		}
+		else if (reverse_rank) {
+			_already_sorted_by_rank.reverse();
+			setSortedBy("rank");
+		}
+		else setSortedBy("rank");
+		fill_table(_already_sorted_by_rank);
+	}
+	
 	else if (category == "date") {
 		if (sorted_by_date) {
 			_already_sorted_by_date.reverse();
@@ -100,9 +129,13 @@ function sortBy(category) {
 	else if (category == "score") {
 		if (!_already_sorted_by_score) {
 			_results.sort(function(result_one, result_two) {
-				if (result_one.user_percentage_score < result_two.user_percentage_score) return -1;
-				if (result_one.user_percentage_score > result_two.user_percentage_score) return 1;
-				else return 0;
+				if (result_one.user_percentage_score > result_two.user_percentage_score) return -1;
+				if (result_one.user_percentage_score < result_two.user_percentage_score) return 1;
+				else {
+					if (result_one.time_taken < result_two.time_taken) return -1;
+					if (result_one.time_taken > result_two.time_taken) return 1;
+				}
+				return 0;
 			})
 			
 			_already_sorted_by_score = _results.slice(0);
@@ -125,7 +158,11 @@ function sortBy(category) {
 			_results.sort(function(result_one, result_two) {
 				if (result_one.time_taken < result_two.time_taken) return -1;
 				if (result_one.time_taken > result_two.time_taken) return 1;
-				else return 0;
+				else {
+					if (result_one.user_percentage_score > result_two.user_percentage_score) return -1;
+					if (result_one.user_percentage_score < result_two.user_percentage_score) return 1;
+				}
+				return 0;
 			})
 			
 			_already_sorted_by_time = _results.slice(0);
@@ -157,6 +194,7 @@ function setSortedBy(category) {
 		sorted_by_score = false;
 		sorted_by_time = false;
 		sorted_by_name = true;
+		sorted_by_rank = false;
 	}
 	else if (category == "reverse-quiz") {
 		setInOrderFalse();
@@ -164,6 +202,7 @@ function setSortedBy(category) {
 		reverse_time = false;
 		reverse_name = true;
 		reverse_score = false;
+		reverse_rank = false;
 	}
 	else if (category == "score") {
 		setReverseFalse();
@@ -171,6 +210,7 @@ function setSortedBy(category) {
 		sorted_by_score = true;
 		sorted_by_time = false;
 		sorted_by_name = false;
+		sorted_by_rank = false;
 	}
 	else if (category == "reverse-score") {
 		setInOrderFalse();
@@ -178,6 +218,7 @@ function setSortedBy(category) {
 		reverse_time = false;
 		reverse_name = false;
 		reverse_score = true;
+		reverse_rank = false;
 	}
 	else if (category == "time") {
 		setReverseFalse();
@@ -185,6 +226,7 @@ function setSortedBy(category) {
 		sorted_by_score = false;
 		sorted_by_time = true;
 		sorted_by_name = false;
+		sorted_by_rank = false;
 	}
 	else if (category == "reverse-time") {
 		setInOrderFalse();
@@ -192,6 +234,7 @@ function setSortedBy(category) {
 		reverse_time = true;
 		reverse_name = false;
 		reverse_score = false;
+		reverse_rank = false;
 	}
 	else if(category == "date") {
 		setReverseFalse();
@@ -199,6 +242,7 @@ function setSortedBy(category) {
 		sorted_by_score = false;
 		sorted_by_time = false;
 		sorted_by_name = false;
+		sorted_by_rank = false;
 	}
 	else if (category == "reverse-date") {
 		setInOrderFalse();
@@ -206,6 +250,23 @@ function setSortedBy(category) {
 		reverse_time = false;
 		reverse_name = false;
 		reverse_score = false;
+		reverse_rank = false;
+	}
+	else if (category == "rank") {
+		setReverseFalse();
+		sorted_by_date = false;
+		sorted_by_score = false;
+		sorted_by_time = false;
+		sorted_by_name = false;
+		sorted_by_rank = true;
+	}
+	else if (category == "reverse-rank") {
+		setInOrderFalse();
+		reverse_date = false;
+		reverse_time = false;
+		reverse_name = false;
+		reverse_score = false;
+		reverse_rank = true;
 	}
 	
 }
@@ -215,12 +276,14 @@ function setInOrderFalse() {
 	sorted_by_score = false;
 	sorted_by_time = false;
 	sorted_by_name = false;
+	sorted_by_rank = false;
 }
 function setReverseFalse() {
 	reverse_date = false;
 	reverse_score = false;
 	reverse_time = false;
 	reverse_name = false;
+	reverse_rank = false;
 }
 
 function fill_table(results_array) {
@@ -232,9 +295,11 @@ function fill_table(results_array) {
 		var quiz_name = result.quiz_name;		
 		var user_percentage_score = result.user_percentage_score;
 		var time_taken = result.time_taken;
+		var rank = result.rank;
+		var total = result.total;
 		
 		var year = result.date.year;
-		var month = result.date.month;
+		var month = result.date.month + 1; // WATCH FOR THIS!
 		var date = result.date.date;
 		var minutes = result.date.minutes;
 		var seconds = result.date.seconds;
@@ -254,7 +319,7 @@ function fill_table(results_array) {
 		/* Set Score Column */
 		var score_col = document.createElement('td');
 		
-		score_col.innerHTML = (user_percentage_score*100).toFixed(2) + "%";
+		score_col.innerHTML = (user_percentage_score*100).toFixed(1) + "%";
 		
 		/*Set Time Column */
 		var time_col = document.createElement('td');
@@ -266,11 +331,17 @@ function fill_table(results_array) {
 		
 		date_col.innerHTML = year + "/" + month + "/" + date; // PRETTY UP
 		
+		/*Set rank column */
+		var rank_col = document.createElement('td');
+		
+		rank_col.innerHTML = rank + " out of " + total;
+		
 		row.appendChild(quiz_col);
 		row.appendChild(score_col);
 		row.appendChild(time_col);
+		row.appendChild(rank_col);
 		row.appendChild(date_col);
-
+		
 		_results_table.appendChild(row);
 	}
 }

@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 
 import user.User;
+import customObjects.RankAndTotal;
 import customObjects.SelfRefreshingConnection;
 
 /**
@@ -134,5 +135,28 @@ public class QuizResults {
 			rs.next();
 			return rs.getDouble("time_duration");
 		} catch (Exception e) { e.printStackTrace(); } return -1;
+	}
+	
+	/**
+	 * Returns an object holding the rank of this result out of all quiz taking instances of this quiz, and the total number of quiz taking instances
+	 * @return
+	 */
+	public RankAndTotal getRankAndTotal() {
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT id, @curRank := @curRank + 1 AS rank FROM QuizResults, (SELECT @curRank := 0)r WHERE quiz_id = "+quizID+" ORDER BY user_percentage_score DESC, time_duration ASC");
+			ResultSet rs = stmt.executeQuery();
+			int count = 0;
+			int rank = -1;
+			while (rs.next()) {
+				count++;
+				long rowID = rs.getLong("id");
+				if (this.id == rowID) rank = rs.getInt("rank");
+			}
+			
+			return new RankAndTotal(rank, count);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

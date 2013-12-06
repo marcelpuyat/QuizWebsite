@@ -6,6 +6,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import org.json.JSONObject;
+
 import user.User;
 import customObjects.CustomDate;
 import customObjects.SelfRefreshingConnection;
@@ -119,6 +121,29 @@ public class Message {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	public JSONObject toJSON() {
+		JSONObject info = new JSONObject();
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT * FROM Messages WHERE id = " + this.id);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				info.put("subject", rs.getString("subject"));
+				info.put("body", rs.getString("body"));
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTimeInMillis(rs.getTimestamp("date").getTime());
+				info.put("date", (new CustomDate(calendar)).toJSON());
+				info.put("message_id", this.id);
+				info.put("was_read", rs.getBoolean("was_read"));
+				return info;
+			}
+			else return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
 	}
 	
 	/* Static methods */
