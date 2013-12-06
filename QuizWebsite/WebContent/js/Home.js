@@ -83,6 +83,7 @@ function update_newsfeed(friend_results, newsfeed_bar) {
 		var quiz_id = friend_results[i].quiz_id;
 		var user_percentage_score = friend_results[i].user_percentage_score;
 		var date = friend_results[i].date;
+		
 		var user = friend_results[i].user;
 		var li = document.createElement('li');
 		
@@ -104,7 +105,7 @@ function update_newsfeed(friend_results, newsfeed_bar) {
 		textSpan.innerHTML = " took ";
 		
 		var textSpan2 = document.createElement('span');
-		textSpan2.innerHTML = " and got a score of " + (user_percentage_score * 100).toFixed(0) + "%!";
+		textSpan2.innerHTML = " and got a score of " + (user_percentage_score * 100).toFixed(0) + "%!" + " " + get_time_ago(date);
 		
 		li.appendChild(user_link);
 		li.appendChild(textSpan);

@@ -149,7 +149,7 @@ function get_time_ago (date) {
 	if (diff > months)  return (Math.floor(diff/months) == 1)  ? 'a month ago'  : Math.floor(diff/months)  + ' months ago';
 	if (diff > weeks)   return (Math.floor(diff/weeks) == 1)   ? 'a week ago'   : Math.floor(diff/weeks)   + ' weeks ago';
 	if (diff > days)    return (Math.floor(diff/days) == 1)    ? 'a day ago'    : Math.floor(diff/days)    + ' days ago';
-	if (diff > hours)   return (Math.floor(diff/hours) == 1)   ? 'a hour ago'   : Math.floor(diff/hours)   + ' hours ago';
+	if (diff > hours)   return (Math.floor(diff/hours) == 1)   ? 'an hour ago'   : Math.floor(diff/hours)   + ' hours ago';
 	if (diff > minutes) return (Math.floor(diff/minutes) == 1) ? 'a minute ago' : Math.floor(diff/minutes) + ' minutes ago';
 	if (diff > seconds) return (Math.floor(diff/seconds) == 1) ? 'a second ago' : Math.floor(diff/seconds) + ' seconds ago';
 	return 'just now';
