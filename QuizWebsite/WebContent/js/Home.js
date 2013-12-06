@@ -411,7 +411,7 @@ function update_my_results(my_results, panel) {
 		
 		li.appendChild(new_elem({
 			type:'span',
-			innerHTML:'You got '+ user_percentage_score +'% playing '
+			innerHTML:'You got '+ user_percentage_score.toFixed(0) +'% playing '
 		}));
 
 		li.appendChild(new_elem({
