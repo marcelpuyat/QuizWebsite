@@ -302,3 +302,7 @@ function update_my_results(my_results, panel) {
 	panel.appendChild(br);
 	panel.appendChild(ul);
 }
+
+function show_history() {
+	window.location = "/QuizWebsite/History.jsp"
+}
