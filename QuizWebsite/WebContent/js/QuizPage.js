@@ -1,7 +1,7 @@
 /**
 * 
 */
-function init_js (quiz_id) {
+function init_js (quiz_id,user_id) {
 	query_db();
 
 	function query_db () {
@@ -13,6 +13,16 @@ function init_js (quiz_id) {
 				build_ui(data);
 			}
 		);
+		get_json_from_url(
+			'/QuizWebsite/RatingServlet?action=all&quiz_id='+quiz_id+'&user_id='+user_id,
+			function (data) {
+				var num_ratings = document.getElementById('num-ratings');
+				num_ratings.innerHTML = data.num_ratings+'users have rated this quiz';
+
+				set_elem_rating(document.getElementById('usr-rating-cover'), data.user_rating);
+				set_elem_rating(document.getElementById('avg-rating-cover'), data.average_rating);
+			}
+		)
 	}
 
 	function build_ui (data) {
@@ -20,6 +30,8 @@ function init_js (quiz_id) {
 		set_name(data.quiz_name);
 		set_description(data.description);
 		set_creator(data.creator);
+
+		set_star_callbacks();
 
 		if (data.is_editable) show_edit();
 		if (data.is_practicable) show_practice();
@@ -29,6 +41,15 @@ function init_js (quiz_id) {
 
 		//show div
 		document.getElementById('QuizPage-wrapper').classList.remove('hide');
+	}
+
+	function set_star_callbacks () {
+		var stars = document.getElementsByClassName('rating-star');
+		for (var i = 0; i < stars.length; i++) {
+			stars[i].addEventListener('click',function () {
+				rating_clicked(this.getAttribute('rating'), user_id, quiz_id);
+			})
+		};
 	}
 
 	function set_name (name) {
@@ -137,6 +158,20 @@ function init_js (quiz_id) {
 		return data.time + ' seconds';
 	}
 
+}
+
+function set_elem_rating (elem,rating) {
+	var disp_rating = (rating == -1) ?  0: rating;
+	elem.style.width = (100 - (disp_rating * 20) + '%');
+	console.log((100 - (disp_rating * 20) + '%'));
+}
+
+function rating_clicked (rating, user_id, quiz_id) {
+	set_elem_rating(document.getElementById('usr-rating-cover'), rating);
+	post_json_to_url(
+		'/QuizWebsite/RatingServlet?action=rate&quiz_id='+quiz_id+'&user_id='+user_id+'&rating='+rating,
+		{}
+	);
 }
 
 function delete_quiz (quiz_id) {

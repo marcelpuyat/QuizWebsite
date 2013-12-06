@@ -10,6 +10,13 @@
 	String getQuizID(HttpServletRequest req) {
 		return req.getParameter("quiz_id");
 	}
+	long getUserID(HttpSession session) {
+		User u = (User)session.getAttribute("user");
+		if (u != null) {
+			return u.getUserId();
+		}
+		return -1;
+	}
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -19,7 +26,7 @@
 <link rel="stylesheet" type="text/css" href="/QuizWebsite/General.css">
 <link rel="stylesheet" type="text/css" href="/QuizWebsite/QuizPage.css">
 </head>
-<body onload="init_js('<%= getQuizID(request) %>')">
+<body onload="init_js('<%= getQuizID(request) %>',<%= getUserID(session) %>)">
 	<div id="content-wrapper">
 		<%= HTMLTemplater.getBlueBar(session)  %>
 		<div id="QuizPage-wrapper" class="page-width wide center-block hide">
@@ -30,12 +37,34 @@
 				<li class="center">
 					<h3 id="quiz-description" class="lighter faint"></h3>
 				</li>
-				<li class="rating center"> <!-- stars -->
-					<span><span></span></span> <!-- 1 -->
-					<span><span></span></span> <!-- 2 -->
-					<span><span></span></span> <!-- 3 -->
-					<span><span></span></span> <!-- 4 -->
-					<span><span></span></span> <!-- 5 -->
+				<li id="ratings">
+					<ul>
+						<li id="num-ratings"></li>
+						<li id="avg-rating" class="rating center"> <!-- stars -->
+							<span>
+								<span>	
+									<span>&#9734;</span> <!-- 5 -->
+									<span>&#9734;</span> <!-- 4 -->
+									<span>&#9734;</span> <!-- 3 -->
+									<span>&#9734;</span> <!-- 2 -->
+									<span>&#9734;</span> <!-- 1 -->
+								</span>
+								<span class="ratings-cover" id="avg-rating-cover"></span>
+							</span>
+						</li>
+						<li id="usr-rating" class="rating center"> <!-- stars -->
+							<span>
+								<span id="usr-rating-span">	
+									<span rating="5" class="pointable rating-star">&#9734;</span> <!-- 5 -->
+									<span rating="4" class="pointable rating-star">&#9734;</span> <!-- 4 -->
+									<span rating="3" class="pointable rating-star">&#9734;</span> <!-- 3 -->
+									<span rating="2" class="pointable rating-star">&#9734;</span> <!-- 2 -->
+									<span rating="1" class="pointable rating-star">&#9734;</span> <!-- 1 -->
+								</span>
+								<span class="ratings-cover" id="usr-rating-cover"></span>
+							</span>	
+						</li>
+					</ul>
 				</li>
 				<li class="center">
 					<ul>

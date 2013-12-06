@@ -31,7 +31,41 @@ a {
 }
 
 
+li#ratings {
+	padding: 20px;
+}
+
+.rating,
+.rating > span {
+	position: relative;
+}
 
 
+.ratings-cover {
+	position: absolute;
+	height: 100%;
+	opacity:0.90;
+	filter:Alpha(opacity=090); /* IE8 and earlier */
+	background-color: white;
+	right: 0;
+	top: 0;
+}
 
+#usr-rating > span:hover .ratings-cover {
+	display: none;
+}
 
+#usr-rating-span {
+  unicode-bidi: bidi-override;
+  direction: rtl;
+}
+#usr-rating-span > span {
+  display: inline-block;
+  position: relative;
+  width: 1.1em;
+}
+#usr-rating-span > span:hover:before,
+#usr-rating-span > span:hover ~ span:before {
+   content: "\2605";
+   position: absolute;
+}
