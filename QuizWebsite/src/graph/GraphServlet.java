@@ -43,7 +43,11 @@ public class GraphServlet extends HttpServlet {
 		SelfRefreshingConnection databaseConnection = (SelfRefreshingConnection)context.getAttribute("database_connection");
 		JSONObject responseJSON;
 		try {
-			responseJSON = GraphSearch.simple_search(databaseConnection, query, limit);
+			if (query.contains("#")) {
+				responseJSON = GraphSearch.tag_search(databaseConnection, query, limit);
+			} else {
+				responseJSON = GraphSearch.simple_search(databaseConnection, query, limit);
+			}
 			if (responseJSON == null) {
 				response.sendError(HttpServletResponse.SC_GATEWAY_TIMEOUT);
 				return;

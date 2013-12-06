@@ -3,7 +3,9 @@ package graph;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.json.JSONObject;
@@ -11,6 +13,68 @@ import org.json.JSONObject;
 import customObjects.SelfRefreshingConnection;
 
 public class GraphSearch {
+	
+	public static JSONObject tag_search(SelfRefreshingConnection db_connection, String text, int limit) throws ClassNotFoundException {
+		System.out.println("tag search: "+text);
+		JSONObject results = new JSONObject();
+		try {
+			String[] raw_tags = text.split("#");
+			List<String> tags = new ArrayList<String>();
+			
+			for (int i = 0; i < raw_tags.length; i++) {
+				if (raw_tags[i] != null && !raw_tags[i].equals("")) {
+					tags.add(raw_tags[i]);
+					System.out.println("#tag"+raw_tags[i]);
+				}
+			}
+			
+			String tagMatchString = "SELECT Quizzes.name, Quizzes.id, Tags.name FROM Quizzes JOIN Tags on Quizzes.id = Tags.quiz_id AND (";
+			
+			for (int i = 0; i < tags.size(); i++) {
+				if (i != 0) tagMatchString += " OR ";
+				tagMatchString += "Tags.name LIKE (?)";
+			}
+			
+			tagMatchString += ") ORDER BY avg_rating DESC LIMIT 0, ?";
+			System.out.println("Query\n"+tagMatchString);
+			PreparedStatement pstmt = db_connection.prepareStatement(tagMatchString);
+			
+			for (int i = 0; i < tags.size(); i++) {
+				pstmt.setString(i + 1, tags.get(i));
+			}
+			pstmt.setInt(tags.size() + 1, limit);
+			
+			
+			ResultSet rs2 = pstmt.executeQuery();
+			while (rs2.next()) {
+				int id = rs2.getInt("id");
+				String tag_name = rs2.getString("Tags.name");
+				JSONObject entry = new JSONObject();
+				entry.accumulate("id", id);
+				entry.accumulate("name", rs2.getString("name"));
+				entry.accumulate("type", "#"+tag_name);
+				entry.accumulate("category", "tag");
+				entry.accumulate("url", "/QuizWebsite/QuizPage.jsp?quiz_id="+id);
+				results.append("results", entry);
+			}
+			results.accumulate("status", 200);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if (results.length() == 1) {
+			JSONObject emptyEntry = new JSONObject();
+			emptyEntry.accumulate("id", 1);
+			emptyEntry.accumulate("name", "");
+			emptyEntry.accumulate("type", "No results found");
+			emptyEntry.accumulate("category", "quiz");
+			emptyEntry.accumulate("url", "");
+			results.append("results", emptyEntry);
+		}
+		
+		return results;
+	}
 	
 	public static JSONObject simple_search(SelfRefreshingConnection db_connection, String text, int limit) throws ClassNotFoundException {
 		int total_results = 10;
@@ -57,7 +121,7 @@ public class GraphSearch {
 					JSONObject entry = new JSONObject();
 					entry.accumulate("id", id);
 					entry.accumulate("name", rs2.getString("name"));
-					entry.accumulate("type", tag_name);
+					entry.accumulate("type", "#"+tag_name);
 					entry.accumulate("category", "tag");
 					entry.accumulate("url", "/QuizWebsite/QuizPage.jsp?quiz_id="+id);
 					results.append("results", entry);

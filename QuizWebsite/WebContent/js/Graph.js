@@ -11,7 +11,7 @@ function GraphHandler (graph_search_bar, graph_search_ul, graph_url) {
 	var _graph_url = graph_url;
 	(function init () {
 		_bar_elem.addEventListener('keyup',function () {
-			var query = _bar_elem.value;
+			var query = escape(_bar_elem.value);
 			get_json_from_url(_graph_url + '?query='+query, function (data) {
 				update_display(query,data);
 			});
