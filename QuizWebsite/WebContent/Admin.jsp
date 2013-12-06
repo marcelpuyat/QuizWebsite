@@ -59,7 +59,7 @@
 					<li><span id='body-area'><label id="body-label" for='body-field'>Body: </label><textarea id='body-field'></textarea></span></li>
 					
 				</ul>
-				<button id='post-announcement-button'>Post</button>
+				<div class="button" onclick="post_announcement()" id='post-announcement-button'>Post</div>
 				
 			</div>
 		</div>

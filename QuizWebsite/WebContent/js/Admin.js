@@ -17,7 +17,6 @@ var post_announcements_div = document.getElementById("announcement-post-panel");
 
 var subject_field = document.getElementById("subject-field");
 var body_field = document.getElementById("body-field");
-var post_button = document.getElementById("post-announcement-button");
 
 function init_js(user_id, is_admin) {
 	_is_admin = is_admin;
@@ -100,7 +99,10 @@ function update_announcements() {
 			var date_span = document.createElement('span');
 			date_span.innerHTML = date_string;
 			
-			var deleteButton = document.createElement('button');
+			var deleteButton = document.createElement('div');
+			deleteButton.classList.add("button");
+			deleteButton.classList.add("red");
+			deleteButton.style.marginLeft = "10px";
 			deleteButton.innerHTML = "Delete";
 			deleteButton.id = announcement_id;
 			deleteButton.addEventListener('click', function () {
@@ -129,19 +131,18 @@ function update_announcements() {
 
 function setup_announcement_poster() {
 	showDiv(post_announcements_div);
-	post_button.addEventListener("click", function() {
-		post_announcement();
-	});
 }
 
 function delete_announcement(id, button) {
-	hideElem(button);
 	post_json_to_url(announcementsServletURL + "?action=delete&announcement_id=" + id, {}, function(){});
+	alert("Announcement deleted");
+	location.reload(true);
 }
 
 function post_announcement() {
-	hideElem(post_button);
 	post_json_to_url(announcementsServletURL + "?action=post", {user_id: _user_id, subject: subject_field.value, body: body_field.value}, function(){});
+	alert("Announcement posted");
+	location.reload(true);
 }
 
 function showDiv(div) {

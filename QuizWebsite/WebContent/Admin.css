@@ -8,6 +8,11 @@
 	margin-bottom: 10px;
 }
 
+#post-announcement-button {
+	position: relative;
+	margin-left: 210px;	
+}
+
 #subject-field {
 	width: 250px;	
 }
