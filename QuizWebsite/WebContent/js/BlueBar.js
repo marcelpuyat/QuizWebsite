@@ -351,7 +351,6 @@ function MessagesHandler (blue_bar, user_id) {
 			function (data) {
 				console.log('messages loaded');
 				_data = data;
-				console.log(data);
 				_data.user_list = create_user_list(data.messages);
 				console.log('messages processed');
 				console.log(_data);

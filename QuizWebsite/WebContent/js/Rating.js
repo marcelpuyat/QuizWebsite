@@ -3,8 +3,8 @@ function Rating (settings) {
 	var _wrapper = settings.wrapper;
 	var _rated_fill = settings.rated_fill || 'rgb(200,200,200)';
 	var _unrated_fill = settings.unrated_fill || 'rgb(240,240,0)';
-	var _width = 
-
+	var _width = settings.width || 'inherit';
+	var _height = settings.height || 'inherit';
 
 	this.rating_drawing;
 
