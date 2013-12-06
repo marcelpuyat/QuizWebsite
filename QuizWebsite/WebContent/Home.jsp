@@ -65,13 +65,17 @@ String getDisplayName(HttpSession session) {
         <div class="home-content-box">
 				  <div class="score-panel" id="created-quizzes-panel"></div>
 				  <div class="score-panel" id="my-results-panel"></div>
-				  <div class="score-panel" id="my-friends-panel"></div>
         </div>
 			</div>
-			<div class="far-right side-panel panel">
-				<div id="right-content-panel">
-					<h3 align='center'>Newsfeed</h3>
-				</div>
+			<div class="far-right side-panel panel" id="right-content-panel">
+				<ul>
+					<li id="newsfeed">
+						<h3 class="center">Newsfeed</h3>
+					</li>
+					<li id="my-friends-panel">
+						<h3 class="center">Friends</h3>
+					</li>
+				</ul>
 			</div>
 				
 		</div>

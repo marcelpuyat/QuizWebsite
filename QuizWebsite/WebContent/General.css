@@ -224,6 +224,21 @@ input[type="password"] {
 		width: 100px;
 	}
 
+.trophy-not-unlocked {
+	opacity:0.30;
+	filter:Alpha(opacity=030); /* IE8 and earlier */
+	-webkit-transition:0.4s;
+	-moz-transition:0.4s;
+	-o-transition:0.4s;
+	-ms-transition:0.4s;
+	transition:0.4s;
+}
+
+.trophy-not-unlocked:hover {
+	opacity:0.80;
+	filter:Alpha(opacity=080); /* IE8 and earlier */
+}
+
 
 .page-width.wide {
 	width: 980px;

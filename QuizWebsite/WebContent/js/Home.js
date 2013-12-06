@@ -4,7 +4,7 @@
 
 
 function init_js(userID) {
-	new HomeHandler(document.getElementById("right-content-panel"),
+	new HomeHandler(document.getElementById("newsfeed"),
 					document.getElementById("achievements-earned-panel"),
 					document.getElementById("achievements-not-earned-panel"),
 					document.getElementById("popular-quizzes-panel"),
@@ -47,32 +47,31 @@ function HomeHandler(newsfeed_bar, achievements_earned_panel, achievements_not_e
 	})();
 }
 
-function update_my_friends(friends_panel) {
+function update_my_friends(panel) {
 	get_json_from_url("/QuizWebsite/RelationServlet?action=friends&user_id=" + _user_id, function (data) {
 		console.log(data);
 		var friends = data.friends;
 		
-		var ul = document.createElement('ul');
+		var lis = [];
 		for (var i = 0; i < friends.length; i++) {
-			var li = document.createElement('li');
 			
 			var user = friends[i];
 			
-			var user_link = document.createElement('a');
-			user_link.href = "/QuizWebsite/User.jsp?username=" + user.username;
-			user_link.innerHTML = user.display_name;
-			
-			li.appendChild(user_link);
-			ul.appendChild(li);
+			lis.push(new_elem({
+				type:'a',
+				attributes:[
+					{name:'href',value:"/QuizWebsite/User.jsp?username=" + user.username},
+					{name:'title',value:user.display_name},
+					{name:'style',value:'background-image:url('+user.profile_picture+');'}
+				],
+				classList:['mini-profile-pic','flowing']
+			}));
 		}
-		
-		var title = document.createElement('span');
-		title.innerHTML = "<u><b>My Friends</b></u>";
-		
-		var br = document.createElement('br');
-		friends_panel.appendChild(title);
-		friends_panel.appendChild(br);
-		friends_panel.appendChild(ul);
+		panel.appendChild(new_elem({
+			type:'ul',
+			children:lis,
+			classList:['center','profile-pic-ul']
+		}));
 	});
 }
 function update_newsfeed(friend_results, newsfeed_bar) {
@@ -169,7 +168,7 @@ function update_achievements(achvs_earned, achvs_not_earned, achvs_earned_div, a
 		
 		var li = new_elem({
 			type:'li',
-			classList:[acheivements_map[title],'trophy-sprite','flowing','fainter'],
+			classList:[acheivements_map[title],'trophy-sprite','flowing','trophy-not-unlocked'],
 			attributes:[
 				{name:'title',value:title + ': '+desc}
 			]
@@ -186,7 +185,16 @@ function update_achievements(achvs_earned, achvs_not_earned, achvs_earned_div, a
 }
 
 function update_popular_quizzes(popular_quizzes, panel) {
-	var ul = document.createElement('ul');
+	var ul = new_elem({
+		type:'ul',
+		classList:['center']
+	});
+
+	var title = new_elem({
+		type:'h2',
+		classList:['center'],
+		innerHTML:'Trending Quizzes'
+	});
 
 	for (var i = 0; i < popular_quizzes.length; i++) {
 		var li = document.createElement('li');
@@ -196,46 +204,67 @@ function update_popular_quizzes(popular_quizzes, panel) {
 		var quiz_id = popular_quizzes[i].quiz_id;
 		var frequency = popular_quizzes[i].frequency;
 		
-		var quiz_link = document.createElement('a');
-		quiz_link.href = "/QuizWebsite/QuizPage.jsp?quiz_id=" + quiz_id;
-		quiz_link.innerHTML = quiz_name;
 		
-		var user_link = document.createElement('a');
-		user_link.href = "/QuizWebsite/User.jsp?username=" + creator;
-		user_link.innerHTML = creator;
+		li.appendChild(new_elem({
+			type:'a',
+			innerHTML:quiz_name,
+			attributes:[
+				{name:'href',value:"/QuizWebsite/QuizPage.jsp?quiz_id=" + quiz_id}
+			]
+		}));
 		
-		var frequency_span = document.createElement('span');
-		frequency_span.innerHTML = frequency;
+		li.appendChild(new_elem({
+			type:'span',
+			innerHTML:' by '
+		}));
 		
-		var text = document.createElement('span');
-		text.innerHTML = " created by: ";
-		
-		var text2 = document.createElement('span');
-		text2.innerHTML = " taken: ";
-		
-		var text3 = document.createElement('span');
-		text3.innerHTML = " times";
-		
-		li.appendChild(quiz_link);
-		li.appendChild(text);
-		li.appendChild(user_link);
-		li.appendChild(text2);
-		li.appendChild(frequency_span);
-		li.appendChild(text3);
+		li.appendChild(new_elem({
+			type:'a',
+			innerHTML:creator,
+			attributes:[
+				{name:'href',value:"/QuizWebsite/User.jsp?username=" + creator}
+			]
+		}));
+
+		var played_text = '';
+		switch(frequency) {
+			case 0:
+				played_text += ' has never been played';
+				break;
+			case 1:
+				played_text += ' been played once';
+				break;
+			case 2:
+				played_text += ' has been played twice';
+				break;
+			default:
+				played_text += ' has been played ' + frequency + ' times';
+		}
+		li.appendChild(new_elem({
+			type:'span',
+			innerHTML:played_text
+		}));
+
 		ul.appendChild(li);
 	}
 	
-	var title = document.createElement('span');
-	title.innerHTML = "<u><b>Popular Quizzes</b></u>";
-	var br = document.createElement('br');
-	
 	panel.appendChild(title);
-	panel.appendChild(br);
 	panel.appendChild(ul);
 }
 
-function update_newest_quizzes(newest_quizzes, panel){
-	var ul = document.createElement('ul');
+
+
+function update_newest_quizzes(newest_quizzes, panel) {
+	var ul = new_elem({
+		type:'ul',
+		classList:['center']
+	});
+
+	var title = new_elem({
+		type:'h2',
+		classList:['center'],
+		innerHTML:'Newest Quizzes'
+	});
 
 	for (var i = 0; i < newest_quizzes.length; i++) {
 		var li = document.createElement('li');
@@ -244,95 +273,112 @@ function update_newest_quizzes(newest_quizzes, panel){
 		var creator = newest_quizzes[i].creator;
 		var quiz_id = newest_quizzes[i].quiz_id;
 		
-		var quiz_link = document.createElement('a');
-		quiz_link.href = "/QuizWebsite/QuizPage.jsp?quiz_id=" + quiz_id;
-		quiz_link.innerHTML = quiz_name;
 		
-		var user_link = document.createElement('a');
-		user_link.href = "/QuizWebsite/User.jsp?username=" + creator;
-		user_link.innerHTML = creator;
+		li.appendChild(new_elem({
+			type:'a',
+			innerHTML:quiz_name,
+			attributes:[
+				{name:'href',value:"/QuizWebsite/QuizPage.jsp?quiz_id=" + quiz_id}
+			]
+		}));
 		
+		li.appendChild(new_elem({
+			type:'span',
+			innerHTML:' by '
+		}));
 		
-		var text = document.createElement('span');
-		text.innerHTML = " created by: ";
-		
-		li.appendChild(quiz_link);
-		li.appendChild(text);
-		li.appendChild(user_link);
+		li.appendChild(new_elem({
+			type:'a',
+			innerHTML:creator,
+			attributes:[
+				{name:'href',value:"/QuizWebsite/User.jsp?username=" + creator}
+			]
+		}));
+
 		ul.appendChild(li);
 	}
 	
-	var title = document.createElement('span');
-	title.innerHTML = "<u><b>New Quizzes</b></u>";
-	var br = document.createElement('br');
-	
 	panel.appendChild(title);
-	panel.appendChild(br);
 	panel.appendChild(ul);
 }
 
-function update_created_quizzes(created_quizzes, panel) {
-	var ul = document.createElement('ul');
 
+function update_created_quizzes(created_quizzes, panel) {
+	panel.appendChild(new_elem({
+		type:'h2',
+		classList:['center'],
+		innerHTML:'Your Quizzes'
+	}));
+	var lis = [];
 	for (var i = 0; i < created_quizzes.length; i++) {
 		var li = document.createElement('li');
 		
 		var quiz_name = created_quizzes[i].quiz_name;
 		var quiz_id = created_quizzes[i].quiz_id;
 		
-		var quiz_link = document.createElement('a');
-		quiz_link.href = "/QuizWebsite/QuizPage.jsp?quiz_id=" + quiz_id;
-		quiz_link.innerHTML = quiz_name;
+		li.appendChild(new_elem({
+			type:'a',
+			innerHTML:quiz_name,
+			attributes:[
+				{name:'href',value:"/QuizWebsite/QuizPage.jsp?quiz_id=" + quiz_id}
+			]
+		}));
 		
-		li.appendChild(quiz_link);
-		
-		ul.appendChild(li);
+		lis.push(li);
 	}
-	
-	var title = document.createElement('span');
-	title.innerHTML = "<u><b>My Quizzes</b></u>";
-	var br = document.createElement('br');
-	
-	panel.appendChild(title);
-	panel.appendChild(br);
-	panel.appendChild(ul);
+
+	panel.appendChild(new_elem({
+		type:'ul',
+		classList:['center'],
+		children:lis
+	}));
 }
 
-function update_my_results(my_results, panel) {
-	var ul = document.createElement('ul');
 
+function update_my_results(my_results, panel) {
+	panel.appendChild(new_elem({
+		type:'h2',
+		classList:['center'],
+		innerHTML:'Recent Results'
+	}));
+	var lis = [];
 	for (var i = 0; i < my_results.length; i++) {
 		var li = document.createElement('li');
 		
 		var quiz_name = my_results[i].quiz_name;
 		var quiz_id = my_results[i].quiz_id;
 		var date = my_results[i].date;
-		var year = date.year;
-		var month = date.month;
-		var date = date.date;
 		var time_taken = my_results[i].time_taken;
-		var user_percentage_score = my_results[i].user_percentage_score;
+		var user_percentage_score = my_results[i].user_percentage_score * 100;
 		
-		var quiz_link = document.createElement('a');
-		quiz_link.href = "/QuizWebsite/QuizPage.jsp?quiz_id=" + quiz_id;
-		quiz_link.innerHTML = quiz_name;
+		li.appendChild(new_elem({
+			type:'span',
+			innerHTML:'You got '+ user_percentage_score +'% playing '
+		}));
+
+		li.appendChild(new_elem({
+			type:'a',
+			innerHTML:quiz_name,
+			attributes:[
+				{name:'href',value:"/QuizWebsite/QuizPage.jsp?quiz_id=" + quiz_id}
+			]
+		}));	
+
+		li.appendChild(new_elem({
+			type:'span',
+			innerHTML:' '+get_time_ago(date) + ' and finished in just '+ time_taken +' seconds'
+		}));
 		
-		var text = document.createElement('span');
-		text.innerHTML = " - " + (user_percentage_score * 100).toFixed(0) + "% in " + (time_taken).toFixed(1) + " seconds"; 
-		
-		li.appendChild(quiz_link);
-		li.appendChild(text);
-		ul.appendChild(li);
+		lis.push(li);
 	}
-	
-	var title = document.createElement('span');
-	title.innerHTML = "<u><b>My Recent Results</b></u>";
-	var br = document.createElement('br');
-	
-	panel.appendChild(title);
-	panel.appendChild(br);
-	panel.appendChild(ul);
+
+	panel.appendChild(new_elem({
+		type:'ul',
+		classList:['center'],
+		children:lis
+	}));
 }
+
 
 function show_history() {
 	window.location = "/QuizWebsite/History.jsp"

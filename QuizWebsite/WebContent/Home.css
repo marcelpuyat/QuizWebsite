@@ -3,19 +3,22 @@
 }
 
 #right-content-panel {
+	font-size: 12px;
+}
+
+#newsfeed {
 	right: 0;
 	border-radius: 15px;
 	padding: 15px 10px 12px;
-	font-size: 12px;
 	opacity:0.80;
 	filter:Alpha(opacity=080); /* IE8 and earlier */
 }
 
-#right-content-panel li:not(:first-child) {
+#newsfeed li:not(:first-child) {
 	border-top: 1px solid rgb(230,230,230);
 }
 
-#right-content-panel li {
+#newsfeed li {
 	padding: 2px 9px;
 }
 
@@ -27,4 +30,28 @@
 
 h1,h2,h3,h4,h5,h6 {
 	font-weight: lighter;
+}
+
+.profile-pic-ul {
+	border-radius: 5px;
+	overflow: hidden;
+}
+
+.mini-profile-pic {
+	height: 41px;
+	width: 41px;
+	background-size: cover;
+	-webkit-transition:0.4s;
+	-moz-transition:0.4s;
+	-o-transition:0.4s;
+	-ms-transition:0.4s;
+	transition:0.4s;
+}
+
+.mini-profile-pic:hover {
+	-webkit-transform:rotateY(60deg);
+	-moz-transform:rotateY(60deg);
+	-o-transform:rotateY(60deg);
+	-ms-transform:rotateY(60deg);
+	transform:rotateY(60deg);
 }
