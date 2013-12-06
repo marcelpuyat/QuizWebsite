@@ -141,6 +141,10 @@ input[type="password"] {
 	filter:Alpha(opacity=000); /* IE8 and earlier */
 }
 
+.hide-text {
+	color: rgba(0,0,0,0.0)!important;
+}
+
 .sprite,.sprite2,.trophy-sprite {
 	background-repeat: no-repeat;
 	background-size: auto;

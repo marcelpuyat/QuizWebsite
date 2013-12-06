@@ -78,6 +78,10 @@
 	padding: 10px 0px;
 }
 
+	#buttons > .button {
+		margin: 4px;
+	}
+
 #user-summary {
 	position: absolute;
 	top: 405px;
