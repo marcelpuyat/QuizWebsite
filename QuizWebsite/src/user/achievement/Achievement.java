@@ -217,8 +217,9 @@ public class Achievement {
 			boolean found = false;
       for (Achievement a : earned) {
 				if (a.getTitle().equals(achievement[TITLE])) 
-          continue;
+					found = true;
 			}
+      		if(found) continue;
 			JSONObject achv = new JSONObject();
 			achv.put("title", achievement[TITLE]);
 			achv.put("description", achievement[GOAL]);
