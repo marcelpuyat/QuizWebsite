@@ -37,7 +37,6 @@
 	<div id="content-wrapper">
 		<%= HTMLTemplater.getBlueBar(session)  %>
 		<div class="page-width wide center-block"  id="questions-wrapper">
-			<span>Admin</span>
 			<div id='stats-panel' class='info-panel hide'>
 				<h3 class='list-heading'>Site Statistics</h3>
 				<ul id='stats-list'>

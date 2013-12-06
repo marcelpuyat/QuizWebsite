@@ -89,11 +89,8 @@ function update_announcements() {
 			var subject_header = document.createElement('h4');
 			subject_header.innerHTML = subject;
 			
-			var br = document.createElement('br');
 			var body_text = document.createElement('p');
 			body_text.innerHTML = body;
-			
-			var br2 = document.createElement('br');
 			
 			var date_string = year + " / " + month + " / " + day + " - by " + poster_name;
 			var date_span = document.createElement('span');
@@ -112,9 +109,7 @@ function update_announcements() {
 			});
 			
 			announcement_li.appendChild(subject_header);
-			announcement_li.appendChild(br);
 			announcement_li.appendChild(body_text);
-			announcement_li.appendChild(br2);
 			announcement_li.appendChild(date_span);
 			if (isMyAnnouncement)
 				announcement_li.appendChild(deleteButton);
