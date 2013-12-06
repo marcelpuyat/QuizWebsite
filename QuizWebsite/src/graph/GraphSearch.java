@@ -98,6 +98,32 @@ public class GraphSearch {
 				}
 			}
 			
+			String userEmailMatch = "SELECT * FROM Users Where email_address LIKE UPPER(?) LIMIT ?";
+			pstmt = db_connection.prepareStatement(userEmailMatch);
+			pstmt.setString(1, text + "%");
+			pstmt.setInt(2, min(user_results, total_results));
+			
+			ResultSet rs4 = pstmt.executeQuery();
+			while (rs4.next()) {
+				int id = rs4.getInt("id");
+				String display_name = rs4.getString("first_name") + " " + rs4.getString("last_name");
+				if (!reapedUsers.contains(id)) {
+					JSONObject entry = new JSONObject();
+					entry.accumulate("id", id);
+					entry.accumulate("name", display_name);
+					entry.accumulate("category", "user");
+					if (rs4.getBoolean("is_admin")) {
+						entry.accumulate("type", "ADMIN");
+					} else
+					entry.accumulate("type", "USER");
+					entry.accumulate("url", "/QuizWebsite/User.jsp?user_id="+id);
+					results.append("results", entry);
+					reapedUsers.add(id);
+					total_results--;
+					user_results--;
+				}
+			}
+			
 			/* End of search by user */
 			
 			
