@@ -39,7 +39,7 @@
 				</li>
 				<li id="ratings">
 					<ul>
-						<li id="num-ratings"></li>
+						<li id="num-ratings" class="center faint"></li>
 						<li id="avg-rating" class="rating center"> <!-- stars -->
 							<span>
 								<span>	

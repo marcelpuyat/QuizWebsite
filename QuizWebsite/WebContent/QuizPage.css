@@ -51,6 +51,8 @@ li#ratings {
 	top: 0;
 }
 
+
+/* from http://css-tricks.com/star-ratings/ */
 #usr-rating > span:hover .ratings-cover {
 	display: none;
 }

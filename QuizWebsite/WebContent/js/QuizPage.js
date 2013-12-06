@@ -17,7 +17,18 @@ function init_js (quiz_id,user_id) {
 			'/QuizWebsite/RatingServlet?action=all&quiz_id='+quiz_id+'&user_id='+user_id,
 			function (data) {
 				var num_ratings = document.getElementById('num-ratings');
-				num_ratings.innerHTML = data.num_ratings+'users have rated this quiz';
+				var message = '';
+				switch(data.num_ratings) {
+					case 0:
+						message+= 'no one has rated this quiz'
+						break;
+					case 1:
+						message+= 'one user has rated this quiz'
+						break;
+					default:
+						message += data.num_ratings + ' users have rated this quiz';
+				}
+				num_ratings.innerHTML = message;
 
 				set_elem_rating(document.getElementById('usr-rating-cover'), data.user_rating);
 				set_elem_rating(document.getElementById('avg-rating-cover'), data.average_rating);
