@@ -31,28 +31,29 @@ public class VerifyAccess {
 		}
 	}
 	
-	public static void verifyAdmin(HttpSession session, HttpServletRequest request, HttpServletResponse response, ServletContext application) {
+	public static boolean verifyAdmin(HttpSession session, HttpServletRequest request, HttpServletResponse response, ServletContext application) {
 		try {
 			User u = (User)session.getAttribute("user");
 			if (u == null) {
 				response.sendRedirect("/QuizWebsite/Login.jsp");
 			}
 			if(u.isAdmin()){
-				return;
+				return true;
 			}
 			response.sendRedirect("/QuizWebsite/Home.jsp");
-			return;
+			return true;
 		}
 		catch (IOException e) {e.printStackTrace();}
+		return false;
 	}
 	
-	public static void verifyQuizOwner(HttpSession session, HttpServletRequest request, HttpServletResponse response, ServletContext application) {
+	public static boolean verifyQuizOwner(HttpSession session, HttpServletRequest request, HttpServletResponse response, ServletContext application) {
 		try {
 			String quiz_id = request.getParameter("quiz_id");
 			if (quiz_id == null || quiz_id.equals("")) {
 				response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			}
-			if (quiz_id.equals("new")) return;
+			if (quiz_id.equals("new")) return true;
 			int id = Integer.parseInt(quiz_id);
 			SelfRefreshingConnection databaseConnection = (SelfRefreshingConnection)application.getAttribute("database_connection");
 			Quiz quiz = new Quiz(id, databaseConnection);
@@ -62,11 +63,13 @@ public class VerifyAccess {
 				response.sendRedirect("/QuizWebsite/Login.jsp");
 			}
 			if(quiz.getCreator().equals(u.getUserName())){
-				return;
+				return true;
 			}
 			response.sendRedirect("/QuizWebsite/Home.jsp");
+			return false;
 		}
 		catch (ClassNotFoundException e) {e.printStackTrace();}
 		catch (IOException e) {e.printStackTrace();}
+		return false;
 	}
 }
