@@ -82,7 +82,7 @@ function update_announcements() {
 			var body = announcements[i].body;
 			var date = announcements[i].date;
 				var year = date.year;
-				var month = date.month;
+				var month = date.month + 1; // FIX INDEXING
 				var day = date.date;
 			
 			var announcement_li = document.createElement('li');
