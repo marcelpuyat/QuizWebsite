@@ -1,7 +1,6 @@
 .info-panel {
 	position: relative;
-	background-color: #F0F0F0;
-	border: 3px solid #2F4F4F;
+	background-color: lightblue;
 	border-radius: 15px;
 	padding: 0px 5px 0 5px;
 	margin-top: 5px;
@@ -18,15 +17,14 @@
 }
 
 #stats-panel {
-	height: 150px;
+	height: 140px;
 	width: 350px;
 }
 
 .list-heading {
 	position: relative;
-	text-align: center;
-	top: -18px;	
-	margin-bottom: -8px;
+	text-align: center;	
+	margin-bottom: 8px;
 }
 
 #body-area *{

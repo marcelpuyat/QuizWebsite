@@ -65,7 +65,7 @@ public class Quiz {
 	
 	public double getAverageRating() {
 		try {
-			PreparedStatement stmt = con.prepareStatement("SELECT avg_rating FROM Quizzes WHERE quiz_id = " + this.quiz_id);
+			PreparedStatement stmt = con.prepareStatement("SELECT avg_rating FROM Quizzes WHERE id = " + this.quiz_id);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				double this_rating = rs.getDouble(1);
@@ -80,7 +80,7 @@ public class Quiz {
 	
 	public int getNumberOfRatings() {
 		try {
-			PreparedStatement stmt = con.prepareStatement("SELECT rating FROM Ratings WHERE quiz_id = " + this.quiz_id);
+			PreparedStatement stmt = con.prepareStatement("SELECT rating FROM Ratings WHERE id = " + this.quiz_id);
 			ResultSet rs = stmt.executeQuery();
 			int count = 0;
 			while (rs.next()) {
@@ -96,7 +96,7 @@ public class Quiz {
 	public void rateQuiz(int rating, long user_id) {
 		String rateStatement;
 		if (hasRatedThisQuizAlready(user_id)) {
-			rateStatement = "UPDATE Ratings SET rating = " + rating + " WHERE quiz_id = " + this.quiz_id + " AND user_id = " + user_id;
+			rateStatement = "UPDATE Ratings SET rating = " + rating + " WHERE id = " + this.quiz_id + " AND user_id = " + user_id;
 		}
 		else {
 			rateStatement = "INSERT INTO Ratings (rating, quiz_id, user_id, id) VALUES("+rating+", "+quiz_id+", "+user_id+", id)";
@@ -115,14 +115,14 @@ public class Quiz {
 	private void updateRating() {
 		double avg_rating;
 		try {
-			PreparedStatement stmt = con.prepareStatement("SELECT AVG(rating) FROM Ratings WHERE quiz_id = "+this.quiz_id);
+			PreparedStatement stmt = con.prepareStatement("SELECT AVG(rating) FROM Ratings WHERE id = "+this.quiz_id);
 			ResultSet rs = stmt.executeQuery();
 			
 			if(rs.next()) {
 				avg_rating = rs.getDouble(1);
 			} else avg_rating = -1;
 			
-			stmt = con.prepareStatement("UPDATE Quizzes SET avg_rating = "+avg_rating+" WHERE quiz_id = "+this.quiz_id);
+			stmt = con.prepareStatement("UPDATE Quizzes SET avg_rating = "+avg_rating+" WHERE id = "+this.quiz_id);
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -132,7 +132,7 @@ public class Quiz {
 	public void deleteRating(long user_id) {
 		PreparedStatement stmt;
 		try {
-			stmt = con.prepareStatement("DELETE FROM Ratings WHERE quiz_id = " + quiz_id + " AND user_id = " + user_id);
+			stmt = con.prepareStatement("DELETE FROM Ratings id = " + quiz_id + " AND user_id = " + user_id);
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
