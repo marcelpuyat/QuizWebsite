@@ -100,6 +100,9 @@
 				<div class="hide button" id="promote-user-button" onclick="promoteUser()">Promote User</div>
 				
 			</div>
+			<div id="achievements" class="page-width thin center-block center">
+				<h3 class="div-header">Achievements</h3>
+			</div>
 			<div class="bottom-center-block">
 				<div id="user-info"></div>
 				<div id ="relation-controls"></div>
@@ -108,9 +111,6 @@
 				</div>
 				<div class="center-box" id ="created-quizzes">
 					<h3 class="div-header">Created Quizzes</h3>
-				</div>
-				<div class="center-box" id ="achievements">
-					<h3 class="div-header">Achievements</h3>
 				</div>
 			</div>
 			<ul id="user-summary">

@@ -195,16 +195,26 @@ function display_relation_controls(user_info) {
 
 /* Go ahead and style this */
 function display_achievements(achievements) {
-	var ul = document.createElement('ul');
+	var lis = [];
 	for (var i = 0; i < achievements.length; i++) {
-		var li = document.createElement('li');
 		var title = achievements[i].title;
 		var desc = achievements[i].description;
-		li.innerHTML = title + " - " + desc;
-		ul.appendChild(li);
+
+		lis.push(new_elem({
+			type:'li',
+			classList:[acheivements_map[title],'trophy-sprite','flowing'],
+			attributes:[
+				{name:'title',value:title + ': '+desc}
+			]
+		}));
 	}
-	achievements_div.appendChild(ul);
+	achievements_div.appendChild(new_elem({
+		type:'ul',
+		children:lis
+	}));
 }
+
+
 
 /* Same */
 function display_created_quizzes(created_quizzes) {

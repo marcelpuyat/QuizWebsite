@@ -120,15 +120,6 @@ function update_newsfeed(friend_results, newsfeed_bar) {
 	newsfeed_bar.appendChild(ul);
 }
 
-var acheivements_map = {
-	'Amateur Author':'amateur-author',
-	'Prolific Author':'prolific-author',
-	'Prodigious Author':'prodigious-author',
-	'I am the Greatest':'greatest',
-	'Quiz Machine':'quiz-machine',
-	'Practice makes Perfect':'practice'
-};
-
 function update_achievements(achvs_earned, achvs_not_earned, achvs_earned_div, achvs_not_earned_div) {
 	var achvs_earned_ul = new_elem({
 		type:'ul',

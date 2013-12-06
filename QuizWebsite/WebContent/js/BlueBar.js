@@ -1,5 +1,14 @@
 var open_message_pane;
 
+var acheivements_map = {
+	'Amateur Author':'amateur-author',
+	'Prolific Author':'prolific-author',
+	'Prodigious Author':'prodigious-author',
+	'I am the Greatest':'greatest',
+	'Quiz Machine':'quiz-machine',
+	'Practice makes Perfect':'practice'
+};
+
 (function init_blue_bar () {
 	var bbrm = new BlueBarRadioMenu(document.getElementById('user_id_stash').getAttribute('user_id'));
 	open_message_pane = function (user) {
@@ -592,13 +601,13 @@ function NotificationsHandler (blue_bar, user_id) {
 
 	this.modalAtIndex = function (index) {
 		var title = new_elem({
-			type:'h3',
-			classList:['no-margin'],
+			type:'h4',
+			classList:['no-margin','center','lighter'],
 			innerHTML:_data.announcements[index].subject
 		});
 		var body = new_elem({
 			type:'p',
-			classList:['no-margin'],
+			classList:['no-margin','faint'],
 			innerHTML:_data.announcements[index].body
 		});
 
