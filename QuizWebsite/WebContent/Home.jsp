@@ -47,7 +47,7 @@ String getDisplayName(HttpSession session) {
 					</li>
 					<li>
 						<span class="left button green" id="history-link-span" onclick='show_history()'>
-							View Full Results History
+							View History
 						</span>
 					</li>
 				</ul>
@@ -68,8 +68,10 @@ String getDisplayName(HttpSession session) {
 				  <div class="score-panel" id="my-friends-panel"></div>
         </div>
 			</div>
-			<div class="right side-panel panel" id="right-content-panel">
-				<h3 align='center'><u><b>Newsfeed</b></u></h3>
+			<div class="far-right side-panel panel">
+				<div id="right-content-panel">
+					<h3 align='center'>Newsfeed</h3>
+				</div>
 			</div>
 				
 		</div>

@@ -3,12 +3,12 @@
 }
 
 #right-content-panel {
-	margin-top: 100px;
 	right: 0;
-	border:solid 2px rgb(200,200,200);
 	border-radius: 15px;
 	padding: 15px 10px 12px;
 	font-size: 12px;
+	opacity:0.80;
+	filter:Alpha(opacity=080); /* IE8 and earlier */
 }
 
 #right-content-panel li:not(:first-child) {

@@ -95,6 +95,9 @@ input[type="password"] {
 	float: right;
 }
 
+.far-right {
+	right: 0;
+}
 .left {
 	float: left;
 }
@@ -221,21 +224,24 @@ input[type="password"] {
 	width: 980px;
 }
 .page-width.thin {
-	width: 554px;
+	width: 542px;
 }
 .side-panel {
-	width: 213px;
+	width: 205px;
 }
 .panel {
 	position: absolute;
+	padding: 4px;	
 }
 
 #center-wrapper {
 	position: relative;
 	left: 50%;
 	margin-left: -490px;
+	min-height: 100%;
 }
 #inner-center-wrapper {
+	min-height: 100%;
 	left: 213px;
 	border-left: 1px solid rgb(200,200,200);
 	border-right: 1px solid rgb(200,200,200);
