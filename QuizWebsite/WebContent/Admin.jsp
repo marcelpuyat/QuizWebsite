@@ -4,8 +4,9 @@
 <%@ page import="user.*" %>
 <%
 	if (!VerifyAccess.verify("Admin.jsp", session, request, response))
-    return;
-	VerifyAccess.verifyAdmin(session, request, response, application);
+    	return;
+	if (!VerifyAccess.verifyAdmin(session, request, response, application))
+		return;
 %>
 <%!
 	boolean isAdmin(HttpSession session) {

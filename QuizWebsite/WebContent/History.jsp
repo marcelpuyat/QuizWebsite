@@ -4,7 +4,7 @@
 <%@ page import="user.*" %>
 <%
 	if (!VerifyAccess.verify("Home.jsp",session, request, response))
-    return;
+    	return;
 %>
 
 <%!

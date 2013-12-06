@@ -9,7 +9,7 @@
 <%@ page import="ui.*" %>
 <%
 	if (!VerifyAccess.verify("Settings.jsp",session, request, response))
-    return;
+    	return;
 %>
 <%!
 	String getDisplayName(HttpServletRequest req, ServletContext context) {

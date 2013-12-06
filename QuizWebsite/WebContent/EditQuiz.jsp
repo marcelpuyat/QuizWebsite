@@ -3,7 +3,7 @@
 <%@ page import="ui.*" %>
 <%
 	if (!VerifyAccess.verify("Settings.jsp", session, request, response))
-    return;
+    	return;
 	VerifyAccess.verifyQuizOwner(session, request, response, application);
 %>
 <%!

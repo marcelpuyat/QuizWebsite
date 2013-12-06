@@ -4,7 +4,7 @@
 <%@ page import="ui.*" %>
 <%
 	if (!VerifyAccess.verify("Quiz.jsp",session, request, response))
-    return;
+    	return;
 %>
 <%!
 	String getQuizID(HttpServletRequest req) {

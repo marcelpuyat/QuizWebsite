@@ -4,7 +4,7 @@
 <%@ page import="user.*" %>
 <%
 	if (!VerifyAccess.verify("NewQuiz.jsp", session, request, response))
-    return;
+    	return;
 %>
 <%!
 	String getUsername(HttpSession session) {
