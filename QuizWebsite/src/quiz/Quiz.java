@@ -139,6 +139,7 @@ public class Quiz {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+		updateRating();
 	}
 	
 	private boolean hasRatedThisQuizAlready(long user_id) {
