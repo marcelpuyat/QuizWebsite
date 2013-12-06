@@ -65,20 +65,13 @@ public class Quiz {
 	
 	public double getAverageRating() {
 		try {
-			PreparedStatement stmt = con.prepareStatement("SELECT rating FROM Ratings WHERE quiz_id = " + this.quiz_id);
+			PreparedStatement stmt = con.prepareStatement("SELECT avg_rating FROM Quizzes WHERE quiz_id = " + this.quiz_id);
 			ResultSet rs = stmt.executeQuery();
-			double total_rating = 0;
-			double count = 0;
 			while (rs.next()) {
-				count++;
 				double this_rating = rs.getDouble(1);
-				total_rating += this_rating;
+				return this_rating;
 			}
-			if (count == 0) return -1;
-			
-			double average_rating = total_rating / count;
-			
-			return average_rating;
+			return -1;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return -1;
@@ -114,6 +107,24 @@ public class Quiz {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		updateRating();
+	}
+	
+	private void updateRating() {
+		double avg_rating;
+		try {
+			PreparedStatement stmt = con.prepareStatement("SELECT AVG(rating) FROM Ratings WHERE quiz_id = "+this.quiz_id);
+			ResultSet rs = stmt.executeQuery();
+			
+			if(rs.next()) {
+				avg_rating = rs.getDouble(1);
+			} else avg_rating = -1;
+			
+			stmt = con.prepareStatement("UPDATE Quizzes SET avg_rating = "+avg_rating+" WHERE quiz_id = "+this.quiz_id);
+			stmt.executeUpdate();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

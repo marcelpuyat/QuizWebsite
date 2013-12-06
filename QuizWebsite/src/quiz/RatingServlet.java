@@ -47,17 +47,23 @@ public class RatingServlet extends HttpServlet {
 		
 		else {
 			long quiz_id = Long.parseLong(quiz_id_string);
-			long user_id = Long.parseLong(request.getParameter("user_id"));
 			Quiz thisQuiz = new Quiz(quiz_id, con);
-				
-			User user = new User(user_id, con);
-			int userRating = user.getRatingOnQuiz(quiz_id);
-			double average_rating = thisQuiz.getAverageRating();
-			int num_ratings = thisQuiz.getNumberOfRatings();
+
+			String action = request.getParameter("action");
 			JSONObject ratingInfo = new JSONObject();
+
+			/* Put user rating */
+			if (action.equals("all")) {
+				long user_id = Long.parseLong(request.getParameter("user_id"));
+				User user = new User(user_id, con);
+				int userRating = user.getRatingOnQuiz(quiz_id);
+				ratingInfo.put("user_rating", userRating);
+				int num_ratings = thisQuiz.getNumberOfRatings();
+				ratingInfo.put("num_ratings", num_ratings);
+			}
+			
+			double average_rating = thisQuiz.getAverageRating();
 			ratingInfo.put("average_rating", average_rating);
-			ratingInfo.put("num_ratings", num_ratings);
-			ratingInfo.put("user_rating", userRating);
 			response.getWriter().println(ratingInfo.toString());
 		}
 	}
