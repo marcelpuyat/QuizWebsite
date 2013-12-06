@@ -283,7 +283,7 @@ public class Quiz {
 	{
 		PreparedStatement stmt;
 		try {
-			stmt = con.prepareStatement("INSERT INTO Quizzes (name, creator, description, questions, max_score, is_randomizable, is_multiple_page, is_practicable, is_immediately_corrected, frequency) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, 0)");
+			stmt = con.prepareStatement("INSERT INTO Quizzes (name, creator, description, questions, max_score, is_randomizable, is_multiple_page, is_practicable, is_immediately_corrected, frequency, avg_rating) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, 0, -1)");
 			stmt.setString(1, name);
 			stmt.setString(2, creator);
 			stmt.setString(3, description);			
