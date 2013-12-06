@@ -215,6 +215,7 @@ function display_created_quizzes(created_quizzes) {
 		var quiz_id = created_quizzes[i].quiz_id;
 
 		var quiz_link = document.createElement('a');
+		quiz_link.classList.add("quiz-link");
 		quiz_link.href = "/QuizWebsite/QuizPage.jsp?quiz_id=" + quiz_id;
 		quiz_link.innerHTML = quiz_name;
 
@@ -233,6 +234,7 @@ function display_recent_results(recent_results) {
 		var quiz_id = recent_results[i].quiz_id;
 		var date = recent_results[i].date;
 		var quiz_link = document.createElement('a');
+		quiz_link.classList.add("quiz-link");
 		quiz_link.href = "/QuizWebsite/QuizPage.jsp?quiz_id=" + quiz_id;
 		quiz_link.innerHTML = quiz_name;
 

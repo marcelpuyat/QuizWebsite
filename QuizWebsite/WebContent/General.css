@@ -708,6 +708,10 @@ div.blue-bar-menu {
 	left: 0;
 }
 
+.quiz-link {
+	text-decoration: none;
+}
+
 .time {
 	font-size: 12px;
 	color: grey;
