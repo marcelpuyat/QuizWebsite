@@ -105,12 +105,15 @@ function update_newsfeed(friend_results, newsfeed_bar) {
 		textSpan.innerHTML = " took ";
 		
 		var textSpan2 = document.createElement('span');
-		textSpan2.innerHTML = " and got a score of " + (user_percentage_score * 100).toFixed(0) + "%!" + " " + get_time_ago(date);
+		var time_ago = document.createElement('span');
+		time_ago.innerHTML = " " + get_time_ago(date);
+		textSpan2.innerHTML = " and got a score of " + (user_percentage_score * 100).toFixed(0) + "%!";
 		
 		li.appendChild(user_link);
 		li.appendChild(textSpan);
 		li.appendChild(quiz_link);
 		li.appendChild(textSpan2);
+		li.appendChild(time_ago);
 		
 		ul.appendChild(li);
 	}
@@ -288,7 +291,7 @@ function update_my_results(my_results, panel) {
 		quiz_link.innerHTML = quiz_name;
 		
 		var text = document.createElement('span');
-		text.innerHTML = ": score of " + (user_percentage_score * 100).toFixed(0) + " in " + (time_taken).toFixed(1) + " seconds"; 
+		text.innerHTML = " - " + (user_percentage_score * 100).toFixed(0) + "% in " + (time_taken).toFixed(1) + " seconds"; 
 		
 		li.appendChild(quiz_link);
 		li.appendChild(text);

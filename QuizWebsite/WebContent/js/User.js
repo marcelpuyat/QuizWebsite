@@ -231,7 +231,7 @@ function display_recent_results(recent_results) {
 		var li = document.createElement('li');
 		var quiz_name = recent_results[i].quiz_name;
 		var quiz_id = recent_results[i].quiz_id;
-
+		var date = recent_results[i].date;
 		var quiz_link = document.createElement('a');
 		quiz_link.href = "/QuizWebsite/QuizPage.jsp?quiz_id=" + quiz_id;
 		quiz_link.innerHTML = quiz_name;
@@ -241,9 +241,13 @@ function display_recent_results(recent_results) {
 
 		var span = document.createElement('span');
 		span.innerHTML = (user_percentage_score * 100).toFixed(0) + "% in " + (time_taken).toFixed(1) + " seconds - ";
-
+		
+		var time_ago = document.createElement('span');
+		time_ago.innerHTML = " " + get_time_ago(date);
+		
 		li.appendChild(span);
 		li.appendChild(quiz_link);
+		li.appendChild(time_ago);
 		ul.appendChild(li);
 	}
 	recent_results_div.appendChild(ul);
