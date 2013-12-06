@@ -8,6 +8,7 @@ function init_js(userID) {
 					document.getElementById("achievements-earned-panel"),
 					document.getElementById("achievements-not-earned-panel"),
 					document.getElementById("popular-quizzes-panel"),
+					document.getElementById("highest-rated-quizzes-panel"),
 					document.getElementById("newest-quizzes-panel"),
 					document.getElementById("created-quizzes-panel"),
 					document.getElementById("my-results-panel"),
@@ -19,11 +20,12 @@ function init_js(userID) {
 var _user_id;
 
 function HomeHandler(newsfeed_bar, achievements_earned_panel, achievements_not_earned_panel,
-		popular_quizzes_panel, newest_quizzes_panel, created_quizzes_panel, my_results_panel, my_friends_panel, home_url, user_id) {
+		popular_quizzes_panel, highest_rated_quizzes_panel, newest_quizzes_panel, created_quizzes_panel, my_results_panel, my_friends_panel, home_url, user_id) {
 	var _newsfeed_bar = newsfeed_bar;
 	var _achievements_earned_panel = achievements_earned_panel;
 	var _achievements_not_earned_panel = achievements_not_earned_panel;
 	var _popular_quizzes_panel = popular_quizzes_panel;
+	var _highest_rated_quizzes_panel = highest_rated_quizzes_panel;
 	var _newest_quizzes_panel = newest_quizzes_panel;
 	var _created_quizzes_panel = created_quizzes_panel;
 	var _my_results_panel = my_results_panel;
@@ -38,6 +40,7 @@ function HomeHandler(newsfeed_bar, achievements_earned_panel, achievements_not_e
 			update_newsfeed(data.friend_results, _newsfeed_bar);
 			update_achievements(data.achievements_earned, data.achievements_not_earned, _achievements_earned_panel, _achievements_not_earned_panel);
 			update_popular_quizzes(data.popular_quizzes, _popular_quizzes_panel);
+			update_highest_rated_quizzes(data.highest_rated_quizzes, highest_rated_quizzes_panel);
 			update_newest_quizzes(data.newest_quizzes, _newest_quizzes_panel);
 			update_created_quizzes(data.created_quizzes, _created_quizzes_panel);
 			update_my_results(data.recent_results, _my_results_panel);
@@ -245,7 +248,61 @@ function update_popular_quizzes(popular_quizzes, panel) {
 	panel.appendChild(ul);
 }
 
+function update_highest_rated_quizzes(highest_rated_quizzes, panel) {
+	var ul = new_elem({
+		type:'ul',
+		classList:['center']
+	});
 
+	var title = new_elem({
+		type:'h2',
+		classList:['center'],
+		innerHTML:'Highest Rated Quizzes'
+	});
+
+	for (var i = 0; i < highest_rated_quizzes.length; i++) {
+		var li = document.createElement('li');
+		
+		var quiz_name = highest_rated_quizzes[i].quiz_name;
+		var creator = highest_rated_quizzes[i].creator;
+		var quiz_id = highest_rated_quizzes[i].quiz_id;
+		var rating = highest_rated_quizzes[i].average_rating;
+		
+		
+		li.appendChild(new_elem({
+			type:'a',
+			innerHTML:quiz_name,
+			attributes:[
+				{name:'href',value:"/QuizWebsite/QuizPage.jsp?quiz_id=" + quiz_id}
+			]
+		}));
+		
+		li.appendChild(new_elem({
+			type:'span',
+			innerHTML:' by '
+		}));
+		
+		li.appendChild(new_elem({
+			type:'a',
+			innerHTML:creator,
+			attributes:[
+				{name:'href',value:"/QuizWebsite/User.jsp?username=" + creator}
+			]
+		}));
+		
+		var played_text = ' has a '+ rating + ' star rating';
+
+		li.appendChild(new_elem({
+			type:'span',
+			innerHTML:played_text
+		}));
+
+		ul.appendChild(li);
+	}
+	
+	panel.appendChild(title);
+	panel.appendChild(ul);
+}
 
 function update_newest_quizzes(newest_quizzes, panel) {
 	var ul = new_elem({
