@@ -30,6 +30,13 @@
 				<li class="center">
 					<h3 id="quiz-description" class="lighter faint"></h3>
 				</li>
+				<li class="rating center"> <!-- stars -->
+					<span><span></span></span> <!-- 1 -->
+					<span><span></span></span> <!-- 2 -->
+					<span><span></span></span> <!-- 3 -->
+					<span><span></span></span> <!-- 4 -->
+					<span><span></span></span> <!-- 5 -->
+				</li>
 				<li class="center">
 					<ul>
 						<li id="delete-li" class="flowing hide">

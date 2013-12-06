@@ -433,7 +433,7 @@ div.blue-bar-menu {
 }
 
 
-.blue-bar-menu > ul > li:not(:first-child) {
+.table-view > li {
 	border-bottom: 1px solid rgba(0,0,0,0.1);
 	padding: 6px 8px;
 	font-size: 12px;
@@ -444,7 +444,7 @@ div.blue-bar-menu {
 	transition:0.3s;
 }
 
-.blue-bar-menu > ul > li:not(:first-child):hover {
+.table-view > li:hover {
 	opacity:0.70;
 	filter:Alpha(opacity=070); /* IE8 and earlier */
 }
@@ -674,6 +674,11 @@ div.blue-bar-menu {
 		border-top: 1px solid rgb(230,230,230);
 	}
 
+
+	.notifications-username {
+		font-size: 8px;
+		margin-right: 5px;
+	}
 
 .notifications-elem {
 	background-color: rgb(200, 138, 124);

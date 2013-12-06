@@ -52,11 +52,12 @@ function BlueBarRadioMenu (user_id) {
 		var i = 0;
 		var ul_name = handler.getUlName() || "";
 		ul.appendChild(new_elem({type:'li',classList:['modal-header'],innerHTML:ul_name}));
+		var lis = [];
 		while (true) {
 			if (handler.indexExists(i)) {
 				var new_li = handler.liAtIndex(i);
 				new_li.classList.add('menu-li')
-				ul.appendChild(new_li);
+				lis.push(new_li);
 				new_li.i = i;
 				
 				if (handler.modalAtIndexExists(i)) {
@@ -76,6 +77,15 @@ function BlueBarRadioMenu (user_id) {
 				break;
 			}
 		}
+		var table_ul = new_elem({
+			type:'ul',
+			children:lis,
+			classList:['table-view']
+		});
+		ul.appendChild(new_elem({
+			type:'li',
+			children:[table_ul]
+		}));
 	}
 
 	this.updateNotifications = function (handler) {
@@ -566,7 +576,7 @@ function NotificationsHandler (blue_bar, user_id) {
 	this.liAtIndex = function (index) {
 		var admin = new_elem({
 			type:'span',
-			classList:['faint'],
+			classList:['faint','notifications-username'],
 			innerHTML: _data.announcements[index].admin.display_name
 		});
 		var subject = new_elem({
