@@ -90,10 +90,12 @@ function update_newsfeed(friend_results, newsfeed_bar) {
 		var li = document.createElement('li');
 		
 		var quiz_link = document.createElement('a');
+		quiz_link.classList.add('quiz-link');
 		quiz_link.href = "/QuizWebsite/QuizPage.jsp?quiz_id=" + quiz_id;
 		quiz_link.innerHTML = quiz_name;
 		
 		var user_link = document.createElement('a');
+		user_link.classList.add('user-link');
 		user_link.href = "/QuizWebsite/User.jsp?username=" + user.username;
 		user_link.innerHTML = user.display_name;
 		
@@ -203,6 +205,7 @@ function update_popular_quizzes(popular_quizzes, panel) {
 		
 		li.appendChild(new_elem({
 			type:'a',
+			classList:['quiz-link'],
 			innerHTML:quiz_name,
 			attributes:[
 				{name:'href',value:"/QuizWebsite/QuizPage.jsp?quiz_id=" + quiz_id}
@@ -216,6 +219,7 @@ function update_popular_quizzes(popular_quizzes, panel) {
 		
 		li.appendChild(new_elem({
 			type:'a',
+			classList:['user-link'],
 			innerHTML:creator,
 			attributes:[
 				{name:'href',value:"/QuizWebsite/User.jsp?username=" + creator}
@@ -271,6 +275,7 @@ function update_highest_rated_quizzes(highest_rated_quizzes, panel) {
 		
 		li.appendChild(new_elem({
 			type:'a',
+			classList:['quiz-link'],
 			innerHTML:quiz_name,
 			attributes:[
 				{name:'href',value:"/QuizWebsite/QuizPage.jsp?quiz_id=" + quiz_id}
@@ -284,6 +289,7 @@ function update_highest_rated_quizzes(highest_rated_quizzes, panel) {
 		
 		li.appendChild(new_elem({
 			type:'a',
+			classList:['user-link'],
 			innerHTML:creator,
 			attributes:[
 				{name:'href',value:"/QuizWebsite/User.jsp?username=" + creator}
@@ -326,6 +332,7 @@ function update_newest_quizzes(newest_quizzes, panel) {
 		
 		li.appendChild(new_elem({
 			type:'a',
+			classList:['quiz-link'],
 			innerHTML:quiz_name,
 			attributes:[
 				{name:'href',value:"/QuizWebsite/QuizPage.jsp?quiz_id=" + quiz_id}
@@ -408,6 +415,7 @@ function update_my_results(my_results, panel) {
 
 		li.appendChild(new_elem({
 			type:'a',
+			classList:['quiz-link'],
 			innerHTML:quiz_name,
 			attributes:[
 				{name:'href',value:"/QuizWebsite/QuizPage.jsp?quiz_id=" + quiz_id}

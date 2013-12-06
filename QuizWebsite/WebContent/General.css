@@ -780,6 +780,11 @@ div.blue-bar-menu {
 	text-decoration: none;
 }
 
+.user-link {
+	text-decoration: none;
+	font-weight: bold;	
+}
+
 .time {
 	font-size: 12px;
 	color: grey;

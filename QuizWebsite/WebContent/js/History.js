@@ -311,6 +311,7 @@ function fill_table(results_array) {
 		var quiz_col = document.createElement('td');
 		
 		var quiz_link = document.createElement('a');
+		quiz_link.classList.add('quiz-link');
 		quiz_link.href = "/QuizWebsite/QuizPage.jsp?quiz_id=" + quiz_id;
 		quiz_link.innerHTML = quiz_name;
 		

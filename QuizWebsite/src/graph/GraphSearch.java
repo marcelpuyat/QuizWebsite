@@ -29,14 +29,19 @@ public class GraphSearch {
 				}
 			}
 			
-			String tagMatchString = "SELECT Quizzes.name, Quizzes.id, Tags.name FROM Quizzes JOIN Tags on Quizzes.id = Tags.quiz_id AND (";
+			String tagMatchString = "SELECT Quizzes.name, Quizzes.id, Tags.name FROM Quizzes JOIN Tags on Quizzes.id = Tags.quiz_id ";
 			
+			boolean enteredLoop = false;
 			for (int i = 0; i < tags.size(); i++) {
+				enteredLoop = true;
+				if (i == 0) tagMatchString+= "AND (";
 				if (i != 0) tagMatchString += " OR ";
 				tagMatchString += "UPPER(Tags.name) LIKE UPPER(?)";
 			}
 			
-			tagMatchString += ") ORDER BY avg_rating DESC LIMIT 0, ?";
+			if (enteredLoop) tagMatchString += ")";
+			
+			tagMatchString += " ORDER BY avg_rating DESC LIMIT 0, ?";
 			System.out.println("Query\n"+tagMatchString);
 			PreparedStatement pstmt = db_connection.prepareStatement(tagMatchString);
 			
