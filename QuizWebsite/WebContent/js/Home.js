@@ -272,7 +272,6 @@ function update_highest_rated_quizzes(highest_rated_quizzes, panel) {
 		var quiz_id = highest_rated_quizzes[i].quiz_id;
 		var rating = highest_rated_quizzes[i].average_rating;
 		
-		
 		li.appendChild(new_elem({
 			type:'a',
 			classList:['quiz-link'],
@@ -296,7 +295,7 @@ function update_highest_rated_quizzes(highest_rated_quizzes, panel) {
 			]
 		}));
 		
-		var played_text = ' has a '+ rating + ' star rating';
+		var played_text = ' has a '+ rating.toFixed(1) + ' star rating';
 
 		li.appendChild(new_elem({
 			type:'span',
@@ -346,6 +345,7 @@ function update_newest_quizzes(newest_quizzes, panel) {
 		
 		li.appendChild(new_elem({
 			type:'a',
+			classList:['user-link'],
 			innerHTML:creator,
 			attributes:[
 				{name:'href',value:"/QuizWebsite/User.jsp?username=" + creator}
@@ -375,6 +375,7 @@ function update_created_quizzes(created_quizzes, panel) {
 		
 		li.appendChild(new_elem({
 			type:'a',
+			classList:['quiz-link'],
 			innerHTML:quiz_name,
 			attributes:[
 				{name:'href',value:"/QuizWebsite/QuizPage.jsp?quiz_id=" + quiz_id}
