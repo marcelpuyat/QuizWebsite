@@ -57,6 +57,11 @@ input[type="password"] {
 	filter:Alpha(opacity=070); /* IE8 and earlier */
 }
 
+.fainter {
+	opacity:0.30;
+	filter:Alpha(opacity=030); /* IE8 and earlier */
+}
+
 .no-pad {
 	padding: 0;
 }
@@ -199,22 +204,22 @@ input[type="password"] {
 		width: 100px;
 	}
 	.trophy-sprite.prolific-author {
-		background-position: -35px -665px;
+		background-position: -199px -117px;
 		height: 100px;
 		width: 100px;
 	}
 	.trophy-sprite.prodigious-author {
-		background-position: -35px -665px;
+		background-position: -199px -8px;
 		height: 100px;
 		width: 100px;
 	}
 	.trophy-sprite.quiz-machine {
-		background-position: -35px -665px;
+		background-position: -500px -1214px;
 		height: 100px;
 		width: 100px;
 	}
 	.trophy-sprite.practice {
-		background-position: -35px -665px;
+		background-position: -201px -665px;
 		height: 100px;
 		width: 100px;
 	}

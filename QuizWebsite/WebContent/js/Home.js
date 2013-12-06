@@ -149,32 +149,39 @@ function update_achievements(achvs_earned, achvs_not_earned, achvs_earned_div, a
 		});
 		achvs_earned_ul.appendChild(li);
 	}
-	var br = document.createElement('br');
-	var title = new_elem({
+
+	achvs_earned_div.appendChild(new_elem({
 		type:'h2',
 		innerHTML:'Achievements Unlocked',
 		classList:['center']
-	});
-	
-	achvs_earned_div.appendChild(title);
-	achvs_earned_div.appendChild(br);
+	}));
 	achvs_earned_div.appendChild(achvs_earned_ul);
 	
-	var achvs_not_earned_ul = document.createElement('ul');
+
+
+	var achvs_not_earned_ul = new_elem({
+		type:'ul',
+		classList:['center']
+	});
 	for (var i = 0; i < achvs_not_earned.length; i++) {
 		var title = achvs_not_earned[i].title;
 		var desc = achvs_not_earned[i].description;
 		
-		var li = document.createElement('li');
-		li.innerHTML = title + " - " + desc;
+		var li = new_elem({
+			type:'li',
+			classList:[acheivements_map[title],'trophy-sprite','flowing','fainter'],
+			attributes:[
+				{name:'title',value:title + ': '+desc}
+			]
+		});
 		achvs_not_earned_ul.appendChild(li);
 	}
 	
-	var title2 = document.createElement('span');
-	title2.innerHTML = "<u><b>Achievements Not Unlocked:</b></u>";
-	
-	achvs_not_earned_div.appendChild(title2);
-	achvs_not_earned_div.appendChild(br);
+	achvs_not_earned_div.appendChild(new_elem({
+		type:'h2',
+		innerHTML:'Achievements Not Unlocked',
+		classList:['center']
+	}));
 	achvs_not_earned_div.appendChild(achvs_not_earned_ul);
 }
 
