@@ -45,6 +45,11 @@ String getDisplayName(HttpSession session) {
 					<li>
 						<a class="button pointable" href="/QuizWebsite/NewQuiz.jsp">Create a new Quiz</a>	
 					</li>
+					<li>
+						<span class="left button green" id="history-link-span" onclick='show_history()'>
+							View Full Results History
+						</span>
+					</li>
 				</ul>
 			</div>
 			<div class="page-width thin center-block panel" id="inner-center-wrapper">
@@ -67,10 +72,6 @@ String getDisplayName(HttpSession session) {
 				<h3 align='center'><u><b>Newsfeed</b></u></h3>
 			</div>
 				
-		</div>
-		
-		<div class="left button green" id="history-link-div" onclick='show_history()'>
-			View Full Results History
 		</div>
 	</div>
 	<%= HTMLTemplater.getGeneralJS() %>
