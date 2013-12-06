@@ -243,6 +243,7 @@ function display_recent_results(recent_results) {
 		span.innerHTML = (user_percentage_score * 100).toFixed(0) + "% in " + (time_taken).toFixed(1) + " seconds - ";
 		
 		var time_ago = document.createElement('span');
+		time_ago.classList.add("time");
 		time_ago.innerHTML = " " + get_time_ago(date);
 		
 		li.appendChild(span);

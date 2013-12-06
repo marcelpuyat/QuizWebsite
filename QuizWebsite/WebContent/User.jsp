@@ -100,15 +100,21 @@
 				<div class="hide button" id="promote-user-button" onclick="promoteUser()">Promote User</div>
 				
 			</div>
-			<div class="page-width thin center-block center">
+			<div class="bottom-center-block">
 				<div id="user-info"></div>
 				<div id ="relation-controls"></div>
-				<div id="recent-results"></div>
-				<div id ="created-quizzes"></div>
-				<div id ="achievements"></div>
+				<div class="center-box" id="recent-results">
+					<h3 class="div-header">Recent Results</h3>
+				</div>
+				<div class="center-box" id ="created-quizzes">
+					<h3 class="div-header">Created Quizzes</h3>
+				</div>
+				<div class="center-box" id ="achievements">
+					<h3 class="div-header">Achievements</h3>
+				</div>
 			</div>
 			<ul id="user-summary">
-				<li><div><%= getDisplayName(request, application) %></div></li>
+				<li><div><h3 id="name"><%= getDisplayName(request, application) %></h3></div></li>
 				<li><div class="faint"><%= getUserName(request, application) %></div></li>
 			</ul>
 		</div>

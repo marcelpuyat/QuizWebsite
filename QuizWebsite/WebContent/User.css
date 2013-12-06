@@ -79,9 +79,55 @@
 }
 
 #user-summary {
-	padding: 60px 0px;
+	position: absolute;
+	top: 405px;
+	left: 70px;
 }
 
+.center-box {
+	background-color: lightblue;
+	display: inline-block;
+	border-radius: 5px;
+	padding: 5px;
+}
+#recent-results {
+	width: 465px;	
+}
+
+#created-quizzes {
+	float: right;
+	text-align: center;
+	width: 290px;
+}
+
+#achievements {
+	margin-top: 20px;
+	left: -150px;
+	width: 615px;
+	position: relative;	
+}
 #user-summary > li {
 	display: block;
+}
+
+#name {
+	margin-bottom: 4.5px;	
+}
+
+.div-header {
+	position: relative;
+	margin-top: 0;
+	margin-bottom: 5px;
+	text-align: center;
+	font-size: 18px;
+	color: #4F4F4F;
+}
+
+.bottom-center-block {
+	top: 30px;
+	left: 160px;
+	margin-right: 50px;
+	width: 800px;
+	height: 300px;
+	position: relative;
 }
