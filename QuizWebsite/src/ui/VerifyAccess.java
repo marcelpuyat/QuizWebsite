@@ -31,19 +31,20 @@ public class VerifyAccess {
 		}
 	}
 	
-	public static void verifyAdmin(HttpSession session, HttpServletRequest request, HttpServletResponse response, ServletContext application) {
+	public static boolean verifyAdmin(HttpSession session, HttpServletRequest request, HttpServletResponse response, ServletContext application) {
 		try {
 			User u = (User)session.getAttribute("user");
 			if (u == null) {
 				response.sendRedirect("/QuizWebsite/Login.jsp");
+				return false;
 			}
 			if(u.isAdmin()){
-				return;
+				return true;
 			}
 			response.sendRedirect("/QuizWebsite/Home.jsp");
-			return;
+			return false;
 		}
-		catch (IOException e) {e.printStackTrace();}
+		catch (IOException e) {e.printStackTrace(); return false;}
 	}
 	
 	public static void verifyQuizOwner(HttpSession session, HttpServletRequest request, HttpServletResponse response, ServletContext application) {
