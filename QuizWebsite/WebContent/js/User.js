@@ -259,20 +259,25 @@ function removeUser() {
 			{
 		
 			},
-			function (data) {
-				location.reload();
+			function () {
+				
 			});
+	alert("User deleted");
+	window.location = "/QuizWebsite/Home.jsp";
 }
 
 function promoteUser() {
 	relation_controls_div.innerHTML = "User promoted";
 	post_json_to_url("/QuizWebsite/AdminServlet?action=promote_user&user_id=" + _target_user_id,
-			{
-		
-			},
-			function (data) {
-				location.reload();
-			});
+		{
+	
+		},
+		function (data) {
+			
+		}
+	);
+	location.reload(true);
+	alert("User promoted");
 }
 
 /* I just need a POST req but didnt know how to. So i used an empty post json */

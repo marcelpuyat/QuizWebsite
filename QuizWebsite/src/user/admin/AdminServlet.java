@@ -61,6 +61,7 @@ public class AdminServlet extends HttpServlet {
 			}
 			else/*if(action.equals(DELETE_USER)*/{
 				Admin.removeUser(user_id, con);
+				response.sendRedirect("Home.jsp");
 			}
 		} else {
 			Long quiz_id = Long.parseLong(request.getParameter("quiz_id"));
