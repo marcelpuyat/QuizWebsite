@@ -31,11 +31,11 @@ long getUserID(HttpSession session) {
 		
 			<table class='center' id='history-table' border='1'>
 			<tr>
-			<th id="quiz-header" style="cursor: pointer; height: 40px;">Quiz</th>
-			<th id="score-header" style="cursor: pointer;">Score</th>
-			<th id="time-header" style="cursor: pointer;">Time</th>
-			<th id="rank-header" style="cursor: pointer;">Rank</th>
-			<th id="date-header" style="cursor: pointer;">Date</th>
+			<th class="pontable sort-by" id="quiz-header">Quiz</th>
+			<th class="pontable sort-by" id="score-header">Score</th>
+			<th class="pontable sort-by" id="time-header">Time</th>
+			<th class="pontable sort-by" id="rank-header">Rank</th>
+			<th class="pontable sort-by" id="date-header">Date</th>
 			</tr>
 			
 			</table>

@@ -24,8 +24,9 @@ tr:nth-child(even)	{
     background-color:#fff; 
 }
 
-th {
+th.sort-by {
 	border-radius: 2px;
 	background-color: #3B5999;
-	color: white;	
+	color: white;
+	height: 40px;
 }
