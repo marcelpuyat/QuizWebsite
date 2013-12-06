@@ -18,6 +18,14 @@
 	transition:1s;
 }
 
+li {
+	margin-bottom: 3px;	
+}
+
+input {
+	margin-bottom: 25px;	
+}
+
 #now-sign-in-prompt {
 	color: #7CBB95;
 }
