@@ -47,7 +47,7 @@ String getDisplayName(HttpSession session) {
 					</li>
 					<li>
 						<span class="left button green" id="history-link-span" onclick='show_history()'>
-							View History
+							Your Quiz History
 						</span>
 					</li>
 				</ul>
