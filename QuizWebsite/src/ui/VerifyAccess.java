@@ -42,16 +42,10 @@ public class VerifyAccess {
 				return true;
 			}
 			response.sendRedirect("/QuizWebsite/Home.jsp");
-<<<<<<< HEAD
 			return true;
 		}
 		catch (IOException e) {e.printStackTrace();}
 		return false;
-=======
-			return false;
-		}
-		catch (IOException e) {e.printStackTrace(); return false;}
->>>>>>> 73ea6c2097d268b9c4d4bc4411a831d1f826cb12
 	}
 	
 	public static boolean verifyQuizOwner(HttpSession session, HttpServletRequest request, HttpServletResponse response, ServletContext application) {
