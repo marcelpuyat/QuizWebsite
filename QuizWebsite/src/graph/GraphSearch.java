@@ -17,6 +17,7 @@ public class GraphSearch {
 	public static JSONObject tag_search(SelfRefreshingConnection db_connection, String text, int limit) throws ClassNotFoundException {
 		System.out.println("tag search: "+text);
 		JSONObject results = new JSONObject();
+		Set<Integer> reapedQuizzes = new HashSet<Integer>();
 		try {
 			String[] raw_tags = text.split("#");
 			List<String> tags = new ArrayList<String>();
@@ -32,7 +33,7 @@ public class GraphSearch {
 			
 			for (int i = 0; i < tags.size(); i++) {
 				if (i != 0) tagMatchString += " OR ";
-				tagMatchString += "Tags.name LIKE (?)";
+				tagMatchString += "UPPER(Tags.name) LIKE UPPER(?)";
 			}
 			
 			tagMatchString += ") ORDER BY avg_rating DESC LIMIT 0, ?";
@@ -40,7 +41,7 @@ public class GraphSearch {
 			PreparedStatement pstmt = db_connection.prepareStatement(tagMatchString);
 			
 			for (int i = 0; i < tags.size(); i++) {
-				pstmt.setString(i + 1, tags.get(i));
+				pstmt.setString(i + 1, tags.get(i) + "%");
 			}
 			pstmt.setInt(tags.size() + 1, limit);
 			
@@ -48,6 +49,8 @@ public class GraphSearch {
 			ResultSet rs2 = pstmt.executeQuery();
 			while (rs2.next()) {
 				int id = rs2.getInt("id");
+				if (reapedQuizzes.contains(id)) continue;
+				reapedQuizzes.add(id);
 				String tag_name = rs2.getString("Tags.name");
 				JSONObject entry = new JSONObject();
 				entry.accumulate("id", id);
@@ -59,7 +62,6 @@ public class GraphSearch {
 			}
 			results.accumulate("status", 200);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -106,32 +108,6 @@ public class GraphSearch {
 				total_results--;
 				quiz_results--;
 			}
-			
-			/* Search by tag */
-			String tagMatchString = "SELECT Quizzes.name, Quizzes.id, Tags.name FROM Quizzes INNER JOIN Tags on Quizzes.id = Tags.quiz_id AND Tags.name LIKE UPPER(?)  ORDER BY avg_rating DESC LIMIT 0, ?";
-			pstmt = db_connection.prepareStatement(tagMatchString);
-			pstmt.setString(1, text + "%");
-			pstmt.setInt(2, min(quiz_results,total_results));
-			
-			ResultSet rs2 = pstmt.executeQuery();
-			while (rs2.next()) {
-				int id = rs2.getInt("id");
-				String tag_name = rs2.getString("Tags.name");
-				if (!reapedQuizzes.contains(id)) {
-					JSONObject entry = new JSONObject();
-					entry.accumulate("id", id);
-					entry.accumulate("name", rs2.getString("name"));
-					entry.accumulate("type", "#"+tag_name);
-					entry.accumulate("category", "tag");
-					entry.accumulate("url", "/QuizWebsite/QuizPage.jsp?quiz_id="+id);
-					results.append("results", entry);
-					reapedQuizzes.add(id);
-					total_results--;
-					quiz_results--;
-				}
-			}
-			
-			/* End of search by tag */
 			
 			/* Search by user */
 			
