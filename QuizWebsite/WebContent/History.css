@@ -1,7 +1,13 @@
+#history-table,
+#history-table * {
+	border:none;
+}
+
 #history-table {
 	margin-top: 20px;
 	width: 600px;	
 	border-radius: 5px;
+	padding-bottom: 50px;
 }
 
 td {

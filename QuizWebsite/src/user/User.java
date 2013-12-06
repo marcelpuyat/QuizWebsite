@@ -273,6 +273,7 @@ public class User {
 				resultJSON.accumulate("display_name", first_name + " " + last_name);
 				resultJSON.accumulate("quizzes_created", this.getNumQuizzesCreated());
 				resultJSON.accumulate("quizzes_taken", this.getNumQuizzesTaken());
+				resultJSON.accumulate("id", this.user_id);
 				resultJSON.accumulate("status", "success");
 			} else {
 				resultJSON.accumulate("status", "missing data");
