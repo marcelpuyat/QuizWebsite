@@ -65,9 +65,9 @@ h1,h2,h3,h4,h5,h6 {
 
 #my-results-panel li {
 	margin-bottom: 6px;
-	padding-top: 4px;
 }
 
 #my-results-panel li:not(:first-child)  {
+	padding-top: 4px;
 	border-top: 1px solid rgb(230,230,230); 	
 }
