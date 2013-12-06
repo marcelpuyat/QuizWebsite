@@ -121,6 +121,8 @@ function update_newsfeed(friend_results, newsfeed_bar) {
 }
 
 function update_achievements(achvs_earned, achvs_not_earned, achvs_earned_div, achvs_not_earned_div) {
+	console.log("ACHIEVEMENTS NOT EARNED:");
+	console.log(achvs_not_earned);
 	var achvs_earned_ul = new_elem({
 		type:'ul',
 		classList:['center']

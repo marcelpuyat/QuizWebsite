@@ -213,16 +213,24 @@ public class Achievement {
 		
 		JSONArray notEarned = new JSONArray();
 		
-    for (String[] achievement : AchievementConstants.achievements) {
+		for (String[] achievement : AchievementConstants.achievements) {
 			boolean found = false;
-      for (Achievement a : earned) {
-				if (a.getTitle().equals(achievement[TITLE])) 
-          continue;
+			
+			// Look through all achievements earned and break once found
+			for (Achievement a : earned) {
+				if (a.getTitle().equals(achievement[TITLE])) {
+					found = true;
+					break;
+				}
 			}
-			JSONObject achv = new JSONObject();
-			achv.put("title", achievement[TITLE]);
-			achv.put("description", achievement[GOAL]);
-			notEarned.put(achv);
+			
+			// If not found, add to list
+			if (!found) {
+				JSONObject achv = new JSONObject();
+				achv.put("title", achievement[TITLE]);
+				achv.put("description", achievement[GOAL]);
+				notEarned.put(achv);
+			}
 		}
 		return notEarned;
 	}
