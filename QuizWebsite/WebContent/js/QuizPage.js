@@ -60,6 +60,8 @@ function init_js (quiz_id) {
 	function show_delete () {
 		var delete_li = document.getElementById('delete-li');
 		delete_li.classList.remove('hide');
+		var clear_li = document.getElementById('clear-li');
+		clear_li.classList.remove('hide');
 	}
 
 	function append_results (data) {
@@ -147,5 +149,19 @@ function delete_quiz (quiz_id) {
 				window.location = '/QuizWebsite/Home.jsp';
 			}
 		);
+	}
+}
+
+function clear_quiz (quiz_id) {
+	var should_clear = window.confirm('Are you sure you want to clear the history of this quiz?');
+	if (should_clear) {
+		post_json_to_url('/QuizWebsite/AdminServlet?action=clear_history&quiz_id=' + quiz_id,
+				{},
+				function () {
+					
+				}
+		);
+		alert("Quiz history cleared");
+		location.reload(true);
 	}
 }

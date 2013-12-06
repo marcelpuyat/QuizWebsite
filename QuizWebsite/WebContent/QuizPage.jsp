@@ -42,6 +42,9 @@
 						<li id="delete-li" class="flowing hide">
 							<a class="button red" href="javascript:delete_quiz(<%= getQuizID(request) %>)">Delete</a>
 						</li>
+						<li id="clear-li" class="flowing hide">
+							<a class="button red" href="javascript:clear_quiz(<%= getQuizID(request) %>)">Clear History</a>
+						</li>
 						<li id="practice-li" class="flowing hide">
 							<a class="button green" href="/QuizWebsite/Quiz.jsp?quiz_id=<%= getQuizID(request) %>&practice=true">Practice</a>
 						</li>
