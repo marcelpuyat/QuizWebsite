@@ -185,7 +185,7 @@ function display_relation_controls(user_info) {
 		showButton(block_button);
 	}
 	
-	if (_show_delete) {
+	if (_show_delete || is_self) {
 		showButton(delete_user_button);
 	}
 	if (_show_promote) {
