@@ -24,6 +24,15 @@ var reverse_time = false;
 var reverse_name = false;
 var reverse_rank = false;
 
+
+var headers = {
+	'quiz':document.getElementById('quiz-header'),
+	'score':document.getElementById('score-header'),
+	'time':document.getElementById('time-header'),
+	'date':document.getElementById('date-header'),
+	'rank':document.getElementById('rank-header')
+}
+
 var _results_table = document.getElementById("history-table");
 
 function init_js(user_id) {
@@ -59,11 +68,24 @@ function set_click_events() {
 
 }
 
+function style_headers (category) {
+	for (var i in headers){
+		if (i == category) {
+			headers[i].classList.add('sort-by');
+		} else {
+			headers[i].classList.remove('sort-by');
+		}
+	};
+}
+
 function sortBy(category) {
 	
 	cleanTable();
+
+	style_headers(category);
 	
 	if (category == "quiz") {
+
 		/* Check if has already been sorted before */
 		if (!_already_sorted_by_name) {
 			_results.sort(function(result_one, result_two) {
