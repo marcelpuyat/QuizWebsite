@@ -133,7 +133,7 @@ input[type="password"] {
 	filter:Alpha(opacity=000); /* IE8 and earlier */
 }
 
-.sprite,.sprite2 {
+.sprite,.sprite2,.trophy-sprite {
 	background-repeat: no-repeat;
 	background-size: auto;
 }
@@ -181,6 +181,42 @@ input[type="password"] {
 		width: 13px;
 	}
 
+.trophy-sprite {
+	background-image: url(http://nikeplus.nike.com/plus/web/images/profile_multisport/trophy-sprites.png);
+}
+
+	.trophy-sprite.greatest {
+		background-position: 1px -666px;
+		height: 100px;
+		width: 100px;
+	}
+	.trophy-sprite.amateur-author {
+		background-position: -200px -228px;
+		height: 100px;
+		width: 100px;
+	}
+	.trophy-sprite.prolific-author {
+		background-position: -35px -665px;
+		height: 100px;
+		width: 100px;
+	}
+	.trophy-sprite.prodigious-author {
+		background-position: -35px -665px;
+		height: 100px;
+		width: 100px;
+	}
+	.trophy-sprite.quiz-machine {
+		background-position: -35px -665px;
+		height: 100px;
+		width: 100px;
+	}
+	.trophy-sprite.practice {
+		background-position: -35px -665px;
+		height: 100px;
+		width: 100px;
+	}
+
+
 .page-width.wide {
 	width: 980px;
 }
@@ -201,6 +237,8 @@ input[type="password"] {
 }
 #inner-center-wrapper {
 	left: 213px;
+	border-left: 1px solid rgb(200,200,200);
+	border-right: 1px solid rgb(200,200,200);
 }
 
 #masthead-logo {

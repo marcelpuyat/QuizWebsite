@@ -24,7 +24,7 @@ public class GraphSearch {
 			Set<Integer> reapedUsers = new HashSet<Integer>();
 
 			/* first search quizzes by name prefix */
-			String getNameQuery = "SELECT name,id FROM Quizzes WHERE UPPER(name) LIKE UPPER(?) LIMIT 0, ?";
+			String getNameQuery = "SELECT name,id FROM Quizzes WHERE UPPER(name) LIKE UPPER(?)  ORDER BY avg_rating DESC LIMIT 0, ?";
 			PreparedStatement pstmt = db_connection.prepareStatement(getNameQuery);
 			pstmt.setString(1, text+"%");
 			pstmt.setInt(2, min(quiz_results,total_results));
@@ -44,7 +44,7 @@ public class GraphSearch {
 			}
 			
 			/* Search by tag */
-			String tagMatchString = "SELECT Quizzes.name, Quizzes.id, Tags.name FROM Quizzes INNER JOIN Tags on Quizzes.id = Tags.quiz_id AND Tags.name LIKE UPPER(?) LIMIT 0, ?";
+			String tagMatchString = "SELECT Quizzes.name, Quizzes.id, Tags.name FROM Quizzes INNER JOIN Tags on Quizzes.id = Tags.quiz_id AND Tags.name LIKE UPPER(?)  ORDER BY avg_rating DESC LIMIT 0, ?";
 			pstmt = db_connection.prepareStatement(tagMatchString);
 			pstmt.setString(1, text + "%");
 			pstmt.setInt(2, min(quiz_results,total_results));
@@ -102,7 +102,7 @@ public class GraphSearch {
 			
 			
 			/* then search quiz by name suffix */
-			String query = "SELECT name,id FROM Quizzes WHERE UPPER(name) LIKE UPPER(?) LIMIT 0, ?";
+			String query = "SELECT name,id FROM Quizzes WHERE UPPER(name) LIKE UPPER(?) ORDER BY avg_rating DESC LIMIT 0, ?";
 			pstmt = db_connection.prepareStatement(query);
 			pstmt.setString(1, "%"+text+"%");
 			pstmt.setInt(2, min(quiz_results,total_results));
