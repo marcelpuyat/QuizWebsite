@@ -156,31 +156,32 @@ function update_achievements(achvs_earned, achvs_not_earned, achvs_earned_div, a
 	achvs_earned_div.appendChild(achvs_earned_ul);
 	
 
-
-	var achvs_not_earned_ul = new_elem({
-		type:'ul',
-		classList:['center']
-	});
-	for (var i = 0; i < achvs_not_earned.length; i++) {
-		var title = achvs_not_earned[i].title;
-		var desc = achvs_not_earned[i].description;
-		
-		var li = new_elem({
-			type:'li',
-			classList:[acheivements_map[title],'trophy-sprite','flowing','trophy-not-unlocked'],
-			attributes:[
-				{name:'title',value:title + ': '+desc}
-			]
+	if (achvs_not_earned.length > 0) {
+		var achvs_not_earned_ul = new_elem({
+			type:'ul',
+			classList:['center']
 		});
-		achvs_not_earned_ul.appendChild(li);
+		for (var i = 0; i < achvs_not_earned.length; i++) {
+			var title = achvs_not_earned[i].title;
+			var desc = achvs_not_earned[i].description;
+			
+			var li = new_elem({
+				type:'li',
+				classList:[acheivements_map[title],'trophy-sprite','flowing','trophy-not-unlocked'],
+				attributes:[
+					{name:'title',value:title + ': '+desc}
+				]
+			});
+			achvs_not_earned_ul.appendChild(li);
+		}
+		
+		achvs_not_earned_div.appendChild(new_elem({
+			type:'h4',
+			innerHTML:'Achievements Not Unlocked',
+			classList:['center']
+		}));
+		achvs_not_earned_div.appendChild(achvs_not_earned_ul);
 	}
-	
-	achvs_not_earned_div.appendChild(new_elem({
-		type:'h4',
-		innerHTML:'Achievements Not Unlocked',
-		classList:['center']
-	}));
-	achvs_not_earned_div.appendChild(achvs_not_earned_ul);
 }
 
 function update_popular_quizzes(popular_quizzes, panel) {
