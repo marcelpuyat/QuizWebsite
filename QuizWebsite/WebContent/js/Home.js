@@ -127,33 +127,33 @@ function update_newsfeed(friend_results, newsfeed_bar) {
 }
 
 function update_achievements(achvs_earned, achvs_not_earned, achvs_earned_div, achvs_not_earned_div) {
-	console.log("ACHIEVEMENTS NOT EARNED:");
-	console.log(achvs_not_earned);
-	var achvs_earned_ul = new_elem({
-		type:'ul',
-		classList:['center']
-	});
-	
-	for (var i = 0; i < achvs_earned.length; i++) {
-		var title = achvs_earned[i].title;
-		var desc = achvs_earned[i].description;
-		
-		var li = new_elem({
-			type:'li',
-			classList:[acheivements_map[title],'trophy-sprite','flowing'],
-			attributes:[
-				{name:'title',value:title + ': '+desc}
-			]
+	if (achvs_earned.length > 0) {
+		var achvs_earned_ul = new_elem({
+			type:'ul',
+			classList:['center']
 		});
-		achvs_earned_ul.appendChild(li);
-	}
+		
+		for (var i = 0; i < achvs_earned.length; i++) {
+			var title = achvs_earned[i].title;
+			var desc = achvs_earned[i].description;
+			
+			var li = new_elem({
+				type:'li',
+				classList:[acheivements_map[title],'trophy-sprite','flowing'],
+				attributes:[
+					{name:'title',value:title + ': '+desc}
+				]
+			});
+			achvs_earned_ul.appendChild(li);
+		}
 
-	achvs_earned_div.appendChild(new_elem({
-		type:'h2',
-		innerHTML:'Achievements Unlocked',
-		classList:['center']
-	}));
-	achvs_earned_div.appendChild(achvs_earned_ul);
+		achvs_earned_div.appendChild(new_elem({
+			type:'h2',
+			innerHTML:'Achievements Unlocked',
+			classList:['center']
+		}));
+		achvs_earned_div.appendChild(achvs_earned_ul);
+	}
 	
 
 	if (achvs_not_earned.length > 0) {
