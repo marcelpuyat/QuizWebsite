@@ -191,32 +191,41 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 			type:'ul',
 			classList:['drop-down']
 		});
-		var challenge_button_text = new_elem({
-			type:'span',
-			innerHTML:'Challenge a friend'
-		});
-		var challenge_button = new_elem({
-			type:'span',
-			classList:['button'],
-			children:[challenge_button_text,friends_selection]
-		});
-		challenge_button.addEventListener('click',function (e) {
-			if (e.target.action) e.target.action();
-			else {
-				loader.setContainer(challenge_button);
-				loader.setDimensions(challenge_button.clientWidth, challenge_button.clientHeight);
-				challenge_button_text.classList.add('opacity-hide');
-				loader.start(true);
-				_this.challenge_click(friends_selection,challenge_button_text);
-			}
-		});
-		
-		
-		if (callback) callback(new_elem({
+		if (!_is_practice_quiz) {
+			var challenge_button_text = new_elem({
+				type:'span',
+				innerHTML:'Challenge a friend'
+			});
+			var challenge_button = new_elem({
+				type:'span',
+				classList:['button'],
+				children:[challenge_button_text,friends_selection]
+			});
+			challenge_button.addEventListener('click',function (e) {
+				if (e.target.action) e.target.action();
+				else {
+					loader.setContainer(challenge_button);
+					loader.setDimensions(challenge_button.clientWidth, challenge_button.clientHeight);
+					challenge_button_text.classList.add('opacity-hide');
+					loader.start(true);
+					_this.challenge_click(friends_selection,challenge_button_text);
+				}
+			});
+
+			if (callback) callback(new_elem({
+				type:'div',
+				classList:['center','results-wrapper'],
+				children:[header, challenge_button,score_wrapper]
+			}), auxiliary_data);
+		}
+
+		else {
+			if (callback) callback(new_elem({
 			type:'div',
 			classList:['center','results-wrapper'],
-			children:[header, challenge_button,score_wrapper]
+			children:[header,score_wrapper]
 		}), auxiliary_data);
+		}
 	};
 	
 	this.challenge_click = function(ul,text_elem) {
