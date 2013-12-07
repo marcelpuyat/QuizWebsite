@@ -30,7 +30,11 @@ function post_json_to_url (url, data, completionHandler, args) {
 	xmlhttp.onreadystatechange=function() {
 		if (xmlhttp.readyState==4 && xmlhttp.status==200) {
 			if (completionHandler) {
-				completionHandler(JSON.parse(xmlhttp.responseText), args);
+				if (xmlhttp.responseText) {
+					completionHandler(JSON.parse(xmlhttp.responseText), args);
+				} else {
+					completionHandler({}, args);
+				}
 			}
 		}
 	};

@@ -181,8 +181,19 @@ function rating_clicked (rating, user_id, quiz_id) {
 	set_elem_rating(document.getElementById('usr-rating-cover'), rating);
 	post_json_to_url(
 		'/QuizWebsite/RatingServlet?action=rate&quiz_id='+quiz_id+'&user_id='+user_id+'&rating='+rating,
-		{}
+		{},
+		function () {
+			console.log('updated');
+			/* update avg rating */
+			get_json_from_url(
+				'/QuizWebsite/RatingServlet?action=all&quiz_id='+quiz_id+'&user_id='+user_id,
+				function (data) {
+					set_elem_rating(document.getElementById('avg-rating-cover'), data.average_rating);
+				}
+			)
+		}
 	);
+
 }
 
 function delete_quiz (quiz_id) {
