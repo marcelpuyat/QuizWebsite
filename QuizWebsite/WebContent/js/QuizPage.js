@@ -183,8 +183,6 @@ function rating_clicked (rating, user_id, quiz_id) {
 		'/QuizWebsite/RatingServlet?action=rate&quiz_id='+quiz_id+'&user_id='+user_id+'&rating='+rating,
 		{}
 	);
-	alert("Thanks for rating this quiz!");
-	location.reload();
 }
 
 function delete_quiz (quiz_id) {
