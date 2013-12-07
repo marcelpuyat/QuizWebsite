@@ -190,7 +190,7 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 		var play_again_button = new_elem({
 			type:'div',
 			classList:['button'],
-			innerHTML:'Play Again!'
+			innerHTML:(_is_practice_quiz ? 'Practice ' : 'Play ')+'Again!'
 		});
 		play_again_button.addEventListener('click',function (e) {
 			window.location.reload();
