@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 
+import user.User;
+
 import customObjects.SelfRefreshingConnection;
 
 /**
@@ -32,6 +34,13 @@ public class GraphServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		User u = (User)request.getSession().getAttribute("user");
+		if (u == null) {
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED); // No graph results if not signed in
+			return;
+		}
+		
+		
 		String query = request.getParameter("query");
 		String lim_s = request.getParameter("limit");
 		if (lim_s == null || lim_s.equals("")) lim_s = "10";
