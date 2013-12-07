@@ -18,6 +18,10 @@
 					<h1>Styling</h1>
 				</li>
 				<li>
+					<h4>Star animation</h4>
+					<p>When a user is setting their rating and the stars turn black under the mouse, that css is copied from online. Attribution in source. The rest of the rating system is homegrown (including avg rating etc.)</p>
+				</li>
+				<li>
 					<h4>Facebook Theme</h4>
 					<p>two sprite sheets and tips on styling copied directly from Facebook.com</p>
 				</li>
