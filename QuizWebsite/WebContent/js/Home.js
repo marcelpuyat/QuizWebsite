@@ -176,7 +176,7 @@ function update_achievements(achvs_earned, achvs_not_earned, achvs_earned_div, a
 	}
 	
 	achvs_not_earned_div.appendChild(new_elem({
-		type:'h2',
+		type:'h4',
 		innerHTML:'Achievements Not Unlocked',
 		classList:['center']
 	}));
