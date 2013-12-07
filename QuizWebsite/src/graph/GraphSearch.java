@@ -25,21 +25,18 @@ public class GraphSearch {
 			for (int i = 0; i < raw_tags.length; i++) {
 				if (raw_tags[i] != null && !raw_tags[i].equals("")) {
 					tags.add(raw_tags[i]);
-					System.out.println("#tag"+raw_tags[i]);
 				}
 			}
 			
 			String tagMatchString = "SELECT Quizzes.name, Quizzes.id, Tags.name FROM Quizzes JOIN Tags on Quizzes.id = Tags.quiz_id ";
 			
-			boolean enteredLoop = false;
 			for (int i = 0; i < tags.size(); i++) {
-				enteredLoop = true;
 				if (i == 0) tagMatchString+= "AND (";
 				if (i != 0) tagMatchString += " OR ";
 				tagMatchString += "UPPER(Tags.name) LIKE UPPER(?)";
 			}
 			
-			if (enteredLoop) tagMatchString += ")";
+			if (tags.size() != 0) tagMatchString += ")";
 			
 			tagMatchString += " ORDER BY avg_rating DESC LIMIT 0, ?";
 			System.out.println("Query\n"+tagMatchString);
