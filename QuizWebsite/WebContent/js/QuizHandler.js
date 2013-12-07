@@ -186,12 +186,22 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 			type:'div',
 			children:[score_display,time_display]
 		});
-		
-		var friends_selection = new_elem({
-			type:'ul',
-			classList:['drop-down']
+
+		var play_again_button = new_elem({
+			type:'div',
+			classList:['button'],
+			innerHTML:'Play Again!'
 		});
+		play_again_button.addEventListener('click',function (e) {
+			window.location.reload();
+		});
+
+
 		if (!_is_practice_quiz) {
+			var friends_selection = new_elem({
+				type:'ul',
+				classList:['drop-down']
+			});
 			var challenge_button_text = new_elem({
 				type:'span',
 				innerHTML:'Challenge a friend'
@@ -215,7 +225,7 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 			if (callback) callback(new_elem({
 				type:'div',
 				classList:['center','results-wrapper'],
-				children:[header, challenge_button,score_wrapper]
+				children:[header,play_again_button,challenge_button,score_wrapper]
 			}), auxiliary_data);
 		}
 
@@ -223,7 +233,7 @@ function QuizHandler(quiz_id, load_url, post_url, is_practice, user_id) {
 			if (callback) callback(new_elem({
 			type:'div',
 			classList:['center','results-wrapper'],
-			children:[header,score_wrapper]
+			children:[header,play_again_button,score_wrapper]
 		}), auxiliary_data);
 		}
 	};
