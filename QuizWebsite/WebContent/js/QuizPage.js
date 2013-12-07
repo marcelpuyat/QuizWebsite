@@ -183,7 +183,6 @@ function rating_clicked (rating, user_id, quiz_id) {
 		'/QuizWebsite/RatingServlet?action=rate&quiz_id='+quiz_id+'&user_id='+user_id+'&rating='+rating,
 		{},
 		function () {
-			console.log('updated');
 			/* update avg rating */
 			get_json_from_url(
 				'/QuizWebsite/RatingServlet?action=all&quiz_id='+quiz_id+'&user_id='+user_id,
