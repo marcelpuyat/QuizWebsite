@@ -631,7 +631,7 @@ function SettingsHandler (blue_bar, user_id) {
 	var _blue_bar = blue_bar;
 	var _this = this;
 
-	var _settings_items = [getLogoutItem,getAccountSettings];
+	var _settings_items = [getLogoutItem,getAccountSettings,getAttributionLink];
 
 	this.getNumNotifications = function () {
 		return 0;
@@ -659,6 +659,18 @@ function SettingsHandler (blue_bar, user_id) {
 
 	this.indexExists = function (index) {
 		return index < _settings_items.length;
+	}
+
+	function getAttributionLink () {
+		var li =  new_elem({
+			type:'li',
+			innerHTML:'Attribution',
+			classList:['pointable']
+		});
+		li.addEventListener('click',function () {
+			window.location = '/QuizWebsite/Attribution.jsp';
+		});
+		return li;
 	}
 
 	function getAccountSettings () {
