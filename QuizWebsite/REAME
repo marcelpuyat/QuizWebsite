@@ -1,2 +1,144 @@
 
+   CS108 FINAL PROJECT
+ 	- Joe Delgado, Marcel Puyat, Jordan Shelton, Reid Watson
+
+
+      ----------------------------------------------------
+     |													  |
+     |              FACEQUIZ or QUIZBOOK                  |
+     |													  |
+      ----------------------------------------------------
+
+
+Technologies Used:
+ - Java Servlets (AJAX API only, no forward facing URLs map to Servlets directly)
+ - Java Server Pages (JSP)
+ - Javascript with AJAX (JSON) communications with Servlets
+ - HTML5/CSS3 (including CSS transitions, transforms and HTML5 canvas elements)
+ - Apache Tomcat 7.0 Server
+ - MYSQL database
+
+
+Attributions to used code (See '/QuizWebsite/Attribution.jsp'):
+ - Sprite Sheets and styling borrowed from Facebook
+ - Sprite Sheet borrowed from Nike
+ - Naming of Graph, Newsfeed, and Blue Bar borrowed from Facebook
+ - Two javascript methods borrowed/adapted (documented on Attribution.jsp)
+ - Java library for parsing JSON
+ - Java jar file for sending emails
+
+/*
+ *       FEATURES
+ */
+
+
+ ======== Quizzes =========
+
+ Types implemented:
+  - Question Response
+  - Fill in the Blank
+  - Multiple Choice
+  - Picture Response
+  - Multiple Answer
+  - Multiple Choice
+  - Matching (homebuilt drag and drop mhmmmm)
+
+Options:
+  - Randomize option
+  - Multi-page and single page supported
+  - Immediate correction supported
+  - Practice mode supported
+
+Extras:
+  + Complex styling, 3d CSS3 animation and dynamic interaction
+  + Object oriented javascript design
+  + javascript protected from users tampering in terminal
+  + all quizzes timed and graded on the client side, allowing for instantaneous correction
+  + all ui custom, not using html defaults
+
+
+ ======== Users =========
+ 
+ Security:
+   - Passwords hashed multiple times with a user-unique salt
+
+ Friends:
+   - All references to users (including profile pictures (excluding on the user's page:)) link to the user's page
+   - User search supported in Graph (see 'Graph' below)
+   - blocking supported
+   - requesting supported
+
+ Extras:
+   + fancy friend request handling (async and reloads whenever you open the panel)
+
+ ======== Messaging =========
+
+ NOTE: friend request and admin announcements are not handled as messages, they have their own interface
+
+ Features:
+  - full support of user to user messaging with message sorting by user and timestamp. User list will always show users whith which you have most recently interacted
+  - Profile pages link to messaging app
+
+
+ ======== History =========
+
+ Features:
+  - full display of user quiz history
+
+ Extras:
+  + table sorting with tie resolution for columns (all homegrown)
+  + CSS3 sort order indicators (click on the column titles)
+
+
+ ======== Achievements =========
+
+ Features:
+  - full implementation of recommended achievement types
+  - Hover over achievements to see description
+
+ Extras:
+  +  swanky images from Nike Sprite sheet
+
+
+ ======== Pages =========
+
+ Home Page:
+  - Announcements section in blue bar (Click the world)
+  - Popular Quizzes under 'Trending Quizzes' (by most taken) and 'Highest Rated Quizzes' (by rating) headers
+  - Recently created Quizzes listed
+  - Recently Created Quizzes by user
+  - Recently taken quizzes by user
+  - acheivements earned and not earned shown
+  - Newsfeed to show recent activity
+
+  + Friends list with profile pictures
+
+ Quiz Summary Page:
+  - all features listed in spec
+
+
+ ======== Graph =========
+ 
+  - intelligent search engine, ranks results by user rating and how similar it is to the query
+  - Hashtags for tag search, example, #Animals#America, would result in all quizzes listed with either the 'Animals%' tag or the 'America%' tag
+  - User search by first name, last name, or email
+
+ ======== Redirection =========
+ 
+  - users are redirected away from pages they are not allowed to access and graph is shut down when not signed in
+
+ ======== Rating =========
+
+ - All users can rate quizzes, previous user rating and average rating shown on page when loaded, updating rating supported and does not add more votes, ie you can't bloat your own quiz's score:)
+
+ ======== Quiz Editing =========
+
+ -users can edit their quizzes, all updates are done instantaneously like google docs, no saving necessary! (try adding a tag to a quiz or changing the name then querrying in Graph:))
+ - Appending, prepending all supoorted.
+
+
+ ======== Practice =========
+
+ - yup, and tied into acheivements
+
 

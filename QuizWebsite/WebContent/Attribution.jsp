@@ -42,7 +42,7 @@
 				</li>
 				<li>
 					<h4>Facebook Theme</h4>
-					<p>Many names such as 'Graph' and 'Blue Bar' borrowed from facebook</p>
+					<p>Many names such as 'Graph', 'Newsfeed', and 'Blue Bar' borrowed from facebook</p>
 				</li>
 				<li>
 					<h1>Javascript</h1>
